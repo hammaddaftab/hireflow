@@ -51,6 +51,7 @@ How do you offer accessibility/utility to the recruiter?
 ```
 ### We combine AI flexibility with dynamic UI
 > TODO: remane groups to something more appealing
+
 Example Scenario: The user makes groups among applicants. 
 Groups are a concept we define among many other to provde an ecosystem.
 Instead of manual keypresses, our AI would be capable enough to simualte every 
@@ -58,7 +59,7 @@ control while keeping in context the user-specific data PLUS being able
 to have agency - GROUP CANDIDATES BY EXPERIENCE.
 
 ### Closed Interface
-We provid a defined set of actions, not because we are against 
+We provide a defined set of actions, not because we are against 
 flexibility, but because we don't want to have a separate docs on 
 *GETTING STARTED*. We believe the ui should be self-descriptive with
 those hovers and tooltips. This also helps expressing clearly the 
