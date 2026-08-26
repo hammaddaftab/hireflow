@@ -7,6 +7,10 @@ curves, introducing friction - ATS requirements, overhead costs for oneoff and i
 issue as well in problem statement?
 
 
+## *THE HELL ARE WE DOING*:
+Approach -> `time = parsing + context + admin ops`,
+we must minimize the lateral two components
+
 
 # HireFlow
 HireFlow is an assistant, which any recruiter can integrate into his own
@@ -21,10 +25,10 @@ recruiter to swift through resumes while still having a bird-eye's view.
 Why are you targeting the users you are targeting?
 ```
 If we had instead targeted those big companies then:
-- we would have to think harder than the incumbants
+* we would have to think harder than the incumbants
 (big corporations already in the market). We had to design
 the same thing but *better*.
-- we instead approached it from the market's pespective to curate the
+* we instead approached it from the market's pespective to curate the
 experience for those who currently don't have access to these features.
 
 
@@ -38,11 +42,15 @@ Subscriptions plans works the
 best for extensive usage or committed clients, or recurrent intermittent
 usage. We charge only for the cv's processed, which nurtures the 
 following benefits:
-- You don't have to pay for **availability**. There are no upfront charges
+* You don't have to pay for **availability**. There are no upfront charges
 or montly paid plans.
-- Every feature in our application remains fully accessible to every user.
+* Every feature in our application remains fully accessible to every user.
 Nothing is gated behind a paywall.
-- Since the costs are minimal, 1$ per 1000 cv's, you can handle large amounts of data.
+* Since the costs are minimal, 1$ per 1000 cv's, you can handle large amounts of data.
+
+### Comparative Analysis
+* locally established recruiting tools (rozee) function primarily as job advertising boards/resume repositories rather than workflow-centric recruiter utilities
+* while human resource management systems focus on statutory (mandated by law) compliance
 
 
 
@@ -66,15 +74,22 @@ those hovers and tooltips. This also helps expressing clearly the
 capabilities of ai and its dynamic nature.
 
 
-# INTERNAL: Other Experimental-Ideas
-- We can go about introducing plugins, with a marketplace to install
+### INTERNAL: Other Experimental-Ideas
+* We can go about introducing plugins, with a marketplace to install
 them. And set reward mechanism for top authors to encourage them, 
 and have unbounded extensibility in our application.
-- We can introduce a timeline, where every operation gets recorded
+* We can introduce a timeline, where every operation gets recorded
 be it rearrangement of cards in the overview or whatever,
 giving the user the ability to view every action ever 
 taken WHILE BEING ABLE TO REVERT TO A PREVIOUS STATE OR
 MUTATE A SPECIFIC INTERATION IN THE HISTORY.
-- Branches to let recruiter focus on one aspect at a time,
+* Branches to let recruiter focus on one aspect at a time,
 maybe experience or skills or communation. The recruiter can
 then merge branches to find overlaps (candidates satisfying both criteria)
+* ? localization: university accreditations ... !important
+* ? informal recruitment: phone calls and whatsapp messaging - structured records + response time metrics + resume ingestion (through texts) + interview logistics (repeated deliberately) + fragmentation
+* ? candidate deduplication - research the usecase first :)
+* interview logistics
+* drag and drop (right after core utility - ingestion, query support etc)
+
+> items startings with ? needs research
