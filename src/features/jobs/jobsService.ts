@@ -1,4 +1,4 @@
-import { Job, CreateJobInput, UpdateJobInput } from "@/types";
+import { Job, CreateJobInput, UpdateJobInput } from "./types";
 
 export class JobsService {
   private jobs: Map<string, Job> = new Map();

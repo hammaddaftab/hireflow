@@ -11,6 +11,13 @@
   - **Prohibited**:
     - Inline decorative icons embedded into labels, chips, or text (e.g., logo icons next to tech names like `Python`, or decorative inline symbols). Icons must represent actions or component states, never text decoration.
 
+## Testing Policy
+- **No Tests**: We are not focusing on tests. Do NOT create, generate, update, or run automated tests (unit tests, integration tests, E2E tests, or test suites).
+- **Mandatory Avoidance & Prompt for Confirmation**: Even if a prompt or workflow skill explicitly requests tests or TDD, the agent MUST avoid writing or running tests and ask the user for explicit confirmation before proceeding with any test-related work.
+
+## Exports & Third-Party Code Policy
+- **No Redundant Re-exports of Third-Party Types/Primitives**: Do not create wrapper barrel files or local type files that merely re-export types or functions from external packages (e.g., `export type { ... } from "ai"`). Consumers must import third-party types and functions directly from the source library.
+
 ## Workflow & Verification Policy
 - **No Automatic Full Builds / Verification Suites**: Do not run full test suites, coverage reports, or production builds (`npm run build`, `verify-all.sh`) automatically on every task/turn.
 - **Explicit Approval Required**: Only run full builds or verification pipelines when the user explicitly requests it or after asking the user and receiving their approval.

@@ -1,5 +1,5 @@
 import { useGetJobsQuery, useDeleteJobMutation, useCreateJobMutation } from "../jobsApi";
-import { CreateJobInput } from "@/types";
+import { CreateJobInput } from "../types";
 
 export function useJobs() {
   const { data: jobs = [], isLoading: loading, error, refetch } = useGetJobsQuery();
