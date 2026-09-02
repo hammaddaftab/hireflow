@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { EvidenceSpanSchema } from "./shared";
+import { EvidenceSpanSchema } from "../../shared/evidenceStatus";
 
 export const SyntacticTierSchema = z.enum([
   "action_attributed",

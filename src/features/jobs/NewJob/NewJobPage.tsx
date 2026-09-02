@@ -13,7 +13,8 @@ import type { FormFieldState, RequirementMode } from "@/features/jobs/types";
 // 4 Direct Children from components/
 import { JobFormStepper } from "./components/JobFormStepper";
 import { RoleIdentityForm } from "./components/RoleIdentityForm";
-import { ScreeningCriteriaForm, initialRequirementsFields } from "./components/ScreeningCriteria";
+import { ScreeningCriteriaForm } from "./components/ScreeningCriteria/ScreeningCriteriaForm";
+import { initialRequirementsFields } from "./components/ScreeningCriteria/requirementsData";
 import { EvaluationTaxonomyModal } from "./components/EvaluationTaxonomyModal";
 
 export function NewJobPage() {

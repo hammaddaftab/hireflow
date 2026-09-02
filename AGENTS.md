@@ -25,3 +25,6 @@
 ## File State & Manual Edits Policy
 - **Respect User Modifications**: Whenever the agent detects that the current file state is different from what was previously left off (indicating manual edits, deletions, or styling adjustments by the user), the agent MUST NOT silently overwrite or revert those changes.
 - **Ask Before Overwriting/Reverting**: Always explicitly ask the user whether to preserve their manual changes or undo/update them before modifying the affected file sections.
+
+## Path & Linking Policy
+- **Repo Root as Path Root**: Always format markdown file links considering the repository root as the path root (e.g., `/src/...`, `/docs/...`). Do not use machine-specific absolute filesystem paths or `file:///` URIs.
