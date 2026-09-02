@@ -86,10 +86,15 @@ MUTATE A SPECIFIC INTERATION IN THE HISTORY.
 * Branches to let recruiter focus on one aspect at a time,
 maybe experience or skills or communation. The recruiter can
 then merge branches to find overlaps (candidates satisfying both criteria)
+
+
 * ? localization: university accreditations ... !important
 * ? informal recruitment: phone calls and whatsapp messaging - structured records + response time metrics + resume ingestion (through texts) + interview logistics (repeated deliberately) + fragmentation
+* explicit feedback for missing fields especially which require realtime exchange on wa, 
+and a button to dispatch them messages
 * ? candidate deduplication - research the usecase first :)
 * interview logistics
 * drag and drop (right after core utility - ingestion, query support etc)
+* show cost at the time of ingestion as "This will cost X"
 
 > items startings with ? needs research
