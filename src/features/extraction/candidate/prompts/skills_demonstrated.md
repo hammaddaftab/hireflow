@@ -4,6 +4,9 @@
 Stable (conceptually) — most developed aspect in the system. Implementation
 not yet built.
 
+## Version
+1.0.0
+
 ## Core Definition
 A skill enters `skills_demonstrated` if and only if it appears inside a
 dated work-history or project entry AND is the object of a verb whose

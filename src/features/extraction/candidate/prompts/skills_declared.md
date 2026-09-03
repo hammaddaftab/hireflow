@@ -1,22 +1,28 @@
 # Aspect: Skills Declared (+ derived relations)
 
 ## Status
-Draft — extraction is trivial, derived relations are the real content here
+Completed
+
+## Version
+1.0.0
 
 ## JSON Schema — raw extraction
 ```json
 {
-  "skills_declared": ["string (flat list from an explicit Skills: section)"]
+  "skills_declared": ["string (flat list of technical skills from an explicit Skills section)"]
 }
 ```
 
 ## Extraction Prompt
 ```
-Extract the flat list of skills from any explicit "Skills:", "Technical
-Skills:", or similar labeled section in the resume below. Do not pull
-skills from work-history bullets here — that's skills_demonstrated,
-a separate pass. This list is weaker evidence by design; do not upgrade
-its status based on how it reads.
+Extract the flat list of technical skills, programming languages, frameworks,
+libraries, databases, and infrastructure tools from any explicit "Skills:",
+"Technical Skills:", or similar labeled section in the resume below.
+Do not pull skills from work-history bullets here — that's skills_demonstrated,
+a separate pass.
+Exclude generic soft skills, interpersonal traits, or subjective claims (e.g.
+'communication', 'team player', 'problem solving', 'leadership').
+This list is weaker evidence by design; do not upgrade its status based on how it reads.
 
 Resume text:
 {resume_text}
@@ -27,37 +33,42 @@ skills_declared has no standalone decision value. Its only utility is
 as a comparison operand against skills_demonstrated — the signal is in
 the DELTA between the two lists, not in either list alone.
 
-## Derived relations (pure computation, no LLM call — runs over already-
-extracted data from this file + skills_demonstrated.md)
+## Derived Relations (Per-Skill Computation)
+Computed deterministically downstream against extracted data from this file + skills_demonstrated.md.
 ```json
 {
   "skill": "string",
-  "relation": "corroborated | orphan | stale | density_anomaly_flag"
+  "relation": "corroborated | orphan"
 }
 ```
 
-1. **corroborated** — declared skill also appears in skills_demonstrated
-   at any tier. Recruiter reads this as "real."
-2. **orphan** — declared, never appears in work history or projects at
-   all. Not evidence of lying — evidence of unconfirmed claim. Routes
-   to a follow-up-question suggestion, not a silent accept/reject.
-3. **stale** — declared, demonstrated somewhere, but only in old
-   entries; recent roles show a different stack. Recruiters weight
-   current use over old, one-off use.
-4. **density_anomaly** — ratio of declared-skill-count to work-history-
-   entry-count (or seniority level) sits well outside typical range for
-   the role. Document-shape signal, computed once per resume, not per
-   skill. (Sourced signal: AI-assisted resumes trend toward dense skill
-   lists with thin narrative support — verified via 2025 Software Finder
-   survey, n=874, during this project's research.)
+1. **corroborated** — declared skill also appears in `skills_demonstrated`
+   at any tier. Recruiter reads this as confirmed in work context.
+2. **orphan** — declared, but never appears in work history or projects at
+   all. Not evidence of lying — evidence of an unconfirmed claim that
+   routes to a follow-up screening question.
+
+## Document-Level Signal: Density Anomaly
+Computed once per candidate profile, not per skill:
+```json
+{
+  "density_anomaly": "boolean"
+}
+```
+- **density_anomaly** — ratio of declared-skill-count to work-history-entry-count
+  (or seniority level) sits well outside the typical baseline for the role.
+  Surfaces resumes with dense keyword stuffing but thin narrative support.
 
 ## Design Decisions
-- These four relations are the actual output surfaced to the recruiter
-  for this aspect — not the raw skills_declared list on its own.
-- No combined score across the four relations — same rule as
-  skills_demonstrated: separate, legible, not summed.
+- Technical Skill Focus: Soft skills and interpersonal attributes (e.g. "team player",
+  "effective communicator") are explicitly excluded from extraction to prevent ungrounded
+  claims from generating false orphan flags against technical work history.
+- Relational Legibility: Surfaces `corroborated` vs `orphan` claims distinctly without
+  collapsing into a single synthetic authenticity score.
 
 ## Open Questions
-- density_anomaly threshold ("well outside typical range") not yet
-  defined — needs a rough baseline distribution, not a hardcoded number
-  guessed without data.
+- Matching Delta & Aliasing: How downstream deterministic code reliably handles
+  vocabulary, casing, and punctuation discrepancies (e.g., "NodeJS" vs "Node.js",
+  "Postgres" vs "PostgreSQL") between declared lists and demonstrated bullet extractions.
+- Density anomaly baseline threshold ("well outside typical range") across different
+  experience tiers.

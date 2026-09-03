@@ -104,6 +104,7 @@ ${resumeText}`;
 
 export const identityAspect = {
   name: "identity",
+  version: "1.0.0",
   schema: IdentityExtractionSchema,
   prompt: buildIdentityPrompt,
 } as const;
