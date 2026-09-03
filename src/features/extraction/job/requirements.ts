@@ -4,28 +4,103 @@ export const SkillRequirementItemSchema = z.object({
   skill: z
     .string()
     .describe("Name of the required or preferred skill"),
-  min_years: z
-    .number()
-    .nullable()
-    .describe("Minimum years of experience required specifically for this skill if stated, else null"),
   blocking: z
     .boolean()
     .describe("True for mandatory knockout skills, false for nice-to-have preferences"),
 });
 
-export const EducationRequirementSchema = z.object({
-  degree_level: z
-    .string()
+export const MinExperienceRequirementSchema = z.object({
+  years: z
+    .number()
     .nullable()
-    .describe("Minimum degree level (e.g. Bachelor's, Master's) or null if not stated"),
+    .describe("Minimum years of general professional experience required, or null"),
+  blocking: z
+    .boolean()
+    .default(false)
+    .describe("Whether minimum experience is a hard knockout requirement"),
+});
+
+export const DegreeLevelEnum = z.enum([
+  "bachelors",
+  "masters",
+  "doctorate",
+  "diploma",
+  "high_school",
+]);
+
+export type DegreeLevel = z.infer<typeof DegreeLevelEnum>;
+
+export const EducationRequirementSchema = z.object({
+  degree_level: DegreeLevelEnum
+    .nullable()
+    .describe("Canonical degree tier enum (bachelors, masters, doctorate, diploma, high_school), or null if not stated"),
   field: z
     .string()
     .nullable()
-    .describe("Required or preferred field of study (e.g. Computer Science) or null"),
+    .describe("Canonical field of study matching master DB options (e.g. 'Computer Science'); raw string omitted as job requirements do not require candidate-style audit confirmation"),
   blocking: z
     .boolean()
     .default(false)
     .describe("Whether minimum education is a hard knockout requirement"),
+});
+
+export const LocationRequirementSchema = z.object({
+  city: z
+    .string()
+    .nullable()
+    .describe("Canonical city name requirement matching canonical DB select (e.g. 'Lahore'), or null"),
+  province: z
+    .string()
+    .nullable()
+    .describe("Canonical province or region requirement matching canonical DB select (e.g. 'Punjab'), or null"),
+  blocking: z
+    .boolean()
+    .default(true)
+    .describe("Whether location is a strict dealbreaker"),
+});
+
+export const WorkModeRequirementSchema = z.object({
+  mode: z
+    .enum(["remote", "hybrid", "onsite"])
+    .describe("Work mode requirement"),
+  blocking: z
+    .boolean()
+    .default(true)
+    .describe("Whether work mode is a strict dealbreaker"),
+});
+
+export const CompensationBandRequirementSchema = z.object({
+  min: z
+    .number()
+    .nullable()
+    .describe("Minimum compensation number if stated, else null"),
+  max: z
+    .number()
+    .nullable()
+    .describe("Maximum compensation number if stated, else null"),
+  currency: z
+    .string()
+    .nullable()
+    .describe("Currency code or symbol (e.g. 'PKR', 'USD'), else null"),
+  blocking: z
+    .boolean()
+    .default(false)
+    .describe("Whether budget ceiling is a strict dealbreaker"),
+});
+
+export const MaxNoticePeriodRequirementSchema = z.object({
+  value: z
+    .number()
+    .nullable()
+    .describe("Maximum notice period numeric amount if stated, else null"),
+  unit: z
+    .enum(["days", "weeks", "months"])
+    .nullable()
+    .describe("Time unit for notice period (days, weeks, months)"),
+  blocking: z
+    .boolean()
+    .default(false)
+    .describe("Whether notice period is a strict dealbreaker"),
 });
 
 export const JobRequirementsExtractionSchema = z.object({
@@ -44,33 +119,21 @@ export const JobRequirementsExtractionSchema = z.object({
     .array(SkillRequirementItemSchema)
     .default([])
     .describe("List of preferred/nice-to-have skills (blocking = false)"),
-  min_years_total_experience: z
-    .number()
-    .nullable()
-    .describe("Total minimum years of professional experience required, or null"),
+  min_experience: MinExperienceRequirementSchema,
   education_min: EducationRequirementSchema,
-  location: z
-    .string()
-    .describe("Job location, city, or country requirement"),
-  work_mode: z
-    .enum(["remote", "hybrid", "onsite"])
-    .describe("Work mode requirement"),
-  compensation_band: z
-    .string()
-    .nullable()
-    .describe("Stated salary range or budget if mentioned in the JD, else null"),
-  max_notice_period: z
-    .string()
-    .nullable()
-    .describe("Maximum acceptable notice period if mentioned, else null"),
-  logistics_blocking: z
-    .boolean()
-    .default(true)
-    .describe("Whether location and work mode are strict dealbreakers"),
+  location: LocationRequirementSchema,
+  work_mode: WorkModeRequirementSchema,
+  compensation_band: CompensationBandRequirementSchema,
+  max_notice_period: MaxNoticePeriodRequirementSchema,
 });
 
 export type SkillRequirementItem = z.infer<typeof SkillRequirementItemSchema>;
+export type MinExperienceRequirement = z.infer<typeof MinExperienceRequirementSchema>;
 export type EducationRequirement = z.infer<typeof EducationRequirementSchema>;
+export type LocationRequirement = z.infer<typeof LocationRequirementSchema>;
+export type WorkModeRequirement = z.infer<typeof WorkModeRequirementSchema>;
+export type CompensationBandRequirement = z.infer<typeof CompensationBandRequirementSchema>;
+export type MaxNoticePeriodRequirement = z.infer<typeof MaxNoticePeriodRequirementSchema>;
 export type JobRequirementsExtraction = z.infer<typeof JobRequirementsExtractionSchema>;
 
 /**
@@ -79,7 +142,12 @@ export type JobRequirementsExtraction = z.infer<typeof JobRequirementsExtraction
 export function buildJobRequirementsPrompt(jdText: string): string {
   return `Parse the job description below into the structured schema.
 Split skills into skills_required (must-have, blocking: true) and skills_preferred (nice-to-have, blocking: false) based on the language used in the JD itself (e.g. "must have", "required" vs "nice to have", "bonus", "preferred"). Default ambiguous skills to preferred, not required.
-Extract min_years per skill only where the JD states it explicitly for that specific skill, not a general "X years experience" line applied across all skills.
+Do not extract years per skill — extract minimum years of experience only at the top level in min_experience if stated.
+For education_min: map degree_level strictly to 'bachelors', 'masters', 'doctorate', 'diploma', 'high_school', or null. Extract canonical field of study.
+For location: extract canonical city and province/region as structured fields.
+For compensation_band: extract numeric min, max, and currency if stated.
+For max_notice_period: extract numeric value and unit (days, weeks, months) if stated.
+Assign blocking (true/false) per requirement based on whether the JD treats it as a strict knockout requirement or a preference.
 
 Job description text:
 ${jdText}`;
@@ -90,3 +158,4 @@ export const requirementsAspect = {
   schema: JobRequirementsExtractionSchema,
   prompt: buildJobRequirementsPrompt,
 } as const;
+
