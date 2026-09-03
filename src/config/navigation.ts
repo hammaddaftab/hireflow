@@ -14,6 +14,7 @@ export const ROUTES = {
   DASHBOARD: "/",
   NEW_JOB: "/jobs/new",
   JOB_DETAILS: (id: string) => `/jobs/${id}`,
+  REVIEW: "/review",
 } as const;
 
 /**
@@ -26,6 +27,13 @@ export const SIDEBAR_NAV_ITEMS: NavItem[] = [
     href: ROUTES.DASHBOARD,
     description: "Overview of job openings and applicant screening pipelines",
     matchPatterns: ["/"],
+  },
+  {
+    id: "review-queue",
+    label: "Review Queue",
+    href: ROUTES.REVIEW,
+    description: "Rapid candidate screening queue with two-layer evidence disclosure",
+    matchPatterns: ["/review"],
   },
   {
     id: "create-requirement",
@@ -42,6 +50,7 @@ export const SIDEBAR_NAV_ITEMS: NavItem[] = [
 export const ROUTE_LABEL_MAP: Record<string, string> = {
   jobs: "Job Postings",
   new: "New Requirement Schema",
+  review: "Review Queue",
   candidates: "Candidates",
   analytics: "Analytics",
   settings: "Settings",

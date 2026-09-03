@@ -148,9 +148,9 @@ export function JobDashboardList({ initialJobs }: JobDashboardListProps) {
               </div>
 
               <div className="mt-5 pt-3 border-t border-outline-variant flex items-center justify-between gap-2">
-                <Link href={ROUTES.JOB_DETAILS(job.id)} className="flex-1">
-                  <Button variant="outline" size="sm" className="w-full">
-                    View Screening Engine
+                <Link href={ROUTES.REVIEW} className="flex-1">
+                  <Button variant="primary" size="sm" className="w-full">
+                    Open Review Queue
                   </Button>
                 </Link>
                 <Button
