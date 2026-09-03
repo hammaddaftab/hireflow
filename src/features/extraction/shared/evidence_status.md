@@ -36,5 +36,3 @@ they are read individually, not summed. (See: killed formulas, `S(c) =
 
 ## Every evidence-bearing field also carries
 - `evidence_span`: the literal quoted text supporting the status
-- verified via substring match against source text before storage —
-  a field with no matching span is `not_stated`, never a guess

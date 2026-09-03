@@ -26,8 +26,9 @@ Prompt & Schema in [`/src/features/extraction/matching/`](/src/features/extracti
 
 ## Status Legend
 - `Draft` - Decided in conversation, not yet implemented
-- `Stable` - Implemented, working as intended
 - `Needs work` - Implemented but known gaps
+- `Stable` - Implemented, working as intended
+- `Completed` - Finalized, prompt and companion schema fully aligned and verified
 
 ## Change Log
 - 2026-09-03: Restructured into `shared/`, `candidate/`, `job/`, and `matching/` sub-feature groups.

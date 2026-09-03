@@ -21,7 +21,7 @@ No LLM call for this file. Rules:
   document-editor mtime-tick bug — content hash or monotonic counter,
   never timestamp comparison.)
 - `parse_quality`: feeds the `unparseable` state in
-  _shared/evidence_status.md. `failed` = OCR/corrupt-file case, must
+  [`/src/features/extraction/shared/evidence_status.md`](/src/features/extraction/shared/evidence_status.md). `failed` = OCR/corrupt-file case, must
   render distinctly in the UI so a recruiter doesn't misread "no data"
   as "bad candidate."
 - `raw_text_ref`: kept specifically for the rare fallback case where a
