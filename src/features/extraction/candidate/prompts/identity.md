@@ -1,7 +1,7 @@
 # Aspect: Candidate Identity
 
 ## Status
-Draft — schema only, not yet stress-tested
+Completed
 
 ## JSON Schema
 ```json
@@ -10,8 +10,19 @@ Draft — schema only, not yet stress-tested
   "email": "string | null",
   "phone": "string | null (normalized E.164)",
   "cnic": "string | null (13-digit, dedup key)",
-  "location_stated": "string | null",
-  "links": ["string (raw URLs — GitHub, portfolio, LinkedIn — not fetched)"]
+  "location": {
+    "raw": "string | null",
+    "normalized": "string | null (canonical city/region, e.g. 'Lahore, Pakistan')"
+  },
+  "links": [
+    {
+      "address": "string (raw URL from document)",
+      "platform": {
+        "raw": "string | null (stated label/provider, e.g. 'GitHub', 'Portfolio')",
+        "normalized": "github | linkedin | gitlab | portfolio | twitter | other | null"
+      }
+    }
+  ]
 }
 ```
 
@@ -22,13 +33,20 @@ Return only what is explicitly present — do not infer a name from an
 email address, do not guess a phone country code if not shown.
 Normalize phone numbers to E.164 if a country context is clear from
 the document; otherwise return the raw string and flag it.
-Do not fetch or validate any URLs found — return them raw.
+For location: extract the raw stated location in `raw`, and standard
+canonical city/region in `normalized` if clear, else null.
+For links: for each link entry, return:
+- `address`: the raw URL or web address as stated in the document.
+- `platform`: an object with `raw` (stated provider/label, e.g. 'GitHub', 'Portfolio', or null)
+  and `normalized` (canonical enum: 'github', 'linkedin', 'gitlab', 'portfolio', 'twitter', 'other', or null).
 
 Resume text:
 {resume_text}
 ```
 
 ## Design Decisions
+- Normalized fields (`location`, `links`) follow the shared `{ raw, normalized }`
+  pattern defined in [`/src/features/extraction/README.md`](/src/features/extraction/README.md).
 - No evidence_status needed on these fields — identity is present or
   absent, not evidentiary in the same sense as a skill claim.
 - CNIC captured here because it's the primary dedup key (see

@@ -4,6 +4,7 @@ This is a pointer list for prompt specifications and companion Zod schemas. Ever
 
 ## Shared
 - [`/src/features/extraction/shared/evidence_status.md`](/src/features/extraction/shared/evidence_status.md) (Schema: [`/src/features/extraction/shared/evidenceStatus.ts`](/src/features/extraction/shared/evidenceStatus.ts)) - 6-state taxonomy used across all aspects
+- Normalized field convention: `fieldName: { raw: <>, normalized: <> }` — `raw` captures literal document text, `normalized` holds the canonical enum or resolved entity (`null` if unresolvable)
 
 ## Candidate-side (Extraction, once per resume, cached)
 Aspect schemas in [`/src/features/extraction/candidate/aspects/`](/src/features/extraction/candidate/aspects/), prompts in [`/src/features/extraction/candidate/prompts/`](/src/features/extraction/candidate/prompts/):
