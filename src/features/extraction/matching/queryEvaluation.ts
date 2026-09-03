@@ -6,7 +6,7 @@ export const CandidateQueryEvaluationSchema = z.object({
     .string()
     .describe("Unique ID of the candidate evaluated in this batch"),
   status: z
-    .enum(["confirmed", "ambiguous", "contradicted", "not_stated", "unparseable"])
+    .enum(["confirmed", "inferred", "ambiguous", "contradicted", "not_stated", "unparseable"])
     .describe("Evidentiary status for this candidate against the query/requirement"),
   reasoning: z
     .string()

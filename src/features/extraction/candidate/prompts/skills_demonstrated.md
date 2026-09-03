@@ -21,7 +21,6 @@ sufficient evidence on its own — this must be enforced syntactically.
   "syntactic_tier": "action_attributed | peripheral_action | context_listed",
   "outcome_attached": "string | null (literal outcome text if present, else null)",
   "concrete_noun_present": "boolean",
-  "cross_entry_consistency": "consistent | inconsistent | single_mention",
   "evidence_span": "string (verbatim quote)",
   "evidence_status": "confirmed | ambiguous (see /src/features/extraction/shared/evidence_status.md)"
 }
@@ -46,10 +45,6 @@ sufficient evidence on its own — this must be enforced syntactically.
 - **concrete_noun_present**: does the clause name a specific artifact/
   system/scope beyond the skill word itself ("payment microservice" vs
   "backend")? Mechanical structural check, not a semantic judgment call.
-- **cross_entry_consistency**: if the skill appears in >1 entry, do the
-  descriptions cohere in scope, or contradict? Narrow, cheap version of
-  contradiction detection — text comparison over already-extracted data,
-  no extra LLM call needed beyond the extraction pass itself.
 
 ## Extraction Prompt
 ```
@@ -69,7 +64,7 @@ For each skill, also extract:
 - concrete_noun_present: true if the sentence names a specific system,
   artifact, or scope beyond the skill word itself.
 
-Do not assign a combined score. Return the three properties separately
+Do not assign a combined score. Return these properties separately
 for each skill mention. Quote the evidence_span verbatim; do not paraphrase.
 
 Work history / project entries:
@@ -83,8 +78,6 @@ Work history / project entries:
   reads the pattern, the system does not pre-judge it.
 
 ## Open Questions
-- cross_entry_consistency comparison logic (rule-based text diff vs a
-  small dedicated LLM call) not yet chosen.
 - Whether context_listed skills should be excluded from
   skills_demonstrated entirely and moved to a third bucket, vs kept here
   tagged ambiguous — currently kept here, revisit if it causes UI

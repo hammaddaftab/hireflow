@@ -32,6 +32,25 @@ export interface JobRequirement {
   weight?: number;
 }
 
+export interface CompensationBandCriteria {
+  min: number | null;
+  max: number | null;
+  currency: string | null;
+  blocking: boolean;
+}
+
+export interface MaxNoticePeriodCriteria {
+  value: number | null;
+  unit: "days" | "weeks" | "months" | null;
+  blocking: boolean;
+}
+
+export interface EducationCriteria {
+  degree_level: "bachelors" | "masters" | "doctorate" | "diploma" | "high_school" | null;
+  field: string | null;
+  blocking: boolean;
+}
+
 export interface Job {
   id: string;
   title: string;
@@ -45,6 +64,9 @@ export interface Job {
   status: "draft" | "active" | "archived";
   createdAt: string;
   updatedAt: string;
+  compensation_band?: CompensationBandCriteria;
+  max_notice_period?: MaxNoticePeriodCriteria;
+  education_min?: EducationCriteria;
 }
 
 export interface CreateJobInput {
@@ -57,6 +79,9 @@ export interface CreateJobInput {
   softCriteria: SoftScoringCriteria;
   customRequirements?: JobRequirement[];
   status?: "draft" | "active" | "archived";
+  compensation_band?: CompensationBandCriteria;
+  max_notice_period?: MaxNoticePeriodCriteria;
+  education_min?: EducationCriteria;
 }
 
 export interface UpdateJobInput {
@@ -69,4 +94,7 @@ export interface UpdateJobInput {
   softCriteria?: Partial<SoftScoringCriteria>;
   customRequirements?: JobRequirement[];
   status?: "draft" | "active" | "archived";
+  compensation_band?: Partial<CompensationBandCriteria>;
+  max_notice_period?: Partial<MaxNoticePeriodCriteria>;
+  education_min?: Partial<EducationCriteria>;
 }

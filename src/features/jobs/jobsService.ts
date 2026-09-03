@@ -62,6 +62,9 @@ export class JobsService {
       status: input.status || "active",
       createdAt: now,
       updatedAt: now,
+      compensation_band: input.compensation_band,
+      max_notice_period: input.max_notice_period,
+      education_min: input.education_min,
     };
 
     this.jobs.set(id, job);
@@ -86,6 +89,15 @@ export class JobsService {
       customRequirements: input.customRequirements !== undefined
         ? input.customRequirements
         : existing.customRequirements,
+      compensation_band: input.compensation_band !== undefined
+        ? (input.compensation_band ? { ...existing.compensation_band, ...input.compensation_band } as any : undefined)
+        : existing.compensation_band,
+      max_notice_period: input.max_notice_period !== undefined
+        ? (input.max_notice_period ? { ...existing.max_notice_period, ...input.max_notice_period } as any : undefined)
+        : existing.max_notice_period,
+      education_min: input.education_min !== undefined
+        ? (input.education_min ? { ...existing.education_min, ...input.education_min } as any : undefined)
+        : existing.education_min,
       updatedAt: new Date().toISOString(),
     };
 
@@ -122,6 +134,22 @@ export class JobsService {
         preferredSkills: ["Next.js", "Tailwind CSS", "PostgreSQL"],
         bonusQualifications: ["Experience building ATS or AI-assisted recruitment tools"],
         weight: 4,
+      },
+      compensation_band: {
+        min: 400000,
+        max: 600000,
+        currency: "PKR",
+        blocking: true,
+      },
+      max_notice_period: {
+        value: 1,
+        unit: "months",
+        blocking: true,
+      },
+      education_min: {
+        degree_level: "bachelors",
+        field: "Computer Science",
+        blocking: true,
       },
       customRequirements: [
         {

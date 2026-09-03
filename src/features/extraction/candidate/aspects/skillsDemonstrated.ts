@@ -24,9 +24,6 @@ export const SkillDemonstratedItemSchema = z.object({
   concrete_noun_present: z
     .boolean()
     .describe("True if a specific artifact, system, or scope is named (e.g. 'payment service' vs 'backend')"),
-  cross_entry_consistency: z
-    .enum(["consistent", "inconsistent", "single_mention"])
-    .describe("Consistency of description scope across multiple mentions in work history"),
   evidence_span: EvidenceSpanSchema,
   evidence_status: z
     .enum(["confirmed", "ambiguous"])
@@ -56,7 +53,6 @@ export function buildSkillsDemonstratedPrompt(resumeText: string): string {
 For each skill, extract:
 - outcome_attached: the literal measurable outcome text if present, else null.
 - concrete_noun_present: true if a specific artifact/system is named, else false.
-- cross_entry_consistency: consistent, inconsistent, or single_mention.
 - evidence_span: the verbatim quote from the text.
 - evidence_status: confirmed for action_attributed, ambiguous for peripheral_action or context_listed.
 
