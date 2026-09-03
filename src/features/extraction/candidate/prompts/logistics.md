@@ -3,6 +3,9 @@
 ## Status
 Draft — schema simple, the RULE is the important part
 
+## Version
+1.0.0
+
 ## JSON Schema
 ```json
 {
@@ -51,15 +54,7 @@ Resume text:
   pattern, matching the numeric keys and unit scales of job requirements
   (`compensation_band` and `max_notice_period`) to enable zero-LLM arithmetic
   comparisons in query evaluation.
-- This is the field group most often absent from resumes, and the one
-  where recruiters most often screen live over WhatsApp/phone in the
-  Pakistani market (sourced: informal-channel research earlier in
-  project). "not_stated" here should visibly become the recruiter's
-  fast checklist of what to actually ask the candidate.
-- Hard rule, no exceptions: never infer these fields, even when
-  inference seems obviously safe (e.g. inferring relocation
-  unwillingness from a stated current city). If it's not written, it's
-  not_stated.
+
 
 ## Open Questions
 - None. This is the one aspect where the design should NOT get more

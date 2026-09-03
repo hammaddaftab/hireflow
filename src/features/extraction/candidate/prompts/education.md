@@ -1,21 +1,31 @@
 # Aspect: Education
 
 ## Status
-Draft — deliberately minimal
+Completed
+
+## Version
+1.0.0
 
 ## JSON Schema
 ```json
 {
   "entries": [
     {
-      "institution": "string",
+      "institution": {
+        "raw": "string (verbatim school/university name from document, e.g. 'FAST-NUCES')",
+        "normalized": "string | null (canonical institution name resolved against master database, e.g. 'FAST National University')"
+      },
       "degree_level": {
-        "raw": "string (raw degree title as stated, e.g. 'Bachelor of Science in CS')",
+        "raw": "string (verbatim degree title, e.g. 'Bachelor of Science in Software Engineering')",
         "normalized": "bachelors | masters | doctorate | diploma | high_school | null"
       },
-      "field": "string",
-      "start_date": "YYYY | null",
-      "end_date": "YYYY | \"present\" | null",
+      "field": {
+        "raw": "string (verbatim major/field as stated, e.g. 'BSCS')",
+        "normalized": "string | null (canonical field of study matching master taxonomy, e.g. 'Computer Science')"
+      },
+      "start_date": "YYYY | YYYY-MM | null",
+      "end_date": "YYYY | YYYY-MM | null",
+      "is_current": "boolean",
       "grade": "string | null"
     }
   ]
@@ -24,26 +34,29 @@ Draft — deliberately minimal
 
 ## Extraction Prompt
 ```
-Extract each education entry from the resume text below: institution,
-degree_level (raw degree string in `raw`, and normalized tier 'bachelors',
-'masters', 'doctorate', 'diploma', 'high_school', or null in `normalized`),
-field of study, dates, and grade if stated. Do not infer prestige, tier,
-or accreditation status — extraction only.
+Extract each education entry from the resume text below in reverse chronological order:
+- institution: verbatim name in `raw`, canonical name in `normalized` if standard, else null.
+- degree_level: verbatim title in `raw`, normalized tier in `normalized` strictly mapped to:
+  * 'bachelors': 4-year BS, BE, BSc (Hons), BBA, etc.
+  * 'masters': MS, MPhil, MSc, MBA.
+  * 'doctorate': PhD, DPhil.
+  * 'diploma': 2-year Associate Degree (ADP), DAE, polytechnic diploma.
+  * 'high_school': FSc, ICS, FA, A-Levels, Matric, O-Levels.
+  * null: short bootcamps, certificates, non-degree training.
+- field: verbatim major in `raw` (e.g. 'BSCS'), canonical discipline in `normalized` (e.g. 'Computer Science') if clear, else null.
+- start_date: start year or date (e.g. '2020' or '2020-09'), else null.
+- end_date: end/graduation year (e.g. '2024' or '2024-06'), or null if currently enrolled (never return the string "present").
+- is_current: true if currently enrolled / studying, false if completed / past.
+- grade: GPA, percentage, or division if explicitly stated, else null.
+Do not infer prestige, tier, or accreditation status — extraction only.
 
 Resume text:
 {resume_text}
 ```
 
 ## Design Decisions
-- `degree_level` follows the shared `{ raw, normalized }` pattern, mapping
-  candidate degrees to the same canonical tier enum used by job requirements
-  (`bachelors`, `masters`, `doctorate`, `diploma`, `high_school`) to enable
-  deterministic threshold comparisons (`candidate_degree >= required_degree`).
-- HEC/NCEAC tier normalization is explicitly OUT of this schema. It's
-  an optional enrichment layer for later, not core extraction — do not
-  add tier/accreditation fields here without a separate decision to
-  build that layer.
+- `institution`: Uses `{ raw, normalized }` to preserve verbatim text for recruiter verification while enabling open-set canonical resolution against the master database without prompt bloat.
+- `degree_level`: Uses `{ raw, normalized }` to map free-form degree titles to the canonical tier enum (`bachelors`, `masters`, `doctorate`, `diploma`, `high_school`) for deterministic threshold checks.
 
 ## Open Questions
-- None currently — this aspect is intentionally simple and not a
-  priority for further refinement before the hackathon build.
+- None currently — schema is finalized.

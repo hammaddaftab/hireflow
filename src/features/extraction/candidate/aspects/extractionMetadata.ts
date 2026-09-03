@@ -1,4 +1,14 @@
 import { z } from "zod";
+import { identityAspect } from "./identity";
+import { educationAspect } from "./education";
+import { workHistoryAspect } from "./workHistory";
+import { skillsDemonstratedAspect } from "./skillsDemonstrated";
+import { skillsDeclaredAspect } from "./skillsDeclared";
+import { logisticsAspect } from "./logistics";
+
+export const AspectVersionsSchema = z.record(z.string(), z.string()).describe(
+  "Snapshot of individual aspect versions active at extraction time"
+);
 
 /**
  * Pipeline-computed extraction metadata for caching and tracking parse quality.
@@ -7,22 +17,47 @@ import { z } from "zod";
 export const ExtractionMetadataSchema = z.object({
   file_hash: z
     .string()
-    .describe("Content hash of the uploaded resume document for cache keying"),
-  schema_version: z
+    .describe("SHA-256 content hash of the uploaded resume document for cache keying"),
+  aspect_versions: AspectVersionsSchema.describe(
+    "Snapshot of aspect prompt/schema versions that produced this candidate profile"
+  ),
+  extracted_at: z
     .string()
-    .describe("Version tag of the extraction schema to trigger re-extraction only when affected"),
+    .datetime()
+    .describe("ISO 8601 timestamp when extraction was performed"),
   parse_quality: z
     .enum(["full", "partial", "failed"])
     .describe("full (clean parse), partial (some sections unparseable), failed (OCR/corrupt scan failure)"),
   raw_text_ref: z
     .string()
     .describe("Pointer or key to original extracted raw text for fallback single-field queries"),
+  warnings: z
+    .array(z.string())
+    .default([])
+    .describe("Diagnostic parser or OCR warning flags (empty if clean)"),
 });
 
+export type AspectVersions = z.infer<typeof AspectVersionsSchema>;
 export type ExtractionMetadata = z.infer<typeof ExtractionMetadataSchema>;
+
+/**
+ * Stitches together the current version tags of all candidate extraction aspects.
+ */
+export function getCurrentAspectVersions(): Record<string, string> {
+  return {
+    [identityAspect.name]: identityAspect.version,
+    [educationAspect.name]: educationAspect.version,
+    [workHistoryAspect.name]: workHistoryAspect.version,
+    [skillsDemonstratedAspect.name]: skillsDemonstratedAspect.version,
+    [skillsDeclaredAspect.name]: skillsDeclaredAspect.version,
+    [logisticsAspect.name]: logisticsAspect.version,
+  };
+}
 
 export const extractionMetadataAspect = {
   name: "extraction_metadata",
+  version: "1.0.0",
   schema: ExtractionMetadataSchema,
   isPromptDriven: false,
 } as const;
+

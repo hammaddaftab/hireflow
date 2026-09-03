@@ -1,36 +1,38 @@
 # Aspect: Extraction Metadata
 
 ## Status
-Draft — not extracted by LLM, computed by pipeline code
+Completed
+
+## Version
+1.0.0
 
 ## JSON Schema
 ```json
 {
-  "file_hash": "string (content hash — NOT filename or upload timestamp)",
-  "schema_version": "string (so a schema change triggers re-extraction only where affected)",
+  "file_hash": "string (SHA-256 hex digest of source file bytes)",
+  "aspect_versions": {
+    "identity": "string (e.g. '1.0.0')",
+    "education": "string (e.g. '1.0.0')",
+    "work_history": "string (e.g. '1.0.0')",
+    "skills_demonstrated": "string (e.g. '1.0.0')",
+    "skills_declared": "string (e.g. '1.0.0')",
+    "logistics": "string (e.g. '1.0.0')"
+  },
+  "extracted_at": "YYYY-MM-DDTHH:mm:ssZ (ISO 8601 timestamp)",
   "parse_quality": "full | partial | failed",
-  "raw_text_ref": "pointer to original extracted text, kept for narrow fallback queries"
+  "raw_text_ref": "string (storage URI pointing to raw unparsed text)",
+  "warnings": ["string (diagnostic parser/OCR warnings, empty if clean)"]
 }
 ```
 
 ## Not a prompt — this is a computation spec
 No LLM call for this file. Rules:
-- `file_hash`: cache key for the extraction layer. Two uploads of the
-  same resume must not trigger re-extraction. A modified file with the
-  same filename must not hit a stale cache. (Same lesson as the
-  document-editor mtime-tick bug — content hash or monotonic counter,
-  never timestamp comparison.)
-- `parse_quality`: feeds the `unparseable` state in
-  [`/src/features/extraction/shared/evidence_status.md`](/src/features/extraction/shared/evidence_status.md). `failed` = OCR/corrupt-file case, must
-  render distinctly in the UI so a recruiter doesn't misread "no data"
-  as "bad candidate."
-- `raw_text_ref`: kept specifically for the rare fallback case where a
-  job requirement asks about something the generic schema never
-  anticipated — a narrow, single-field query against raw text, not a
-  full re-extraction. Should be rare; frequent use means the schema is
-  too narrow, not that this fallback needs expanding.
+- `file_hash`: SHA-256 byte digest for cache keying. Re-uploads of the exact same document skip extraction entirely, while modified files with identical filenames trigger a fresh parse.
+- `aspect_versions`: Records the snapshot of active aspect versions that generated this candidate profile, enabling instant debugging of parsed data versions.
+- `extracted_at`: ISO 8601 timestamp for auditing extraction date, cache freshness, and recruiter UI context.
+- `parse_quality`: Feeds the `unparseable` state in [`/src/features/extraction/shared/evidence_status.md`](/src/features/extraction/shared/evidence_status.md). Distinctly separates technical failures (OCR/corrupted scans) from genuine candidate gaps.
+- `raw_text_ref`: Storage URI pointing to original unparsed text, preserved for narrow fallback queries without requiring full document re-extraction.
+- Deduplication Architecture: `file_hash` caches document bytes at the file level; `cnic` (from [`identity.md`](/src/features/extraction/candidate/prompts/identity.md)) deduplicates the candidate entity across different resume versions.
 
 ## Open Questions
-- Hashing algorithm not chosen (any collision-resistant hash is
-  sufficient here — this isn't a security context, just cache
-  correctness).
+- None currently — schema is finalized.

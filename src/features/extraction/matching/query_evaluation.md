@@ -1,7 +1,10 @@
 # Aspect: Query Evaluation (matching time)
 
 ## Status
-Draft
+Completed
+
+## Version
+1.0.0
 
 ## Two call types
 
@@ -19,9 +22,9 @@ raw resume text.
 ```json
 {
   "candidate_id": "string",
-  "status": "confirmed | ambiguous | contradicted | not_stated (see /src/features/extraction/shared/evidence_status.md)",
+  "status": "confirmed | ambiguous | contradicted | not_stated | unparseable (see /src/features/extraction/shared/evidence_status.md)",
   "reasoning": "string (grounded in evidence_span from the candidate's extracted profile)",
-  "evidence_span": "string (quoted, must trace back to a real extracted field)"
+  "evidence_span": "string | null (quoted, must trace back to a real extracted field; null if not_stated)"
 }
 ```
 
@@ -33,7 +36,7 @@ non-qualifying alike — return a status and a one-sentence reasoning
 grounded ONLY in the structured profile data provided. Do not invent
 facts not present in the profile. If the profile doesn't contain enough
 information to judge, return status "not_stated" or "ambiguous" rather
-than guessing.
+than guessing. If status is "not_stated", return null for evidence_span.
 
 Query/requirement:
 {query_text}
@@ -55,6 +58,10 @@ Candidate profiles (compact, already extracted — NOT raw resumes):
   pricing note below.
 
 ## Open Questions
+- Batch size output token limits: evaluating 50-100 candidates per call
+  risks hitting model completion token limits or encountering latency
+  timeouts due to generating tens of candidate reasoning and evidence
+  blocks in a single JSON completion.
 - Pricing for repeated free-text queries against the same pool not yet
   decided (options considered: small per-query fee, or bundled quota
   e.g. "first 10 queries free per job, then $X"). Needs resolution

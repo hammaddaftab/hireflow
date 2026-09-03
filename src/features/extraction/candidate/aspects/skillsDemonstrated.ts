@@ -66,6 +66,7 @@ ${resumeText}`;
 
 export const skillsDemonstratedAspect = {
   name: "skills_demonstrated",
+  version: "1.0.0",
   schema: SkillsDemonstratedExtractionSchema,
   prompt: buildSkillsDemonstratedPrompt,
 } as const;

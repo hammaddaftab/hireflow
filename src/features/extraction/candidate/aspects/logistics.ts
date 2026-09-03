@@ -90,6 +90,7 @@ ${resumeText}`;
 
 export const logisticsAspect = {
   name: "logistics",
+  version: "1.0.0",
   schema: LogisticsExtractionSchema,
   prompt: buildLogisticsPrompt,
 } as const;

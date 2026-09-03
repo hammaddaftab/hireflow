@@ -3,6 +3,9 @@
 ## Status
 Completed
 
+## Version
+1.0.0
+
 ## JSON Schema
 ```json
 {
@@ -48,17 +51,10 @@ Resume text:
 ```
 
 ## Design Decisions
-- Normalized fields (`location`, `links`) follow the shared `{ raw, normalized }`
-  pattern defined in [`/src/features/extraction/README.md`](/src/features/extraction/README.md).
-- Location normalization note: The `{ raw, normalized }` pattern is slightly adapted
-  here with a single top-level `raw` string rather than nested raw fields for
-  city/province, avoiding unnecessary depth for verbatim text while normalizing into
-  structured components for matching.
-- No evidence_status needed on these fields — identity is present or
-  absent, not evidentiary in the same sense as a skill claim.
-- CNIC captured here because it's the primary dedup key (see
-  extraction_metadata.md) — exact match overrides fuzzy name/email/phone
-  matching entirely.
+- `location`: Structured with a top-level `raw` string for the full unedited address and a `normalized` object (`{ city, province }`) for deterministic matching.
+- `links`: Combines the raw URL with a normalized `platform` enum (`github`, `linkedin`, etc.) to guarantee byte-level consistency in profile queries.
+- No `evidence_status`: Contact fields are binary factual anchors (present or absent), not evidentiary claims requiring proof strength.
+- `cnic`: Acts as the primary deduplication anchor — exact CNIC matches supersede fuzzy name/contact resolution.
 
 ## Open Questions
 - E.164 normalization edge cases for numbers without explicit country

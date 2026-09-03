@@ -70,23 +70,8 @@ Job description text:
 ```
 
 ## Design Decisions
-- `blocking` is configured per requirement independently across all fields
-  (skills, education, location, work mode, compensation, notice period, min experience).
-  There is no aggregate logistics_blocking flag — recruiters can mark location as
-  blocking while keeping notice period or budget soft.
-- Structured logistics & comp: Location is structured as { city, province }, and
-  compensation/notice period are structured with numeric values and units to enable
-  deterministic, zero-LLM checks at query time (matching query_evaluation.md).
-- min_experience captures top-level minimum years of experience with its own blocking flag.
-  Individual skills do not carry min_years — keeping skill requirements focused on
-  skill identification and hard/soft blocking.
-- Why no { raw, normalized } pattern in Job Requirements:
-  The dual `{ raw, normalized }` structure is specifically designed for candidate-side
-  extraction, where third-party claims require recruiter verification against original CV
-  text (e.g. confirming whether an applicant truly attended FAST). Conversely, job
-  requirements are defined or confirmed by the recruiter using canonical database dropdowns;
-  when parsing a JD, fields map directly to canonical entities. Storing raw strings here
-  is unnecessary overhead since job requirements never require candidate-style audit confirmation.
+- Granular `blocking`: Every requirement carries its own independent `blocking` boolean, allowing recruiters to set hard knockout dealbreakers on specific criteria while keeping other fields flexible.
+- Direct Canonical Fields: Job requirements map directly to canonical entities (or recruiter dropdown selections) rather than `{ raw, normalized }`, because employer requirements do not require candidate-style audit verification.
 
 ## Open Questions
 - None currently — this is the minimum viable version agreed as the build target.
