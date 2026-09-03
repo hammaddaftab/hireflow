@@ -19,8 +19,8 @@ sufficient evidence on its own — this must be enforced syntactically.
   "outcome_attached": "string | null (literal outcome text if present, else null)",
   "concrete_noun_present": "boolean",
   "cross_entry_consistency": "consistent | inconsistent | single_mention",
-  "evidence_span": "string (verbatim quote, substring-verified)",
-  "evidence_status": "confirmed | ambiguous (see _shared/evidence_status.md)"
+  "evidence_span": "string (verbatim quote)",
+  "evidence_status": "confirmed | ambiguous (see /src/features/extraction/shared/evidence_status.md)"
 }
 ```
 
@@ -67,8 +67,7 @@ For each skill, also extract:
   artifact, or scope beyond the skill word itself.
 
 Do not assign a combined score. Return the three properties separately
-for each skill mention. Quote the evidence_span verbatim — it will be
-checked against the source text; do not paraphrase.
+for each skill mention. Quote the evidence_span verbatim; do not paraphrase.
 
 Work history / project entries:
 {entries}

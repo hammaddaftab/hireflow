@@ -20,10 +20,10 @@ export const EvidenceStatusSchema = z
 export type EvidenceStatus = z.infer<typeof EvidenceStatusSchema>;
 
 /**
- * Literal quoted text supporting the status, verified via substring match against source text.
+ * Literal quoted text supporting the status.
  */
 export const EvidenceSpanSchema = z
   .string()
-  .describe("Literal quoted text supporting the status, verified via substring match");
+  .describe("Literal quoted text supporting the status");
 
 export type EvidenceSpan = z.infer<typeof EvidenceSpanSchema>;

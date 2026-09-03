@@ -19,7 +19,7 @@ raw resume text.
 ```json
 {
   "candidate_id": "string",
-  "status": "confirmed | ambiguous | contradicted | not_stated (see _shared/evidence_status.md)",
+  "status": "confirmed | ambiguous | contradicted | not_stated (see /src/features/extraction/shared/evidence_status.md)",
   "reasoning": "string (grounded in evidence_span from the candidate's extracted profile)",
   "evidence_span": "string (quoted, must trace back to a real extracted field)"
 }

@@ -41,8 +41,7 @@ Resume text:
   years-of-experience computation.
 - `raw_description` is kept verbatim and separately from any derived
   skill data — this is the source-of-truth text that skills_demonstrated
-  extraction runs against, and what evidence_span quotes are checked
-  against for hallucination.
+  extraction runs against and quotes evidence from.
 - Domain-specific years (e.g. "years of Python") are NOT stored here as
   a precomputed number — they're derived downstream from these dated
   entries + skills_demonstrated, so the computation stays auditable.

@@ -36,9 +36,18 @@ export const NormalizedLocationSchema = z.object({
     .nullable()
     .describe("Raw candidate location or city as explicitly stated in the document, else null"),
   normalized: z
-    .string()
+    .object({
+      city: z
+        .string()
+        .nullable()
+        .describe("Canonical city name (e.g. 'Lahore'), or null if unresolvable"),
+      province: z
+        .string()
+        .nullable()
+        .describe("Canonical province or region (e.g. 'Punjab'), or null if unresolvable"),
+    })
     .nullable()
-    .describe("Standardized city/region name (e.g. 'Lahore, Pakistan'), or null if unresolvable"),
+    .describe("Structured canonical location matching job-side schema; top-level raw is kept flat to avoid unnecessary depth"),
 });
 
 export type LinkPlatformNormalized = z.infer<typeof LinkPlatformNormalizedSchema>;
@@ -67,7 +76,7 @@ export const IdentityExtractionSchema = z.object({
     .nullable()
     .describe("13-digit Pakistani CNIC number used as primary dedup key, or null if not present"),
   location: NormalizedLocationSchema.describe(
-    "Candidate's location structured as { raw, normalized }"
+    "Candidate's location structured as { raw, normalized: { city, province } }"
   ),
   links: z
     .array(LinkItemSchema)
@@ -84,7 +93,7 @@ export function buildIdentityPrompt(resumeText: string): string {
   return `Extract the candidate's identity fields from the resume text below.
 Return only what is explicitly present — do not infer a name from an email address, do not guess a phone country code if not shown.
 Normalize phone numbers to E.164 if a country context is clear from the document; otherwise return the raw string and flag it.
-For location: extract the raw stated location in 'raw', and standard canonical city/region in 'normalized' if clear, else null.
+For location: extract the raw stated location string in 'raw', and structured canonical city and province in 'normalized' if clear, else null.
 For links: for each link entry, return:
 - address: the raw URL or web address string.
 - platform: an object containing 'raw' (the provider name as stated, e.g. 'GitHub', 'Portfolio', or null) and 'normalized' (canonical enum: 'github', 'linkedin', 'gitlab', 'portfolio', 'twitter', 'other', or null).
