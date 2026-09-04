@@ -1,8 +1,6 @@
 import type { ParsedCandidateProfile } from "@/entities/candidate";
 import type { EvidenceStatus } from "@/entities/extraction/shared/evidenceStatus";
-import type { ReviewDecision, QueueFilterTab } from "@/entities/review";
-
-export type { ReviewDecision, QueueFilterTab };
+import type { ReviewDecision } from "@/entities/review";
 
 /**
  * A single blocking requirement with Layer 1 status and Layer 2 evidence.

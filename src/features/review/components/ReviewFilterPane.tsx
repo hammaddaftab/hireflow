@@ -2,7 +2,8 @@
 
 import React, { useState } from "react";
 import { Filter, X, Users, ChevronUp, ChevronDown, MapPin } from "lucide-react";
-import { QueryGroup, QueueFilterTab } from "../types";
+import { QueryGroup } from "../types";
+import type { QueueFilterTab } from "@/entities/review";
 
 export interface ReviewFilterPaneProps {
   isOpen: boolean;

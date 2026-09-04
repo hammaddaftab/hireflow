@@ -3,7 +3,7 @@
 import React from "react";
 import { Maximize2 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
-import { QueueFilterTab } from "../types";
+import type { QueueFilterTab } from "@/entities/review";
 
 export interface ReviewDeckControlsProps {
   activeTab: QueueFilterTab;

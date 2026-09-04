@@ -31,9 +31,9 @@ export class JobsService {
       list = list.filter(
         (j) =>
           j.title.toLowerCase().includes(q) ||
-          j.department.toLowerCase().includes(q) ||
-          j.location.toLowerCase().includes(q) ||
-          j.description.toLowerCase().includes(q)
+          (j.department ? j.department.toLowerCase().includes(q) : false) ||
+          (j.location ? j.location.toLowerCase().includes(q) : false) ||
+          (j.description ? j.description.toLowerCase().includes(q) : false)
       );
     }
 
@@ -47,7 +47,7 @@ export class JobsService {
 
   async createJob(input: CreateJobInput): Promise<Job> {
     const id = `job-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
-    const now = new Date().toISOString();
+    const now = new Date();
 
     const skillsRequired = input.skills_required ?? [];
     const skillsPreferred = input.skills_preferred ?? [];
@@ -90,10 +90,10 @@ export class JobsService {
     const job: Job = {
       id,
       title: input.title,
-      department: input.department,
-      location: input.location,
-      employmentType: input.employmentType,
-      description: input.description,
+      department: input.department ?? null,
+      location: input.location ?? null,
+      employmentType: input.employmentType ?? null,
+      description: input.description ?? null,
       seniority_level: input.seniority_level ?? null,
 
       // Canonical criteria fields
@@ -115,22 +115,7 @@ export class JobsService {
 
     // Persist to Drizzle database table
     try {
-      await db.insert(jobs).values({
-        id,
-        title: job.title,
-        seniorityLevel: job.seniority_level ?? null,
-        skillsRequired,
-        skillsPreferred,
-        minExperience,
-        educationMin,
-        location: locationReq,
-        workMode: workModeReq,
-        compensationBand,
-        maxNoticePeriod,
-        status: job.status,
-        createdAt: new Date(now),
-        updatedAt: new Date(now),
-      }).onConflictDoNothing();
+      await db.insert(jobs).values(job).onConflictDoNothing();
     } catch (dbErr) {
       console.warn("Drizzle database job insert warning (skipped):", dbErr instanceof Error ? dbErr.message : String(dbErr));
     }
@@ -167,7 +152,7 @@ export class JobsService {
       max_notice_period: input.max_notice_period !== undefined
         ? (input.max_notice_period ? { ...existing.max_notice_period, ...input.max_notice_period } : existing.max_notice_period)
         : existing.max_notice_period,
-      updatedAt: new Date().toISOString(),
+      updatedAt: new Date(),
     };
 
     this.jobs.set(id, updated);
@@ -233,8 +218,8 @@ export class JobsService {
         blocking: true,
       },
       status: "active",
-      createdAt: "2026-08-28T10:00:00.000Z",
-      updatedAt: "2026-08-28T10:00:00.000Z",
+      createdAt: new Date("2026-08-28T10:00:00.000Z"),
+      updatedAt: new Date("2026-08-28T10:00:00.000Z"),
     };
 
     this.jobs.set(sampleJob.id, sampleJob);
