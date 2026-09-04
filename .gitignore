@@ -5,3 +5,16 @@ scripts/
 *-local*
 *.tar
 tsconfig.tsbuildinfo
+
+.env
+.env*.local
+!.env.example
+
+.references/
+
+.references/recruiter_backend/venv
+.references/recruiter_backend/.vercel
+.references/recruiter_backend/token.json
+.references/recruiter_backend/credentials.json
+.references/recruiter_backend/*.log
+.references/recruiter_backend/tests/.artifacts/

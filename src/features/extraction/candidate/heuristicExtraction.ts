@@ -35,6 +35,7 @@ export interface CandidateFallbackOptions {
   filename?: string;
   fileSizeBytes?: number;
   mimeType?: string;
+  fileUrl?: string;
   appliedJobId?: string | null;
   fileHash?: string;
 }
@@ -598,13 +599,14 @@ export function extractCandidateFallback(
         filename,
         file_size_bytes: options?.fileSizeBytes ?? mockMatch.source_document.file_size_bytes,
         mime_type: options?.mimeType ?? mockMatch.source_document.mime_type,
+        url: options?.fileUrl,
       },
       extraction_metadata: {
         ...mockMatch.extraction_metadata,
         file_hash: fileHash,
         aspect_versions: getCurrentAspectVersions(),
         extracted_at: new Date().toISOString(),
-        raw_text_ref: `storage://resumes/${filename}`,
+        raw_text_ref: options?.fileUrl || `storage://resumes/${filename}`,
         warnings,
       },
     };
@@ -635,6 +637,7 @@ export function extractCandidateFallback(
       filename,
       file_size_bytes: options?.fileSizeBytes,
       mime_type: options?.mimeType || "application/pdf",
+      url: options?.fileUrl,
     },
     identity,
     work_history: workHistory,
@@ -647,7 +650,7 @@ export function extractCandidateFallback(
       aspect_versions: getCurrentAspectVersions(),
       extracted_at: new Date().toISOString(),
       parse_quality: parseQuality,
-      raw_text_ref: `storage://resumes/${filename}`,
+      raw_text_ref: options?.fileUrl || `storage://resumes/${filename}`,
       warnings,
     },
   };

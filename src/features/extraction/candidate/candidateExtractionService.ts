@@ -53,6 +53,7 @@ export interface CandidateExtractionOptions {
   filename?: string;
   fileSizeBytes?: number;
   mimeType?: string;
+  fileUrl?: string;
   appliedJobId?: string | null;
   fileHash?: string;
   timeoutMs?: number;
@@ -151,7 +152,7 @@ export async function extractCandidateProfile(
   const appliedJobId = options?.appliedJobId ?? null;
   const timeoutMs = options?.timeoutMs ?? 3000;
 
-  const effectiveProvider = options?.provider || (process.env.AI_DEFAULT_PROVIDER as AiProvider | undefined);
+  const effectiveProvider = options?.provider || (process.env.LLM_PROVIDER as AiProvider | undefined);
 
   // If explicit mock provider or offline mode is requested, run deterministic fallback immediately
   if (effectiveProvider === "mock" || process.env.AI_OFFLINE === "true") {
@@ -160,9 +161,9 @@ export async function extractCandidateProfile(
 
   // If no AI keys are configured in environment, run deterministic fallback immediately
   const hasAiKey = Boolean(
+    process.env.OPENAI_API_KEY ||
     process.env.GOOGLE_GENERATIVE_AI_API_KEY ||
-    process.env.GEMINI_API_KEY ||
-    process.env.OPENAI_API_KEY
+    process.env.GROQ_API_KEY
   );
 
   if (!hasAiKey && !options?.provider) {
@@ -196,6 +197,7 @@ export async function extractCandidateProfile(
         filename,
         file_size_bytes: options?.fileSizeBytes,
         mime_type: options?.mimeType || "application/pdf",
+        url: options?.fileUrl,
       },
       identity: parsedAspects.identity,
       work_history: parsedAspects.work_history,
@@ -208,7 +210,7 @@ export async function extractCandidateProfile(
         aspect_versions: getCurrentAspectVersions(),
         extracted_at: new Date().toISOString(),
         parse_quality: "full",
-        raw_text_ref: `storage://resumes/${filename}`,
+        raw_text_ref: options?.fileUrl || `storage://resumes/${filename}`,
         warnings,
       },
     };

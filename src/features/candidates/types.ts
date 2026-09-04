@@ -20,6 +20,7 @@ export const ParsedCandidateProfileSchema = z.object({
     filename: z.string(),
     file_size_bytes: z.number().optional(),
     mime_type: z.string().default("application/pdf"),
+    url: z.string().optional(),
   }),
   identity: IdentityExtractionSchema,
   work_history: WorkHistoryExtractionSchema,
