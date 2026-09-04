@@ -2,34 +2,34 @@ import { createHash, randomUUID } from "node:crypto";
 import {
   type ParsedCandidateProfile,
   ParsedCandidateProfileSchema,
-} from "@/features/candidates/types";
-import { MOCK_CANDIDATES } from "@/features/candidates/mockCandidates";
+} from "@/entities/candidate";
+import { MOCK_CANDIDATES } from "@/lib/mockCandidates";
 import {
   type IdentityExtraction,
   type LinkPlatform,
-} from "./aspects/identity";
+} from "@/entities/extraction/candidate/aspects/identity";
 import {
   type WorkHistoryExtraction,
   type EmploymentTypeValue,
   type WorkHistoryEntry,
-} from "./aspects/workHistory";
+} from "@/entities/extraction/candidate/aspects/workHistory";
 import {
   type EducationExtraction,
   type EducationEntry,
-} from "./aspects/education";
+} from "@/entities/extraction/candidate/aspects/education";
 import {
   type SkillsDemonstratedExtraction,
   type SkillDemonstratedItem,
-} from "./aspects/skillsDemonstrated";
+} from "@/entities/extraction/candidate/aspects/skillsDemonstrated";
 import {
   type SkillsDeclaredExtraction,
-} from "./aspects/skillsDeclared";
+} from "@/entities/extraction/candidate/aspects/skillsDeclared";
 import {
   type LogisticsExtraction,
-} from "./aspects/logistics";
+} from "@/entities/extraction/candidate/aspects/logistics";
 import {
   getCurrentAspectVersions,
-} from "./aspects/extractionMetadata";
+} from "@/entities/extraction/candidate/aspects/extractionMetadata";
 
 export interface CandidateFallbackOptions {
   filename?: string;

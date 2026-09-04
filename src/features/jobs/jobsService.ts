@@ -1,13 +1,14 @@
 import { db, jobs } from "@/db";
-import { Job, CreateJobInput, UpdateJobInput } from "./types";
 import type {
+  Job,
   MinExperienceRequirement,
   EducationRequirement,
   LocationRequirement,
   WorkModeRequirement,
   CompensationBandRequirement,
   MaxNoticePeriodRequirement,
-} from "@/features/extraction/job/requirements";
+} from "@/entities/job";
+import type { CreateJobInput, UpdateJobInput } from "./types";
 
 export class JobsService {
   private jobs: Map<string, Job> = new Map();

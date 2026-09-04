@@ -3,11 +3,11 @@
 This is a pointer list for prompt specifications and companion Zod schemas. Every prompt and schema pair is self-contained.
 
 ## Shared
-- [`/src/features/extraction/shared/evidence_status.md`](/src/features/extraction/shared/evidence_status.md) (Schema: [`/src/features/extraction/shared/evidenceStatus.ts`](/src/features/extraction/shared/evidenceStatus.ts)) - 6-state taxonomy used across all aspects
+- [`/src/entities/extraction/shared/evidence_status.md`](/src/entities/extraction/shared/evidence_status.md) (Schema: [`/src/entities/extraction/shared/evidenceStatus.ts`](/src/entities/extraction/shared/evidenceStatus.ts)) - 6-state taxonomy used across all aspects
 - Normalized field convention: `fieldName: { raw: <>, normalized: <> }` — `raw` captures literal document text, `normalized` holds the canonical enum or resolved entity (`null` if unresolvable)
 
 ## Candidate-side (Extraction, once per resume, cached)
-Aspect schemas in [`/src/features/extraction/candidate/aspects/`](/src/features/extraction/candidate/aspects/), prompts in [`/src/features/extraction/candidate/prompts/`](/src/features/extraction/candidate/prompts/):
+Aspect schemas in [`/src/entities/extraction/candidate/aspects/`](/src/entities/extraction/candidate/aspects/), prompts in [`/src/entities/extraction/candidate/prompts/`](/src/entities/extraction/candidate/prompts/):
 - `identity.md` / `identity.ts`
 - `work_history.md` / `workHistory.ts`
 - `skills_demonstrated.md` / `skillsDemonstrated.ts`
@@ -17,11 +17,11 @@ Aspect schemas in [`/src/features/extraction/candidate/aspects/`](/src/features/
 - `extraction_metadata.md` / `extractionMetadata.ts`
 
 ## Job-side
-Prompt & Schema in [`/src/features/extraction/job/`](/src/features/extraction/job/):
+Prompt & Schema in [`/src/entities/extraction/job/`](/src/entities/extraction/job/):
 - `requirements.md` / `requirements.ts` - JD-parsing prompt and schema
 
 ## Matching (Query time)
-Prompt & Schema in [`/src/features/extraction/matching/`](/src/features/extraction/matching/):
+Prompt & Schema in [`/src/entities/extraction/matching/`](/src/entities/extraction/matching/):
 - `query_evaluation.md` / `queryEvaluation.ts` - Batched per-candidate evaluation prompt and schema
 
 ## Status Legend

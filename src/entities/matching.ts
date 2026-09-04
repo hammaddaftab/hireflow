@@ -1,6 +1,6 @@
 import { pgTable, text, timestamp, varchar, jsonb } from "drizzle-orm/pg-core";
-import { jobs } from "@/features/extraction/job/schema";
-import type { CandidateQueryEvaluation } from "./queryEvaluation";
+import { jobs } from "./job";
+import type { CandidateQueryEvaluation } from "./extraction/matching/queryEvaluation";
 
 export const queryEvaluations = pgTable("query_evaluations", {
   id: varchar("id", { length: 128 }).primaryKey(),
@@ -17,3 +17,4 @@ export const queryEvaluations = pgTable("query_evaluations", {
 export type QueryEvaluationRecord = typeof queryEvaluations.$inferSelect;
 export type NewQueryEvaluationRecord = typeof queryEvaluations.$inferInsert;
 
+export type { CandidateQueryEvaluation };

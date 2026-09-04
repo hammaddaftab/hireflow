@@ -11,7 +11,7 @@ import { FocusCommandBar } from "./FocusCommandBar";
 import { ReviewFilterPane } from "./ReviewFilterPane";
 import { useReviewQueue } from "../hooks/useReviewQueue";
 import { CandidateReviewItem, QueueFilterTab } from "../types";
-import { Job } from "@/features/jobs/types";
+import type { Job } from "@/entities/job";
 
 export interface FocusReviewPageProps {
   initialJob: Job;

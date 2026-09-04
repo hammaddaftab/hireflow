@@ -22,7 +22,7 @@ sufficient evidence on its own — this must be enforced syntactically.
   "outcome_attached": "string | null (literal outcome text if present, else null)",
   "concrete_noun_present": "boolean",
   "evidence_span": "string (verbatim quote)",
-  "evidence_status": "confirmed | ambiguous (see /src/features/extraction/shared/evidence_status.md)"
+  "evidence_status": "confirmed | ambiguous (see /src/entities/extraction/shared/evidence_status.md)"
 }
 ```
 

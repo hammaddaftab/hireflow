@@ -1,4 +1,5 @@
 import type {
+  Job,
   SkillRequirementItem,
   MinExperienceRequirement,
   EducationRequirement,
@@ -6,7 +7,20 @@ import type {
   WorkModeRequirement,
   CompensationBandRequirement,
   MaxNoticePeriodRequirement,
-} from "@/features/extraction/job/requirements";
+  DegreeLevel,
+} from "@/entities/job";
+
+export type {
+  Job,
+  SkillRequirementItem,
+  MinExperienceRequirement,
+  EducationRequirement,
+  LocationRequirement,
+  WorkModeRequirement,
+  CompensationBandRequirement,
+  MaxNoticePeriodRequirement,
+  DegreeLevel,
+};
 
 export type RequirementMode = "hard" | "soft";
 
@@ -18,30 +32,6 @@ export interface FormFieldState {
   value: string | number;
   unit?: string;
   options?: string[];
-}
-
-export interface Job {
-  id: string;
-  title: string;
-  department: string;
-  location: string;
-  employmentType: "full-time" | "part-time" | "contract" | "remote";
-  description: string;
-  seniority_level?: string | null;
-
-  // Canonical extraction / matching criteria
-  skills_required: SkillRequirementItem[];
-  skills_preferred: SkillRequirementItem[];
-  min_experience: MinExperienceRequirement;
-  education_min: EducationRequirement;
-  location_requirement: LocationRequirement;
-  work_mode: WorkModeRequirement;
-  compensation_band: CompensationBandRequirement;
-  max_notice_period: MaxNoticePeriodRequirement;
-
-  status: "draft" | "active" | "archived";
-  createdAt: string;
-  updatedAt: string;
 }
 
 export interface CreateJobInput {

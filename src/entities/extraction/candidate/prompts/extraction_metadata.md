@@ -30,9 +30,9 @@ No LLM call for this file. Rules:
 - `file_hash`: SHA-256 byte digest for cache keying. Re-uploads of the exact same document skip extraction entirely, while modified files with identical filenames trigger a fresh parse.
 - `aspect_versions`: Records the snapshot of active aspect versions that generated this candidate profile, enabling instant debugging of parsed data versions.
 - `extracted_at`: ISO 8601 timestamp for auditing extraction date, cache freshness, and recruiter UI context.
-- `parse_quality`: Feeds the `unparseable` state in [`/src/features/extraction/shared/evidence_status.md`](/src/features/extraction/shared/evidence_status.md). Distinctly separates technical failures (OCR/corrupted scans) from genuine candidate gaps.
+- `parse_quality`: Feeds the `unparseable` state in [`/src/entities/extraction/shared/evidence_status.md`](/src/entities/extraction/shared/evidence_status.md). Distinctly separates technical failures (OCR/corrupted scans) from genuine candidate gaps.
 - `raw_text_ref`: Storage URI pointing to original unparsed text, preserved for narrow fallback queries without requiring full document re-extraction.
-- Deduplication Architecture: `file_hash` caches document bytes at the file level; `cnic` (from [`identity.md`](/src/features/extraction/candidate/prompts/identity.md)) deduplicates the candidate entity across different resume versions.
+- Deduplication Architecture: `file_hash` caches document bytes at the file level; `cnic` (from [`identity.md`](/src/entities/extraction/candidate/prompts/identity.md)) deduplicates the candidate entity across different resume versions.
 
 ## Open Questions
 - None currently — schema is finalized.

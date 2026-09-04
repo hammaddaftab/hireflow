@@ -5,7 +5,7 @@ import { jobsService } from "@/features/jobs";
 import { candidatesService } from "@/features/candidates";
 import { buildReviewQueue, ReviewQueuePage } from "@/features/review";
 
-import { QueueFilterTab } from "@/features/review/types";
+import type { QueueFilterTab } from "@/entities/review";
 
 export default async function ReviewPage({
   searchParams,

@@ -12,7 +12,7 @@ import { ReviewDeckControls } from "./ReviewDeckControls";
 import { EvidentiaryLegend } from "./EvidentiaryLegend";
 import { useReviewQueue } from "../hooks/useReviewQueue";
 import { CandidateReviewItem, QueueFilterTab } from "../types";
-import { Job } from "@/features/jobs/types";
+import type { Job } from "@/entities/job";
 
 export interface ReviewQueuePageProps {
   initialJob: Job;

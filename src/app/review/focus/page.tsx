@@ -5,7 +5,7 @@ import { jobsService } from "@/features/jobs";
 import { candidatesService } from "@/features/candidates";
 import { buildReviewQueue } from "@/features/review";
 import { FocusReviewPage } from "@/features/review/components/FocusReviewPage";
-import { QueueFilterTab } from "@/features/review/types";
+import type { QueueFilterTab } from "@/entities/review";
 
 export default async function FocusRoutePage({
   searchParams,

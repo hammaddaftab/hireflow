@@ -10,7 +10,7 @@ import { Alert } from "@/components/ui/Alert";
 import { Typography } from "@/components/ui/Typography";
 import { ROUTES } from "@/config/navigation";
 import { useGetJobsQuery, useDeleteJobMutation } from "../../jobsApi";
-import { Job } from "../../types";
+import type { Job } from "@/entities/job";
 
 export interface JobDashboardListProps {
   initialJobs?: Job[];

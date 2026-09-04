@@ -1,5 +1,6 @@
 import { baseApi } from "@/lib/redux/api";
-import { Job, CreateJobInput } from "./types";
+import type { Job } from "@/entities/job";
+import type { CreateJobInput } from "./types";
 
 export interface ApiResponse<T> {
   success: boolean;

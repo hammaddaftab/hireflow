@@ -3,10 +3,10 @@ import { z } from "zod";
 import { extractTextFromPdf, isPdfBuffer } from "@/lib/pdf";
 import { uploadResumeToBlob } from "@/lib/storage";
 import { db, candidates } from "@/db";
-import { extractCandidateProfile } from "@/features/extraction/candidate/candidateExtractionService";
+import { extractCandidateProfile } from "@/features/extraction";
 import { candidatesService } from "@/features/candidates";
 import { ApiError, createErrorResponse, createSuccessResponse } from "@/lib/errors/api-error";
-import type { ParsedCandidateProfile } from "@/features/candidates/types";
+import type { ParsedCandidateProfile } from "@/entities/candidate";
 
 const JsonUploadPayloadSchema = z.object({
   text: z.string().min(1, "Resume text is required and cannot be empty"),
