@@ -1,14 +1,11 @@
 "use client";
 
 import React from "react";
-import { PanelLeftClose, PanelLeftOpen, Maximize2 } from "lucide-react";
+import { Maximize2 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { QueueFilterTab } from "../types";
 
 export interface ReviewDeckControlsProps {
-  isFilterPaneOpen: boolean;
-  onToggleFilterPane: () => void;
-  hasActiveFilters: boolean;
   activeTab: QueueFilterTab;
   onSelectTab: (tab: QueueFilterTab) => void;
   tabCounts: {
@@ -21,9 +18,6 @@ export interface ReviewDeckControlsProps {
 }
 
 export function ReviewDeckControls({
-  isFilterPaneOpen,
-  onToggleFilterPane,
-  hasActiveFilters,
   activeTab,
   onSelectTab,
   tabCounts,
@@ -31,26 +25,8 @@ export function ReviewDeckControls({
 }: ReviewDeckControlsProps) {
   return (
     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-surface-container-low p-2 rounded-2xl border-0 shadow-xs">
-      {/* Status Filter Tabs & Sidebar Toggle */}
-      <div className="flex flex-wrap items-center gap-1.5 text-xs">
-        <Button
-          variant="secondary"
-          size="sm"
-          onClick={onToggleFilterPane}
-          className="h-8 px-3 gap-1.5 text-xs font-bold rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface border-0 transition-colors"
-          aria-label={isFilterPaneOpen ? "Hide filter sidebar" : "Show filter sidebar"}
-        >
-          {isFilterPaneOpen ? (
-            <PanelLeftClose className="h-3.5 w-3.5 shrink-0" />
-          ) : (
-            <PanelLeftOpen className="h-3.5 w-3.5 shrink-0" />
-          )}
-          <span>{isFilterPaneOpen ? "Hide Filters" : "Filters"}</span>
-          {hasActiveFilters && <span className="h-2 w-2 rounded-full bg-primary" />}
-        </Button>
-
-        {/* Libadwaita Linked Pill Switcher */}
-        <div className="flex items-center gap-1 p-1 bg-surface-container rounded-xl border-0">
+      {/* Libadwaita Linked Pill Switcher */}
+      <div className="flex items-center gap-1 p-1 bg-surface-container rounded-xl border-0">
           <button
             type="button"
             onClick={() => onSelectTab("all")}
@@ -99,7 +75,6 @@ export function ReviewDeckControls({
             Contradicted ({tabCounts.contradicted})
           </button>
         </div>
-      </div>
 
       {/* Focus Mode Trigger */}
       <div className="flex items-center gap-2 self-end sm:self-center">

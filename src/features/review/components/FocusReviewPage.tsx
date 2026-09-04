@@ -2,13 +2,15 @@
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { Minimize2 } from "lucide-react";
+import { Minimize2, Filter } from "lucide-react";
+import { Typography } from "@/components/ui/Typography";
 import { CandidateCard } from "./CandidateCard";
 import { CircularRingCardHint } from "./CircularRingCardHint";
 import { CircularRingTrack } from "./CircularRingTrack";
 import { FocusCommandBar } from "./FocusCommandBar";
+import { ReviewFilterPane } from "./ReviewFilterPane";
 import { useReviewQueue } from "../hooks/useReviewQueue";
-import { CandidateReviewItem, QueueFilterTab, FocusDimension } from "../types";
+import { CandidateReviewItem, QueueFilterTab } from "../types";
 import { Job } from "@/features/jobs/types";
 
 export interface FocusReviewPageProps {
@@ -18,7 +20,6 @@ export interface FocusReviewPageProps {
   initialTab?: QueueFilterTab;
   initialCity?: string | null;
   initialGroupId?: string | null;
-  initialDimension?: FocusDimension;
 }
 
 export function FocusReviewPage({
@@ -28,7 +29,6 @@ export function FocusReviewPage({
   initialTab = "all",
   initialCity = null,
   initialGroupId = null,
-  initialDimension = "all",
 }: FocusReviewPageProps) {
   const router = useRouter();
   const [isEvidenceOpen, setIsEvidenceOpen] = useState(false);
@@ -39,23 +39,34 @@ export function FocusReviewPage({
     if (activeTab !== "all") params.set("tab", activeTab);
     if (selectedCity) params.set("city", selectedCity);
     if (selectedGroupId && selectedGroupId !== "grp_all") params.set("group", selectedGroupId);
-    if (activeDimension !== "all") params.set("dimension", activeDimension);
     const q = params.toString();
     router.push(q ? `/review?${q}` : "/review");
   }, [router]);
 
   const {
     activeIndex,
+    setActiveIndex,
     activeTab,
+    setActiveTab,
     selectedCity,
+    setSelectedCity,
     selectedGroupId,
-    activeDimension,
+    setSelectedGroupId,
     filteredQueue,
     scopedActiveItem,
     lastNavigationDirection,
     handleNext,
     handlePrev,
     handleDecision,
+    resetFilters,
+    queryGroups,
+    cityDistribution,
+    isGroupsOpen,
+    setIsGroupsOpen,
+    isLocationOpen,
+    setIsLocationOpen,
+    stats,
+    queue,
   } = useReviewQueue({
     initialJob,
     initialQueue,
@@ -63,9 +74,15 @@ export function FocusReviewPage({
     initialTab,
     initialCity,
     initialGroupId,
-    initialDimension,
     onExitFocus: handleExitFocus,
   });
+
+  const [isFilterPaneOpen, setIsFilterPaneOpen] = useState(false);
+
+  const hasActiveFilters =
+    selectedGroupId !== null ||
+    selectedCity !== null ||
+    activeTab !== "all";
 
   const [direction, setDirection] = useState<"next" | "prev" | "none">("none");
   const [animKey, setAnimKey] = useState(0);
@@ -116,7 +133,7 @@ export function FocusReviewPage({
     }
   }, [activeIndex, scopedActiveItem?.candidate.id, lastNavigationDirection]);
 
-  // Keyboard shortcut for toggling evidence inspection (E key)
+  // Keyboard shortcuts: Evidence (E), Filters (Q), Close (Esc)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (["INPUT", "TEXTAREA", "SELECT"].includes((e.target as HTMLElement)?.tagName)) {
@@ -125,11 +142,22 @@ export function FocusReviewPage({
       if (e.key.toLowerCase() === "e") {
         e.preventDefault();
         setIsEvidenceOpen((prev) => !prev);
+      } else if (e.key.toLowerCase() === "q") {
+        e.preventDefault();
+        setIsFilterPaneOpen((prev) => !prev);
+      } else if (e.key === "Escape") {
+        if (isFilterPaneOpen) {
+          e.preventDefault();
+          setIsFilterPaneOpen(false);
+        } else if (isEvidenceOpen) {
+          e.preventDefault();
+          setIsEvidenceOpen(false);
+        }
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
+  }, [isFilterPaneOpen, isEvidenceOpen]);
 
   const totalCandidates = filteredQueue.length;
   const hasPrev = activeIndex > 0;
@@ -147,15 +175,66 @@ export function FocusReviewPage({
 
   return (
     <div className="relative h-screen w-screen flex flex-col justify-between overflow-hidden bg-background text-on-surface select-none">
-      {/* Top-Right Position Indicator (n/m) and Discreet Exit */}
-      <div className="absolute top-5 right-6 z-40 flex items-center gap-3 select-none">
-        <span className="font-mono text-xs sm:text-sm font-semibold tracking-wider text-on-surface-variant/80">
-          {activeIndex + 1}/{totalCandidates}
-        </span>
+      {/* Top-Left HUD Controls: Job Context + Queue Filters Trigger */}
+      <div className="absolute top-5 left-6 z-40 flex items-center gap-3 select-none">
+        <div className="hidden sm:flex flex-col">
+          <span className="text-[10px] uppercase font-bold tracking-wider text-primary">
+            HireFlow Focus
+          </span>
+          <span className="text-xs font-bold text-on-surface truncate max-w-[200px]">
+            {initialJob.title}
+          </span>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => setIsFilterPaneOpen(!isFilterPaneOpen)}
+          className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer border ${
+            isFilterPaneOpen
+              ? "bg-primary text-on-primary border-primary shadow-xs"
+              : hasActiveFilters
+              ? "bg-primary/15 text-primary border-primary/40 hover:bg-primary/20"
+              : "bg-surface-container-high/70 hover:bg-surface-container-high text-on-surface border-outline-variant/30"
+          }`}
+          title="Toggle Queue Filters (Q)"
+          aria-label="Toggle Queue Filters"
+        >
+          <Filter className="h-3.5 w-3.5" />
+          <span>Filters</span>
+          {hasActiveFilters && (
+            <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+          )}
+          <kbd className="hidden md:inline-block px-1 py-0.2 rounded bg-surface/40 font-mono text-[10px] opacity-75">
+            Q
+          </kbd>
+        </button>
+      </div>
+
+      {/* Top-Right Position Indicator (n/m), Decision Counts, and Discreet Exit */}
+      <div className="absolute top-5 right-6 z-40 flex items-start gap-3 select-none">
+        <div className="flex flex-col items-end gap-1">
+          <Typography variant="title-large" className="text-on-surface text-2xl sm:text-3xl leading-none">
+            {totalCandidates > 0 ? `${activeIndex + 1} / ${totalCandidates}` : "0 / 0"}
+          </Typography>
+          <div className="flex flex-col gap-0.5 w-24 text-[11px] text-on-surface-variant font-medium">
+            <div className="flex items-center justify-between">
+              <span>Keep:</span>
+              <span className="font-mono font-medium text-emerald-700 dark:text-emerald-400">{stats.keptCount}</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span>Flagged:</span>
+              <span className="font-mono font-medium text-amber-700 dark:text-amber-400">{stats.flaggedCount}</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span>Passed:</span>
+              <span className="font-mono font-medium text-rose-700 dark:text-rose-400">{stats.passedCount}</span>
+            </div>
+          </div>
+        </div>
         <button
           type="button"
           onClick={handleExitFocus}
-          className="p-1.5 rounded-lg text-on-surface-variant/40 hover:text-on-surface hover:bg-surface-container transition-colors cursor-pointer"
+          className="p-1.5 rounded-lg text-on-surface-variant/60 hover:text-on-surface hover:bg-surface-container transition-colors cursor-pointer mt-0.5"
           title="Exit focus mode (Esc)"
           aria-label="Exit focus mode"
         >
@@ -228,6 +307,42 @@ export function FocusReviewPage({
         isEvidenceOpen={isEvidenceOpen}
         onDecision={handleDecision}
         onToggleEvidence={() => setIsEvidenceOpen(!isEvidenceOpen)}
+      />
+
+      {/* Integrated Queue Filters HUD Drawer */}
+      <ReviewFilterPane
+        variant="overlay"
+        isOpen={isFilterPaneOpen}
+        onClose={() => setIsFilterPaneOpen(false)}
+        selectedGroupId={selectedGroupId}
+        onSelectGroup={(id) => {
+          setSelectedGroupId(id);
+          setActiveIndex(0);
+        }}
+        selectedCity={selectedCity}
+        onSelectCity={(city) => {
+          setSelectedCity(city);
+          setActiveIndex(0);
+        }}
+        isGroupsOpen={isGroupsOpen}
+        onToggleGroups={() => setIsGroupsOpen(!isGroupsOpen)}
+        isLocationOpen={isLocationOpen}
+        onToggleLocation={() => setIsLocationOpen(!isLocationOpen)}
+        queryGroups={queryGroups}
+        cityDistribution={cityDistribution}
+        totalCandidates={queue.length}
+        onResetFilters={resetFilters}
+        activeTab={activeTab}
+        onSelectTab={(tab) => {
+          setActiveTab(tab);
+          setActiveIndex(0);
+        }}
+        tabCounts={{
+          all: queue.length,
+          fastClear: stats.fastClearCount,
+          needsAttention: queue.filter((i) => !i.isAllBlockingConfirmed && !i.hasContradicted).length,
+          contradicted: queue.filter((i) => i.hasContradicted).length,
+        }}
       />
     </div>
   );

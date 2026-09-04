@@ -35,8 +35,6 @@ export interface CandidateReviewItem {
 
 export type QueueFilterTab = "all" | "fast_clear" | "needs_attention" | "contradicted";
 
-export type FocusDimension = "all" | "skills" | "experience" | "logistics" | "education";
-
 export interface QueryGroup {
   id: string;
   name: string;

@@ -5,7 +5,7 @@ import { jobsService } from "@/features/jobs";
 import { candidatesService } from "@/features/candidates";
 import { buildReviewQueue, ReviewQueuePage } from "@/features/review";
 
-import { QueueFilterTab, FocusDimension } from "@/features/review/types";
+import { QueueFilterTab } from "@/features/review/types";
 
 export default async function ReviewPage({
   searchParams,
@@ -15,7 +15,6 @@ export default async function ReviewPage({
     tab?: string;
     city?: string;
     group?: string;
-    dimension?: string;
   }>;
 }) {
   const params = searchParams ? await searchParams : {};
@@ -43,7 +42,6 @@ export default async function ReviewPage({
       initialTab={(params.tab as QueueFilterTab) || "all"}
       initialCity={params.city || null}
       initialGroupId={params.group || null}
-      initialDimension={(params.dimension as FocusDimension) || "all"}
     />
   );
 }
