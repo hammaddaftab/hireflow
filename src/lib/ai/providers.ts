@@ -38,7 +38,9 @@ export function getLanguageModel(options?: GetModelOptions): LanguageModel {
   }
 
   const provider: AiProvider =
-    options?.provider || (process.env.AI_DEFAULT_PROVIDER as AiProvider) || "openai";
+    options?.provider ||
+    (process.env.LLM_PROVIDER as AiProvider) ||
+    "openai";
 
   if (provider === "mock") {
     const modelId = typeof options?.model === "string" ? options.model : "mock-model";
@@ -48,7 +50,7 @@ export function getLanguageModel(options?: GetModelOptions): LanguageModel {
   if (provider === "openai") {
     const modelName =
       (typeof options?.model === "string" ? options.model : undefined) ||
-      process.env.AI_DEFAULT_OPENAI_MODEL ||
+      process.env.OPENAI_MODEL ||
       DEFAULT_OPENAI_MODEL;
     return openai(modelName) as unknown as LanguageModel;
   }
@@ -56,7 +58,7 @@ export function getLanguageModel(options?: GetModelOptions): LanguageModel {
   if (provider === "google") {
     const modelName =
       (typeof options?.model === "string" ? options.model : undefined) ||
-      process.env.AI_DEFAULT_GOOGLE_MODEL ||
+      process.env.GOOGLE_MODEL ||
       DEFAULT_GOOGLE_MODEL;
     return google(modelName) as unknown as LanguageModel;
   }
