@@ -3,14 +3,14 @@ export const dynamic = "force-dynamic";
 import React from "react";
 import { jobsService } from "@/features/jobs";
 import { candidatesService } from "@/features/candidates";
-import { buildReviewQueue, ReviewQueuePage } from "@/features/review";
-
+import { buildReviewQueue } from "@/features/review";
+import { FocusReviewPage } from "@/features/review/components/FocusReviewPage";
 import { QueueFilterTab, FocusDimension } from "@/features/review/types";
 
-export default async function ReviewPage({
+export default async function FocusRoutePage({
   searchParams,
 }: {
-  searchParams?: Promise<{
+  searchParams: Promise<{
     candidateIndex?: string;
     tab?: string;
     city?: string;
@@ -18,7 +18,7 @@ export default async function ReviewPage({
     dimension?: string;
   }>;
 }) {
-  const params = searchParams ? await searchParams : {};
+  const params = await searchParams;
   const jobs = await jobsService.getAllJobs();
   const activeJob = jobs[0] || (await jobsService.getJobById("job-sample-1"));
 
@@ -36,7 +36,7 @@ export default async function ReviewPage({
   const initialIndex = params.candidateIndex ? parseInt(params.candidateIndex, 10) : 0;
 
   return (
-    <ReviewQueuePage
+    <FocusReviewPage
       initialJob={activeJob}
       initialQueue={queue}
       initialIndex={isNaN(initialIndex) ? 0 : initialIndex}

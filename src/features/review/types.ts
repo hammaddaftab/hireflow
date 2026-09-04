@@ -29,7 +29,16 @@ export interface CandidateReviewItem {
   logisticsNotStatedCount: number;
   logisticsNotStatedList: string[];
   verifiedYearsExperience: number;
+  compensationBand?: { min: number; max: number; currency: string } | null;
   decision: ReviewDecision;
 }
 
 export type QueueFilterTab = "all" | "fast_clear" | "needs_attention" | "contradicted";
+
+export type FocusDimension = "all" | "skills" | "experience" | "logistics" | "education";
+
+export interface QueryGroup {
+  id: string;
+  name: string;
+  candidateIds: string[];
+}

@@ -21,7 +21,10 @@
 
   /* Google Material Design 3 Surface & Surface Container Roles (Light Mode) */
   --surface: #fdfcff;
-  --surfacel-container-low: #f8fafc;
+  --surface-dim: #f1f5f9;
+  --surface-bright: #ffffff;
+  --surface-container-lowest: #ffffff;
+  --surface-container-low: #f8fafc;
   --surface-container: #f1f5f9;
   --surface-container-high: #e2e8f0;
   --surface-container-highest: #cbd5e1;
@@ -67,10 +70,149 @@
   --border: var(--outline-variant);
 }
 
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) {
+    --primary: #fbbf24;
+    --primary-hover: #f59e0b;
+    --on-primary: #451a03;
+    --primary-container: #78350f;
+    --on-primary-container: #fef3c7;
+
+    --surface: #0b0f19;
+    --surface-dim: #070a10;
+    --surface-bright: #1e293b;
+
+    --surface-container-lowest: #020617;
+    --surface-container-low: #0b0f19;
+    --surface-container: #0f172a;
+    --surface-container-high: #1e293b;
+    --surface-container-highest: #334155;
+
+    --on-surface: #f8fafc;
+    --on-surface-variant: #94a3b8;
+    --outline: #64748b;
+    --outline-variant: #1e293b;
+    --scrim: rgba(0, 0, 0, 0.7);
+
+    --background: var(--surface);
+    --foreground: var(--on-surface);
+    --border: var(--outline-variant);
+  }
+}
+
 body {
   color: var(--foreground);
   background-color: var(--background);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* ==========================================================================
+   Circumference Ring Motion Keyframes (2D In-Plane Arc Transitions)
+   ========================================================================== */
+
+@keyframes arc-enter-right {
+  0% {
+    opacity: 0;
+    transform: translate(160px, 42px) rotate(14deg) scale(0.96);
+  }
+  60% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0, 0) rotate(0deg) scale(1);
+  }
+}
+
+@keyframes arc-enter-left {
+  0% {
+    opacity: 0;
+    transform: translate(-160px, 42px) rotate(-14deg) scale(0.96);
+  }
+  60% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0, 0) rotate(0deg) scale(1);
+  }
+}
+
+@keyframes arc-pulse-right {
+  0% {
+    transform: rotate(15deg) translateY(32px) scale(1);
+  }
+  40% {
+    transform: rotate(12deg) translateY(24px) scale(1.03);
+  }
+  100% {
+    transform: rotate(15deg) translateY(32px) scale(1);
+  }
+}
+
+@keyframes arc-pulse-left {
+  0% {
+    transform: rotate(-15deg) translateY(32px) scale(1);
+  }
+  40% {
+    transform: rotate(-12deg) translateY(24px) scale(1.03);
+  }
+  100% {
+    transform: rotate(-15deg) translateY(32px) scale(1);
+  }
+}
+
+@keyframes ring-decision-pop {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.02);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animate-arc-enter-right {
+  animation: arc-enter-right 340ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity;
+}
+
+.animate-arc-enter-left {
+  animation: arc-enter-left 340ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity;
+}
+
+.animate-arc-pulse-right {
+  animation: arc-pulse-right 350ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-arc-pulse-left {
+  animation: arc-pulse-left 350ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-decision-pop {
+  animation: ring-decision-pop 280ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Sleek custom scrollbars */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(148, 163, 184, 0.25);
+  border-radius: 9999px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(148, 163, 184, 0.45);
+}
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.25) transparent;
 }
