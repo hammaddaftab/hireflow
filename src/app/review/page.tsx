@@ -5,7 +5,20 @@ import { jobsService } from "@/features/jobs";
 import { candidatesService } from "@/features/candidates";
 import { buildReviewQueue, ReviewQueuePage } from "@/features/review";
 
-export default async function ReviewPage() {
+import { QueueFilterTab, FocusDimension } from "@/features/review/types";
+
+export default async function ReviewPage({
+  searchParams,
+}: {
+  searchParams?: Promise<{
+    candidateIndex?: string;
+    tab?: string;
+    city?: string;
+    group?: string;
+    dimension?: string;
+  }>;
+}) {
+  const params = searchParams ? await searchParams : {};
   const jobs = await jobsService.getAllJobs();
   const activeJob = jobs[0] || (await jobsService.getJobById("job-sample-1"));
 
@@ -20,5 +33,17 @@ export default async function ReviewPage() {
   const allCandidates = await candidatesService.getAllCandidates();
   const queue = buildReviewQueue(allCandidates, activeJob);
 
-  return <ReviewQueuePage initialJob={activeJob} initialQueue={queue} />;
+  const initialIndex = params.candidateIndex ? parseInt(params.candidateIndex, 10) : 0;
+
+  return (
+    <ReviewQueuePage
+      initialJob={activeJob}
+      initialQueue={queue}
+      initialIndex={isNaN(initialIndex) ? 0 : initialIndex}
+      initialTab={(params.tab as QueueFilterTab) || "all"}
+      initialCity={params.city || null}
+      initialGroupId={params.group || null}
+      initialDimension={(params.dimension as FocusDimension) || "all"}
+    />
+  );
 }

@@ -5,3 +5,5 @@ export * from "./components/EvidenceDrawer";
 export * from "./components/KeyboardShortcutBar";
 export * from "./components/CandidateCard";
 export * from "./components/ReviewQueuePage";
+export * from "./components/FocusReviewPage";
+export * from "./hooks/useReviewQueue";

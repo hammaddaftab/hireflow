@@ -27,7 +27,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ref
   ) => {
     const baseStyles =
-      "inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none rounded-md";
+      "inline-flex items-center justify-center font-medium whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none rounded-md shrink-0";
 
     const variantStyles = {
       primary: "bg-primary text-on-primary hover:bg-primary-hover focus-visible:ring-primary shadow-xs",
@@ -54,17 +54,17 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {isLoading && (
           <span
             data-testid="loading-spinner"
-            className="animate-spin h-4 w-4 border-2 border-current border-t-transparent rounded-full"
+            className="animate-spin h-4 w-4 border-2 border-current border-t-transparent rounded-full shrink-0"
           />
         )}
         {!isLoading && icon && iconPosition === "left" && (
-          <span className="shrink-0" data-testid="button-icon-left">
+          <span className="shrink-0 inline-flex items-center" data-testid="button-icon-left">
             {icon}
           </span>
         )}
-        {children && <span>{children}</span>}
+        {children}
         {!isLoading && icon && iconPosition === "right" && (
-          <span className="shrink-0" data-testid="button-icon-right">
+          <span className="shrink-0 inline-flex items-center" data-testid="button-icon-right">
             {icon}
           </span>
         )}

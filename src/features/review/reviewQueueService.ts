@@ -263,6 +263,13 @@ export function buildReviewQueue(
       logisticsNotStatedCount: logisticsNotStatedList.length,
       logisticsNotStatedList,
       verifiedYearsExperience: verifiedYears,
+      compensationBand: job.compensation_band
+        ? {
+            min: job.compensation_band.min || 0,
+            max: job.compensation_band.max || 0,
+            currency: job.compensation_band.currency || "PKR",
+          }
+        : null,
       decision: "pending",
     };
   });
@@ -295,3 +302,81 @@ export function getCityDistribution(items: CandidateReviewItem[]): { city: strin
     .map(([city, count]) => ({ city, count }))
     .sort((a, b) => b.count - a.count);
 }
+
+export function formatSalaryNumber(num: number): string {
+  if (num >= 1000000) {
+    const val = (num / 1000000).toFixed(1).replace(/\.0$/, "");
+    return `${val}M`;
+  }
+  if (num >= 1000) {
+    const val = (num / 1000).toFixed(0);
+    return `${val}k`;
+  }
+  return num.toLocaleString();
+}
+
+export function getCompensationAssessment(
+  candSalary: ParsedCandidateProfile["logistics"]["salary_expectation"],
+  bandConfig?: { min: number; max: number; currency: string } | null
+): {
+  dotType: "confirmed" | "gap" | "contradicted" | "not_stated";
+  text: string;
+  bandStr: string;
+  rawText: string | null;
+} {
+  const band = bandConfig || { min: 400000, max: 600000, currency: "PKR" };
+  const norm = candSalary.normalized;
+  const bandStr = `band ${formatSalaryNumber(band.min)}–${formatSalaryNumber(band.max)}`;
+
+  if (!norm || (norm.min === null && norm.max === null)) {
+    return {
+      dotType: "not_stated",
+      text: `not stated · ${bandStr}`,
+      bandStr,
+      rawText: candSalary.raw,
+    };
+  }
+
+  const curr = norm.currency || band.currency || "PKR";
+  const minVal = norm.min ?? norm.max!;
+  const maxVal = norm.max ?? norm.min!;
+
+  // Approximate currency conversion (e.g. USD to PKR at ~278)
+  const rate = curr === "USD" && band.currency === "PKR" ? 278 : 1;
+  const normMinInJobCurrency = minVal * rate;
+  const normMaxInJobCurrency = maxVal * rate;
+
+  const statedRange =
+    minVal === maxVal
+      ? `${formatSalaryNumber(minVal)}`
+      : `${formatSalaryNumber(minVal)}–${formatSalaryNumber(maxVal)}`;
+  const statedStr = `${curr} ${statedRange} stated`;
+
+  if (normMinInJobCurrency > band.max) {
+    const diff = Math.round((normMinInJobCurrency - band.max) / rate);
+    return {
+      dotType: "gap",
+      text: `${statedStr} · ${bandStr} (${formatSalaryNumber(diff)} above band)`,
+      bandStr,
+      rawText: candSalary.raw,
+    };
+  }
+
+  if (normMaxInJobCurrency < band.min) {
+    const diff = Math.round((band.min - normMaxInJobCurrency) / rate);
+    return {
+      dotType: "gap",
+      text: `${statedStr} · ${bandStr} (${formatSalaryNumber(diff)} below band)`,
+      bandStr,
+      rawText: candSalary.raw,
+    };
+  }
+
+  return {
+    dotType: "confirmed",
+    text: `${statedStr} · ${bandStr}`,
+    bandStr,
+    rawText: candSalary.raw,
+  };
+}
+
