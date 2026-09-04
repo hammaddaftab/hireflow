@@ -12,8 +12,6 @@ import {
   Eye, 
   ChevronDown, 
   ChevronUp,
-  HelpCircle,
-  AlertCircle,
   Github,
   Linkedin,
   Gitlab,
@@ -362,64 +360,7 @@ export function CandidateCard({
           </div>
 
           {/* Action & Disclosure Controls */}
-          <div className="flex flex-wrap items-center gap-2 shrink-0 self-end md:self-start pt-0.5">
-            {/* Unverified Claims Pill */}
-            <Tooltip
-              content={
-                <div className="text-xs space-y-1 max-w-xs">
-                  <div className="font-semibold text-on-surface">Unverified Claims:</div>
-                  <div className="text-on-surface-variant text-[11px]">
-                    Declared in skills list, but not corroborated with action verbs in work history:
-                  </div>
-                  <div className="text-[11px] font-mono text-on-surface mt-1">
-                    {item.orphanSkillsList.slice(0, 6).join(", ") || "None"}
-                    {item.orphanSkillsList.length > 6 && ` +${item.orphanSkillsList.length - 6} more`}
-                  </div>
-                </div>
-              }
-            >
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-surface-container-high text-on-surface-variant border-0 cursor-help hover:bg-surface-container-highest transition-colors">
-                <AlertCircle className="h-3.5 w-3.5 text-on-surface-variant" />
-                <span>
-                  <strong className="font-bold text-on-surface">{item.orphanSkillsCount}</strong> unverified {item.orphanSkillsCount === 1 ? "claim" : "claims"}
-                </span>
-              </span>
-            </Tooltip>
-
-            {/* Logistics Status Pill */}
-            <Tooltip
-              content={
-                <div className="text-xs space-y-1 max-w-xs">
-                  <div className="font-semibold text-on-surface">Logistics Status:</div>
-                  <div className="text-on-surface-variant text-[11px]">
-                    {item.logisticsNotStatedCount === 0
-                      ? "All logistics details (salary, notice period, location) have been provided."
-                      : "Unstated candidate logistics for recruiter follow-up:"}
-                  </div>
-                  {item.logisticsNotStatedCount > 0 && (
-                    <ul className="list-disc list-inside text-on-surface-variant text-[11px] mt-1 space-y-0.5">
-                      {item.logisticsNotStatedList.map((itemStr, idx) => (
-                        <li key={idx}>{itemStr}</li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-              }
-            >
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-surface-container-high text-on-surface-variant border-0 cursor-help hover:bg-surface-container-highest transition-colors">
-                <HelpCircle className="h-3.5 w-3.5 text-on-surface-variant" />
-                <span>
-                  {item.logisticsNotStatedCount === 0 ? (
-                    "all logistics provided"
-                  ) : (
-                    <>
-                      <strong className="font-bold text-on-surface">{item.logisticsNotStatedCount}</strong> {item.logisticsNotStatedCount === 1 ? "logistics field missing" : "logistics fields missing"}
-                    </>
-                  )}
-                </span>
-              </span>
-            </Tooltip>
-
+          <div className="shrink-0 self-end md:self-start pt-0.5">
             {/* Toggle Layer 2 Details */}
             <Button
               variant="ghost"

@@ -5,7 +5,6 @@ import {
   CandidateReviewItem, 
   QueueFilterTab, 
   ReviewDecision, 
-  FocusDimension, 
   QueryGroup 
 } from "../types";
 import { getCityDistribution } from "../reviewQueueService";
@@ -18,7 +17,6 @@ export interface UseReviewQueueProps {
   initialTab?: QueueFilterTab;
   initialCity?: string | null;
   initialGroupId?: string | null;
-  initialDimension?: FocusDimension;
   onExitFocus?: () => void;
 }
 
@@ -29,7 +27,6 @@ export function useReviewQueue({
   initialTab = "all",
   initialCity = null,
   initialGroupId = null,
-  initialDimension = "all",
   onExitFocus,
 }: UseReviewQueueProps) {
   const [queue, setQueue] = useState<CandidateReviewItem[]>(initialQueue);
@@ -37,14 +34,12 @@ export function useReviewQueue({
   const [activeTab, setActiveTab] = useState<QueueFilterTab>(initialTab);
   const [selectedCity, setSelectedCity] = useState<string | null>(initialCity);
   const [selectedGroupId, setSelectedGroupId] = useState<string | null>(initialGroupId);
-  const [activeDimension, setActiveDimension] = useState<FocusDimension>(initialDimension);
   const [isFilterPaneOpen, setIsFilterPaneOpen] = useState(true);
   const [lastNavigationDirection, setLastNavigationDirection] = useState<"next" | "prev" | null>(null);
 
   // Left Pane Collapsible Section States
   const [isGroupsOpen, setIsGroupsOpen] = useState(true);
   const [isLocationOpen, setIsLocationOpen] = useState(true);
-  const [isDimensionsOpen, setIsDimensionsOpen] = useState(true);
 
   // Pre-defined free-text query groups created by recruiter
   const queryGroups: QueryGroup[] = useMemo(() => [
@@ -138,24 +133,8 @@ export function useReviewQueue({
   // Ensure activeIndex is within bounds of filtered list
   const activeItem = filteredQueue[activeIndex] || filteredQueue[0] || null;
 
-  // Active candidate with focus dimensions applied
-  const scopedActiveItem = useMemo(() => {
-    if (!activeItem) return null;
-    if (activeDimension === "all") return activeItem;
-
-    const filteredBlocking = activeItem.blockingItems.filter((item) => {
-      if (activeDimension === "skills") return item.category === "skill" || item.category === "dealbreaker";
-      if (activeDimension === "experience") return item.category === "experience";
-      if (activeDimension === "education") return item.id === "req_edu";
-      if (activeDimension === "logistics") return item.id === "req_salary" || item.id === "req_notice";
-      return true;
-    });
-
-    return {
-      ...activeItem,
-      blockingItems: filteredBlocking,
-    };
-  }, [activeItem, activeDimension]);
+  // Active candidate
+  const scopedActiveItem = activeItem;
 
   // Stepper navigation callbacks
   const handleNext = useCallback(() => {
@@ -196,7 +175,6 @@ export function useReviewQueue({
     setSelectedGroupId(null);
     setSelectedCity(null);
     setActiveTab("all");
-    setActiveDimension("all");
     setActiveIndex(0);
   }, []);
 
@@ -262,16 +240,12 @@ export function useReviewQueue({
     setSelectedCity,
     selectedGroupId,
     setSelectedGroupId,
-    activeDimension,
-    setActiveDimension,
     isFilterPaneOpen,
     setIsFilterPaneOpen,
     isGroupsOpen,
     setIsGroupsOpen,
     isLocationOpen,
     setIsLocationOpen,
-    isDimensionsOpen,
-    setIsDimensionsOpen,
     queryGroups,
     cityDistribution,
     filteredQueue,

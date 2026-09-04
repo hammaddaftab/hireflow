@@ -11,7 +11,7 @@
   }
 }
 
-:root {
+:root, .light, [data-theme="light"] {
   /* Google Material Design 3 Primary & Accent Roles (Light Mode) */
   --primary: #d97706;
   --primary-hover: #b45309;
@@ -71,7 +71,7 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  :root:not(.light) {
+  :root:not(.light):not([data-theme="light"]) {
     --primary: #fbbf24;
     --primary-hover: #f59e0b;
     --on-primary: #451a03;
