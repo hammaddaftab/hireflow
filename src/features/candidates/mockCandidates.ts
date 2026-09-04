@@ -1,4 +1,4 @@
-import { ParsedCandidateProfile } from "./types";
+import type { ParsedCandidateProfile } from "./types";
 
 export const MOCK_CANDIDATES: ParsedCandidateProfile[] = [
   // 1. Hamza Tariq — The All-Clear Fast-Clear Hero

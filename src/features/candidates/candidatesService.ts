@@ -1,4 +1,4 @@
-import { ParsedCandidateProfile } from "./types";
+import type { ParsedCandidateProfile } from "./types";
 import { MOCK_CANDIDATES } from "./mockCandidates";
 
 export class CandidatesService {

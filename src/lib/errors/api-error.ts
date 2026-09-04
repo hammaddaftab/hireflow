@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { ApiEnvelope } from "@/types";
+import type { ApiEnvelope } from "@/types";
 
 export interface InvalidParam {
   name: string;

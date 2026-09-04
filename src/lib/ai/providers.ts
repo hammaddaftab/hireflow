@@ -2,7 +2,7 @@ import { openai } from "@ai-sdk/openai";
 import { google } from "@ai-sdk/google";
 import type { LanguageModel } from "ai";
 import { MockLanguageModelV4 } from "ai/test";
-import { AiProvider, GetModelOptions } from "./types";
+import type { AiProvider, GetModelOptions } from "./types";
 import { ApiError } from "@/lib/errors/api-error";
 
 export { openai, google };
