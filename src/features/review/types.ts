@@ -1,7 +1,8 @@
-import { ParsedCandidateProfile } from "../candidates/types";
-import { EvidenceStatus } from "../extraction/shared/evidenceStatus";
+import type { ParsedCandidateProfile } from "@/entities/candidate";
+import type { EvidenceStatus } from "@/entities/extraction/shared/evidenceStatus";
+import type { ReviewDecision, QueueFilterTab } from "@/entities/review";
 
-export type ReviewDecision = "keep" | "flag" | "pass" | "pending";
+export type { ReviewDecision, QueueFilterTab };
 
 /**
  * A single blocking requirement with Layer 1 status and Layer 2 evidence.
@@ -33,7 +34,6 @@ export interface CandidateReviewItem {
   decision: ReviewDecision;
 }
 
-export type QueueFilterTab = "all" | "fast_clear" | "needs_attention" | "contradicted";
 
 export interface QueryGroup {
   id: string;

@@ -5,34 +5,34 @@ import type { AiProvider } from "@/lib/ai/types";
 import {
   type ParsedCandidateProfile,
   ParsedCandidateProfileSchema,
-} from "@/features/candidates/types";
+} from "@/entities/candidate";
 import {
   IdentityExtractionSchema,
   identityAspect,
-} from "./aspects/identity";
+} from "@/entities/extraction/candidate/aspects/identity";
 import {
   WorkHistoryExtractionSchema,
   workHistoryAspect,
-} from "./aspects/workHistory";
+} from "@/entities/extraction/candidate/aspects/workHistory";
 import {
   EducationExtractionSchema,
   educationAspect,
-} from "./aspects/education";
+} from "@/entities/extraction/candidate/aspects/education";
 import {
   SkillsDemonstratedExtractionSchema,
   skillsDemonstratedAspect,
-} from "./aspects/skillsDemonstrated";
+} from "@/entities/extraction/candidate/aspects/skillsDemonstrated";
 import {
   SkillsDeclaredExtractionSchema,
   skillsDeclaredAspect,
-} from "./aspects/skillsDeclared";
+} from "@/entities/extraction/candidate/aspects/skillsDeclared";
 import {
   LogisticsExtractionSchema,
   logisticsAspect,
-} from "./aspects/logistics";
+} from "@/entities/extraction/candidate/aspects/logistics";
 import {
   getCurrentAspectVersions,
-} from "./aspects/extractionMetadata";
+} from "@/entities/extraction/candidate/aspects/extractionMetadata";
 import {
   findMatchingMockCandidate,
   extractIdentityHeuristic,

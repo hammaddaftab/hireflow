@@ -7,11 +7,15 @@ import type {
   WorkModeRequirement,
   CompensationBandRequirement,
   MaxNoticePeriodRequirement,
-} from "./requirements";
+  DegreeLevel,
+} from "./extraction/job/requirements";
 
 export const jobs = pgTable("jobs", {
   id: varchar("id", { length: 128 }).primaryKey(),
   title: text("title").notNull(),
+  department: text("department"),
+  employmentType: varchar("employment_type", { length: 32 }),
+  description: text("description"),
   seniorityLevel: text("seniority_level"),
 
   skillsRequired: jsonb("skills_required").$type<SkillRequirementItem[]>().notNull().default([]),
@@ -32,3 +36,37 @@ export const jobs = pgTable("jobs", {
 export type JobRecord = typeof jobs.$inferSelect;
 export type NewJobRecord = typeof jobs.$inferInsert;
 
+export type {
+  SkillRequirementItem,
+  MinExperienceRequirement,
+  EducationRequirement,
+  LocationRequirement,
+  WorkModeRequirement,
+  CompensationBandRequirement,
+  MaxNoticePeriodRequirement,
+  DegreeLevel,
+};
+
+export interface Job {
+  id: string;
+  title: string;
+  department: string;
+  location: string;
+  employmentType: "full-time" | "part-time" | "contract" | "remote";
+  description: string;
+  seniority_level?: string | null;
+
+  // Canonical extraction / matching criteria matching jobs table
+  skills_required: SkillRequirementItem[];
+  skills_preferred: SkillRequirementItem[];
+  min_experience: MinExperienceRequirement;
+  education_min: EducationRequirement;
+  location_requirement: LocationRequirement;
+  work_mode: WorkModeRequirement;
+  compensation_band: CompensationBandRequirement;
+  max_notice_period: MaxNoticePeriodRequirement;
+
+  status: "draft" | "active" | "archived";
+  createdAt: string;
+  updatedAt: string;
+}

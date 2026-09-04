@@ -7,7 +7,7 @@ import {
   WorkModeRequirementSchema,
   CompensationBandRequirementSchema,
   MaxNoticePeriodRequirementSchema,
-} from "@/features/extraction/job/requirements";
+} from "@/entities/extraction/job/requirements";
 
 export const CreateJobSchema = z.object({
   title: z

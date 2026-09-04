@@ -1,5 +1,5 @@
-import type { ParsedCandidateProfile } from "./types";
-import { MOCK_CANDIDATES } from "./mockCandidates";
+import type { ParsedCandidateProfile } from "@/entities/candidate";
+import { MOCK_CANDIDATES } from "@/lib/mockCandidates";
 
 export class CandidatesService {
   private candidates: Map<string, ParsedCandidateProfile> = new Map();

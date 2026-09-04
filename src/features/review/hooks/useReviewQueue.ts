@@ -8,7 +8,7 @@ import {
   QueryGroup 
 } from "../types";
 import { getCityDistribution } from "../reviewQueueService";
-import { Job } from "@/features/jobs/types";
+import type { Job } from "@/entities/job";
 
 export interface UseReviewQueueProps {
   initialJob: Job;

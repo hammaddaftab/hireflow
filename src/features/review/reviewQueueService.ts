@@ -1,5 +1,5 @@
-import { Job } from "../jobs/types";
-import { ParsedCandidateProfile } from "../candidates/types";
+import type { Job } from "@/entities/job";
+import type { ParsedCandidateProfile } from "@/entities/candidate";
 import { BlockingRequirementItem, CandidateReviewItem } from "./types";
 
 const DEGREE_LEVEL_RANKS: Record<string, number> = {

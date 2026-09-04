@@ -1,6 +1,6 @@
 import { pgTable, text, timestamp, varchar } from "drizzle-orm/pg-core";
-import { jobs } from "@/features/extraction/job/schema";
-import { candidates } from "./candidateSchema";
+import { jobs } from "./job";
+import { candidates } from "./candidate";
 
 export const candidateReviews = pgTable("candidate_reviews", {
   id: varchar("id", { length: 128 }).primaryKey(),
@@ -21,3 +21,5 @@ export const candidateReviews = pgTable("candidate_reviews", {
 export type CandidateReviewRecord = typeof candidateReviews.$inferSelect;
 export type NewCandidateReviewRecord = typeof candidateReviews.$inferInsert;
 
+export type ReviewDecision = "keep" | "flag" | "pass" | "pending";
+export type QueueFilterTab = "all" | "fast_clear" | "needs_attention" | "contradicted";
