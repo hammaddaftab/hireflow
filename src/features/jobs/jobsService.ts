@@ -1,4 +1,13 @@
+import { db, jobs } from "@/db";
 import { Job, CreateJobInput, UpdateJobInput } from "./types";
+import type {
+  MinExperienceRequirement,
+  EducationRequirement,
+  LocationRequirement,
+  WorkModeRequirement,
+  CompensationBandRequirement,
+  MaxNoticePeriodRequirement,
+} from "@/features/extraction/job/requirements";
 
 export class JobsService {
   private jobs: Map<string, Job> = new Map();
@@ -39,6 +48,44 @@ export class JobsService {
     const id = `job-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
     const now = new Date().toISOString();
 
+    const skillsRequired = input.skills_required ?? [];
+    const skillsPreferred = input.skills_preferred ?? [];
+
+    const minExperience: MinExperienceRequirement = input.min_experience ?? {
+      years: 0,
+      blocking: false,
+    };
+
+    const educationMin: EducationRequirement = input.education_min ?? {
+      degree_level: null,
+      field: null,
+      blocking: false,
+    };
+
+    const locationReq: LocationRequirement = input.location_requirement ?? {
+      city: null,
+      province: null,
+      blocking: false,
+    };
+
+    const workModeReq: WorkModeRequirement = input.work_mode ?? {
+      mode: "hybrid",
+      blocking: false,
+    };
+
+    const compensationBand: CompensationBandRequirement = input.compensation_band ?? {
+      min: null,
+      max: null,
+      currency: "PKR",
+      blocking: false,
+    };
+
+    const maxNoticePeriod: MaxNoticePeriodRequirement = input.max_notice_period ?? {
+      value: null,
+      unit: "days",
+      blocking: false,
+    };
+
     const job: Job = {
       id,
       title: input.title,
@@ -46,28 +93,47 @@ export class JobsService {
       location: input.location,
       employmentType: input.employmentType,
       description: input.description,
-      hardCriteria: {
-        minYearsExperience: input.hardCriteria.minYearsExperience,
-        mandatorySkills: [...input.hardCriteria.mandatorySkills],
-        locationRequirement: input.hardCriteria.locationRequirement,
-        requiresWorkAuthorization: input.hardCriteria.requiresWorkAuthorization ?? true,
-        isStrictKnockout: input.hardCriteria.isStrictKnockout ?? true,
-      },
-      softCriteria: {
-        preferredSkills: [...(input.softCriteria?.preferredSkills || [])],
-        bonusQualifications: [...(input.softCriteria?.bonusQualifications || [])],
-        weight: input.softCriteria?.weight ?? 3,
-      },
-      customRequirements: input.customRequirements ? [...input.customRequirements] : [],
+      seniority_level: input.seniority_level ?? null,
+
+      // Canonical criteria fields
+      skills_required: skillsRequired,
+      skills_preferred: skillsPreferred,
+      min_experience: minExperience,
+      education_min: educationMin,
+      location_requirement: locationReq,
+      work_mode: workModeReq,
+      compensation_band: compensationBand,
+      max_notice_period: maxNoticePeriod,
+
       status: input.status || "active",
       createdAt: now,
       updatedAt: now,
-      compensation_band: input.compensation_band,
-      max_notice_period: input.max_notice_period,
-      education_min: input.education_min,
     };
 
     this.jobs.set(id, job);
+
+    // Persist to Drizzle database table
+    try {
+      await db.insert(jobs).values({
+        id,
+        title: job.title,
+        seniorityLevel: job.seniority_level ?? null,
+        skillsRequired,
+        skillsPreferred,
+        minExperience,
+        educationMin,
+        location: locationReq,
+        workMode: workModeReq,
+        compensationBand,
+        maxNoticePeriod,
+        status: job.status,
+        createdAt: new Date(now),
+        updatedAt: new Date(now),
+      }).onConflictDoNothing();
+    } catch (dbErr) {
+      console.warn("Drizzle database job insert warning (skipped):", dbErr instanceof Error ? dbErr.message : String(dbErr));
+    }
+
     return job;
   }
 
@@ -80,24 +146,26 @@ export class JobsService {
     const updated: Job = {
       ...existing,
       ...input,
-      hardCriteria: input.hardCriteria
-        ? { ...existing.hardCriteria, ...input.hardCriteria }
-        : existing.hardCriteria,
-      softCriteria: input.softCriteria
-        ? { ...existing.softCriteria, ...input.softCriteria }
-        : existing.softCriteria,
-      customRequirements: input.customRequirements !== undefined
-        ? input.customRequirements
-        : existing.customRequirements,
+      skills_required: input.skills_required ?? existing.skills_required,
+      skills_preferred: input.skills_preferred ?? existing.skills_preferred,
+      min_experience: input.min_experience !== undefined
+        ? (input.min_experience ? { ...existing.min_experience, ...input.min_experience } : existing.min_experience)
+        : existing.min_experience,
+      education_min: input.education_min !== undefined
+        ? (input.education_min ? { ...existing.education_min, ...input.education_min } : existing.education_min)
+        : existing.education_min,
+      location_requirement: input.location_requirement !== undefined
+        ? (input.location_requirement ? { ...existing.location_requirement, ...input.location_requirement } : existing.location_requirement)
+        : existing.location_requirement,
+      work_mode: input.work_mode !== undefined
+        ? (input.work_mode ? { ...existing.work_mode, ...input.work_mode } : existing.work_mode)
+        : existing.work_mode,
       compensation_band: input.compensation_band !== undefined
-        ? (input.compensation_band ? { ...existing.compensation_band, ...input.compensation_band } as any : undefined)
+        ? (input.compensation_band ? { ...existing.compensation_band, ...input.compensation_band } : existing.compensation_band)
         : existing.compensation_band,
       max_notice_period: input.max_notice_period !== undefined
-        ? (input.max_notice_period ? { ...existing.max_notice_period, ...input.max_notice_period } as any : undefined)
+        ? (input.max_notice_period ? { ...existing.max_notice_period, ...input.max_notice_period } : existing.max_notice_period)
         : existing.max_notice_period,
-      education_min: input.education_min !== undefined
-        ? (input.education_min ? { ...existing.education_min, ...input.education_min } as any : undefined)
-        : existing.education_min,
       updatedAt: new Date().toISOString(),
     };
 
@@ -123,17 +191,34 @@ export class JobsService {
       location: "San Francisco, CA (Remote)",
       employmentType: "full-time",
       description: "We are seeking an experienced Full Stack Engineer to lead next-generation hiring intelligence tools.",
-      hardCriteria: {
-        minYearsExperience: 5,
-        mandatorySkills: ["TypeScript", "React", "Node.js"],
-        locationRequirement: "United States",
-        requiresWorkAuthorization: true,
-        isStrictKnockout: true,
+      seniority_level: "Senior Level",
+      skills_required: [
+        { skill: "TypeScript", blocking: true },
+        { skill: "React", blocking: true },
+        { skill: "Node.js", blocking: true },
+      ],
+      skills_preferred: [
+        { skill: "Next.js", blocking: false },
+        { skill: "Tailwind CSS", blocking: false },
+        { skill: "PostgreSQL", blocking: false },
+      ],
+      min_experience: {
+        years: 5,
+        blocking: true,
       },
-      softCriteria: {
-        preferredSkills: ["Next.js", "Tailwind CSS", "PostgreSQL"],
-        bonusQualifications: ["Experience building ATS or AI-assisted recruitment tools"],
-        weight: 4,
+      education_min: {
+        degree_level: "bachelors",
+        field: "Computer Science",
+        blocking: true,
+      },
+      location_requirement: {
+        city: "San Francisco",
+        province: "CA",
+        blocking: false,
+      },
+      work_mode: {
+        mode: "remote",
+        blocking: true,
       },
       compensation_band: {
         min: 400000,
@@ -146,19 +231,6 @@ export class JobsService {
         unit: "months",
         blocking: true,
       },
-      education_min: {
-        degree_level: "bachelors",
-        field: "Computer Science",
-        blocking: true,
-      },
-      customRequirements: [
-        {
-          id: "req-1",
-          category: "System Design",
-          description: "Must demonstrate experience with event-driven architecture",
-          isDealbreaker: true,
-        },
-      ],
       status: "active",
       createdAt: "2026-08-28T10:00:00.000Z",
       updatedAt: "2026-08-28T10:00:00.000Z",

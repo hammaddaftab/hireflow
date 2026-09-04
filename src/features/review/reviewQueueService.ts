@@ -46,22 +46,25 @@ export function buildReviewQueue(
         return acc + months;
       }, 0);
     const verifiedYears = Math.round((totalMonths / 12) * 10) / 10;
-    const minExpRequired = job.hardCriteria.minYearsExperience || 0;
+    const minExpRequired = job.min_experience?.years || 0;
     const expPassed = verifiedYears >= minExpRequired;
 
-    blockingItems.push({
-      id: "req_exp",
-      label: `${minExpRequired}+ Yrs Exp`,
-      category: "experience",
-      status: expPassed ? "confirmed" : "contradicted",
-      evidence_span: candidate.work_history.entries[0]?.raw_description || null,
-      reasoning: expPassed
-        ? `${verifiedYears} yrs verified full-time experience across ${candidate.work_history.entries.length} roles.`
-        : `Only ${verifiedYears} yrs verified full-time experience (requires ${minExpRequired} yrs).`,
-    });
+    if (job.min_experience?.blocking) {
+      blockingItems.push({
+        id: "req_exp",
+        label: `${minExpRequired}+ Yrs Exp`,
+        category: "experience",
+        status: expPassed ? "confirmed" : "contradicted",
+        evidence_span: candidate.work_history.entries[0]?.raw_description || null,
+        reasoning: expPassed
+          ? `${verifiedYears} yrs verified full-time experience across ${candidate.work_history.entries.length} roles.`
+          : `Only ${verifiedYears} yrs verified full-time experience (requires ${minExpRequired} yrs).`,
+      });
+    }
 
     // 2. Mandatory Skills Knockouts
-    job.hardCriteria.mandatorySkills.forEach((skillName, idx) => {
+    (job.skills_required || []).forEach((reqItem, idx) => {
+      const skillName = reqItem.skill;
       const demonstrated = candidate.skills_demonstrated.skills.find(
         (s) => s.skill.toLowerCase() === skillName.toLowerCase()
       );
@@ -92,37 +95,6 @@ export function buildReviewQueue(
         });
       }
     });
-
-    // 3. Dealbreaker Custom Requirements
-    job.customRequirements
-      .filter((r) => r.isDealbreaker)
-      .forEach((dealbreaker) => {
-        const match = candidate.skills_demonstrated.skills.find(
-          (s) =>
-            s.skill.toLowerCase().includes(dealbreaker.category.toLowerCase()) ||
-            dealbreaker.description.toLowerCase().includes(s.skill.toLowerCase())
-        );
-
-        if (match) {
-          blockingItems.push({
-            id: dealbreaker.id,
-            label: dealbreaker.category,
-            category: "dealbreaker",
-            status: match.evidence_status,
-            evidence_span: match.evidence_span,
-            reasoning: `Demonstrated in work experience: "${match.skill}".`,
-          });
-        } else {
-          blockingItems.push({
-            id: dealbreaker.id,
-            label: dealbreaker.category,
-            category: "dealbreaker",
-            status: "not_stated",
-            evidence_span: null,
-            reasoning: `No evidence found in candidate profile for dealbreaker requirement.`,
-          });
-        }
-      });
 
     // 4. Deterministic Compensation Band Knockout (Layer 1 Upgrade)
     if (job.compensation_band?.blocking && job.compensation_band.max !== null) {

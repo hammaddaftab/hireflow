@@ -45,113 +45,165 @@ export function ScreeningCriteriaForm({
       </div>
 
       <div className="space-y-6">
-        {/* Group 1: Experience Container */}
+        {/* Group 1: Experience & Skills Requirements */}
         <GroupContainer
           index={0}
-          title="Experience Requirements"
-          description="Total career duration and backend domain depth thresholds."
+          title="Experience & Skills Requirements"
+          description="Minimum general career duration and mandatory vs. preferred skill proficiencies."
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-y-1 gap-x-6">
-            <RequirementField
-              field={fields.totalExperience}
-              onToggleMode={onToggleMode}
-              onUpdateValue={onUpdateValue}
-              onFocus={() => setFocusedId(fields.totalExperience.id)}
-              onBlur={() => setFocusedId((curr) => (curr === fields.totalExperience.id ? null : curr))}
-            />
-            <RequirementField
-              field={fields.domainExperience}
-              onToggleMode={onToggleMode}
-              onUpdateValue={onUpdateValue}
-              onFocus={() => setFocusedId(fields.domainExperience.id)}
-              onBlur={() => setFocusedId((curr) => (curr === fields.domainExperience.id ? null : curr))}
-            />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-y-3 gap-x-6">
+            {fields.minExperience && (
+              <RequirementField
+                field={fields.minExperience}
+                onToggleMode={onToggleMode}
+                onUpdateValue={onUpdateValue}
+                onFocus={() => setFocusedId(fields.minExperience.id)}
+                onBlur={() => setFocusedId((curr) => (curr === fields.minExperience.id ? null : curr))}
+              />
+            )}
+            <div className="hidden md:block" />
+            {fields.skillsRequired && (
+              <div className="col-span-1 md:col-span-2">
+                <RequirementField
+                  field={fields.skillsRequired}
+                  onToggleMode={onToggleMode}
+                  onUpdateValue={onUpdateValue}
+                  onFocus={() => setFocusedId(fields.skillsRequired.id)}
+                  onBlur={() => setFocusedId((curr) => (curr === fields.skillsRequired.id ? null : curr))}
+                />
+              </div>
+            )}
+            {fields.skillsPreferred && (
+              <div className="col-span-1 md:col-span-2">
+                <RequirementField
+                  field={fields.skillsPreferred}
+                  onToggleMode={onToggleMode}
+                  onUpdateValue={onUpdateValue}
+                  onFocus={() => setFocusedId(fields.skillsPreferred.id)}
+                  onBlur={() => setFocusedId((curr) => (curr === fields.skillsPreferred.id ? null : curr))}
+                />
+              </div>
+            )}
           </div>
         </GroupContainer>
 
-        {/* Group 2: Logistics & Work Arrangement Container */}
+        {/* Group 2: Education Requirements */}
         <GroupContainer
           index={1}
-          title="Logistics & Work Arrangement"
-          description="Geographic jurisdiction, attendance presence, budget cap, and notice period constraints."
+          title="Education & Credentials"
+          description="Standardized degree tier requirements and academic disciplines."
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-y-1 gap-x-6">
-            <RequirementField
-              field={fields.location}
-              onToggleMode={onToggleMode}
-              onUpdateValue={onUpdateValue}
-              onFocus={() => setFocusedId(fields.location.id)}
-              onBlur={() => setFocusedId((curr) => (curr === fields.location.id ? null : curr))}
-            />
-            <RequirementField
-              field={fields.workplace}
-              onToggleMode={onToggleMode}
-              onUpdateValue={onUpdateValue}
-              onFocus={() => setFocusedId(fields.workplace.id)}
-              onBlur={() => setFocusedId((curr) => (curr === fields.workplace.id ? null : curr))}
-            />
-            <RequirementField
-              field={fields.compensation}
-              onToggleMode={onToggleMode}
-              onUpdateValue={onUpdateValue}
-              onFocus={() => setFocusedId(fields.compensation.id)}
-              onBlur={() => setFocusedId((curr) => (curr === fields.compensation.id ? null : curr))}
-            />
-            <RequirementField
-              field={fields.noticePeriod}
-              onToggleMode={onToggleMode}
-              onUpdateValue={onUpdateValue}
-              onFocus={() => setFocusedId(fields.noticePeriod.id)}
-              onBlur={() => setFocusedId((curr) => (curr === fields.noticePeriod.id ? null : curr))}
-            />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-y-3 gap-x-6">
+            {fields.degreeLevel && (
+              <RequirementField
+                field={fields.degreeLevel}
+                onToggleMode={onToggleMode}
+                onUpdateValue={onUpdateValue}
+                onFocus={() => setFocusedId(fields.degreeLevel.id)}
+                onBlur={() => setFocusedId((curr) => (curr === fields.degreeLevel.id ? null : curr))}
+              />
+            )}
+            {fields.fieldOfStudy && (
+              <RequirementField
+                field={fields.fieldOfStudy}
+                onToggleMode={onToggleMode}
+                onUpdateValue={onUpdateValue}
+                onFocus={() => setFocusedId(fields.fieldOfStudy.id)}
+                onBlur={() => setFocusedId((curr) => (curr === fields.fieldOfStudy.id ? null : curr))}
+              />
+            )}
           </div>
         </GroupContainer>
 
-        {/* Group 3: Education & Credentials Container */}
+        {/* Group 3: Location & Work Mode */}
         <GroupContainer
           index={2}
-          title="Education & Credentials"
-          description="Degree level qualifications and academic disciplines."
+          title="Location & Work Arrangement"
+          description="Geographic jurisdiction boundaries and physical attendance arrangements."
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-y-1 gap-x-6">
-            <RequirementField
-              field={fields.degree}
-              onToggleMode={onToggleMode}
-              onUpdateValue={onUpdateValue}
-              onFocus={() => setFocusedId(fields.degree.id)}
-              onBlur={() => setFocusedId((curr) => (curr === fields.degree.id ? null : curr))}
-            />
-            <RequirementField
-              field={fields.fieldOfStudy}
-              onToggleMode={onToggleMode}
-              onUpdateValue={onUpdateValue}
-              onFocus={() => setFocusedId(fields.fieldOfStudy.id)}
-              onBlur={() => setFocusedId((curr) => (curr === fields.fieldOfStudy.id ? null : curr))}
-            />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-y-3 gap-x-6">
+            {fields.locationCity && (
+              <RequirementField
+                field={fields.locationCity}
+                onToggleMode={onToggleMode}
+                onUpdateValue={onUpdateValue}
+                onFocus={() => setFocusedId(fields.locationCity.id)}
+                onBlur={() => setFocusedId((curr) => (curr === fields.locationCity.id ? null : curr))}
+              />
+            )}
+            {fields.locationProvince && (
+              <RequirementField
+                field={fields.locationProvince}
+                onToggleMode={onToggleMode}
+                onUpdateValue={onUpdateValue}
+                onFocus={() => setFocusedId(fields.locationProvince.id)}
+                onBlur={() => setFocusedId((curr) => (curr === fields.locationProvince.id ? null : curr))}
+              />
+            )}
+            {fields.workMode && (
+              <RequirementField
+                field={fields.workMode}
+                onToggleMode={onToggleMode}
+                onUpdateValue={onUpdateValue}
+                onFocus={() => setFocusedId(fields.workMode.id)}
+                onBlur={() => setFocusedId((curr) => (curr === fields.workMode.id ? null : curr))}
+              />
+            )}
           </div>
         </GroupContainer>
 
-        {/* Group 4: Language & Specialized Verifications Container */}
+        {/* Group 4: Compensation & Notice Period Constraints */}
         <GroupContainer
           index={3}
-          title="Language & Specialized Verifications"
-          description="Required communication languages and industry domain certifications."
+          title="Compensation & Notice Period"
+          description="Base compensation band limits and maximum allowable notice period before start date."
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-y-1 gap-x-6">
-            <RequirementField
-              field={fields.language}
-              onToggleMode={onToggleMode}
-              onUpdateValue={onUpdateValue}
-              onFocus={() => setFocusedId(fields.language.id)}
-              onBlur={() => setFocusedId((curr) => (curr === fields.language.id ? null : curr))}
-            />
-            <RequirementField
-              field={fields.certification}
-              onToggleMode={onToggleMode}
-              onUpdateValue={onUpdateValue}
-              onFocus={() => setFocusedId(fields.certification.id)}
-              onBlur={() => setFocusedId((curr) => (curr === fields.certification.id ? null : curr))}
-            />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-y-3 gap-x-6">
+            {fields.compensationMin && (
+              <RequirementField
+                field={fields.compensationMin}
+                onToggleMode={onToggleMode}
+                onUpdateValue={onUpdateValue}
+                onFocus={() => setFocusedId(fields.compensationMin.id)}
+                onBlur={() => setFocusedId((curr) => (curr === fields.compensationMin.id ? null : curr))}
+              />
+            )}
+            {fields.compensationMax && (
+              <RequirementField
+                field={fields.compensationMax}
+                onToggleMode={onToggleMode}
+                onUpdateValue={onUpdateValue}
+                onFocus={() => setFocusedId(fields.compensationMax.id)}
+                onBlur={() => setFocusedId((curr) => (curr === fields.compensationMax.id ? null : curr))}
+              />
+            )}
+            {fields.compensationCurrency && (
+              <RequirementField
+                field={fields.compensationCurrency}
+                onToggleMode={onToggleMode}
+                onUpdateValue={onUpdateValue}
+                onFocus={() => setFocusedId(fields.compensationCurrency.id)}
+                onBlur={() => setFocusedId((curr) => (curr === fields.compensationCurrency.id ? null : curr))}
+              />
+            )}
+            {fields.noticePeriod && (
+              <RequirementField
+                field={fields.noticePeriod}
+                onToggleMode={onToggleMode}
+                onUpdateValue={onUpdateValue}
+                onFocus={() => setFocusedId(fields.noticePeriod.id)}
+                onBlur={() => setFocusedId((curr) => (curr === fields.noticePeriod.id ? null : curr))}
+              />
+            )}
+            {fields.noticePeriodUnit && (
+              <RequirementField
+                field={fields.noticePeriodUnit}
+                onToggleMode={onToggleMode}
+                onUpdateValue={onUpdateValue}
+                onFocus={() => setFocusedId(fields.noticePeriodUnit.id)}
+                onBlur={() => setFocusedId((curr) => (curr === fields.noticePeriodUnit.id ? null : curr))}
+              />
+            )}
           </div>
         </GroupContainer>
       </div>
