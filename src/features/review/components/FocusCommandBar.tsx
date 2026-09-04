@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Check, Bookmark, X, Eye } from "lucide-react";
-import { ReviewDecision } from "../types";
+import type { ReviewDecision } from "@/entities/review";
 
 export interface FocusCommandBarProps {
   currentDecision?: ReviewDecision;

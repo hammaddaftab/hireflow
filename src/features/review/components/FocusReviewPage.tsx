@@ -10,7 +10,8 @@ import { CircularRingTrack } from "./CircularRingTrack";
 import { FocusCommandBar } from "./FocusCommandBar";
 import { ReviewFilterPane } from "./ReviewFilterPane";
 import { useReviewQueue } from "../hooks/useReviewQueue";
-import { CandidateReviewItem, QueueFilterTab } from "../types";
+import { CandidateReviewItem } from "../types";
+import type { QueueFilterTab } from "@/entities/review";
 import type { Job } from "@/entities/job";
 
 export interface FocusReviewPageProps {

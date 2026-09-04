@@ -11,7 +11,8 @@ import { KeyboardShortcutBar } from "./KeyboardShortcutBar";
 import { ReviewDeckControls } from "./ReviewDeckControls";
 import { EvidentiaryLegend } from "./EvidentiaryLegend";
 import { useReviewQueue } from "../hooks/useReviewQueue";
-import { CandidateReviewItem, QueueFilterTab } from "../types";
+import { CandidateReviewItem } from "../types";
+import type { QueueFilterTab } from "@/entities/review";
 import type { Job } from "@/entities/job";
 
 export interface ReviewQueuePageProps {

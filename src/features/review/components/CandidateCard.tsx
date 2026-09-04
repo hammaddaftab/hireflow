@@ -26,7 +26,8 @@ import { Badge } from "@/components/ui/Badge";
 import { Tooltip } from "@/components/ui/Tooltip";
 import { BlockingStrip } from "./BlockingStrip";
 import { EvidenceDrawer } from "./EvidenceDrawer";
-import { CandidateReviewItem, ReviewDecision } from "../types";
+import { CandidateReviewItem } from "../types";
+import type { ReviewDecision } from "@/entities/review";
 
 export interface CandidateCardProps {
   item: CandidateReviewItem;

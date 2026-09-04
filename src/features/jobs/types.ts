@@ -1,5 +1,4 @@
 import type {
-  Job,
   SkillRequirementItem,
   MinExperienceRequirement,
   EducationRequirement,
@@ -7,20 +6,7 @@ import type {
   WorkModeRequirement,
   CompensationBandRequirement,
   MaxNoticePeriodRequirement,
-  DegreeLevel,
 } from "@/entities/job";
-
-export type {
-  Job,
-  SkillRequirementItem,
-  MinExperienceRequirement,
-  EducationRequirement,
-  LocationRequirement,
-  WorkModeRequirement,
-  CompensationBandRequirement,
-  MaxNoticePeriodRequirement,
-  DegreeLevel,
-};
 
 export type RequirementMode = "hard" | "soft";
 

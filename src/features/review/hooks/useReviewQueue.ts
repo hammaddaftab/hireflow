@@ -3,10 +3,9 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { 
   CandidateReviewItem, 
-  QueueFilterTab, 
-  ReviewDecision, 
   QueryGroup 
 } from "../types";
+import type { QueueFilterTab, ReviewDecision } from "@/entities/review";
 import { getCityDistribution } from "../reviewQueueService";
 import type { Job } from "@/entities/job";
 
