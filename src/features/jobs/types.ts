@@ -1,3 +1,13 @@
+import type {
+  SkillRequirementItem,
+  MinExperienceRequirement,
+  EducationRequirement,
+  LocationRequirement,
+  WorkModeRequirement,
+  CompensationBandRequirement,
+  MaxNoticePeriodRequirement,
+} from "@/features/extraction/job/requirements";
+
 export type RequirementMode = "hard" | "soft";
 
 export interface FormFieldState {
@@ -10,47 +20,6 @@ export interface FormFieldState {
   options?: string[];
 }
 
-export interface HardKnockoutCriteria {
-  minYearsExperience: number;
-  mandatorySkills: string[];
-  locationRequirement?: string;
-  requiresWorkAuthorization: boolean;
-  isStrictKnockout: boolean;
-}
-
-export interface SoftScoringCriteria {
-  preferredSkills: string[];
-  bonusQualifications: string[];
-  weight: number; // 1 to 5
-}
-
-export interface JobRequirement {
-  id: string;
-  category: string;
-  description: string;
-  isDealbreaker: boolean;
-  weight?: number;
-}
-
-export interface CompensationBandCriteria {
-  min: number | null;
-  max: number | null;
-  currency: string | null;
-  blocking: boolean;
-}
-
-export interface MaxNoticePeriodCriteria {
-  value: number | null;
-  unit: "days" | "weeks" | "months" | null;
-  blocking: boolean;
-}
-
-export interface EducationCriteria {
-  degree_level: "bachelors" | "masters" | "doctorate" | "diploma" | "high_school" | null;
-  field: string | null;
-  blocking: boolean;
-}
-
 export interface Job {
   id: string;
   title: string;
@@ -58,15 +27,21 @@ export interface Job {
   location: string;
   employmentType: "full-time" | "part-time" | "contract" | "remote";
   description: string;
-  hardCriteria: HardKnockoutCriteria;
-  softCriteria: SoftScoringCriteria;
-  customRequirements: JobRequirement[];
+  seniority_level?: string | null;
+
+  // Canonical extraction / matching criteria
+  skills_required: SkillRequirementItem[];
+  skills_preferred: SkillRequirementItem[];
+  min_experience: MinExperienceRequirement;
+  education_min: EducationRequirement;
+  location_requirement: LocationRequirement;
+  work_mode: WorkModeRequirement;
+  compensation_band: CompensationBandRequirement;
+  max_notice_period: MaxNoticePeriodRequirement;
+
   status: "draft" | "active" | "archived";
   createdAt: string;
   updatedAt: string;
-  compensation_band?: CompensationBandCriteria;
-  max_notice_period?: MaxNoticePeriodCriteria;
-  education_min?: EducationCriteria;
 }
 
 export interface CreateJobInput {
@@ -75,13 +50,19 @@ export interface CreateJobInput {
   location: string;
   employmentType: "full-time" | "part-time" | "contract" | "remote";
   description: string;
-  hardCriteria: HardKnockoutCriteria;
-  softCriteria: SoftScoringCriteria;
-  customRequirements?: JobRequirement[];
+  seniority_level?: string | null;
+
+  // Canonical extraction / matching criteria
+  skills_required?: SkillRequirementItem[];
+  skills_preferred?: SkillRequirementItem[];
+  min_experience?: MinExperienceRequirement;
+  education_min?: EducationRequirement;
+  location_requirement?: LocationRequirement;
+  work_mode?: WorkModeRequirement;
+  compensation_band?: CompensationBandRequirement;
+  max_notice_period?: MaxNoticePeriodRequirement;
+
   status?: "draft" | "active" | "archived";
-  compensation_band?: CompensationBandCriteria;
-  max_notice_period?: MaxNoticePeriodCriteria;
-  education_min?: EducationCriteria;
 }
 
 export interface UpdateJobInput {
@@ -90,11 +71,17 @@ export interface UpdateJobInput {
   location?: string;
   employmentType?: "full-time" | "part-time" | "contract" | "remote";
   description?: string;
-  hardCriteria?: Partial<HardKnockoutCriteria>;
-  softCriteria?: Partial<SoftScoringCriteria>;
-  customRequirements?: JobRequirement[];
+  seniority_level?: string | null;
+
+  // Canonical extraction / matching criteria
+  skills_required?: SkillRequirementItem[];
+  skills_preferred?: SkillRequirementItem[];
+  min_experience?: Partial<MinExperienceRequirement>;
+  education_min?: Partial<EducationRequirement>;
+  location_requirement?: Partial<LocationRequirement>;
+  work_mode?: Partial<WorkModeRequirement>;
+  compensation_band?: Partial<CompensationBandRequirement>;
+  max_notice_period?: Partial<MaxNoticePeriodRequirement>;
+
   status?: "draft" | "active" | "archived";
-  compensation_band?: Partial<CompensationBandCriteria>;
-  max_notice_period?: Partial<MaxNoticePeriodCriteria>;
-  education_min?: Partial<EducationCriteria>;
 }

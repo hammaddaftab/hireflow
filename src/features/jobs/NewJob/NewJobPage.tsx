@@ -8,7 +8,8 @@ import { Alert } from "@/components/ui/Alert";
 import { Typography } from "@/components/ui/Typography";
 import { OverlayContainer } from "@/components/ui/OverlayContainer";
 import { ROUTES } from "@/config/navigation";
-import type { FormFieldState, RequirementMode } from "@/features/jobs/types";
+import type { FormFieldState, RequirementMode, CreateJobInput } from "@/features/jobs/types";
+import { useCreateJobMutation } from "@/features/jobs/jobsApi";
 
 // 4 Direct Children from components/
 import { JobFormStepper } from "./components/JobFormStepper";
@@ -17,8 +18,18 @@ import { ScreeningCriteriaForm } from "./components/ScreeningCriteria/ScreeningC
 import { initialRequirementsFields } from "./components/ScreeningCriteria/requirementsData";
 import { EvaluationTaxonomyModal } from "./components/EvaluationTaxonomyModal";
 
+function parseSkillStrings(value: string | number | undefined): string[] {
+  if (!value) return [];
+  return String(value)
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+}
+
 export function NewJobPage() {
   const router = useRouter();
+  const [createJob, { isLoading: isSaving }] = useCreateJobMutation();
+
   const [step, setStep] = useState<1 | 2>(1);
   const [isGuideOpen, setIsGuideOpen] = useState(false);
   const [isOverlayOpen, setIsOverlayOpen] = useState(false);
@@ -78,17 +89,88 @@ export function NewJobPage() {
     }));
   };
 
-  const handleSave = (e: React.FormEvent) => {
+  const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
-    setAlert({
-      variant: "success",
-      title: "Requirements Specification Saved",
-      message: "Unified criteria configured. Ready for resume ingestion screening evaluation.",
-    });
 
-    setTimeout(() => {
-      router.push(ROUTES.DASHBOARD);
-    }, 1000);
+    const mandatorySkillsList = parseSkillStrings(fields.skillsRequired?.value);
+    const preferredSkillsList = parseSkillStrings(fields.skillsPreferred?.value);
+    const degreeValue = String(fields.degreeLevel?.value || "none");
+    const validDegree =
+      degreeValue === "none"
+        ? null
+        : (degreeValue as "bachelors" | "masters" | "doctorate" | "diploma" | "high_school");
+
+    const workModeValue = String(fields.workMode?.value || "hybrid") as "onsite" | "hybrid" | "remote";
+    const noticeUnitValue = String(fields.noticePeriodUnit?.value || "days") as "days" | "weeks" | "months";
+
+    const payload: CreateJobInput = {
+      title,
+      department,
+      location: `${fields.locationCity?.value || "Lahore"}, ${fields.locationProvince?.value || "Punjab"}`,
+      employmentType: "full-time",
+      description,
+      seniority_level: seniority,
+
+      // Canonical schema fields matching JobRequirementsExtractionSchema & Drizzle jobs table
+      skills_required: mandatorySkillsList.map((skill) => ({
+        skill,
+        blocking: fields.skillsRequired?.mode === "hard",
+      })),
+      skills_preferred: preferredSkillsList.map((skill) => ({
+        skill,
+        blocking: fields.skillsPreferred?.mode === "hard",
+      })),
+      min_experience: {
+        years: Number(fields.minExperience?.value) || 0,
+        blocking: fields.minExperience?.mode === "hard",
+      },
+      education_min: {
+        degree_level: validDegree,
+        field: String(fields.fieldOfStudy?.value || "").trim() || null,
+        blocking: fields.degreeLevel?.mode === "hard",
+      },
+      location_requirement: {
+        city: String(fields.locationCity?.value || "").trim() || null,
+        province: String(fields.locationProvince?.value || "").trim() || null,
+        blocking: fields.locationCity?.mode === "hard",
+      },
+      work_mode: {
+        mode: workModeValue,
+        blocking: fields.workMode?.mode === "hard",
+      },
+      compensation_band: {
+        min: Number(fields.compensationMin?.value) || null,
+        max: Number(fields.compensationMax?.value) || null,
+        currency: String(fields.compensationCurrency?.value || "PKR"),
+        blocking: fields.compensationMax?.mode === "hard",
+      },
+      max_notice_period: {
+        value: Number(fields.noticePeriod?.value) || null,
+        unit: noticeUnitValue,
+        blocking: fields.noticePeriod?.mode === "hard",
+      },
+      status: "active",
+    };
+
+    try {
+      await createJob(payload).unwrap();
+      setAlert({
+        variant: "success",
+        title: "Requirements Specification Saved",
+        message: "Unified criteria configured and persisted to database. Ready for resume ingestion evaluation.",
+      });
+
+      setTimeout(() => {
+        router.push(ROUTES.DASHBOARD);
+      }, 1000);
+    } catch (err) {
+      console.error("Failed to save job requirements:", err);
+      setAlert({
+        variant: "error",
+        title: "Save Failed",
+        message: err instanceof Error ? err.message : "Failed to persist job requirements. Please check inputs.",
+      });
+    }
   };
 
   return (
@@ -189,6 +271,7 @@ export function NewJobPage() {
               type="button"
               variant="primary"
               size="sm"
+              disabled={isSaving}
               onClick={() => {
                 setIsOverlayOpen(false);
                 setAlert({

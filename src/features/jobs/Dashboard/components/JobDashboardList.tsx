@@ -112,7 +112,7 @@ export function JobDashboardList({ initialJobs }: JobDashboardListProps) {
                       Min Experience:
                     </Typography>
                     <Typography variant="label-small" className="font-semibold text-on-surface">
-                      {job.hardCriteria.minYearsExperience} Years
+                      {job.min_experience?.years ?? 0} Years
                     </Typography>
                   </div>
                   <div className="flex items-center justify-between text-xs">
@@ -120,28 +120,30 @@ export function JobDashboardList({ initialJobs }: JobDashboardListProps) {
                       Strict Knockout:
                     </Typography>
                     <Typography variant="label-small" className="font-semibold text-on-surface">
-                      {job.hardCriteria.isStrictKnockout ? "Enabled" : "Disabled"}
+                      {job.min_experience?.blocking ? "Enabled" : "Disabled"}
                     </Typography>
                   </div>
-                  <div className="flex items-center justify-between text-xs">
-                    <Typography variant="label-small" className="text-on-surface-variant">
-                      Soft Scoring Weight:
-                    </Typography>
-                    <Typography variant="label-small" className="font-semibold text-on-surface">
-                      {job.softCriteria.weight} / 5
-                    </Typography>
-                  </div>
+                  {job.work_mode && (
+                    <div className="flex items-center justify-between text-xs">
+                      <Typography variant="label-small" className="text-on-surface-variant">
+                        Work Mode:
+                      </Typography>
+                      <Typography variant="label-small" className="font-semibold text-on-surface capitalize">
+                        {job.work_mode.mode}
+                      </Typography>
+                    </div>
+                  )}
                 </div>
 
                 <div className="mt-3 flex flex-wrap gap-1">
-                  {job.hardCriteria.mandatorySkills.map((skill) => (
-                    <Badge key={skill} variant="primary">
-                      {skill}
+                  {(job.skills_required || []).map((item) => (
+                    <Badge key={item.skill} variant="primary">
+                      {item.skill}
                     </Badge>
                   ))}
-                  {job.softCriteria.preferredSkills.map((skill) => (
-                    <Badge key={skill} variant="default">
-                      {skill}
+                  {(job.skills_preferred || []).map((item) => (
+                    <Badge key={item.skill} variant="default">
+                      {item.skill}
                     </Badge>
                   ))}
                 </div>
