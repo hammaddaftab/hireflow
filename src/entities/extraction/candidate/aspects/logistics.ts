@@ -75,17 +75,14 @@ export type NoticePeriodNormalized = z.infer<typeof NoticePeriodNormalizedSchema
 export type CandidateNoticePeriod = z.infer<typeof CandidateNoticePeriodSchema>;
 export type LogisticsExtraction = z.infer<typeof LogisticsExtractionSchema>;
 
-/**
- * Builds the extraction prompt for Logistics.
- */
-export function buildLogisticsPrompt(resumeText: string): string {
-  return `Extract salary expectation, notice period, relocation willingness, and availability ONLY if explicitly and literally stated in the resume text below. If a field is not explicitly stated, return null for salary and notice period, and exactly "not_stated" for other logistics fields — do not infer, estimate, or guess a value from context, seniority, or any other signal.
+// Builds the extraction prompt or instructions for Logistics
+export function buildLogisticsPrompt(resumeText?: string): string {
+  const instructions = `Extract salary expectation, notice period, relocation willingness, and availability ONLY if explicitly and literally stated. If a field is not explicitly stated, return null for salary and notice period, and exactly "not_stated" for other logistics fields — do not infer, estimate, or guess a value from context, seniority, or any other signal.
 For salary_expectation: extract verbatim text in 'raw', and normalized numeric { min, max, currency } in 'normalized' if stated.
 For notice_period: extract verbatim text in 'raw', and normalized numeric { value, unit: 'days' | 'weeks' | 'months' } in 'normalized' if stated.
-Also extract spoken/written languages.
+Also extract spoken/written languages.`;
 
-Resume text:
-${resumeText}`;
+  return resumeText ? `${instructions}\n\nResume text:\n${resumeText}` : instructions;
 }
 
 export const logisticsAspect = {

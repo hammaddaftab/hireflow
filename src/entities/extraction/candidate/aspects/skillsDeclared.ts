@@ -43,17 +43,14 @@ export type SkillRelation = z.infer<typeof SkillRelationSchema>;
 export type DerivedSkillComparison = z.infer<typeof DerivedSkillComparisonSchema>;
 export type SkillsComparisonResult = z.infer<typeof SkillsComparisonResultSchema>;
 
-/**
- * Builds the extraction prompt for Skills Declared.
- */
-export function buildSkillsDeclaredPrompt(resumeText: string): string {
-  return `Extract the flat list of technical skills, programming languages, frameworks, libraries, databases, and infrastructure tools from any explicit "Skills:", "Technical Skills:", or similar labeled section in the resume below.
+// Builds the extraction prompt or instructions for Skills Declared
+export function buildSkillsDeclaredPrompt(resumeText?: string): string {
+  const instructions = `Extract the flat list of technical skills, programming languages, frameworks, libraries, databases, and infrastructure tools from any explicit "Skills:", "Technical Skills:", or similar labeled section.
 Do not pull skills from work-history bullets here — that's skills_demonstrated, a separate pass.
 Exclude generic soft skills, interpersonal traits, or subjective claims (e.g. 'communication', 'team player', 'problem solving', 'leadership').
-This list is weaker evidence by design; do not upgrade its status based on how it reads.
+This list is weaker evidence by design; do not upgrade its status based on how it reads.`;
 
-Resume text:
-${resumeText}`;
+  return resumeText ? `${instructions}\n\nResume text:\n${resumeText}` : instructions;
 }
 
 export const skillsDeclaredAspect = {

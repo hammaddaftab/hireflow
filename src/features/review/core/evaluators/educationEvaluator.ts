@@ -20,6 +20,7 @@ export function evaluateEducation(input: EducationEvaluatorInput): EvaluatedEduc
   const { education_requirement, education_entries, id } = input;
   const requiredDegree = education_requirement?.degree_level || null;
   const requiredRank = requiredDegree ? DEGREE_LEVEL_RANKS[requiredDegree] || 3 : 0;
+  // TODO: Field of study requirement matching and discipline equivalence evaluation
   const isBlocking = Boolean(education_requirement?.blocking);
 
   const completedDegrees = education_entries.filter((e) => !e.is_current);

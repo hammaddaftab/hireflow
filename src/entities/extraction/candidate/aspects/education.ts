@@ -29,6 +29,7 @@ export const FieldOfStudyNormalizedSchema = z.object({
     .string()
     .nullable()
     .describe("Canonical field of study matching master DB options (e.g. 'Computer Science'), or null"),
+  // TODO: Field of study synonym normalization and discipline equivalence mapping (e.g. BSCS -> Computer Science)
 });
 
 export const EducationEntrySchema = z.object({
@@ -72,11 +73,9 @@ export type FieldOfStudyNormalized = z.infer<typeof FieldOfStudyNormalizedSchema
 export type EducationEntry = z.infer<typeof EducationEntrySchema>;
 export type EducationExtraction = z.infer<typeof EducationExtractionSchema>;
 
-/**
- * Builds the extraction prompt for Education.
- */
-export function buildEducationPrompt(resumeText: string): string {
-  return `Extract each education entry from the resume text below in reverse chronological order:
+// Builds the extraction prompt or instructions for Education
+export function buildEducationPrompt(resumeText?: string): string {
+  const instructions = `Extract each education entry in reverse chronological order:
 - institution: verbatim name in 'raw', canonical name in 'normalized' if standard, else null.
 - degree_level: verbatim title in 'raw', normalized tier in 'normalized' strictly mapped to:
   * 'bachelors': 4-year BS, BE, BSc (Hons), BBA, etc.
@@ -89,10 +88,9 @@ export function buildEducationPrompt(resumeText: string): string {
 - start_date: start year or date (e.g. '2020' or '2020-09'), else null.
 - end_date: end/graduation year (e.g. '2024' or '2024-06'), or null if currently enrolled (never return the string "present").
 - is_current: true if currently enrolled / studying, false if completed / past.
-- grade: GPA, percentage, or division if explicitly stated, else null.
+- grade: GPA, percentage, or division if explicitly stated, else null.`;
 
-Resume text:
-${resumeText}`;
+  return resumeText ? `${instructions}\n\nResume text:\n${resumeText}` : instructions;
 }
 
 export const educationAspect = {
