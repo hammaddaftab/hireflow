@@ -3,19 +3,15 @@
 import React from "react";
 import { Quote, Tag, AlertCircle } from "lucide-react";
 import type {
-  EvaluatedRequirement,
   EvaluatedExperienceRequirement,
-  EvaluatedSkillRequirement,
   EvaluatedEducationRequirement,
-  EvaluatedCompensationRequirement,
-  EvaluatedNoticePeriodRequirement,
-  EvaluatedWorkModeRequirement,
-  EvaluatedLocationRequirement,
   SkillEvaluatorOutput,
+  LogisticsEvaluatorOutput,
+  EvidentiaryDotType,
 } from "../evaluators";
 import { Tooltip } from "@/components/ui/Tooltip";
 
-export type EvidentiaryDotType = "confirmed" | "gap" | "contradicted" | "not_stated";
+export type { EvidentiaryDotType };
 
 export function EvidentiaryDot({ type }: { type: EvidentiaryDotType }) {
   switch (type) {
@@ -65,33 +61,33 @@ function getPillStyles(status: EvidentiaryDotType) {
   }
 }
 
-function getBadgeStyles(variant: "confirmed" | "gap" | "contradicted") {
+function getBadgeStyles(variant: EvidentiaryDotType) {
   switch (variant) {
     case "confirmed":
       return "bg-blue-100 dark:bg-blue-900/60 text-blue-800 dark:text-blue-200 font-bold";
-    case "gap":
-      return "bg-amber-100 dark:bg-amber-900/60 text-amber-800 dark:text-amber-200 font-bold";
     case "contradicted":
       return "bg-rose-100 dark:bg-rose-900/60 text-rose-800 dark:text-rose-200 font-bold";
+    case "gap":
+    case "not_stated":
+    default:
+      return "bg-amber-100 dark:bg-amber-900/60 text-amber-800 dark:text-amber-200 font-bold";
   }
 }
 
 export interface BlockingStripProps {
-  evaluations: EvaluatedRequirement[];
+  experience: EvaluatedExperienceRequirement;
   skills: SkillEvaluatorOutput;
+  education: EvaluatedEducationRequirement;
+  logistics: LogisticsEvaluatorOutput;
 }
 
-export function BlockingStrip({ evaluations, skills }: BlockingStripProps) {
-  // 1. Experience
-  const expItem = evaluations.find(
-    (e): e is EvaluatedExperienceRequirement => e.category === "experience"
-  );
-  const verifiedYears = expItem?.verifiedYears ?? 0;
-  const isExpConfirmed = expItem ? expItem.status === "confirmed" : true;
-  const expDotType: EvidentiaryDotType = isExpConfirmed ? "confirmed" : "gap";
-  const minYears = expItem?.label ? parseInt(expItem.label, 10) || 0 : 0;
-
-  // 2. Skills (guaranteed by evaluateSkills)
+export function BlockingStrip({
+  experience,
+  skills,
+  education,
+  logistics,
+}: BlockingStripProps) {
+  // 1. Skills
   const {
     statedSkills,
     notStatedSkills,
@@ -99,89 +95,18 @@ export function BlockingStrip({ evaluations, skills }: BlockingStripProps) {
     notStatedCount,
     orphanSkillsFormatted,
     orphanSkillsCount,
-    unverifiedClaimsBadge,
-    unverifiedClaimsPillText,
-    unverifiedClaimsDotType,
+    derived: skillsDerived,
   } = skills;
 
-  // 3. Education
-  const eduItem = evaluations.find(
-    (e): e is EvaluatedEducationRequirement => e.category === "education"
-  );
-  const eduDotType: EvidentiaryDotType = eduItem
-    ? eduItem.status === "confirmed"
-      ? "confirmed"
-      : eduItem.status === "ambiguous"
-      ? "gap"
-      : eduItem.status === "contradicted"
-      ? "contradicted"
-      : "not_stated"
-    : "not_stated";
-
-  // 4. Compensation Assessment
-  const compItem = evaluations.find(
-    (e): e is EvaluatedCompensationRequirement => e.category === "compensation"
-  );
-  const compDotType: EvidentiaryDotType = compItem
-    ? compItem.status === "confirmed"
-      ? "confirmed"
-      : compItem.status === "contradicted"
-      ? "contradicted"
-      : compItem.status === "ambiguous"
-      ? "gap"
-      : "not_stated"
-    : "not_stated";
-
-  // 5. Notice Period
-  const noticeItem = evaluations.find(
-    (e): e is EvaluatedNoticePeriodRequirement => e.category === "notice_period"
-  );
-  const noticeDotType: EvidentiaryDotType = noticeItem
-    ? noticeItem.status === "confirmed"
-      ? "confirmed"
-      : noticeItem.status === "contradicted"
-      ? "contradicted"
-      : "not_stated"
-    : "not_stated";
-
-  // 6. Work Mode
-  const workModeItem = evaluations.find(
-    (e): e is EvaluatedWorkModeRequirement => e.category === "work_mode"
-  );
-  const workModeDotType: EvidentiaryDotType = workModeItem
-    ? workModeItem.status === "confirmed"
-      ? "confirmed"
-      : workModeItem.status === "contradicted"
-      ? "contradicted"
-      : "gap"
-    : "not_stated";
-
-  // 7. Location
-  const locationItem = evaluations.find(
-    (e): e is EvaluatedLocationRequirement => e.category === "location"
-  );
-  const locationDotType: EvidentiaryDotType = locationItem
-    ? locationItem.status === "confirmed"
-      ? "confirmed"
-      : locationItem.status === "contradicted"
-      ? "contradicted"
-      : "gap"
-    : "not_stated";
-
-  // 8. Derived Missing Logistics
-  const missingLogistics: string[] = [];
-  if (compItem?.status === "not_stated") {
-    missingLogistics.push("Salary expectation: not stated");
-  }
-  if (noticeItem?.status === "not_stated") {
-    missingLogistics.push("Notice period: not stated");
-  }
-  if (workModeItem?.status === "ambiguous") {
-    missingLogistics.push("Relocation willingness: not stated");
-  }
-  if (locationItem?.status === "ambiguous") {
-    missingLogistics.push("Location preference: not stated");
-  }
+  // 2. Logistics
+  const {
+    compensation,
+    noticePeriod,
+    workMode,
+    location,
+    missingLogistics,
+    derived: logisticsDerived,
+  } = logistics;
 
   return (
     <div className="w-full space-y-3.5 text-xs">
@@ -197,32 +122,26 @@ export function BlockingStrip({ evaluations, skills }: BlockingStripProps) {
                 <div className="flex items-center justify-between gap-2 font-bold text-on-surface">
                   <span>Experience Requirement</span>
                   <span
-                    className={`text-[10px] font-mono px-1.5 py-0.5 rounded font-bold ${
-                      isExpConfirmed
-                        ? "bg-blue-100 dark:bg-blue-900/60 text-blue-800 dark:text-blue-200"
-                        : "bg-amber-100 dark:bg-amber-900/60 text-amber-800 dark:text-amber-200"
-                    }`}
+                    className={`text-[10px] font-mono px-1.5 py-0.5 rounded font-bold ${getBadgeStyles(
+                      experience.derived.dotType
+                    )}`}
                   >
-                    {isExpConfirmed ? "Confirmed" : "Gap"}
+                    {experience.derived.badgeText}
                   </span>
                 </div>
                 <div className="text-[11px] text-on-surface-variant">
-                  {expItem?.reasoning || `${verifiedYears} yrs verified full-time experience.`}
+                  {experience.reasoning}
                 </div>
               </div>
             }
           >
             <span
               className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium border transition-colors cursor-help ${getPillStyles(
-                expDotType
+                experience.derived.dotType
               )}`}
             >
-              <EvidentiaryDot type={expDotType} />
-              <span>
-                {isExpConfirmed
-                  ? `${verifiedYears} yrs verified experience${minYears > 0 ? ` · needs ${minYears}+` : ""}`
-                  : `${verifiedYears} / ${minYears} yrs exp`}
-              </span>
+              <EvidentiaryDot type={experience.derived.dotType} />
+              <span>{experience.derived.pillText}</span>
             </span>
           </Tooltip>
         </div>
@@ -245,10 +164,10 @@ export function BlockingStrip({ evaluations, skills }: BlockingStripProps) {
                     <span>{skill.label}</span>
                     <span
                       className={`text-[10px] font-mono px-1.5 py-0.5 rounded ${getBadgeStyles(
-                        skill.badgeVariant
+                        skill.derived.dotType
                       )}`}
                     >
-                      {skill.badgeText}
+                      {skill.derived.badgeText}
                     </span>
                   </div>
 
@@ -276,11 +195,11 @@ export function BlockingStrip({ evaluations, skills }: BlockingStripProps) {
             >
               <span
                 className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium border transition-colors cursor-help ${getPillStyles(
-                  skill.dotType
+                  skill.derived.dotType
                 )}`}
               >
-                <EvidentiaryDot type={skill.dotType} />
-                <span>{skill.label}</span>
+                <EvidentiaryDot type={skill.derived.dotType} />
+                <span>{skill.derived.pillText}</span>
                 {skill.hasOutcome && (
                   <Quote
                     className="h-2.5 w-2.5 text-blue-700 dark:text-blue-300 shrink-0"
@@ -291,12 +210,6 @@ export function BlockingStrip({ evaluations, skills }: BlockingStripProps) {
                   <Tag
                     className="h-2.5 w-2.5 text-amber-700 dark:text-amber-300 shrink-0"
                     aria-label="Self-reported only"
-                  />
-                )}
-                {skill.status === "contradicted" && (
-                  <AlertCircle
-                    className="h-2.5 w-2.5 text-rose-600 dark:text-rose-400 shrink-0"
-                    aria-label="Contradicted"
                   />
                 )}
               </span>
@@ -345,13 +258,11 @@ export function BlockingStrip({ evaluations, skills }: BlockingStripProps) {
                 <div className="flex items-center justify-between gap-2 font-bold text-on-surface">
                   <span>Unverified Claims</span>
                   <span
-                    className={`text-[10px] font-mono px-1.5 py-0.5 rounded font-bold ${
-                      unverifiedClaimsDotType === "confirmed"
-                        ? "bg-blue-100 dark:bg-blue-900/60 text-blue-800 dark:text-blue-200"
-                        : "bg-amber-100 dark:bg-amber-900/60 text-amber-800 dark:text-amber-200"
-                    }`}
+                    className={`text-[10px] font-mono px-1.5 py-0.5 rounded font-bold ${getBadgeStyles(
+                      skillsDerived.unverifiedClaimsDotType
+                    )}`}
                   >
-                    {unverifiedClaimsBadge}
+                    {skillsDerived.unverifiedClaimsBadgeText}
                   </span>
                 </div>
                 <div className="text-[11px] text-on-surface-variant">
@@ -369,18 +280,18 @@ export function BlockingStrip({ evaluations, skills }: BlockingStripProps) {
           >
             <span
               className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium border transition-colors cursor-help ${getPillStyles(
-                unverifiedClaimsDotType
+                skillsDerived.unverifiedClaimsDotType
               )}`}
             >
-              <EvidentiaryDot type={unverifiedClaimsDotType} />
-              <span>{unverifiedClaimsPillText}</span>
+              <EvidentiaryDot type={skillsDerived.unverifiedClaimsDotType} />
+              <span>{skillsDerived.unverifiedClaimsPillText}</span>
             </span>
           </Tooltip>
         </div>
       </div>
 
       {/* Category 3: Education */}
-      {eduItem && (
+      {education.hasEducation && (
         <div className="space-y-1.5">
           <div className="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant">
             education
@@ -391,18 +302,18 @@ export function BlockingStrip({ evaluations, skills }: BlockingStripProps) {
                 <div className="text-xs space-y-1 max-w-xs p-0.5">
                   <div className="font-bold text-on-surface">Education Requirement</div>
                   <div className="text-[11px] text-on-surface-variant">
-                    {eduItem.reasoning}
+                    {education.reasoning}
                   </div>
                 </div>
               }
             >
               <span
                 className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium border transition-colors cursor-help ${getPillStyles(
-                  eduDotType
+                  education.derived.dotType
                 )}`}
               >
-                <EvidentiaryDot type={eduDotType} />
-                <span>{eduItem.evidence_span || eduItem.label}</span>
+                <EvidentiaryDot type={education.derived.dotType} />
+                <span>{education.derived.pillText}</span>
               </span>
             </Tooltip>
           </div>
@@ -422,13 +333,11 @@ export function BlockingStrip({ evaluations, skills }: BlockingStripProps) {
                 <div className="flex items-center justify-between gap-2 font-bold text-on-surface">
                   <span>Logistics Status</span>
                   <span
-                    className={`text-[10px] font-mono px-1.5 py-0.5 rounded font-bold ${
-                      missingLogistics.length === 0
-                        ? "bg-blue-100 dark:bg-blue-900/60 text-blue-800 dark:text-blue-200"
-                        : "bg-amber-100 dark:bg-amber-900/60 text-amber-800 dark:text-amber-200"
-                    }`}
+                    className={`text-[10px] font-mono px-1.5 py-0.5 rounded font-bold ${getBadgeStyles(
+                      logisticsDerived.statusDotType
+                    )}`}
                   >
-                    {missingLogistics.length === 0 ? "Satisfied" : "Gap"}
+                    {logisticsDerived.statusBadgeText}
                   </span>
                 </div>
                 <div className="text-[11px] text-on-surface-variant">
@@ -447,126 +356,112 @@ export function BlockingStrip({ evaluations, skills }: BlockingStripProps) {
             }
           >
             <span
-              className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium border transition-colors cursor-help ${
-                missingLogistics.length === 0
-                  ? getPillStyles("confirmed")
-                  : getPillStyles("gap")
-              }`}
+              className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium border transition-colors cursor-help ${getPillStyles(
+                logisticsDerived.statusDotType
+              )}`}
             >
-              <EvidentiaryDot type={missingLogistics.length === 0 ? "confirmed" : "gap"} />
-              <span>
-                {missingLogistics.length === 0
-                  ? "all logistics provided"
-                  : `${missingLogistics.length} logistics ${missingLogistics.length === 1 ? "field" : "fields"} missing`}
-              </span>
+              <EvidentiaryDot type={logisticsDerived.statusDotType} />
+              <span>{logisticsDerived.statusPillText}</span>
             </span>
           </Tooltip>
 
           {/* Compensation Pill */}
-          {compItem && (
-            <Tooltip
-              content={
-                <div className="text-xs space-y-1 max-w-xs p-0.5">
-                  <div className="font-bold text-on-surface">Compensation Assessment</div>
-                  <div className="text-[11px] text-on-surface-variant">{compItem.reasoning}</div>
-                  {compItem.evidence_span && (
-                    <div className="text-[10px] text-on-surface-variant/80 border-t border-outline-variant/40 pt-1">
-                      Stated: &ldquo;{compItem.evidence_span}&rdquo;
-                    </div>
-                  )}
-                </div>
-              }
+          <Tooltip
+            content={
+              <div className="text-xs space-y-1 max-w-xs p-0.5">
+                <div className="font-bold text-on-surface">Compensation Assessment</div>
+                <div className="text-[11px] text-on-surface-variant">{compensation.reasoning}</div>
+                {compensation.evidence_span && (
+                  <div className="text-[10px] text-on-surface-variant/80 border-t border-outline-variant/40 pt-1">
+                    Stated: &ldquo;{compensation.evidence_span}&rdquo;
+                  </div>
+                )}
+              </div>
+            }
+          >
+            <span
+              className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium border transition-colors cursor-help ${getPillStyles(
+                compensation.derived.dotType
+              )}`}
             >
-              <span
-                className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium border transition-colors cursor-help ${getPillStyles(
-                  compDotType
-                )}`}
-              >
-                <EvidentiaryDot type={compDotType} />
-                <span>{compItem.evidence_span ? `${compItem.evidence_span} stated` : compItem.label}</span>
-              </span>
-            </Tooltip>
-          )}
+              <EvidentiaryDot type={compensation.derived.dotType} />
+              <span>{compensation.derived.pillText}</span>
+            </span>
+          </Tooltip>
 
           {/* Notice Period Pill */}
-          {noticeItem && (
-            <Tooltip
-              content={
-                <div className="text-xs space-y-1 max-w-xs p-0.5">
-                  <div className="font-bold text-on-surface">Notice Period</div>
-                  <div className="text-[11px] text-on-surface-variant">
-                    {noticeItem.reasoning}
-                  </div>
-                  {noticeItem.evidence_span && (
-                    <div className="text-[10px] text-on-surface-variant/80 border-t border-outline-variant/40 pt-1">
-                      Stated: &ldquo;{noticeItem.evidence_span}&rdquo;
-                    </div>
-                  )}
+          <Tooltip
+            content={
+              <div className="text-xs space-y-1 max-w-xs p-0.5">
+                <div className="font-bold text-on-surface">Notice Period</div>
+                <div className="text-[11px] text-on-surface-variant">
+                  {noticePeriod.reasoning}
                 </div>
-              }
+                {noticePeriod.evidence_span && (
+                  <div className="text-[10px] text-on-surface-variant/80 border-t border-outline-variant/40 pt-1">
+                    Stated: &ldquo;{noticePeriod.evidence_span}&rdquo;
+                  </div>
+                )}
+              </div>
+            }
+          >
+            <span
+              className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium border transition-colors cursor-help ${getPillStyles(
+                noticePeriod.derived.dotType
+              )}`}
             >
-              <span
-                className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium border transition-colors cursor-help ${getPillStyles(
-                  noticeDotType
-                )}`}
-              >
-                <EvidentiaryDot type={noticeDotType} />
-                <span>{noticeItem.evidence_span ? `${noticeItem.evidence_span} notice` : noticeItem.label}</span>
-              </span>
-            </Tooltip>
-          )}
+              <EvidentiaryDot type={noticePeriod.derived.dotType} />
+              <span>{noticePeriod.derived.pillText}</span>
+            </span>
+          </Tooltip>
 
           {/* Work Mode Pill */}
-          {workModeItem && (
-            <Tooltip
-              content={
-                <div className="text-xs space-y-1 max-w-xs p-0.5">
-                  <div className="font-bold text-on-surface">Work Mode</div>
-                  <div className="text-[11px] text-on-surface-variant">{workModeItem.reasoning}</div>
-                  {workModeItem.evidence_span && (
-                    <div className="text-[10px] text-on-surface-variant/80 border-t border-outline-variant/40 pt-1">
-                      {workModeItem.evidence_span}
-                    </div>
-                  )}
-                </div>
-              }
+          <Tooltip
+            content={
+              <div className="text-xs space-y-1 max-w-xs p-0.5">
+                <div className="font-bold text-on-surface">Work Mode</div>
+                <div className="text-[11px] text-on-surface-variant">{workMode.reasoning}</div>
+                {workMode.evidence_span && (
+                  <div className="text-[10px] text-on-surface-variant/80 border-t border-outline-variant/40 pt-1">
+                    {workMode.evidence_span}
+                  </div>
+                )}
+              </div>
+            }
+          >
+            <span
+              className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium border transition-colors cursor-help ${getPillStyles(
+                workMode.derived.dotType
+              )}`}
             >
-              <span
-                className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium border transition-colors cursor-help ${getPillStyles(
-                  workModeDotType
-                )}`}
-              >
-                <EvidentiaryDot type={workModeDotType} />
-                <span>{workModeItem.label}</span>
-              </span>
-            </Tooltip>
-          )}
+              <EvidentiaryDot type={workMode.derived.dotType} />
+              <span>{workMode.derived.pillText}</span>
+            </span>
+          </Tooltip>
 
           {/* Location Pill */}
-          {locationItem && (
-            <Tooltip
-              content={
-                <div className="text-xs space-y-1 max-w-xs p-0.5">
-                  <div className="font-bold text-on-surface">Location</div>
-                  <div className="text-[11px] text-on-surface-variant">{locationItem.reasoning}</div>
-                  {locationItem.evidence_span && (
-                    <div className="text-[10px] text-on-surface-variant/80 border-t border-outline-variant/40 pt-1">
-                      Stated: &ldquo;{locationItem.evidence_span}&rdquo;
-                    </div>
-                  )}
-                </div>
-              }
+          <Tooltip
+            content={
+              <div className="text-xs space-y-1 max-w-xs p-0.5">
+                <div className="font-bold text-on-surface">Location</div>
+                <div className="text-[11px] text-on-surface-variant">{location.reasoning}</div>
+                {location.evidence_span && (
+                  <div className="text-[10px] text-on-surface-variant/80 border-t border-outline-variant/40 pt-1">
+                    Stated: &ldquo;{location.evidence_span}&rdquo;
+                  </div>
+                )}
+              </div>
+            }
+          >
+            <span
+              className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium border transition-colors cursor-help ${getPillStyles(
+                location.derived.dotType
+              )}`}
             >
-              <span
-                className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium border transition-colors cursor-help ${getPillStyles(
-                  locationDotType
-                )}`}
-              >
-                <EvidentiaryDot type={locationDotType} />
-                <span>{locationItem.evidence_span ? locationItem.evidence_span : locationItem.label}</span>
-              </span>
-            </Tooltip>
-          )}
+              <EvidentiaryDot type={location.derived.dotType} />
+              <span>{location.derived.pillText}</span>
+            </span>
+          </Tooltip>
         </div>
       </div>
     </div>

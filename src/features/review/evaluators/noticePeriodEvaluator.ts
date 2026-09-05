@@ -49,6 +49,20 @@ export function evaluateNoticePeriod(input: NoticePeriodEvaluatorInput): Evaluat
     ? `Notice <= ${notice_period_requirement.value} ${notice_period_requirement.unit}`
     : "Notice Period";
 
+  const dotType =
+    status === "confirmed"
+      ? "confirmed"
+      : status === "contradicted"
+      ? "contradicted"
+      : "not_stated";
+  const pillText = notice_period.raw ? `${notice_period.raw} notice` : label;
+  const badgeText =
+    status === "confirmed"
+      ? "Confirmed"
+      : status === "contradicted"
+      ? "Exceeds Max"
+      : "Not Stated";
+
   return {
     id: id || "req_notice",
     category: "notice_period",
@@ -57,6 +71,11 @@ export function evaluateNoticePeriod(input: NoticePeriodEvaluatorInput): Evaluat
     status,
     evidence_span: notice_period.raw,
     reasoning,
+    derived: {
+      dotType,
+      pillText,
+      badgeText,
+    },
   };
 }
 

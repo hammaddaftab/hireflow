@@ -26,14 +26,33 @@ export function evaluateWorkMode(input: WorkModeEvaluatorInput): EvaluatedWorkMo
     reasoning = `Role requires ${mode} presence; relocation willingness is not stated.`;
   }
 
+  const dotType =
+    status === "confirmed"
+      ? "confirmed"
+      : status === "contradicted"
+      ? "contradicted"
+      : "gap";
+  const pillText = `Work Mode: ${mode}`;
+  const badgeText =
+    status === "confirmed"
+      ? "Confirmed"
+      : status === "contradicted"
+      ? "Contradicted"
+      : "Ambiguous";
+
   return {
     id: id || "req_work_mode",
     category: "work_mode",
-    label: `Work Mode: ${mode}`,
+    label: pillText,
     blocking: isBlocking,
     status,
     evidence_span: stated_relocation_willingness ? `Relocation: ${stated_relocation_willingness}` : null,
     reasoning,
+    derived: {
+      dotType,
+      pillText,
+      badgeText,
+    },
   };
 }
 

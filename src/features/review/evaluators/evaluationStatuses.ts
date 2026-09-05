@@ -17,18 +17,28 @@ export type RequirementCategory =
   | "work_mode"
   | "location";
 
+export type EvidentiaryDotType = "confirmed" | "gap" | "contradicted" | "not_stated";
+
+export interface EvaluatedRequirementDerived {
+  dotType: EvidentiaryDotType;
+  pillText: string;
+  badgeText: string;
+}
+
 export interface BaseEvaluatedRequirement {
   id: string;
   label: string;
   blocking: boolean;
   reasoning: string;
   evidence_span: string | null;
+  derived: EvaluatedRequirementDerived;
 }
 
 export type EvaluatedExperienceRequirement = BaseEvaluatedRequirement & {
   category: "experience";
   status: ExperienceStatus;
   verifiedYears: number;
+  minYears: number;
 };
 
 export type EvaluatedSkillRequirement = BaseEvaluatedRequirement & {
@@ -38,15 +48,13 @@ export type EvaluatedSkillRequirement = BaseEvaluatedRequirement & {
   outcome_attached: string | null;
   hasOutcome: boolean;
   isOrphan: boolean;
-  dotType: "confirmed" | "gap" | "contradicted" | "not_stated";
-  badgeText: string;
-  badgeVariant: "confirmed" | "gap" | "contradicted";
   orphanSkills?: string[];
 };
 
 export type EvaluatedEducationRequirement = BaseEvaluatedRequirement & {
   category: "education";
   status: EducationStatus;
+  hasEducation: boolean;
 };
 
 export type EvaluatedCompensationRequirement = BaseEvaluatedRequirement & {

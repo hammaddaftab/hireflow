@@ -32,15 +32,22 @@ export function evaluateCompensation(input: CompensationEvaluatorInput): Evaluat
   const norm = salary_expectation.normalized;
   const bandStr = `budget ${formatSalaryNumber(band.min || 0)}–${formatSalaryNumber(band.max || 0)} ${band.currency || "PKR"}`;
 
+  const label = `Max ${formatSalaryNumber(band.max || 0)} ${band.currency || "PKR"}`;
+
   if (!norm || (norm.min === null && norm.max === null)) {
     return {
       id: id || "req_comp",
       category: "compensation",
-      label: `Max ${formatSalaryNumber(band.max || 0)} ${band.currency || "PKR"}`,
+      label,
       blocking: isBlocking,
       status: "not_stated",
       evidence_span: salary_expectation.raw,
       reasoning: `Candidate salary expectation not stated (job ${bandStr}).`,
+      derived: {
+        dotType: "not_stated",
+        pillText: label,
+        badgeText: "Not Stated",
+      },
     };
   }
 
@@ -71,14 +78,33 @@ export function evaluateCompensation(input: CompensationEvaluatorInput): Evaluat
     reasoning = `${statedStr}, below minimum budget range (${formatSalaryNumber(diff)} ${curr} below).`;
   }
 
+  const dotType =
+    status === "confirmed"
+      ? "confirmed"
+      : status === "contradicted"
+      ? "contradicted"
+      : "gap";
+  const pillText = salary_expectation.raw ? `${salary_expectation.raw} stated` : label;
+  const badgeText =
+    status === "confirmed"
+      ? "Confirmed"
+      : status === "contradicted"
+      ? "Over Budget"
+      : "Under Floor";
+
   return {
     id: id || "req_comp",
     category: "compensation",
-    label: `Max ${formatSalaryNumber(band.max || 0)} ${band.currency || "PKR"}`,
+    label,
     blocking: isBlocking,
     status,
     evidence_span: salary_expectation.raw,
     reasoning,
+    derived: {
+      dotType,
+      pillText,
+      badgeText,
+    },
   };
 }
 

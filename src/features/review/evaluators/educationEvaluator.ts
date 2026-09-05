@@ -43,6 +43,27 @@ export function evaluateEducation(input: EducationEvaluatorInput): EvaluatedEduc
     reasoning = `Completed degree: ${completedDegrees[0]?.degree_level.raw || "Degree"}.`;
   }
 
+  const dotType =
+    status === "confirmed"
+      ? "confirmed"
+      : status === "contradicted"
+      ? "contradicted"
+      : status === "ambiguous"
+      ? "gap"
+      : "not_stated";
+
+  const pillText = primaryEvidence || (requiredDegree ? `Degree: ${requiredDegree}` : "Education");
+  const badgeText =
+    status === "confirmed"
+      ? "Confirmed"
+      : status === "contradicted"
+      ? "Contradicted"
+      : status === "ambiguous"
+      ? "In Progress"
+      : "Not Stated";
+
+  const hasEducation = education_entries.length > 0;
+
   return {
     id: id || "req_edu",
     category: "education",
@@ -51,6 +72,12 @@ export function evaluateEducation(input: EducationEvaluatorInput): EvaluatedEduc
     status,
     evidence_span: primaryEvidence,
     reasoning,
+    hasEducation,
+    derived: {
+      dotType,
+      pillText,
+      badgeText,
+    },
   };
 }
 
