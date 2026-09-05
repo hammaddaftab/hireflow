@@ -7,3 +7,4 @@ export * from "./components/CandidateCard";
 export * from "./components/ReviewQueuePage";
 export * from "./components/FocusReviewPage";
 export * from "./hooks/useReviewQueue";
+export * from "./evaluators";

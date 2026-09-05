@@ -1,37 +1,25 @@
 import type { ParsedCandidateProfile } from "@/entities/candidate";
-import type { EvidenceStatus } from "@/entities/extraction/shared/evidenceStatus";
 import type { ReviewDecision } from "@/entities/review";
+import type { CompensationBandRequirement } from "@/entities/job";
+export * from "./evaluators/evaluationStatuses";
+import type { EvaluatedRequirement } from "./evaluators/evaluationStatuses";
+import type { SkillEvaluatorOutput } from "./evaluators/skillEvaluator";
 
-/**
- * A single blocking requirement with Layer 1 status and Layer 2 evidence.
- */
-export interface BlockingRequirementItem {
-  id: string;
-  label: string;
-  category: "experience" | "skill" | "dealbreaker";
-  status: EvidenceStatus;
-  evidence_span: string | null;
-  reasoning: string;
-}
-
-/**
- * Candidate item formatted for the high-velocity review queue.
- */
 export interface CandidateReviewItem {
   candidate: ParsedCandidateProfile;
-  blockingItems: BlockingRequirementItem[];
+  jobId?: string;
+  evaluations: EvaluatedRequirement[];
+  skills: SkillEvaluatorOutput;
+  decision: ReviewDecision;
+
+  // Knockout sorting and queue metrics
+  blockingItems: EvaluatedRequirement[];
   isAllBlockingConfirmed: boolean;
   hasContradicted: boolean;
   hasAmbiguous: boolean;
-  orphanSkillsCount: number;
-  orphanSkillsList: string[];
-  logisticsNotStatedCount: number;
-  logisticsNotStatedList: string[];
   verifiedYearsExperience: number;
-  compensationBand?: { min: number; max: number; currency: string } | null;
-  decision: ReviewDecision;
+  compensationBand?: CompensationBandRequirement | null;
 }
-
 
 export interface QueryGroup {
   id: string;
