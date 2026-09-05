@@ -3,8 +3,7 @@ export const dynamic = "force-dynamic";
 import React from "react";
 import { jobsService } from "@/features/jobs";
 import { candidatesService } from "@/features/candidates";
-import { buildReviewQueue } from "@/features/review";
-import { FocusReviewPage } from "@/features/review/components/FocusReviewPage";
+import { buildReviewQueue, FocusReviewPage } from "@/features/review";
 import type { QueueFilterTab } from "@/entities/review";
 
 export default async function FocusRoutePage({

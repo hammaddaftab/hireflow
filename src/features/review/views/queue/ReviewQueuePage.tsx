@@ -1,19 +1,19 @@
 "use client";
 
 import React, { useRef, useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { Briefcase, MapPin } from "lucide-react";
 import { Typography } from "@/components/ui/Typography";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
-import { CandidateCard } from "./CandidateCard";
-import { KeyboardShortcutBar } from "./KeyboardShortcutBar";
-import { ReviewDeckControls } from "./ReviewDeckControls";
-import { EvidentiaryLegend } from "./EvidentiaryLegend";
-import { useReviewQueue } from "../hooks/useReviewQueue";
-import { CandidateReviewItem } from "../types";
-import type { QueueFilterTab } from "@/entities/review";
 import type { Job } from "@/entities/job";
+import type { QueueFilterTab } from "@/entities/review";
+import type { CandidateReviewItem } from "../../types";
+import { useReviewData } from "../../core/hooks/useReviewData";
+import { useQueueView } from "./hooks/useQueueView";
+import { CandidateCard } from "../../core/components/card/CandidateCard";
+import { ReviewDeckControls } from "./components/ReviewDeckControls";
+import { EvidentiaryLegend } from "./components/EvidentiaryLegend";
+import { KeyboardShortcutBar } from "./components/KeyboardShortcutBar";
 
 export interface ReviewQueuePageProps {
   initialJob: Job;
@@ -32,36 +32,31 @@ export function ReviewQueuePage({
   initialCity = null,
   initialGroupId = null,
 }: ReviewQueuePageProps) {
-  const router = useRouter();
+  // Tier 1: Domain State Engine
+  const { queue, handleDecision: updateDecision, stats } = useReviewData(initialQueue);
 
+  // Tier 2: Viewport State Controller
   const {
-    queue,
     activeIndex,
     setActiveIndex,
     activeTab,
     setActiveTab,
     filteredQueue,
-    scopedActiveItem,
+    activeItem,
+    tabCounts,
     handleDecision,
+    handleEnterFocusMode,
     resetFilters,
-    stats,
-  } = useReviewQueue({
-    initialJob,
-    initialQueue,
+  } = useQueueView({
+    queue,
     initialIndex,
     initialTab,
     initialCity,
     initialGroupId,
+    onDecision: updateDecision,
   });
 
-  const handleEnterFocusMode = () => {
-    const params = new URLSearchParams();
-    if (activeIndex > 0) params.set("candidateIndex", String(activeIndex));
-    if (activeTab !== "all") params.set("tab", activeTab);
-    const q = params.toString();
-    router.push(q ? `/review/focus?${q}` : "/review/focus");
-  };
-
+  // Track main pane width and left offset for floating hotkeys dock
   const mainPaneRef = useRef<HTMLElement>(null);
   const [mainBounds, setMainBounds] = useState<{ left: number; width: number } | null>(null);
 
@@ -143,35 +138,30 @@ export function ReviewQueuePage({
         </div>
       </header>
 
-      {/* Main Candidate Review Queue Area (Centered & Spacious) */}
+      {/* Main Candidate Review Queue Area */}
       <main ref={mainPaneRef} className="max-w-4xl mx-auto w-full space-y-4 pb-20">
-        {/* Top Bar: Queue Segmented Tabs + Stepper Controls */}
+        {/* Top Bar: Queue Segmented Tabs + Focus Trigger */}
         <ReviewDeckControls
           activeTab={activeTab}
           onSelectTab={(tab) => {
             setActiveTab(tab);
             setActiveIndex(0);
           }}
-          tabCounts={{
-            all: filteredQueue.length,
-            fastClear: stats.fastClearCount,
-            needsAttention: queue.filter((i) => !i.isAllBlockingConfirmed && !i.hasContradicted).length,
-            contradicted: queue.filter((i) => i.hasContradicted).length,
-          }}
+          tabCounts={tabCounts}
           onEnterFocusMode={handleEnterFocusMode}
         />
 
-        {/* Evidentiary Status Legend (Non-Terminal Evidence Dots) */}
+        {/* Evidentiary Status Legend */}
         <EvidentiaryLegend className="px-1" />
 
         {/* Active Candidate Focused Card */}
-        {scopedActiveItem ? (
+        {activeItem ? (
           <div
-            key={scopedActiveItem.candidate.id}
+            key={activeItem.candidate.id}
             className="transition-all duration-200 animate-in fade-in-50"
           >
             <CandidateCard
-              item={scopedActiveItem}
+              item={activeItem}
               isActive={true}
               onDecision={handleDecision}
             />
@@ -192,7 +182,7 @@ export function ReviewQueuePage({
           </Card>
         )}
 
-        {/* Fixed Hotkey Dock at Sticky Offset */}
+        {/* Fixed Hotkey Dock */}
         <div
           className="fixed bottom-4 z-30 pointer-events-none flex justify-center px-4 transition-[left,width] duration-150"
           style={

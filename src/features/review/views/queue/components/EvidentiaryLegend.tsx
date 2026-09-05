@@ -1,8 +1,7 @@
 "use client";
 
-import React from "react";
 import { Quote, Tag } from "lucide-react";
-import { EvidentiaryDot } from "./BlockingStrip";
+import { EvidentiaryDot } from "../../../core/components/card/EvidentiaryDot";
 
 export interface EvidentiaryLegendProps {
   className?: string;
