@@ -1,0 +1,1323 @@
+[
+  {
+    "id": "information-technology-university-lahore",
+    "canonicalName": "Information Technology University, Lahore",
+    "domains": [
+      "itu.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": [
+      "ITU",
+      "ITU Lahore"
+    ]
+  },
+  {
+    "id": "abasyn-university-peshawar",
+    "canonicalName": "Abasyn University Peshawar",
+    "domains": [
+      "abasyn.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "allama-iqbal-open-university",
+    "canonicalName": "Allama Iqbal Open University",
+    "domains": [
+      "aiou.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "azad-jammu-and-kashmir-university",
+    "canonicalName": "Azad Jammu and Kashmir University",
+    "domains": [
+      "ajku.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "aga-khan-university",
+    "canonicalName": "Aga Khan University",
+    "domains": [
+      "aku.edu"
+    ],
+    "country": "PK",
+    "aliases": [
+      "AKU",
+      "Aga Khan"
+    ]
+  },
+  {
+    "id": "jamia-al-dirasat-ul-islami-karachi",
+    "canonicalName": "Jamia Al Dirasat Ul Islami Karachi",
+    "domains": [
+      "aldirasat.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "al-khair-university",
+    "canonicalName": "Al-Khair University",
+    "domains": [
+      "alkhair.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "ahmed-medical-institute",
+    "canonicalName": "Ahmed Medical Institute",
+    "domains": [
+      "ami.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "air-university",
+    "canonicalName": "Air University",
+    "domains": [
+      "au.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": [
+      "Air University",
+      "AU"
+    ]
+  },
+  {
+    "id": "the-university-of-agriculture-peshawar",
+    "canonicalName": "The University of Agriculture, Peshawar",
+    "domains": [
+      "aup.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "bahria-university",
+    "canonicalName": "Bahria University",
+    "domains": [
+      "bahria.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": [
+      "Bahria University",
+      "BU"
+    ]
+  },
+  {
+    "id": "barani-institute-of-information-technology",
+    "canonicalName": "Barani Institute of Information Technology",
+    "domains": [
+      "biit.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "barani-institute-of-management-sciences",
+    "canonicalName": "Barani Institute of Management Sciences",
+    "domains": [
+      "bims.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "baqai-medical-university",
+    "canonicalName": "Baqai Medical University",
+    "domains": [
+      "baqai.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "balochistan-university-of-engineering-and-technology-khuzdar",
+    "canonicalName": "Balochistan University of Engineering and Technology Khuzdar",
+    "domains": [
+      "buetk.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "balochistan-university-of-information-technology-management-sciences",
+    "canonicalName": "Balochistan University of Information Technology & Management Sciences",
+    "domains": [
+      "buitms.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": [
+      "BUITEMS",
+      "BUITEMS Quetta",
+      "Balochistan University of Information Technology, Engineering and Management Sciences",
+      "Balochistan University of Information Technology Engineering & Management Sciences"
+    ]
+  },
+  {
+    "id": "bahauddin-zakariya-university-multan",
+    "canonicalName": "Bahauddin Zakariya University, Multan",
+    "domains": [
+      "bzu.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "capital-university-of-science-technology",
+    "canonicalName": "Capital University of Science & Technology",
+    "domains": [
+      "cust.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": [
+      "CUST",
+      "CUST Islamabad"
+    ]
+  },
+  {
+    "id": "college-of-business-management-cbm",
+    "canonicalName": "College of Business Management (CBM)",
+    "domains": [
+      "cbm.iobm.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "cecos-univeristy-of-information-technology",
+    "canonicalName": "Cecos Univeristy of Information Technology",
+    "domains": [
+      "cecos.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "comsats-institute-of-information-technology-abbottabad",
+    "canonicalName": "COMSATS Institute of Information Technology, Abbottabad",
+    "domains": [
+      "ciit-atd.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": [
+      "COMSATS Abbottabad"
+    ]
+  },
+  {
+    "id": "comsats-institute-of-information-technology-attock",
+    "canonicalName": "COMSATS Institute of Information Technology, Attock",
+    "domains": [
+      "ciit-attock.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": [
+      "COMSATS Attock"
+    ]
+  },
+  {
+    "id": "comsats-institute-of-information-technology",
+    "canonicalName": "COMSATS Institute of Information Technology",
+    "domains": [
+      "ciit.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": [
+      "COMSATS",
+      "CUI"
+    ]
+  },
+  {
+    "id": "comsats-institute-of-information-technology-lahore",
+    "canonicalName": "COMSATS Institute of Information Technology, Lahore",
+    "domains": [
+      "ciitlahore.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": [
+      "COMSATS Lahore"
+    ]
+  },
+  {
+    "id": "comsats-institute-of-information-technology-wah",
+    "canonicalName": "COMSATS Institute of Information Technology, Wah",
+    "domains": [
+      "ciit-wah.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": [
+      "COMSATS Wah"
+    ]
+  },
+  {
+    "id": "cosmiq-institute-of-technology",
+    "canonicalName": "COSMIQ Institute of Technology",
+    "domains": [
+      "cosmiq.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "dadabhoy-institute-of-higher-education",
+    "canonicalName": "Dadabhoy Institute of Higher Education",
+    "domains": [
+      "dadabhoy.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "dawood-college-of-engineering-and-technology",
+    "canonicalName": "Dawood College of Engineering and Technology",
+    "domains": [
+      "dcet.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": [
+      "DUET",
+      "Dawood University"
+    ]
+  },
+  {
+    "id": "dow-university-of-health-sciences",
+    "canonicalName": "Dow University of Health Sciences",
+    "domains": [
+      "duhs.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "faisalabad-institute-of-textile-and-fashion-design",
+    "canonicalName": "Faisalabad Institute of Textile and Fashion Design",
+    "domains": [
+      "fitfd.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "federal-urdu-university-of-arts-science-and-technology",
+    "canonicalName": "Federal Urdu University of Arts,Science and Technology",
+    "domains": [
+      "fuuast.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "shaheed-benazir-bhutto-women-university",
+    "canonicalName": "Shaheed Benazir Bhutto Women University",
+    "domains": [
+      "fwu.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "gandhara-institute-of-medical-sciences",
+    "canonicalName": "Gandhara Institute of Medical Sciences",
+    "domains": [
+      "gandhara.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "government-college-university-lahore",
+    "canonicalName": "Government College University Lahore",
+    "domains": [
+      "gcu.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "government-college-university-faisalabad",
+    "canonicalName": "Government College University Faisalabad",
+    "domains": [
+      "gcuf.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "university-of-balochistan",
+    "canonicalName": "University of Balochistan",
+    "domains": [
+      "uob.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "zia-ud-din-university",
+    "canonicalName": "Zia-ud-Din University",
+    "domains": [
+      "zu.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "gift-university",
+    "canonicalName": "Gift University",
+    "domains": [
+      "gift.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "ghulam-ishaq-khan-institute-of-science-technology",
+    "canonicalName": "Ghulam Ishaq Khan Institute of Science & Technology",
+    "domains": [
+      "giki.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": [
+      "GIKI",
+      "GIK Institute"
+    ]
+  },
+  {
+    "id": "gangdara-institute-of-science-technology",
+    "canonicalName": "Gangdara Institute Of Science & Technology",
+    "domains": [
+      "gist.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "the-global-college-lahore",
+    "canonicalName": "The Global College Lahore",
+    "domains": [
+      "global.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "gomal-university",
+    "canonicalName": "Gomal University",
+    "domains": [
+      "gu.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "greenwich-university",
+    "canonicalName": "Greenwich University",
+    "domains": [
+      "guic.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "hajvery-university-lahore-for-women",
+    "canonicalName": "Hajvery University Lahore for Women",
+    "domains": [
+      "hajvery.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "hamdard-university",
+    "canonicalName": "Hamdard University",
+    "domains": [
+      "hamdard.edu.pk",
+      "hamdard.edu"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "hitec-university",
+    "canonicalName": "Hitec University",
+    "domains": [
+      "hitecuni.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "hazara-university",
+    "canonicalName": "Hazara University",
+    "domains": [
+      "hu.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "institute-of-business-administration-iba",
+    "canonicalName": "Institute of Business Administration (IBA)",
+    "domains": [
+      "iba.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": [
+      "IBA",
+      "IBA Karachi"
+    ]
+  },
+  {
+    "id": "institute-of-business-administration-sukkur",
+    "canonicalName": "Institute of Business Administration Sukkur",
+    "domains": [
+      "iba-suk.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": [
+      "Sukkur IBA",
+      "SIBA"
+    ]
+  },
+  {
+    "id": "institute-of-industrial-electronics-engineering",
+    "canonicalName": "Institute of Industrial Electronics Engineering",
+    "domains": [
+      "iiee.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "international-islamic-university",
+    "canonicalName": "International Islamic University",
+    "domains": [
+      "iiu.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "institute-of-management-sciences-peshawar",
+    "canonicalName": "Institute of Management Sciences, Peshawar",
+    "domains": [
+      "imsciences.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "iqra-university",
+    "canonicalName": "Iqra University",
+    "domains": [
+      "iqra.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "isra-university",
+    "canonicalName": "Isra University",
+    "domains": [
+      "isra.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "institute-of-space-technology",
+    "canonicalName": "Institute of Space Technology",
+    "domains": [
+      "ist.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "islamia-university-of-bahawalpur",
+    "canonicalName": "Islamia University of Bahawalpur",
+    "domains": [
+      "iub.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "mohammad-ali-jinnah-university-karachi",
+    "canonicalName": "Mohammad Ali Jinnah University, Karachi",
+    "domains": [
+      "jinnah.edu"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "mohammad-ali-jinnah-university",
+    "canonicalName": "Mohammad Ali Jinnah University",
+    "domains": [
+      "jinnah.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "jinnah-university-for-women",
+    "canonicalName": "Jinnah University for Women",
+    "domains": [
+      "juw.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "kasb-institute-of-technology",
+    "canonicalName": "KASB Institute of Technology",
+    "domains": [
+      "kasbit.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "karachi-institute-of-information-technology",
+    "canonicalName": "Karachi Institute of Information Technology",
+    "domains": [
+      "kiit.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "karakoram-international-university",
+    "canonicalName": "Karakoram International University",
+    "domains": [
+      "kiu.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "karachi-medical-and-dental-college",
+    "canonicalName": "Karachi Medical and Dental College",
+    "domains": [
+      "kmdc.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "karachi-school-of-art",
+    "canonicalName": "Karachi School of Art",
+    "domains": [
+      "ksa.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "kohat-university-of-science-and-technology-kust",
+    "canonicalName": "Kohat University of Science and Technology (KUST)",
+    "domains": [
+      "kust.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "lahore-college-for-women-university",
+    "canonicalName": "Lahore College for Women University",
+    "domains": [
+      "lcwu.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "liaquat-university-of-medical-health-sciences-jamshoro",
+    "canonicalName": "Liaquat University of Medical & Health Sciences Jamshoro",
+    "domains": [
+      "lumhs.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "lahore-university-of-management-sciences",
+    "canonicalName": "Lahore University of Management Sciences",
+    "domains": [
+      "lums.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": [
+      "LUMS"
+    ]
+  },
+  {
+    "id": "mohi-ud-din-islamic-university",
+    "canonicalName": "Mohi-ud-Din Islamic University",
+    "domains": [
+      "miu.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "mooreland-university",
+    "canonicalName": "Mooreland University",
+    "domains": [
+      "moorelanduniversity.com"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "mehran-university-of-engineering-technology",
+    "canonicalName": "Mehran University of Engineering & Technology",
+    "domains": [
+      "muet.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": [
+      "MUET",
+      "Mehran University"
+    ]
+  },
+  {
+    "id": "minhaj-university-lahore",
+    "canonicalName": "Minhaj University Lahore",
+    "domains": [
+      "mul.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "national-college-of-arts",
+    "canonicalName": "National College of Arts",
+    "domains": [
+      "nca.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "ned-university-of-engineering-and-technology-karachi",
+    "canonicalName": "NED University of Engineering and Technology Karachi",
+    "domains": [
+      "neduet.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": [
+      "NED",
+      "NED Karachi"
+    ]
+  },
+  {
+    "id": "dha-suffa-uinversity",
+    "canonicalName": "DHA Suffa Uinversity",
+    "domains": [
+      "dsu.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "sindh-madressatul-islam-university",
+    "canonicalName": "Sindh Madressatul Islam University",
+    "domains": [
+      "smiu.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "indus-university",
+    "canonicalName": "Indus University",
+    "domains": [
+      "indus.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "newports-institute-of-communication-economics",
+    "canonicalName": "Newports Institute of Communication & Economics",
+    "domains": [
+      "newports.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "nuclear-institute-for-agriculture-and-biology-niab",
+    "canonicalName": "Nuclear Institute for Agriculture and Biology (NIAB)",
+    "domains": [
+      "niab.org.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "fast-national-university-of-computer-and-emerging-sciences-nuces",
+    "canonicalName": "FAST - National University of Computer and Emerging Sciences (NUCES)",
+    "domains": [
+      "nu.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": [
+      "FAST",
+      "FAST-NUCES",
+      "FAST NUCES",
+      "NUCES",
+      "FAST Lahore",
+      "FAST Islamabad",
+      "FAST Karachi",
+      "FAST Peshawar",
+      "FAST CFD"
+    ]
+  },
+  {
+    "id": "national-university-of-modern-languages",
+    "canonicalName": "National University of Modern Languages",
+    "domains": [
+      "numl.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": [
+      "NUML"
+    ]
+  },
+  {
+    "id": "national-university-of-science-and-technology",
+    "canonicalName": "National University of Science and Technology",
+    "domains": [
+      "nust.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": [
+      "NUST",
+      "NUST Islamabad",
+      "SEECS",
+      "NUST SEECS"
+    ]
+  },
+  {
+    "id": "university-of-engineering-and-technology-peshawar",
+    "canonicalName": "University of Engineering and Technology Peshawar",
+    "domains": [
+      "nwfpuet.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "karachi-institute-of-economics-and-technology",
+    "canonicalName": "Karachi Institute Of Economics And Technology",
+    "domains": [
+      "pafkiet.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "pak-aims-american-institute-of-management-sciences",
+    "canonicalName": "Pak-AIMS (American Institute of Management Sciences)",
+    "domains": [
+      "pakaims.edu"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "institute-of-management-sciences-lahore-ims",
+    "canonicalName": "Institute of Management Sciences, Lahore (IMS)",
+    "domains": [
+      "pakaims.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "hahnamann-honoeopathic-medical-college",
+    "canonicalName": "Hahnamann Honoeopathic Medical College",
+    "domains": [
+      "pakistanhomoeopathy.com"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "qauid-e-awam-university-of-engineering-sciences-technology",
+    "canonicalName": "Qauid-e-Awam University of Engineering Sciences & Technology",
+    "domains": [
+      "quest.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "pyramid-education-center",
+    "canonicalName": "Pyramid Education Center",
+    "domains": [
+      "pedu.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "punjab-institute-of-computer-science",
+    "canonicalName": "Punjab Institute of Computer science",
+    "domains": [
+      "pics.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "pakistan-institute-of-engineering-and-applied-sciences-pieas",
+    "canonicalName": "Pakistan Institute of Engineering and Applied Sciences (PIEAS)",
+    "domains": [
+      "pieas.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": [
+      "PIEAS"
+    ]
+  },
+  {
+    "id": "preston-institute-of-management-sciences-and-technology-pimsat",
+    "canonicalName": "Preston Institute of Management Sciences and Technology (PIMSAT)",
+    "domains": [
+      "pimsat-khi.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "planwel-university",
+    "canonicalName": "Planwel University",
+    "domains": [
+      "planwel.edu"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "preston-university-pakistan-campus",
+    "canonicalName": "Preston University, Pakistan Campus",
+    "domains": [
+      "prestonpak.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "punjab-university-college-of-information-tecnology",
+    "canonicalName": "Punjab University College of Information Tecnology",
+    "domains": [
+      "pucit.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": [
+      "PUCIT",
+      "PUCIT Lahore"
+    ]
+  },
+  {
+    "id": "university-of-the-punjab",
+    "canonicalName": "University of the Punjab",
+    "domains": [
+      "pu.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": [
+      "Punjab University",
+      "PU"
+    ]
+  },
+  {
+    "id": "university-of-the-punjab-gujranwala-campus",
+    "canonicalName": "University of the Punjab, Gujranwala Campus",
+    "domains": [
+      "pugc.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "quaid-i-azam-university",
+    "canonicalName": "Quaid-i-Azam University",
+    "domains": [
+      "qau.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": [
+      "QAU",
+      "Quaid-e-Azam University"
+    ]
+  },
+  {
+    "id": "qurtuba-university-of-science-and-infromation-technology",
+    "canonicalName": "Qurtuba University of Science and Infromation Technology",
+    "domains": [
+      "qurtuba.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "riphah-international-univeristy",
+    "canonicalName": "Riphah International Univeristy",
+    "domains": [
+      "riphah.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "shah-abdul-latif-university-khairpur",
+    "canonicalName": "Shah Abdul Latif University Khairpur",
+    "domains": [
+      "salu.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "sindh-agricultural-university",
+    "canonicalName": "Sindh Agricultural University",
+    "domains": [
+      "sau.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "sir-syed-institute-of-technology-islamabad",
+    "canonicalName": "Sir Syed Institute Of Technology Islamabad",
+    "domains": [
+      "ssms.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "sir-syed-university-of-engineering-and-technology",
+    "canonicalName": "Sir Syed University of Engineering and Technology",
+    "domains": [
+      "ssuet.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "sarhad-university-of-science-information-technology-peshawar",
+    "canonicalName": "Sarhad University of Science & Information Technology, Peshawar",
+    "domains": [
+      "suit.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "the-superior-college",
+    "canonicalName": "The Superior College",
+    "domains": [
+      "superior.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "shaheed-zulifkar-ali-bhutto-institute-of-science-and-technology",
+    "canonicalName": "Shaheed Zulifkar Ali Bhutto Institute of Science and Technology",
+    "domains": [
+      "szabist.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "textile-institute-of-pakistan",
+    "canonicalName": "Textile Institute of Pakistan",
+    "domains": [
+      "tip.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "university-of-faisalabad",
+    "canonicalName": "University of Faisalabad",
+    "domains": [
+      "tuf.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "arid-agriculture-university",
+    "canonicalName": "Arid Agriculture University",
+    "domains": [
+      "uaar.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "university-of-agriculture-faisalabad",
+    "canonicalName": "University of Agriculture Faisalabad",
+    "domains": [
+      "uaf.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "university-of-central-punjab",
+    "canonicalName": "University of Central Punjab",
+    "domains": [
+      "ucp.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": [
+      "UCP"
+    ]
+  },
+  {
+    "id": "university-of-education",
+    "canonicalName": "University of Education",
+    "domains": [
+      "ue.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "university-of-engineering-and-technology-lahore",
+    "canonicalName": "University of Engineering and Technology Lahore",
+    "domains": [
+      "uet.edu"
+    ],
+    "country": "PK",
+    "aliases": [
+      "UET",
+      "UET Lahore"
+    ]
+  },
+  {
+    "id": "university-of-engineering-and-technology-taxila",
+    "canonicalName": "University of Engineering and Technology Taxila",
+    "domains": [
+      "uettaxila.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "university-of-munawwar-ul-islam",
+    "canonicalName": "University of Munawwar-ul-Islam",
+    "domains": [
+      "umi.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "university-of-management-and-technology",
+    "canonicalName": "University of Management and Technology",
+    "domains": [
+      "umt.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": [
+      "UMT",
+      "UMT Lahore"
+    ]
+  },
+  {
+    "id": "university-of-northwest",
+    "canonicalName": "University of NorthWest",
+    "domains": [
+      "unw.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "university-of-east",
+    "canonicalName": "University of East",
+    "domains": [
+      "uoe.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "university-of-gujrat",
+    "canonicalName": "University of Gujrat",
+    "domains": [
+      "uog.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "university-of-karachi",
+    "canonicalName": "University of Karachi",
+    "domains": [
+      "uok.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": [
+      "KU",
+      "Karachi University",
+      "UoK"
+    ]
+  },
+  {
+    "id": "university-of-lahore",
+    "canonicalName": "University of Lahore",
+    "domains": [
+      "uol.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": [
+      "UOL",
+      "UOL Lahore"
+    ]
+  },
+  {
+    "id": "university-of-malakand",
+    "canonicalName": "University of Malakand",
+    "domains": [
+      "uom.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "university-of-sargodha",
+    "canonicalName": "University of Sargodha",
+    "domains": [
+      "uos.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "university-of-peshawar",
+    "canonicalName": "University of Peshawar",
+    "domains": [
+      "upesh.edu"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "university-of-south-asia",
+    "canonicalName": "University of South Asia",
+    "domains": [
+      "usa.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "university-of-sindh",
+    "canonicalName": "University of Sindh",
+    "domains": [
+      "usindh.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "university-of-science-technology-bannu",
+    "canonicalName": "University of Science & Technology Bannu",
+    "domains": [
+      "ustb.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "university-of-veterinary-animal-science",
+    "canonicalName": "University of Veterinary & Animal Science",
+    "domains": [
+      "uvas.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "university-of-wah",
+    "canonicalName": "University of Wah",
+    "domains": [
+      "uw.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "virtual-university-of-pakistan",
+    "canonicalName": "Virtual University of Pakistan",
+    "domains": [
+      "vu.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "wah-medical-college",
+    "canonicalName": "Wah Medical College",
+    "domains": [
+      "wahmedicalcollege.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "zawiya-academy",
+    "canonicalName": "Zawiya Academy",
+    "domains": [
+      "zawiya.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "muhammad-nawaz-sharif-university-of-engineering-and-technology-multan",
+    "canonicalName": "Muhammad Nawaz Sharif University of Engineering and Technology, Multan",
+    "domains": [
+      "mnsuet.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "university-of-sufism-and-modern-sciences",
+    "canonicalName": "University of Sufism and Modern Sciences",
+    "domains": [
+      "usms.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  },
+  {
+    "id": "city-university-of-science-and-information-technology",
+    "canonicalName": "City University of Science and Information Technology",
+    "domains": [
+      "cusit.edu.pk",
+      "cityuniversity.edu.pk",
+      "cup.edu.pk"
+    ],
+    "country": "PK",
+    "aliases": []
+  }
+]

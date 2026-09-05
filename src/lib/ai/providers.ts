@@ -8,7 +8,7 @@ import { ApiError } from "@/lib/errors/api-error";
 export { openai, google };
 
 const DEFAULT_OPENAI_MODEL = "gpt-4o-mini";
-const DEFAULT_GOOGLE_MODEL = "gemini-2.0-flash";
+const DEFAULT_GOOGLE_MODEL = "gemini-3.5-flash";
 
 /**
  * Returns a MockLanguageModel for tests and offline environments.

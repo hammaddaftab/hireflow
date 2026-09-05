@@ -23,7 +23,9 @@ import {
 } from "@/entities/extraction/candidate/aspects/skillsDemonstrated";
 import {
   type SkillsDeclaredExtraction,
+  type SkillDeclaredItem,
 } from "@/entities/extraction/candidate/aspects/skillsDeclared";
+import { normalizeUniversity } from "./universityNormalizer";
 import {
   type LogisticsExtraction,
 } from "@/entities/extraction/candidate/aspects/logistics";
@@ -359,7 +361,7 @@ export function extractEducationHeuristic(text: string): EducationExtraction {
       entries.push({
         institution: {
           raw: institutionRaw,
-          normalized: institutionRaw,
+          normalized: normalizeUniversity(institutionRaw).canonical_name || institutionRaw,
         },
         degree_level: {
           raw: line,

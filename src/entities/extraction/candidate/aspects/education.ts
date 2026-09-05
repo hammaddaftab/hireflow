@@ -9,6 +9,7 @@ export const InstitutionNormalizedSchema = z.object({
     .string()
     .nullable()
     .describe("Canonical institution name resolved via open-set master database/RAG, or null"),
+  // TODO: Schema enrichment - add canonical_id, match_method, confidence, is_unverified fields
 });
 
 export const DegreeLevelNormalizedSchema = z.object({
