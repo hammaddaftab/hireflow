@@ -44,6 +44,7 @@ import {
   extractCandidateFallback,
   type CandidateFallbackOptions,
 } from "./heuristicExtraction";
+import { normalizeUniversity } from "./universityNormalizer";
 
 import { z } from "zod";
 
@@ -150,7 +151,7 @@ export async function extractCandidateProfile(
     options?.fileHash ?? createHash("sha256").update(resumeText).digest("hex");
   const filename = options?.filename || "resume.pdf";
   const appliedJobId = options?.appliedJobId ?? null;
-  const timeoutMs = options?.timeoutMs ?? 3000;
+  const timeoutMs = options?.timeoutMs ?? 30000;
 
   const effectiveProvider = options?.provider || (process.env.LLM_PROVIDER as AiProvider | undefined);
 
@@ -187,6 +188,17 @@ export async function extractCandidateProfile(
     });
 
     const parsedAspects = CandidatePromptAspectsSchema.parse(object);
+
+    // Normalize education institutions using Two-Tier Hash + Token-Sort Gate
+    if (parsedAspects.education?.entries) {
+      for (const entry of parsedAspects.education.entries) {
+        if (entry.institution?.raw) {
+          const res = normalizeUniversity(entry.institution.raw);
+          entry.institution.normalized = res.canonical_name;
+          // TODO: Schema enrichment - attach canonical_id, match_method, confidence, is_unverified
+        }
+      }
+    }
 
     const profile: ParsedCandidateProfile = {
       id: `cand_${randomUUID().replace(/-/g, "").slice(0, 12)}`,

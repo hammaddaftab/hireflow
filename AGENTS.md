@@ -24,7 +24,12 @@
 
 ## File State & Manual Edits Policy
 - **Respect User Modifications**: Whenever the agent detects that the current file state is different from what was previously left off (indicating manual edits, deletions, or styling adjustments by the user), the agent MUST NOT silently overwrite or revert those changes.
+- **Never Silently Overwrite or Assume Missing**: If the agent observes that prior changes were overridden, modified, or removed by the user (or considers whether they were applied), the agent MUST explicitly point them out. Never assume they were never applied, and never silently re-apply, overwrite, or revert them.
 - **Ask Before Overwriting/Reverting**: Always explicitly ask the user whether to preserve their manual changes or undo/update them before modifying the affected file sections.
 
 ## Path & Linking Policy
 - **Repo Root as Path Root**: Always format markdown file links considering the repository root as the path root (e.g., `/src/...`, `/docs/...`). Do not use machine-specific absolute filesystem paths or `file:///` URIs.
+
+## Commenting Policy
+- **Direct Comments Only**: Use direct single-line comments (`//` in TypeScript/JavaScript, `#` in Python/Bash) rather than multiline or JSDoc block comments (`/** ... */`, `/* ... */`). Keep explanations concise and adjacent to the relevant code.
+
