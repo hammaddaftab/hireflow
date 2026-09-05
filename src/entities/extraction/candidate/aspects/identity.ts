@@ -86,20 +86,20 @@ export const IdentityExtractionSchema = z.object({
 
 export type IdentityExtraction = z.infer<typeof IdentityExtractionSchema>;
 
-/**
- * Builds the extraction prompt for Candidate Identity.
- */
-export function buildIdentityPrompt(resumeText: string): string {
-  return `Extract the candidate's identity fields from the resume text below.
+// Builds the extraction prompt or instructions for Candidate Identity
+export function buildIdentityPrompt(resumeText?: string): string {
+  const instructions = `Extract the candidate's identity fields:
+- raw: verbatim stated location string from document (e.g. 'Gulberg III, Lahore, Pakistan', 'DHA Phase 5, Karachi', 'F-7, Islamabad', or null if unstated).
+- normalized: an object with:
+  * city: canonical city name (e.g. 'Lahore', 'Karachi', 'Islamabad', 'Rawalpindi', 'Peshawar', 'Faisalabad', 'Quetta') resolved from neighborhoods, addresses, or airport codes, else null.
+  * province: canonical province, territory, or state (e.g. 'Punjab', 'Sindh', 'Khyber Pakhtunkhwa', 'Balochistan', 'Islamabad Capital Territory') if determinable, else null.
 Return only what is explicitly present — do not infer a name from an email address, do not guess a phone country code if not shown.
 Normalize phone numbers to E.164 if a country context is clear from the document; otherwise return the raw string and flag it.
-For location: extract the raw stated location string in 'raw', and structured canonical city and province in 'normalized' if clear, else null.
 For links: for each link entry, return:
 - address: the raw URL or web address string.
-- platform: an object containing 'raw' (the provider name as stated, e.g. 'GitHub', 'Portfolio', or null) and 'normalized' (canonical enum: 'github', 'linkedin', 'gitlab', 'portfolio', 'twitter', 'other', or null).
+- platform: an object containing 'raw' (the provider name as stated, e.g. 'GitHub', 'Portfolio', or null) and 'normalized' (canonical enum: 'github', 'linkedin', 'gitlab', 'portfolio', 'twitter', 'other', or null).`;
 
-Resume text:
-${resumeText}`;
+  return resumeText ? `${instructions}\n\nResume text:\n${resumeText}` : instructions;
 }
 
 export const identityAspect = {

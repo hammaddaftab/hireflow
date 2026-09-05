@@ -74,55 +74,32 @@ export const CandidatePromptAspectsSchema = z.object({
 
 export type CandidatePromptAspects = z.infer<typeof CandidatePromptAspectsSchema>;
 
-/**
- * Recursively converts a Zod schema to an OpenAI-compatible strict structured outputs schema
- * by stripping .default(...) wrappers so all properties are explicitly marked as required.
- */
-function toStrictJsonSchema<T extends z.ZodTypeAny>(schema: T): z.ZodTypeAny {
-  if (schema instanceof z.ZodDefault) {
-    return toStrictJsonSchema(schema.removeDefault());
-  }
-  if (schema instanceof z.ZodObject) {
-    const shape = schema.shape;
-    const newShape: Record<string, z.ZodTypeAny> = {};
-    for (const [key, value] of Object.entries(shape)) {
-      newShape[key] = toStrictJsonSchema(value as z.ZodTypeAny);
-    }
-    return z.object(newShape);
-  }
-  if (schema instanceof z.ZodArray) {
-    return z.array(toStrictJsonSchema(schema.element));
-  }
-  return schema;
-}
-
-export const StrictCandidatePromptAspectsSchema = toStrictJsonSchema(CandidatePromptAspectsSchema);
-
-/**
- * Builds unified extraction prompt covering all 6 candidate aspect requirements.
- */
+// Builds unified extraction prompt covering all 6 candidate aspect requirements
 export function buildUnifiedCandidateExtractionPrompt(resumeText: string): string {
-  return `Extract a standardized candidate profile from the resume text below.
+  return `Extract a standardized candidate profile from the resume text provided in <resume_text> below.
 Strictly adhere to each aspect schema:
 
 1. IDENTITY:
-${identityAspect.prompt(resumeText)}
+${identityAspect.prompt()}
 
 2. WORK HISTORY:
-${workHistoryAspect.prompt(resumeText)}
+${workHistoryAspect.prompt()}
 
 3. EDUCATION:
-${educationAspect.prompt(resumeText)}
+${educationAspect.prompt()}
 
 4. SKILLS DEMONSTRATED:
-${skillsDemonstratedAspect.prompt(resumeText)}
+${skillsDemonstratedAspect.prompt()}
 
 5. SKILLS DECLARED:
-${skillsDeclaredAspect.prompt(resumeText)}
+${skillsDeclaredAspect.prompt()}
 
 6. LOGISTICS:
-${logisticsAspect.prompt(resumeText)}
-`;
+${logisticsAspect.prompt()}
+
+<resume_text>
+${resumeText}
+</resume_text>`;
 }
 
 export {
@@ -160,15 +137,17 @@ export async function extractCandidateProfile(
     return extractCandidateFallback(resumeText, options, warnings);
   }
 
-  // If no AI keys are configured in environment, run deterministic fallback immediately
-  const hasAiKey = Boolean(
-    process.env.OPENAI_API_KEY ||
-    process.env.GOOGLE_GENERATIVE_AI_API_KEY ||
-    process.env.GROQ_API_KEY
-  );
+  // Verify API key is configured for the active provider
+  const resolvedProvider = effectiveProvider || "openai";
+  const hasKeyForProvider =
+    resolvedProvider === "google"
+      ? Boolean(process.env.GOOGLE_GENERATIVE_AI_API_KEY)
+      : resolvedProvider === "openai"
+      ? Boolean(process.env.OPENAI_API_KEY)
+      : true;
 
-  if (!hasAiKey && !options?.provider) {
-    warnings.push("No AI provider API keys configured; executed deterministic fallback extraction engine.");
+  if (!hasKeyForProvider && !options?.provider) {
+    warnings.push(`No API key configured for provider '${resolvedProvider}'; executed deterministic fallback extraction engine.`);
     return extractCandidateFallback(resumeText, options, warnings);
   }
 
@@ -182,16 +161,30 @@ export async function extractCandidateProfile(
     const prompt = buildUnifiedCandidateExtractionPrompt(resumeText);
     const { object } = await generateObject({
       model: languageModel,
-      schema: StrictCandidatePromptAspectsSchema,
+      schema: CandidatePromptAspectsSchema,
       prompt,
       abortSignal: AbortSignal.timeout(timeoutMs),
     });
 
-    const parsedAspects = CandidatePromptAspectsSchema.parse(object);
+    const parsedAspects = object;
 
-    // Normalize education institutions using Two-Tier Hash + Token-Sort Gate
+    // Sanitize dates and ongoing flags in work history
+    if (parsedAspects.work_history?.entries) {
+      for (const entry of parsedAspects.work_history.entries) {
+        if (entry.end_date && /^(present|current|now|ongoing)$/i.test(entry.end_date.trim())) {
+          entry.end_date = null;
+          entry.is_current = true;
+        }
+      }
+    }
+
+    // Sanitize dates and normalize education institutions using Two-Tier Hash + Token-Sort Gate
     if (parsedAspects.education?.entries) {
       for (const entry of parsedAspects.education.entries) {
+        if (entry.end_date && /^(present|current|now|ongoing)$/i.test(entry.end_date.trim())) {
+          entry.end_date = null;
+          entry.is_current = true;
+        }
         if (entry.institution?.raw) {
           const res = normalizeUniversity(entry.institution.raw);
           entry.institution.normalized = res.canonical_name;
@@ -230,6 +223,7 @@ export async function extractCandidateProfile(
     return ParsedCandidateProfileSchema.parse(profile);
   } catch (err) {
     const reason = err instanceof Error ? err.message : String(err);
+    console.error(`[CandidateExtractionService] AI extraction failed (${reason}):`, err);
     warnings.push(`AI extraction unavailable (${reason}); executed deterministic fallback extraction engine.`);
     return extractCandidateFallback(resumeText, options, warnings);
   }

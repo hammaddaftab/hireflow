@@ -60,11 +60,9 @@ export type EmploymentType = z.infer<typeof EmploymentTypeSchema>;
 export type WorkHistoryEntry = z.infer<typeof WorkHistoryEntrySchema>;
 export type WorkHistoryExtraction = z.infer<typeof WorkHistoryExtractionSchema>;
 
-/**
- * Builds the extraction prompt for Work History.
- */
-export function buildWorkHistoryPrompt(resumeText: string): string {
-  return `Extract each distinct work-history entry from the resume text below in reverse chronological order.
+// Builds the extraction prompt or instructions for Work History
+export function buildWorkHistoryPrompt(resumeText?: string): string {
+  const instructions = `Extract each distinct work-history entry in reverse chronological order.
 For each entry:
 - entry_id: assign a unique identifier within this profile (e.g. 'work_1', 'work_2').
 - employer: company or organization name.
@@ -75,10 +73,9 @@ For each entry:
 - employment_type: an object with:
   * value: 'full_time', 'internship', 'contract', or 'freelance'.
   * status: 'confirmed' if explicitly stated in text (e.g. "Full-time", "Intern"), or 'inferred' if deduced from title (e.g. "Intern") or defaulted to 'full_time'.
-- raw_description: original bullet and narrative text kept verbatim — do not summarize, paraphrase, or extract skills here.
+- raw_description: original bullet and narrative text kept verbatim — do not summarize, paraphrase, or extract skills here.`;
 
-Resume text:
-${resumeText}`;
+  return resumeText ? `${instructions}\n\nResume text:\n${resumeText}` : instructions;
 }
 
 export const workHistoryAspect = {

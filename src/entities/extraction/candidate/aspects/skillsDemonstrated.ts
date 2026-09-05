@@ -41,11 +41,9 @@ export type SyntacticTier = z.infer<typeof SyntacticTierSchema>;
 export type SkillDemonstratedItem = z.infer<typeof SkillDemonstratedItemSchema>;
 export type SkillsDemonstratedExtraction = z.infer<typeof SkillsDemonstratedExtractionSchema>;
 
-/**
- * Builds the extraction prompt for Skills Demonstrated.
- */
-export function buildSkillsDemonstratedPrompt(resumeText: string): string {
-  return `For each work-history and project entry below, identify every skill mentioned and classify it into exactly one syntactic tier:
+// Builds the extraction prompt or instructions for Skills Demonstrated
+export function buildSkillsDemonstratedPrompt(resumeText?: string): string {
+  const instructions = `For each work-history and project entry, identify every skill mentioned and classify it into exactly one syntactic tier:
 - action_attributed: the candidate is the grammatical subject of a verb that denotes doing/building/owning the skill use.
 - peripheral_action: a verb is present but denotes passive exposure ("worked with", "assisted with", "familiar with").
 - context_listed: the skill appears in a stack/tools list with no verb connecting it to the candidate at all.
@@ -54,10 +52,9 @@ For each skill, extract:
 - outcome_attached: the literal measurable outcome text if present, else null.
 - concrete_noun_present: true if a specific artifact/system is named, else false.
 - evidence_span: the verbatim quote from the text.
-- evidence_status: confirmed for action_attributed, ambiguous for peripheral_action or context_listed.
+- evidence_status: confirmed for action_attributed, ambiguous for peripheral_action or context_listed.`;
 
-Resume text:
-${resumeText}`;
+  return resumeText ? `${instructions}\n\nResume text:\n${resumeText}` : instructions;
 }
 
 export const skillsDemonstratedAspect = {
