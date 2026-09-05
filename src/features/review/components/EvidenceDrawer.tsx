@@ -1,11 +1,14 @@
 "use client";
 
 import React, { useMemo } from "react";
-import { X, Quote } from "lucide-react";
+import { X } from "lucide-react";
 import { Button } from "@/components/ui/Button";
-import { CandidateReviewItem, BlockingRequirementItem } from "../types";
+import type { CandidateReviewItem, EvaluatedRequirement } from "../types";
+import type {
+  EvaluatedWorkModeRequirement,
+  EvaluatedLocationRequirement,
+} from "../evaluators";
 import { EvidentiaryDot, EvidentiaryDotType } from "./BlockingStrip";
-import { getCompensationAssessment } from "../reviewQueueService";
 
 function getEvidentiaryDotType(status: string): EvidentiaryDotType {
   switch (status) {
@@ -23,6 +26,22 @@ function getEvidentiaryDotType(status: string): EvidentiaryDotType {
   }
 }
 
+function getStatusTextColor(status: string): string {
+  switch (status) {
+    case "confirmed":
+      return "text-on-surface font-semibold";
+    case "contradicted":
+      return "text-rose-700 dark:text-rose-400 font-semibold";
+    case "ambiguous":
+    case "inferred":
+      return "text-amber-700 dark:text-amber-300 font-semibold";
+    case "not_stated":
+    case "unparseable":
+    default:
+      return "text-on-surface-variant";
+  }
+}
+
 export interface EvidenceDrawerProps {
   item: CandidateReviewItem;
   onClose: () => void;
@@ -30,23 +49,28 @@ export interface EvidenceDrawerProps {
 
 interface SkillEvidenceGroup {
   id: string;
-  skills: BlockingRequirementItem[];
+  skills: EvaluatedRequirement[];
   evidenceSpan: string | null;
 }
 
 export function EvidenceDrawer({ item, onClose }: EvidenceDrawerProps) {
-  const { candidate, blockingItems, verifiedYearsExperience } = item;
+  const { candidate, evaluations } = item;
 
-  const minYears = 5;
-  const isExpConfirmed = verifiedYearsExperience >= minYears;
+  const expItem = evaluations.find((e) => e.category === "experience");
+  const minYears = expItem?.label ? parseInt(expItem.label, 10) || 5 : 5;
+  const verifiedYears = item.verifiedYearsExperience;
+  const isExpConfirmed = expItem ? expItem.status === "confirmed" : true;
 
-  const skillItems = blockingItems.filter(
-    (i) => i.category === "skill" || i.category === "dealbreaker"
+  // Strictly technical/domain skills
+  const skillItems = evaluations.filter((e) => e.category === "skill");
+  const compItem = evaluations.find((e) => e.category === "compensation");
+  const noticeItem = evaluations.find((e) => e.category === "notice_period");
+  const eduItem = evaluations.find((e) => e.category === "education");
+  const workModeItem = evaluations.find(
+    (e): e is EvaluatedWorkModeRequirement => e.category === "work_mode"
   );
-
-  const compAssessment = getCompensationAssessment(
-    candidate.logistics.salary_expectation,
-    item.compensationBand
+  const locationItem = evaluations.find(
+    (e): e is EvaluatedLocationRequirement => e.category === "location"
   );
 
   // Group skills that share the exact same demonstrated evidence quote
@@ -111,7 +135,7 @@ export function EvidenceDrawer({ item, onClose }: EvidenceDrawerProps) {
             <span className="inline-flex items-center gap-2">
               <EvidentiaryDot type={isExpConfirmed ? "confirmed" : "gap"} />
               <span className={isExpConfirmed ? "text-on-surface font-semibold" : "text-amber-700 dark:text-amber-300 font-semibold"}>
-                {verifiedYearsExperience} stated · needs {minYears}+
+                {verifiedYears} stated · needs {minYears}+
               </span>
             </span>
           </div>
@@ -142,7 +166,6 @@ export function EvidenceDrawer({ item, onClose }: EvidenceDrawerProps) {
         <div className="bg-surface rounded-xl p-3 shadow-2xs divide-y divide-outline-variant/30 border-0">
           {skillGroups.map((group) => {
             if (group.skills.length > 1) {
-              // Grouped shared evidence block for skills sharing the same source line
               return (
                 <div key={group.id} className="py-2.5 first:pt-0.5 last:pb-0.5 space-y-2">
                   <div className="flex flex-wrap items-center justify-between gap-2">
@@ -223,7 +246,6 @@ export function EvidenceDrawer({ item, onClose }: EvidenceDrawerProps) {
                   </span>
                 </div>
 
-                {/* Evidence quotation if present */}
                 {group.evidenceSpan && (
                   <div className="text-xs text-on-surface-variant pl-3 border-l-2 border-primary/60 italic bg-surface-container-low/50 py-1 rounded-r">
                     &ldquo;{group.evidenceSpan}&rdquo;
@@ -236,30 +258,146 @@ export function EvidenceDrawer({ item, onClose }: EvidenceDrawerProps) {
       </div>
 
       {/* Section 3: Compensation */}
-      <div className="space-y-1.5">
-        <p className="text-[11px] font-bold uppercase tracking-wider text-on-surface-variant">
-          compensation
-        </p>
-        <div className="bg-surface rounded-xl p-3 shadow-2xs space-y-2 border-0">
-          <div className="flex items-center justify-between text-[13px]">
-            <span className="font-medium text-on-surface">Salary expectation</span>
-            <span className="inline-flex items-center gap-2">
-              <EvidentiaryDot type={compAssessment.dotType} />
-              <span className={compAssessment.dotType === "confirmed" ? "text-on-surface font-semibold" : "text-amber-700 dark:text-amber-300 font-semibold"}>
-                {compAssessment.text}
+      {compItem && (
+        <div className="space-y-1.5">
+          <p className="text-[11px] font-bold uppercase tracking-wider text-on-surface-variant">
+            compensation
+          </p>
+          <div className="bg-surface rounded-xl p-3 shadow-2xs space-y-2 border-0">
+            <div className="flex items-center justify-between text-[13px]">
+              <span className="font-medium text-on-surface">{compItem.label}</span>
+              <span className="inline-flex items-center gap-2">
+                <EvidentiaryDot type={getEvidentiaryDotType(compItem.status)} />
+                <span className={getStatusTextColor(compItem.status)}>
+                  {compItem.reasoning}
+                </span>
               </span>
-            </span>
-          </div>
-
-          {candidate.logistics.salary_expectation.raw && (
-            <div className="text-xs text-on-surface-variant pt-1 border-t border-outline-variant/30 space-y-1">
-              <div className="text-on-surface-variant text-[11px] italic">
-                Raw document text: &ldquo;{candidate.logistics.salary_expectation.raw}&rdquo;
-              </div>
             </div>
-          )}
+
+            {candidate.logistics.salary_expectation.raw && (
+              <div className="text-xs text-on-surface-variant pt-1 border-t border-outline-variant/30 space-y-1">
+                <div className="text-on-surface-variant text-[11px] italic">
+                  Raw document text: &ldquo;{candidate.logistics.salary_expectation.raw}&rdquo;
+                </div>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      )}
+
+      {/* Section 4: Notice Period */}
+      {noticeItem && (
+        <div className="space-y-1.5">
+          <p className="text-[11px] font-bold uppercase tracking-wider text-on-surface-variant">
+            notice period
+          </p>
+          <div className="bg-surface rounded-xl p-3 shadow-2xs space-y-2 border-0">
+            <div className="flex items-center justify-between text-[13px]">
+              <span className="font-medium text-on-surface">{noticeItem.label}</span>
+              <span className="inline-flex items-center gap-2">
+                <EvidentiaryDot type={getEvidentiaryDotType(noticeItem.status)} />
+                <span className={getStatusTextColor(noticeItem.status)}>
+                  {noticeItem.reasoning}
+                </span>
+              </span>
+            </div>
+
+            {candidate.logistics.notice_period.raw && (
+              <div className="text-xs text-on-surface-variant pt-1 border-t border-outline-variant/30">
+                <div className="text-on-surface-variant text-[11px] italic">
+                  Raw document text: &ldquo;{candidate.logistics.notice_period.raw}&rdquo;
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Section 5: Education Tier */}
+      {eduItem && (eduItem.evidence_span || candidate.education.entries.length > 0) && (
+        <div className="space-y-1.5">
+          <p className="text-[11px] font-bold uppercase tracking-wider text-on-surface-variant">
+            education
+          </p>
+          <div className="bg-surface rounded-xl p-3 shadow-2xs space-y-2 border-0">
+            <div className="flex items-center justify-between text-[13px]">
+              <span className="font-medium text-on-surface">Highest Degree Tier</span>
+              <span className="inline-flex items-center gap-2">
+                <EvidentiaryDot type={getEvidentiaryDotType(eduItem.status)} />
+                <span className={getStatusTextColor(eduItem.status)}>
+                  {candidate.education.entries[0]?.degree_level.normalized || eduItem.label}
+                </span>
+              </span>
+            </div>
+
+            {eduItem.evidence_span && (
+              <div className="text-xs text-on-surface-variant pt-1 border-t border-outline-variant/30 space-y-1">
+                <div className="text-on-surface-variant text-[11px] italic">
+                  Raw document text: &ldquo;{eduItem.evidence_span}&rdquo;
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Section 6: Work Mode */}
+      {workModeItem && (
+        <div className="space-y-1.5">
+          <p className="text-[11px] font-bold uppercase tracking-wider text-on-surface-variant">
+            work mode
+          </p>
+          <div className="bg-surface rounded-xl p-3 shadow-2xs space-y-2 border-0">
+            <div className="flex items-center justify-between text-[13px]">
+              <span className="font-medium text-on-surface">{workModeItem.label}</span>
+              <span className="inline-flex items-center gap-2">
+                <EvidentiaryDot type={getEvidentiaryDotType(workModeItem.status)} />
+                <span className={getStatusTextColor(workModeItem.status)}>
+                  {workModeItem.reasoning}
+                </span>
+              </span>
+            </div>
+
+            {workModeItem.evidence_span && (
+              <div className="text-xs text-on-surface-variant pt-1 border-t border-outline-variant/30 space-y-1">
+                <div className="text-on-surface-variant text-[11px] italic">
+                  Evidence: &ldquo;{workModeItem.evidence_span}&rdquo;
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Section 7: Location */}
+      {locationItem && (
+        <div className="space-y-1.5">
+          <p className="text-[11px] font-bold uppercase tracking-wider text-on-surface-variant">
+            location
+          </p>
+          <div className="bg-surface rounded-xl p-3 shadow-2xs space-y-2 border-0">
+            <div className="flex items-center justify-between text-[13px]">
+              <span className="font-medium text-on-surface">{locationItem.label}</span>
+              <span className="inline-flex items-center gap-2">
+                <EvidentiaryDot type={getEvidentiaryDotType(locationItem.status)} />
+                <span className={getStatusTextColor(locationItem.status)}>
+                  {locationItem.reasoning}
+                </span>
+              </span>
+            </div>
+
+            {(locationItem.evidence_span || candidate.location?.raw) &&
+            (locationItem.evidence_span || candidate.identity.location?.raw)} && (
+              <div className="text-xs text-on-surface-variant pt-1 border-t border-outline-variant/30 space-y-1">
+                <div className="text-on-surface-variant text-[11px] italic">
+                  Candidate location: &ldquo;{locationItem.evidence_span || candidate.location?.raw}&rdquo;
+                  Candidate location: &ldquo;{locationItem.evidence_span || candidate.identity.location?.raw}&rdquo;
+                </div>
+              </div>
+            )
+          </div>
+        </div>
+      )}
     </div>
   );
 }
