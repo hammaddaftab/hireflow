@@ -1,6 +1,10 @@
 "use client";
 
 import React from "react";
+import {
+  calculateQuadraticBezierPoint,
+  DEFAULT_RING_TRACK_POINTS,
+} from "../utils/arcGeometry";
 
 export interface CircularRingTrackProps {
   activeIndex: number;
@@ -68,12 +72,15 @@ export function CircularRingTrack({ activeIndex, totalCandidates }: CircularRing
         {/* Candidate Arc Pips */}
         {Array.from({ length: maxPips }).map((_, idx) => {
           // Spread pips evenly across the arc curve from -32 degrees to +32 degrees
-          // Center pip (activeIndex) is emphasized
           const t = maxPips === 1 ? 0.5 : idx / (maxPips - 1);
-          // Quadratic bezier interpolation: B(t) = (1-t)^2 P0 + 2(1-t)t P1 + t^2 P2
-          // P0 = (220, 435), P1 = (700, 230), P2 = (1180, 435)
-          const px = (1 - t) * (1 - t) * 220 + 2 * (1 - t) * t * 700 + t * t * 1180;
-          const py = (1 - t) * (1 - t) * 435 + 2 * (1 - t) * t * 230 + t * t * 435;
+          const point = calculateQuadraticBezierPoint(
+            t,
+            DEFAULT_RING_TRACK_POINTS.p0,
+            DEFAULT_RING_TRACK_POINTS.p1,
+            DEFAULT_RING_TRACK_POINTS.p2
+          );
+          const px = point.x;
+          const py = point.y;
           const isCurrent = idx === activeIndex;
 
           return (

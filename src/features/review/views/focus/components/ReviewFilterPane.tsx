@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { Filter, X, Users, ChevronUp, ChevronDown, MapPin } from "lucide-react";
-import { QueryGroup } from "../types";
+import type { QueryGroup } from "../../../types";
 import type { QueueFilterTab } from "@/entities/review";
 
 export interface ReviewFilterPaneProps {

@@ -3,54 +3,24 @@
 import React, { useMemo } from "react";
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/Button";
-import type { CandidateReviewItem, EvaluatedRequirement } from "../types";
+import type { CandidateReviewItem, EvaluatedRequirement } from "../../../types";
 import type {
   EvaluatedWorkModeRequirement,
   EvaluatedLocationRequirement,
-} from "../evaluators";
-import { EvidentiaryDot, EvidentiaryDotType } from "./BlockingStrip";
-
-function getEvidentiaryDotType(status: string): EvidentiaryDotType {
-  switch (status) {
-    case "confirmed":
-      return "confirmed";
-    case "contradicted":
-      return "contradicted";
-    case "ambiguous":
-    case "inferred":
-      return "gap";
-    case "not_stated":
-    case "unparseable":
-    default:
-      return "not_stated";
-  }
-}
-
-function getStatusTextColor(status: string): string {
-  switch (status) {
-    case "confirmed":
-      return "text-on-surface font-semibold";
-    case "contradicted":
-      return "text-rose-700 dark:text-rose-400 font-semibold";
-    case "ambiguous":
-    case "inferred":
-      return "text-amber-700 dark:text-amber-300 font-semibold";
-    case "not_stated":
-    case "unparseable":
-    default:
-      return "text-on-surface-variant";
-  }
-}
+} from "../../evaluators/evaluationStatuses";
+import { EvidentiaryDot, EvidentiaryDotType } from "./EvidentiaryDot";
+import {
+  getEvidentiaryDotType,
+  getStatusTextColor,
+} from "../../utils/evidentiaryStyles";
+import {
+  groupSkillsByEvidenceQuote,
+  type SkillEvidenceGroup,
+} from "../../utils/evidenceGrouping";
 
 export interface EvidenceDrawerProps {
   item: CandidateReviewItem;
   onClose: () => void;
-}
-
-interface SkillEvidenceGroup {
-  id: string;
-  skills: EvaluatedRequirement[];
-  evidenceSpan: string | null;
 }
 
 export function EvidenceDrawer({ item, onClose }: EvidenceDrawerProps) {
@@ -74,36 +44,10 @@ export function EvidenceDrawer({ item, onClose }: EvidenceDrawerProps) {
   );
 
   // Group skills that share the exact same demonstrated evidence quote
-  const skillGroups = useMemo(() => {
-    const groups: SkillEvidenceGroup[] = [];
-    const spanToGroupMap = new Map<string, SkillEvidenceGroup>();
-
-    for (const skill of skillItems) {
-      const rawSpan = skill.evidence_span?.trim();
-      if (rawSpan) {
-        if (spanToGroupMap.has(rawSpan)) {
-          spanToGroupMap.get(rawSpan)!.skills.push(skill);
-        } else {
-          const newGroup: SkillEvidenceGroup = {
-            id: `group_${skill.id}`,
-            skills: [skill],
-            evidenceSpan: rawSpan,
-          };
-          spanToGroupMap.set(rawSpan, newGroup);
-          groups.push(newGroup);
-        }
-      } else {
-        // Skills without evidence quote (orphans, not stated, etc.)
-        groups.push({
-          id: `single_${skill.id}`,
-          skills: [skill],
-          evidenceSpan: null,
-        });
-      }
-    }
-
-    return groups;
-  }, [skillItems]);
+  const skillGroups = useMemo(
+    () => groupSkillsByEvidenceQuote(skillItems),
+    [skillItems]
+  );
 
   return (
     <div className="mt-4 p-4 rounded-2xl bg-surface-container-low space-y-4 border-0">
@@ -173,7 +117,7 @@ export function EvidenceDrawer({ item, onClose }: EvidenceDrawerProps) {
                       {group.skills.map((skill) => {
                         const isConfirmed = skill.status === "confirmed";
                         const isAmbiguous = skill.status === "ambiguous";
-                        const isNotStated = skill.status === "not_stated" || skill.status === "unparseable";
+                        const isNotStated = skill.status === "not_stated";
 
                         return (
                           <span
@@ -210,7 +154,7 @@ export function EvidenceDrawer({ item, onClose }: EvidenceDrawerProps) {
             const skill = group.skills[0];
             const isConfirmed = skill.status === "confirmed";
             const isAmbiguous = skill.status === "ambiguous";
-            const isNotStated = skill.status === "not_stated" || skill.status === "unparseable";
+            const isNotStated = skill.status === "not_stated";
 
             return (
               <div key={group.id} className="py-2.5 first:pt-0.5 last:pb-0.5 space-y-1.5">
@@ -386,15 +330,13 @@ export function EvidenceDrawer({ item, onClose }: EvidenceDrawerProps) {
               </span>
             </div>
 
-            {(locationItem.evidence_span || candidate.location?.raw) &&
-            (locationItem.evidence_span || candidate.identity.location?.raw)} && (
+            {(locationItem.evidence_span || candidate.identity.location.raw) && (
               <div className="text-xs text-on-surface-variant pt-1 border-t border-outline-variant/30 space-y-1">
                 <div className="text-on-surface-variant text-[11px] italic">
-                  Candidate location: &ldquo;{locationItem.evidence_span || candidate.location?.raw}&rdquo;
-                  Candidate location: &ldquo;{locationItem.evidence_span || candidate.identity.location?.raw}&rdquo;
+                  Candidate location: &ldquo;{locationItem.evidence_span || candidate.identity.location.raw}&rdquo;
                 </div>
               </div>
-            )
+            )}
           </div>
         </div>
       )}

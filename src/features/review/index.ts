@@ -1,10 +1,12 @@
-export * from "./types";
-export * from "./reviewQueueService";
-export * from "./components/BlockingStrip";
-export * from "./components/EvidenceDrawer";
-export * from "./components/KeyboardShortcutBar";
-export * from "./components/CandidateCard";
-export * from "./components/ReviewQueuePage";
-export * from "./components/FocusReviewPage";
-export * from "./hooks/useReviewQueue";
-export * from "./evaluators";
+// Single feature facade for Next.js app routes
+
+// Composed whole-page views
+export { ReviewQueuePage } from "./views/queue/ReviewQueuePage";
+export { FocusReviewPage } from "./views/focus/FocusReviewPage";
+
+// Review queue construction service
+export { buildReviewQueue } from "./core/services/reviewQueueService";
+
+// Canonical domain types
+export type { CandidateReviewItem, QueryGroup } from "./types";
+export * from "./core/evaluators/evaluationStatuses";

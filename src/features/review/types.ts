@@ -1,14 +1,14 @@
 import type { ParsedCandidateProfile } from "@/entities/candidate";
 import type { ReviewDecision } from "@/entities/review";
 import type { CompensationBandRequirement } from "@/entities/job";
-export * from "./evaluators/evaluationStatuses";
+export * from "./core/evaluators/evaluationStatuses";
 import type {
   EvaluatedRequirement,
   EvaluatedExperienceRequirement,
   EvaluatedEducationRequirement,
-} from "./evaluators/evaluationStatuses";
-import type { SkillEvaluatorOutput } from "./evaluators/skillEvaluator";
-import type { LogisticsEvaluatorOutput } from "./evaluators/logisticsEvaluator";
+} from "./core/evaluators/evaluationStatuses";
+import type { SkillEvaluatorOutput } from "./core/evaluators/skillEvaluator";
+import type { LogisticsEvaluatorOutput } from "./core/evaluators/logisticsEvaluator";
 
 export interface CandidateReviewItem {
   candidate: ParsedCandidateProfile;

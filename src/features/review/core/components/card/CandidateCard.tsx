@@ -12,12 +12,6 @@ import {
   Eye, 
   ChevronDown, 
   ChevronUp,
-  Github,
-  Linkedin,
-  Gitlab,
-  Globe,
-  Twitter,
-  ExternalLink,
   GraduationCap
 } from "lucide-react";
 import { Card } from "@/components/ui/Card";
@@ -26,23 +20,20 @@ import { Badge } from "@/components/ui/Badge";
 import { Tooltip } from "@/components/ui/Tooltip";
 import { BlockingStrip } from "./BlockingStrip";
 import { EvidenceDrawer } from "./EvidenceDrawer";
-import { CandidateReviewItem } from "../types";
+import type { CandidateReviewItem } from "../../../types";
 import type { ReviewDecision } from "@/entities/review";
+import { formatDegreeName, getPlatformIcon } from "../../utils/formatters";
 
 export interface CandidateCardProps {
   item: CandidateReviewItem;
   isActive: boolean;
   onDecision: (decision: ReviewDecision) => void;
   hideActionButtons?: boolean;
+  headerActionSlot?: React.ReactNode;
+  footerActionSlot?: React.ReactNode;
   isLayer2Expanded?: boolean;
   onToggleLayer2?: () => void;
   expandedFullHeight?: boolean;
-}
-
-function formatDegreeName(deg: string | null): string {
-  if (!deg) return "Degree";
-  const str = deg.replace("_", " ");
-  return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
 export function CandidateCard({
@@ -50,6 +41,8 @@ export function CandidateCard({
   isActive,
   onDecision,
   hideActionButtons = false,
+  headerActionSlot,
+  footerActionSlot,
   isLayer2Expanded: controlledLayer2Expanded,
   onToggleLayer2,
   expandedFullHeight = false,
@@ -69,24 +62,6 @@ export function CandidateCard({
 
   const normalizedCity = candidate.identity.location.normalized?.city || "Unspecified";
   const rawLocation = candidate.identity.location.raw || "Not stated in resume";
-
-  const getPlatformIcon = (platform: string | null) => {
-    switch (platform?.toLowerCase()) {
-      case "github":
-        return <Github className="h-3.5 w-3.5" />;
-      case "linkedin":
-        return <Linkedin className="h-3.5 w-3.5" />;
-      case "gitlab":
-        return <Gitlab className="h-3.5 w-3.5" />;
-      case "portfolio":
-        return <Globe className="h-3.5 w-3.5" />;
-      case "twitter":
-        return <Twitter className="h-3.5 w-3.5" />;
-      case "other":
-      default:
-        return <ExternalLink className="h-3.5 w-3.5" />;
-    }
-  };
 
   const getDecisionBadge = () => {
     switch (item.decision) {
@@ -292,8 +267,12 @@ export function CandidateCard({
           )}
         </div>
 
-        {/* Action Buttons (Libadwaita Tonal Island Buttons) - Hidden when hosted in bottom videogame HUD */}
-        {!hideActionButtons && (
+        {/* Action Buttons (Libadwaita Tonal Island Buttons) - Supports custom slot or default buttons */}
+        {headerActionSlot ? (
+          <div className="flex items-center gap-2 self-end sm:self-start shrink-0">
+            {headerActionSlot}
+          </div>
+        ) : !hideActionButtons ? (
           <div className="flex items-center gap-2 self-end sm:self-start shrink-0">
             <Button
               variant={item.decision === "keep" ? "primary" : "secondary"}
@@ -349,7 +328,7 @@ export function CandidateCard({
               <span>Pass</span>
             </Button>
           </div>
-        )}
+        ) : null}
       </div>
 
       {/* LAYER 1: Category-Grouped Evidence Display with Exception Collapse */}
@@ -391,6 +370,13 @@ export function CandidateCard({
           item={item}
           onClose={toggleLayer2}
         />
+      )}
+
+      {/* Footer Action Slot */}
+      {footerActionSlot && (
+        <div className="mt-4 pt-3 border-t border-outline-variant/30">
+          {footerActionSlot}
+        </div>
       )}
     </Card>
   );

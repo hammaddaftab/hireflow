@@ -1,16 +1,13 @@
 import type { Job } from "@/entities/job";
 import type { ParsedCandidateProfile } from "@/entities/candidate";
-import type {
-  CandidateReviewItem,
-  EvaluatedRequirement,
-  EvaluatedExperienceRequirement,
-} from "./types";
-import {
-  evaluateExperience,
-  evaluateSkills,
-  evaluateEducation,
-  evaluateLogistics,
-} from "./evaluators";
+import type { CandidateReviewItem, EvaluatedRequirement } from "../../types";
+import { evaluateExperience } from "../evaluators/experienceEvaluator";
+import { evaluateSkills } from "../evaluators/skillEvaluator";
+import { evaluateEducation } from "../evaluators/educationEvaluator";
+import { evaluateLogistics } from "../evaluators/logisticsEvaluator";
+import { sortReviewQueue, getCityDistribution } from "../utils/queueCalculations";
+
+export { getCityDistribution };
 
 /**
  * Builds review queue items from candidate profiles and job requirements,
@@ -50,7 +47,7 @@ export function buildReviewQueue(
       notice_period: candidate.logistics.notice_period,
       work_mode_requirement: job.work_mode || null,
       stated_relocation_willingness: candidate.logistics.stated_relocation_willingness,
-      location_requirement: job.location || null,
+      location_requirement: job.location_requirement || null,
       normalized_location: candidate.identity.location,
     });
 
@@ -94,30 +91,5 @@ export function buildReviewQueue(
     };
   });
 
-  // Contiguous all-blocking-confirmed cards first for fast clearance,
-  // followed by cards with ambiguous/not_stated, then contradicted.
-  return items.sort((a, b) => {
-    if (a.isAllBlockingConfirmed && !b.isAllBlockingConfirmed) return -1;
-    if (!a.isAllBlockingConfirmed && b.isAllBlockingConfirmed) return 1;
-    if (!a.hasContradicted && b.hasContradicted) return -1;
-    if (a.hasContradicted && !b.hasContradicted) return 1;
-    return 0;
-  });
-}
-
-/**
- * Calculates distinct normalized cities present in candidate pool,
- * sorted descending by count, with nulls grouped into \"Unspecified\".
- */
-export function getCityDistribution(items: CandidateReviewItem[]): { city: string; count: number }[] {
-  const counts: Record<string, number> = {};
-
-  items.forEach((item) => {
-    const city = item.candidate.identity.location.normalized?.city || "Unspecified";
-    counts[city] = (counts[city] || 0) + 1;
-  });
-
-  return Object.entries(counts)
-    .map(([city, count]) => ({ city, count }))
-    .sort((a, b) => b.count - a.count);
+  return sortReviewQueue(items);
 }

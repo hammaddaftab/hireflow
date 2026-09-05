@@ -1,18 +1,20 @@
 "use client";
 
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { Minimize2, Filter } from "lucide-react";
 import { Typography } from "@/components/ui/Typography";
-import { CandidateCard } from "./CandidateCard";
-import { CircularRingCardHint } from "./CircularRingCardHint";
-import { CircularRingTrack } from "./CircularRingTrack";
-import { FocusCommandBar } from "./FocusCommandBar";
-import { ReviewFilterPane } from "./ReviewFilterPane";
-import { useReviewQueue } from "../hooks/useReviewQueue";
-import { CandidateReviewItem } from "../types";
-import type { QueueFilterTab } from "@/entities/review";
 import type { Job } from "@/entities/job";
+import type { QueueFilterTab } from "@/entities/review";
+import type { CandidateReviewItem } from "../../types";
+import { useReviewData } from "../../core/hooks/useReviewData";
+import { useFocusCarousel } from "./hooks/useFocusCarousel";
+import { CandidateCard } from "../../core/components/card/CandidateCard";
+import { CircularRingCardHint } from "./components/CircularRingCardHint";
+import { CircularRingTrack } from "./components/CircularRingTrack";
+import { FocusCommandBar } from "./components/FocusCommandBar";
+import { ReviewFilterPane } from "./components/ReviewFilterPane";
+import { buildReviewQueryString } from "../../core/utils/reviewQueryParams";
 
 export interface FocusReviewPageProps {
   initialJob: Job;
@@ -34,16 +36,26 @@ export function FocusReviewPage({
   const router = useRouter();
   const [isEvidenceOpen, setIsEvidenceOpen] = useState(false);
 
+  // Tier 1: Domain State Engine
+  const {
+    queue,
+    handleDecision: updateDecision,
+    queryGroups,
+    cityDistribution,
+    stats,
+  } = useReviewData(initialQueue);
+
   const handleExitFocus = useCallback(() => {
-    const params = new URLSearchParams();
-    if (activeIndex > 0) params.set("candidateIndex", String(activeIndex));
-    if (activeTab !== "all") params.set("tab", activeTab);
-    if (selectedCity) params.set("city", selectedCity);
-    if (selectedGroupId && selectedGroupId !== "grp_all") params.set("group", selectedGroupId);
-    const q = params.toString();
+    const q = buildReviewQueryString({
+      candidateIndex: activeIndex,
+      tab: activeTab,
+      city: selectedCity,
+      group: selectedGroupId,
+    });
     router.push(q ? `/review?${q}` : "/review");
   }, [router]);
 
+  // Tier 2: Viewport State Controller
   const {
     activeIndex,
     setActiveIndex,
@@ -53,130 +65,41 @@ export function FocusReviewPage({
     setSelectedCity,
     selectedGroupId,
     setSelectedGroupId,
-    filteredQueue,
-    scopedActiveItem,
-    lastNavigationDirection,
-    handleNext,
-    handlePrev,
-    handleDecision,
-    resetFilters,
-    queryGroups,
-    cityDistribution,
+    isFilterPaneOpen,
+    setIsFilterPaneOpen,
     isGroupsOpen,
     setIsGroupsOpen,
     isLocationOpen,
     setIsLocationOpen,
-    stats,
+    filteredQueue,
+    scopedActiveItem,
+    hasNext,
+    hasPrev,
+    direction,
+    animKey,
+    pulsingHint,
+    hasActiveFilters,
+    handleNext,
+    handlePrev,
+    handleDecision,
+    resetFilters,
+  } = useFocusCarousel({
     queue,
-  } = useReviewQueue({
-    initialJob,
-    initialQueue,
+    queryGroups,
     initialIndex,
     initialTab,
     initialCity,
     initialGroupId,
+    onDecision: updateDecision,
     onExitFocus: handleExitFocus,
+    onToggleEvidence: () => setIsEvidenceOpen((prev) => !prev),
   });
 
-  const [isFilterPaneOpen, setIsFilterPaneOpen] = useState(false);
-
-  const hasActiveFilters =
-    selectedGroupId !== null ||
-    selectedCity !== null ||
-    activeTab !== "all";
-
-  const [direction, setDirection] = useState<"next" | "prev" | "none">("none");
-  const [animKey, setAnimKey] = useState(0);
-  const [pulsingHint, setPulsingHint] = useState<"left" | "right" | null>(null);
-
-  const prevIndexRef = useRef(activeIndex);
-  const prevCandidateIdRef = useRef<string | null>(scopedActiveItem?.candidate.id || null);
-
-  // Sync URL search params with active candidate index so refresh preserves position
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    params.set("candidateIndex", String(activeIndex));
-    const newUrl = `${window.location.pathname}?${params.toString()}`;
-    window.history.replaceState(null, "", newUrl);
-  }, [activeIndex]);
-
-  // Synchronize circumferential arc animation direction when candidate changes
-  useEffect(() => {
-    const currentId = scopedActiveItem?.candidate.id || null;
-    const prevId = prevCandidateIdRef.current;
-    const prevIndex = prevIndexRef.current;
-
-    if (currentId && currentId !== prevId) {
-      let resolvedDirection: "next" | "prev" = "next";
-      if (lastNavigationDirection) {
-        resolvedDirection = lastNavigationDirection;
-      } else if (activeIndex < prevIndex) {
-        resolvedDirection = "prev";
-      } else {
-        resolvedDirection = "next";
-      }
-
-      setDirection(resolvedDirection);
-      setAnimKey((k) => k + 1);
-      setPulsingHint(resolvedDirection === "next" ? "right" : "left");
-
-      const timer = setTimeout(() => {
-        setPulsingHint(null);
-      }, 400);
-
-      prevIndexRef.current = activeIndex;
-      prevCandidateIdRef.current = currentId;
-
-      return () => clearTimeout(timer);
-    } else {
-      prevIndexRef.current = activeIndex;
-      prevCandidateIdRef.current = currentId;
-    }
-  }, [activeIndex, scopedActiveItem?.candidate.id, lastNavigationDirection]);
-
-  // Keyboard shortcuts: Evidence (E), Filters (Q), Close (Esc)
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (["INPUT", "TEXTAREA", "SELECT"].includes((e.target as HTMLElement)?.tagName)) {
-        return;
-      }
-      if (e.key.toLowerCase() === "e") {
-        e.preventDefault();
-        setIsEvidenceOpen((prev) => !prev);
-      } else if (e.key.toLowerCase() === "q") {
-        e.preventDefault();
-        setIsFilterPaneOpen((prev) => !prev);
-      } else if (e.key === "Escape") {
-        if (isFilterPaneOpen) {
-          e.preventDefault();
-          setIsFilterPaneOpen(false);
-        } else if (isEvidenceOpen) {
-          e.preventDefault();
-          setIsEvidenceOpen(false);
-        }
-      }
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isFilterPaneOpen, isEvidenceOpen]);
-
   const totalCandidates = filteredQueue.length;
-  const hasPrev = activeIndex > 0;
-  const hasNext = activeIndex < totalCandidates - 1;
-
-  const handleManualNext = useCallback(() => {
-    setDirection("next");
-    handleNext();
-  }, [handleNext]);
-
-  const handleManualPrev = useCallback(() => {
-    setDirection("prev");
-    handlePrev();
-  }, [handlePrev]);
 
   return (
-    <div className="relative h-screen w-screen flex flex-col justify-between overflow-hidden bg-background text-on-surface select-none">
-      {/* Top-Left HUD Controls: Job Context + Queue Filters Trigger */}
+    <div className="fixed inset-0 z-50 flex flex-col bg-surface overflow-hidden">
+      {/* Top-Left Job Title and Filter Trigger */}
       <div className="absolute top-5 left-6 z-40 flex items-center gap-3 select-none">
         <div className="hidden sm:flex flex-col">
           <span className="text-[10px] uppercase font-bold tracking-wider text-primary">
@@ -249,60 +172,78 @@ export function FocusReviewPage({
           isEvidenceOpen ? "py-0 items-stretch" : "py-4 items-center"
         }`}
       >
-        {/* Background Circumference Arc Track & Position Pips */}
+        {/* Ambient 3D Circular Ring Track SVG beneath center card */}
         <CircularRingTrack
           activeIndex={activeIndex}
           totalCandidates={totalCandidates}
         />
 
-        {/* Left Card entering along circumference angle */}
+        {/* Left Circumferential Ring Perspective Card Hint */}
         <CircularRingCardHint
           direction="left"
-          onClick={handleManualPrev}
+          onClick={handlePrev}
           isPulsing={pulsingHint === "left"}
           disabled={!hasPrev}
         />
 
-        {/* Center Active Focused Card (Sits at apex of circular ring) */}
-        {scopedActiveItem ? (
-          <div
-            key={`${scopedActiveItem.candidate.id}-${animKey}`}
-            className={`relative z-20 w-full max-w-2xl lg:max-w-3xl transition-all duration-300 ${
-              isEvidenceOpen ? "h-full flex flex-col" : "shadow-2xl"
-            } ${
-              direction === "next"
-                ? "animate-arc-enter-right"
-                : direction === "prev"
-                ? "animate-arc-enter-left"
-                : ""
-            }`}
-          >
-            <CandidateCard
-              item={scopedActiveItem}
-              isActive={true}
-              onDecision={handleDecision}
-              hideActionButtons={true}
-              isLayer2Expanded={isEvidenceOpen}
-              onToggleLayer2={() => setIsEvidenceOpen(!isEvidenceOpen)}
-              expandedFullHeight={isEvidenceOpen}
-            />
-          </div>
-        ) : (
-          <div className="relative z-20 p-8 rounded-2xl bg-surface-container text-center self-center">
-            <span className="text-sm font-semibold text-on-surface">No candidates in queue.</span>
-          </div>
-        )}
+        {/* Center Apex Candidate Card Container */}
+        <div
+          className={`relative z-20 flex justify-center transition-all duration-300 ${
+            isEvidenceOpen
+              ? "w-full max-w-5xl h-full px-4"
+              : "w-full max-w-2xl px-4"
+          }`}
+        >
+          {scopedActiveItem ? (
+            <div
+              key={animKey}
+              className={`w-full ${
+                direction === "next"
+                  ? "animate-arc-in-right"
+                  : direction === "prev"
+                  ? "animate-arc-in-left"
+                  : ""
+              } ${isEvidenceOpen ? "h-full" : ""}`}
+            >
+              <CandidateCard
+                item={scopedActiveItem}
+                isActive={true}
+                onDecision={handleDecision}
+                hideActionButtons={true}
+                isLayer2Expanded={isEvidenceOpen}
+                onToggleLayer2={() => setIsEvidenceOpen(!isEvidenceOpen)}
+                expandedFullHeight={isEvidenceOpen}
+              />
+            </div>
+          ) : (
+            <div className="p-12 text-center border border-dashed border-outline-variant rounded-2xl bg-surface-container-low max-w-md">
+              <Typography variant="title-medium" className="text-on-surface font-semibold">
+                No candidates match the active filter criteria.
+              </Typography>
+              <Typography variant="body-small" className="text-on-surface-variant mt-2">
+                Switch to All Candidates or reset filters.
+              </Typography>
+              <button
+                type="button"
+                onClick={resetFilters}
+                className="mt-4 px-4 py-2 rounded-xl bg-primary text-on-primary text-xs font-bold cursor-pointer"
+              >
+                Reset All Filters
+              </button>
+            </div>
+          )}
+        </div>
 
-        {/* Right Card entering along circumference angle */}
+        {/* Right Circumferential Ring Perspective Card Hint */}
         <CircularRingCardHint
           direction="right"
-          onClick={handleManualNext}
+          onClick={handleNext}
           isPulsing={pulsingHint === "right"}
           disabled={!hasNext}
         />
       </main>
 
-      {/* Fixed Background Simple Rectangle Bottom Bar with A, F, R, E Minimalistic Controls */}
+      {/* Fixed Bottom Action Dock */}
       <FocusCommandBar
         currentDecision={scopedActiveItem?.decision}
         isEvidenceOpen={isEvidenceOpen}
@@ -341,10 +282,13 @@ export function FocusReviewPage({
         tabCounts={{
           all: queue.length,
           fastClear: stats.fastClearCount,
-          needsAttention: queue.filter((i) => !i.isAllBlockingConfirmed && !i.hasContradicted).length,
+          needsAttention: queue.filter(
+            (i) => !i.isAllBlockingConfirmed && !i.hasContradicted
+          ).length,
           contradicted: queue.filter((i) => i.hasContradicted).length,
         }}
       />
     </div>
   );
 }
+

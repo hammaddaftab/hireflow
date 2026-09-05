@@ -5,74 +5,16 @@ import { Quote, Tag, AlertCircle } from "lucide-react";
 import type {
   EvaluatedExperienceRequirement,
   EvaluatedEducationRequirement,
-  SkillEvaluatorOutput,
-  LogisticsEvaluatorOutput,
   EvidentiaryDotType,
-} from "../evaluators";
+} from "../../evaluators/evaluationStatuses";
+import type { SkillEvaluatorOutput } from "../../evaluators/skillEvaluator";
+import type { LogisticsEvaluatorOutput } from "../../evaluators/logisticsEvaluator";
 import { Tooltip } from "@/components/ui/Tooltip";
+import { EvidentiaryDot } from "./EvidentiaryDot";
+import { getPillStyles, getBadgeStyles } from "../../utils/evidentiaryStyles";
 
+export { EvidentiaryDot };
 export type { EvidentiaryDotType };
-
-export function EvidentiaryDot({ type }: { type: EvidentiaryDotType }) {
-  switch (type) {
-    case "confirmed":
-      return (
-        <span
-          className="w-2 h-2 rounded-full bg-blue-600 dark:bg-blue-400 shrink-0 inline-block"
-          aria-hidden="true"
-        />
-      );
-    case "gap":
-      return (
-        <span
-          className="w-2 h-2 rounded-full bg-amber-500 dark:bg-amber-400 shrink-0 inline-block"
-          aria-hidden="true"
-        />
-      );
-    case "contradicted":
-      return (
-        <span
-          className="w-2 h-2 rounded-full border-[1.5px] border-rose-600 dark:border-rose-400 bg-transparent shrink-0 inline-block"
-          aria-hidden="true"
-        />
-      );
-    case "not_stated":
-    default:
-      return (
-        <span
-          className="w-2 h-2 rounded-full border-[1.5px] border-dashed border-slate-400 dark:border-slate-500 bg-transparent shrink-0 inline-block"
-          aria-hidden="true"
-        />
-      );
-  }
-}
-
-function getPillStyles(status: EvidentiaryDotType) {
-  switch (status) {
-    case "confirmed":
-      return "bg-blue-50/90 dark:bg-blue-950/40 text-blue-950 dark:text-blue-200 border-blue-200/90 dark:border-blue-800/60";
-    case "gap":
-      return "bg-amber-50/90 dark:bg-amber-950/40 text-amber-950 dark:text-amber-200 border-amber-200/90 dark:border-amber-800/60";
-    case "contradicted":
-      return "bg-rose-50/90 dark:bg-rose-950/40 text-rose-950 dark:text-rose-200 border-rose-200/90 dark:border-rose-800/60";
-    case "not_stated":
-    default:
-      return "bg-surface-container/40 text-on-surface-variant border-dashed border-outline-variant/60";
-  }
-}
-
-function getBadgeStyles(variant: EvidentiaryDotType) {
-  switch (variant) {
-    case "confirmed":
-      return "bg-blue-100 dark:bg-blue-900/60 text-blue-800 dark:text-blue-200 font-bold";
-    case "contradicted":
-      return "bg-rose-100 dark:bg-rose-900/60 text-rose-800 dark:text-rose-200 font-bold";
-    case "gap":
-    case "not_stated":
-    default:
-      return "bg-amber-100 dark:bg-amber-900/60 text-amber-800 dark:text-amber-200 font-bold";
-  }
-}
 
 export interface BlockingStripProps {
   experience: EvaluatedExperienceRequirement;
