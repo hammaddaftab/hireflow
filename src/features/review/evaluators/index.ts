@@ -6,4 +6,5 @@ export * from "./compensationEvaluator";
 export * from "./noticePeriodEvaluator";
 export * from "./workModeEvaluator";
 export * from "./locationEvaluator";
+export * from "./logisticsEvaluator";
 

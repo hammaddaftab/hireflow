@@ -39,6 +39,20 @@ export function evaluateLocation(input: LocationEvaluatorInput): EvaluatedLocati
     reasoning = `Candidate located in ${candCity || "different city"}; relocation willingness to ${reqCity} is not stated.`;
   }
 
+  const dotType =
+    status === "confirmed"
+      ? "confirmed"
+      : status === "contradicted"
+      ? "contradicted"
+      : "gap";
+  const pillText = normalized_location.raw || candCity || (reqCity ? `Location: ${reqCity}` : "Location");
+  const badgeText =
+    status === "confirmed"
+      ? "Confirmed"
+      : status === "contradicted"
+      ? "Contradicted"
+      : "Ambiguous";
+
   return {
     id: id || "req_location",
     category: "location",
@@ -47,6 +61,11 @@ export function evaluateLocation(input: LocationEvaluatorInput): EvaluatedLocati
     status,
     evidence_span: normalized_location.raw,
     reasoning,
+    derived: {
+      dotType,
+      pillText,
+      badgeText,
+    },
   };
 }
 

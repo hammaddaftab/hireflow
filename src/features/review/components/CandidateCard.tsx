@@ -357,7 +357,12 @@ export function CandidateCard({
         <div className="flex flex-col md:flex-row md:items-start justify-between gap-3">
           {/* Category Rows (Experience, Skills, Education, Logistics) */}
           <div className="flex-1">
-            <BlockingStrip evaluations={item.evaluations} skills={item.skills} />
+            <BlockingStrip
+              experience={item.experience}
+              skills={item.skills}
+              education={item.education}
+              logistics={item.logistics}
+            />
           </div>
 
           {/* Action & Disclosure Controls */}

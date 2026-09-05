@@ -38,6 +38,12 @@ export function evaluateExperience(
     ? `${verifiedYears} yrs verified full-time experience across ${fullTimeRolesCount} roles.`
     : `Only ${verifiedYears} yrs verified full-time experience (requires ${minYears} yrs).`;
 
+  const dotType = isPassed ? "confirmed" : "gap";
+  const pillText = isPassed
+    ? `${verifiedYears} yrs verified experience${minYears > 0 ? ` · needs ${minYears}+` : ""}`
+    : `${verifiedYears} / ${minYears} yrs exp`;
+  const badgeText = isPassed ? "Confirmed" : "Gap";
+
   return {
     id: "req_exp",
     category: "experience",
@@ -47,6 +53,12 @@ export function evaluateExperience(
     evidence_span: work_history_entries[0]?.raw_description || null,
     reasoning,
     verifiedYears,
+    minYears,
+    derived: {
+      dotType,
+      pillText,
+      badgeText,
+    },
   };
 }
 

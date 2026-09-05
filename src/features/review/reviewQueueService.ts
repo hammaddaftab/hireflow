@@ -9,10 +9,7 @@ import {
   evaluateExperience,
   evaluateSkills,
   evaluateEducation,
-  evaluateCompensation,
-  evaluateNoticePeriod,
-  evaluateWorkMode,
-  evaluateLocation,
+  evaluateLogistics,
 } from "./evaluators";
 
 /**
@@ -24,72 +21,47 @@ export function buildReviewQueue(
   job: Job
 ): CandidateReviewItem[] {
   const items: CandidateReviewItem[] = candidates.map((candidate) => {
-    const evaluations: EvaluatedRequirement[] = [];
-
     // 1. Experience Evaluation
-    evaluations.push(
-      evaluateExperience({
-        experience_requirement: job.min_experience || null,
-        work_history_entries: candidate.work_history.entries,
-      })
-    );
+    const experience = evaluateExperience({
+      experience_requirement: job.min_experience || null,
+      work_history_entries: candidate.work_history.entries,
+    });
 
     // 2. Skills Evaluation
-    const skillsOutput = evaluateSkills({
+    const skills = evaluateSkills({
       skills_required: job.skills_required,
       skills_preferred: job.skills_preferred,
       skills_demonstrated: candidate.skills_demonstrated.skills,
       skills_declared: candidate.skills_declared.skills_declared,
     });
-    evaluations.push(...skillsOutput.evaluations);
 
     // 3. Education Evaluation
-    evaluations.push(
-      evaluateEducation({
-        education_requirement: job.education_min || null,
-        education_entries: candidate.education.entries,
-        id: "req_edu",
-      })
-    );
+    const education = evaluateEducation({
+      education_requirement: job.education_min || null,
+      education_entries: candidate.education.entries,
+      id: "req_edu",
+    });
 
-    // 4. Compensation Evaluation
-    evaluations.push(
-      evaluateCompensation({
-        compensation_requirement: job.compensation_band || null,
-        salary_expectation: candidate.logistics.salary_expectation,
-        id: "req_comp",
-      })
-    );
+    // 4. Logistics Evaluation (compensation, notice, work mode, location)
+    const logistics = evaluateLogistics({
+      compensation_requirement: job.compensation_band || null,
+      salary_expectation: candidate.logistics.salary_expectation,
+      notice_period_requirement: job.max_notice_period || null,
+      notice_period: candidate.logistics.notice_period,
+      work_mode_requirement: job.work_mode || null,
+      stated_relocation_willingness: candidate.logistics.stated_relocation_willingness,
+      location_requirement: job.location || null,
+      normalized_location: candidate.identity.location,
+    });
 
-    // 5. Notice Period Evaluation
-    evaluations.push(
-      evaluateNoticePeriod({
-        notice_period_requirement: job.max_notice_period || null,
-        notice_period: candidate.logistics.notice_period,
-        id: "req_notice",
-      })
-    );
+    const evaluations: EvaluatedRequirement[] = [
+      experience,
+      ...skills.evaluations,
+      education,
+      ...logistics.evaluations,
+    ];
 
-    // 6. Work Mode Evaluation
-    evaluations.push(
-      evaluateWorkMode({
-        work_mode_requirement: job.work_mode || null,
-        stated_relocation_willingness: candidate.logistics.stated_relocation_willingness,
-        id: "req_work_mode",
-      })
-    );
-
-    // 7. Location Evaluation
-    evaluations.push(
-      evaluateLocation({
-        location_requirement: job.location || null,
-        normalized_location: candidate.identity.location,
-        stated_relocation_willingness: candidate.logistics.stated_relocation_willingness,
-        id: "req_location",
-      })
-    );
-
-    // 8. Knockout sorting metrics
+    // 5. Knockout sorting metrics
     const blockingItems = evaluations.filter((e) => e.blocking);
     const isAllBlockingConfirmed =
       blockingItems.length > 0
@@ -100,16 +72,16 @@ export function buildReviewQueue(
       (b) => b.status === "ambiguous" || b.status === "not_stated"
     );
 
-    const expEval = evaluations.find(
-      (e): e is EvaluatedExperienceRequirement => e.category === "experience"
-    );
-    const verifiedYears = expEval?.verifiedYears ?? 0;
+    const verifiedYears = experience.verifiedYears;
 
     return {
       candidate,
       jobId: job.id,
       evaluations,
-      skills: skillsOutput,
+      experience,
+      skills,
+      education,
+      logistics,
       decision: "pending",
 
       // Queue metrics and sort metadata
