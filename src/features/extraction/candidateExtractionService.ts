@@ -45,6 +45,8 @@ import {
   type CandidateFallbackOptions,
 } from "./heuristicExtraction";
 import { normalizeUniversity } from "./universityNormalizer";
+import { normalizeFieldOfStudy } from "./fieldOfStudyNormalizer";
+import { normalizeSkill } from "./skillNormalizer";
 
 import { z } from "zod";
 
@@ -178,7 +180,7 @@ export async function extractCandidateProfile(
       }
     }
 
-    // Sanitize dates and normalize education institutions using Two-Tier Hash + Token-Sort Gate
+    // Sanitize dates and normalize education institutions & fields
     if (parsedAspects.education?.entries) {
       for (const entry of parsedAspects.education.entries) {
         if (entry.end_date && /^(present|current|now|ongoing)$/i.test(entry.end_date.trim())) {
@@ -188,9 +190,28 @@ export async function extractCandidateProfile(
         if (entry.institution?.raw) {
           const res = normalizeUniversity(entry.institution.raw);
           entry.institution.normalized = res.canonical_name;
-          // TODO: Schema enrichment - attach canonical_id, match_method, confidence, is_unverified
+        }
+        const rawField = entry.field?.raw || entry.field?.normalized;
+        if (rawField) {
+          entry.field.normalized = normalizeFieldOfStudy(rawField);
         }
       }
+    }
+
+    // Normalize demonstrated skills at extraction
+    if (parsedAspects.skills_demonstrated?.skills) {
+      for (const item of parsedAspects.skills_demonstrated.skills) {
+        if (item.skill) {
+          item.skill = normalizeSkill(item.skill);
+        }
+      }
+    }
+
+    // Normalize declared skills at extraction and deduplicate
+    if (parsedAspects.skills_declared?.skills_declared) {
+      parsedAspects.skills_declared.skills_declared = Array.from(
+        new Set(parsedAspects.skills_declared.skills_declared.map(normalizeSkill).filter(Boolean))
+      );
     }
 
     const profile: ParsedCandidateProfile = {

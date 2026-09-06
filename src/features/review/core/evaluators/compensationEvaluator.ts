@@ -55,7 +55,13 @@ export function evaluateCompensation(input: CompensationEvaluatorInput): Evaluat
   const minVal = norm.min ?? norm.max!;
   const maxVal = norm.max ?? norm.min!;
 
-  const rate = curr === "USD" && band.currency === "PKR" ? 278 : 1;
+  // Fixed conversion rate between USD and PKR (1 USD = 278 PKR)
+  const rate =
+    curr === "USD" && band.currency === "PKR"
+      ? 278
+      : curr === "PKR" && band.currency === "USD"
+      ? 1 / 278
+      : 1;
   const normMinInJobCurrency = minVal * rate;
   const normMaxInJobCurrency = maxVal * rate;
 

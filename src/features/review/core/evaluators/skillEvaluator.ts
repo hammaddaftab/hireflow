@@ -1,6 +1,7 @@
 import type { SkillRequirementItem } from "@/entities/job";
 import type { SkillDemonstratedItem } from "@/entities/extraction/candidate/aspects/skillsDemonstrated";
 import type { EvaluatedSkillRequirement } from "./evaluationStatuses";
+import { matchSkill } from "@/features/extraction/skillNormalizer";
 
 export type SkillEvaluatorInput = {
   skills_required?: SkillRequirementItem[] | null;
@@ -33,18 +34,45 @@ export function evaluateSkills(input: SkillEvaluatorInput): SkillEvaluatorOutput
     skills_declared,
   } = input;
 
+  // Assumes normalized candidate skills from extraction pipeline and normalized requirements from job pipeline
   const demonstratedMap = new Map<string, SkillDemonstratedItem>();
   for (const s of skills_demonstrated) {
-    demonstratedMap.set(s.skill.toLowerCase(), s);
+    demonstratedMap.set(s.skill, s);
   }
 
-  const declaredSet = new Set(skills_declared.map((s) => s.toLowerCase()));
+  const declaredSet = new Set(skills_declared);
 
   // Unverified candidate claims: declared in resume but not demonstrated in work history
-  const orphanSkillsList = skills_declared.filter(
-    (s) => !demonstratedMap.has(s.toLowerCase())
-  );
+  const orphanSkillsList = skills_declared.filter((declared) => {
+    if (demonstratedMap.has(declared)) return false;
+    return !skills_demonstrated.some((item) => matchSkill(declared, item.skill));
+  });
   const orphanSkillsCount = orphanSkillsList.length;
+
+  // Matches required skill against candidate's demonstrated list
+  function findDemonstrated(skillName: string): SkillDemonstratedItem | undefined {
+    // Direct O(1) match on normalized values established at ingress
+    const direct = demonstratedMap.get(skillName);
+    if (direct) return direct;
+
+    for (const item of skills_demonstrated) {
+      if (matchSkill(skillName, item.skill)) {
+        return item;
+      }
+    }
+    return undefined;
+  }
+
+  // Checks if required skill was declared in candidate's profile
+  function isSkillDeclared(skillName: string): boolean {
+    if (declaredSet.has(skillName)) return true;
+    for (const declared of skills_declared) {
+      if (matchSkill(skillName, declared)) {
+        return true;
+      }
+    }
+    return false;
+  }
 
   const evaluations: EvaluatedSkillRequirement[] = [];
 
@@ -54,7 +82,7 @@ export function evaluateSkills(input: SkillEvaluatorInput): SkillEvaluatorOutput
     id: string
   ): EvaluatedSkillRequirement {
     const skillName = reqItem.skill;
-    const demonstrated = demonstratedMap.get(skillName.toLowerCase());
+    const demonstrated = findDemonstrated(skillName);
 
     if (demonstrated) {
       const outcomeAttached = demonstrated.outcome_attached?.trim() || null;
@@ -88,7 +116,7 @@ export function evaluateSkills(input: SkillEvaluatorInput): SkillEvaluatorOutput
       };
     }
 
-    const isDeclared = declaredSet.has(skillName.toLowerCase());
+    const isDeclared = isSkillDeclared(skillName);
     const dotType = isDeclared ? "gap" : "not_stated";
     const badgeText = isDeclared ? "Self-Reported Only" : "Not Stated";
 

@@ -12,31 +12,37 @@ export type LocationEvaluatorInput = {
 export function evaluateLocation(input: LocationEvaluatorInput): EvaluatedLocationRequirement {
   const { location_requirement, normalized_location, stated_relocation_willingness, id } = input;
   const reqCity = location_requirement?.city || null;
+  const reqProvince = location_requirement?.province || null;
   const isBlocking = Boolean(location_requirement?.blocking);
 
   const candCity = normalized_location.normalized?.city || null;
-  const isDirectMatch = Boolean(
-    reqCity && candCity && reqCity.toLowerCase() === candCity.toLowerCase()
-  );
+  const candProvince = normalized_location.normalized?.province || null;
+
+  const targetLocation = [reqCity, reqProvince].filter(Boolean).join(", ");
+  const isCityMatch = Boolean(reqCity && candCity && reqCity.toLowerCase() === candCity.toLowerCase());
+  const isProvinceMatch = Boolean(reqProvince && candProvince && reqProvince.toLowerCase() === candProvince.toLowerCase());
 
   let status: LocationStatus = "confirmed";
   let reasoning = "Location requirements satisfied.";
 
-  if (!reqCity) {
+  if (!reqCity && !reqProvince) {
     status = "confirmed";
-    reasoning = candCity ? `Candidate based in ${candCity}.` : "Location is open/unspecified.";
-  } else if (isDirectMatch) {
+    reasoning = candCity ? `Candidate based in ${[candCity, candProvince].filter(Boolean).join(", ")}.` : "Location is open/unspecified.";
+  } else if (reqCity && isCityMatch) {
     status = "confirmed";
     reasoning = `Direct city match: ${candCity}.`;
+  } else if (!reqCity && reqProvince && isProvinceMatch) {
+    status = "confirmed";
+    reasoning = `Province match: ${candProvince} (${candCity || "unspecified city"}).`;
   } else if (stated_relocation_willingness === "willing") {
     status = "confirmed";
-    reasoning = `Based in ${candCity || "other location"}, but candidate stated willing to relocate to ${reqCity}.`;
+    reasoning = `Based in ${candCity || candProvince || "other location"}, but candidate stated willing to relocate to ${targetLocation}.`;
   } else if (stated_relocation_willingness === "unwilling") {
     status = "contradicted";
-    reasoning = `Candidate located in ${candCity || "different city"} and unwilling to relocate to ${reqCity}.`;
+    reasoning = `Candidate located in ${candCity || candProvince || "different location"} and unwilling to relocate to ${targetLocation}.`;
   } else {
     status = "ambiguous";
-    reasoning = `Candidate located in ${candCity || "different city"}; relocation willingness to ${reqCity} is not stated.`;
+    reasoning = `Candidate located in ${candCity || candProvince || "different location"}; relocation willingness to ${targetLocation} is not stated.`;
   }
 
   const dotType =
@@ -45,7 +51,7 @@ export function evaluateLocation(input: LocationEvaluatorInput): EvaluatedLocati
       : status === "contradicted"
       ? "contradicted"
       : "gap";
-  const pillText = normalized_location.raw || candCity || (reqCity ? `Location: ${reqCity}` : "Location");
+  const pillText = normalized_location.raw || candCity || (targetLocation ? `Location: ${targetLocation}` : "Location");
   const badgeText =
     status === "confirmed"
       ? "Confirmed"
@@ -56,7 +62,7 @@ export function evaluateLocation(input: LocationEvaluatorInput): EvaluatedLocati
   return {
     id: id || "req_location",
     category: "location",
-    label: reqCity ? `Location: ${reqCity}` : "Location",
+    label: targetLocation ? `Location: ${targetLocation}` : "Location",
     blocking: isBlocking,
     status,
     evidence_span: normalized_location.raw,

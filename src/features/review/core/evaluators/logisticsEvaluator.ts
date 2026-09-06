@@ -63,6 +63,8 @@ export function evaluateLogistics(input: LogisticsEvaluatorInput): LogisticsEval
   const workMode = evaluateWorkMode({
     work_mode_requirement: input.work_mode_requirement,
     stated_relocation_willingness: input.stated_relocation_willingness,
+    location_requirement: input.location_requirement,
+    normalized_location: input.normalized_location,
     id: "req_work_mode",
   });
 
