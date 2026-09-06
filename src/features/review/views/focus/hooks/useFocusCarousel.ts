@@ -37,8 +37,8 @@ export interface UseFocusCarouselReturn {
   hasNext: boolean;
   hasPrev: boolean;
   direction: "next" | "prev" | "none";
-  animKey: number;
-  pulsingHint: "left" | "right" | null;
+  animKey?: number;
+  pulsingHint?: "left" | "right" | null;
   hasActiveFilters: boolean;
   handleNext: () => void;
   handlePrev: () => void;
@@ -46,11 +46,8 @@ export interface UseFocusCarouselReturn {
   resetFilters: () => void;
 }
 
-/**
- * Tier 2 Focus Viewport Controller Hook:
- * Manages 3D circular ring carousel navigation, arc transitions, pulse hints,
- * HUD filter pane states, and keyboard shortcut event listeners.
- */
+// Tier 2 Focus Viewport Controller Hook:
+// Manages spatial deck carousel navigation, HUD filter pane states, and keyboard shortcut event listeners.
 export function useFocusCarousel({
   queue,
   queryGroups,
@@ -73,7 +70,6 @@ export function useFocusCarousel({
   const [direction, setDirection] = useState<"next" | "prev" | "none">("none");
   const [animKey, setAnimKey] = useState(0);
   const [pulsingHint, setPulsingHint] = useState<"left" | "right" | null>(null);
-  const [lastNavigationDirection, setLastNavigationDirection] = useState<"next" | "prev" | null>(null);
 
   const filteredQueue = useMemo(() => {
     return filterReviewQueue(queue, {
@@ -93,9 +89,6 @@ export function useFocusCarousel({
     selectedCity !== null ||
     activeTab !== "all";
 
-  const prevIndexRef = useRef(activeIndex);
-  const prevCandidateIdRef = useRef<string | null>(scopedActiveItem?.candidate.id || null);
-
   // Sync URL search params with active candidate index
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -104,51 +97,23 @@ export function useFocusCarousel({
     window.history.replaceState(null, "", newUrl);
   }, [activeIndex]);
 
-  // Synchronize circumferential arc animation direction when candidate changes
-  useEffect(() => {
-    const currentId = scopedActiveItem?.candidate.id || null;
-    const prevId = prevCandidateIdRef.current;
-    const prevIndex = prevIndexRef.current;
-
-    if (currentId && currentId !== prevId) {
-      let resolvedDirection: "next" | "prev" = "next";
-      if (lastNavigationDirection) {
-        resolvedDirection = lastNavigationDirection;
-      } else if (activeIndex < prevIndex) {
-        resolvedDirection = "prev";
-      } else {
-        resolvedDirection = "next";
-      }
-
-      setDirection(resolvedDirection);
-      setAnimKey((k) => k + 1);
-      setPulsingHint(resolvedDirection === "next" ? "right" : "left");
-
-      const timer = setTimeout(() => {
-        setPulsingHint(null);
-      }, 400);
-
-      prevIndexRef.current = activeIndex;
-      prevCandidateIdRef.current = currentId;
-
-      return () => clearTimeout(timer);
-    } else {
-      prevIndexRef.current = activeIndex;
-      prevCandidateIdRef.current = currentId;
-    }
-  }, [activeIndex, scopedActiveItem?.candidate.id, lastNavigationDirection]);
-
   const handleNext = useCallback(() => {
     if (hasNext) {
-      setLastNavigationDirection("next");
+      setDirection("next");
+      setAnimKey((k) => k + 1);
+      setPulsingHint("right");
       setActiveIndex((prev) => prev + 1);
+      setTimeout(() => setPulsingHint(null), 400);
     }
   }, [hasNext]);
 
   const handlePrev = useCallback(() => {
     if (hasPrev) {
-      setLastNavigationDirection("prev");
+      setDirection("prev");
+      setAnimKey((k) => k + 1);
+      setPulsingHint("left");
       setActiveIndex((prev) => prev - 1);
+      setTimeout(() => setPulsingHint(null), 400);
     }
   }, [hasPrev]);
 
@@ -158,8 +123,11 @@ export function useFocusCarousel({
       onDecision(scopedActiveItem.candidate.id, decision);
 
       if (hasNext) {
-        setLastNavigationDirection("next");
+        setDirection("next");
+        setAnimKey((k) => k + 1);
+        setPulsingHint("right");
         setActiveIndex((prev) => prev + 1);
+        setTimeout(() => setPulsingHint(null), 400);
       }
     },
     [scopedActiveItem, hasNext, onDecision]
