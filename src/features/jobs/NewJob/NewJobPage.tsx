@@ -37,10 +37,6 @@ export function NewJobPage() {
   // Step 1: Role Identity State
   const [title, setTitle] = useState("Senior Fullstack Engineer");
   const [department, setDepartment] = useState("Core Platform");
-  const [seniority, setSeniority] = useState("Senior Level");
-  const [description, setDescription] = useState(
-    "Lead Next.js frontend architecture and scalable backend service delivery for modern hiring pipelines."
-  );
 
   // Step 2: Screening Criteria State
   const [fields, setFields] = useState<Record<string, FormFieldState>>(initialRequirementsFields);
@@ -129,8 +125,9 @@ export function NewJobPage() {
         return "Flexible / Remote";
       })(),
       employmentType: "full-time",
-      description,
-      seniority_level: seniority,
+      // TODO: Remove description and seniority_level from database schema and migrations in a future full schema cleanup
+      description: null,
+      seniority_level: null,
 
       // Canonical schema fields matching JobRequirementsExtractionSchema & Drizzle jobs table
       skills_required: mandatorySkillsList.map((skill) =>
@@ -278,10 +275,6 @@ export function NewJobPage() {
           setTitle={setTitle}
           department={department}
           setDepartment={setDepartment}
-          seniority={seniority}
-          setSeniority={setSeniority}
-          description={description}
-          setDescription={setDescription}
           onContinue={handleContinueToCriteria}
         />
       )}
@@ -344,7 +337,7 @@ export function NewJobPage() {
           <div className="p-3 rounded-lg bg-surface-container border border-outline-variant text-xs">
             <span className="font-bold text-on-surface">Target Role: </span>
             <span className="text-on-surface-variant">
-              {title} ({seniority}) — {department}
+              {title} — {department}
             </span>
           </div>
           <p className="text-xs text-on-surface-variant leading-relaxed">

@@ -18,6 +18,7 @@ export const jobs = pgTable("jobs", {
   department: text("department"),
   location: text("location"),
   employmentType: varchar("employment_type", { length: 32 }),
+  // TODO: Remove description and seniority_level columns in a future full schema migration
   description: text("description"),
   seniority_level: text("seniority_level"),
 

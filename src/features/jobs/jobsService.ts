@@ -283,8 +283,9 @@ export class JobsService {
       department: "Engineering",
       location: "San Francisco, CA (Remote)",
       employmentType: "full-time",
-      description: "We are seeking an experienced Full Stack Engineer to lead next-generation hiring intelligence tools.",
-      seniority_level: "Senior Level",
+      // TODO: Remove description and seniority_level in a future schema cleanup
+      description: null,
+      seniority_level: null,
       skills_required: [
         { active: true, skill: normalizeSkill("TypeScript"), blocking: true },
         { active: true, skill: normalizeSkill("React"), blocking: true },

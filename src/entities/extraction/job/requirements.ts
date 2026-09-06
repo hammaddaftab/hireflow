@@ -143,9 +143,12 @@ export const JobRequirementsExtractionSchema = z.object({
   title: z
     .string()
     .describe("Canonical job title parsed from the JD"),
+  // TODO: Remove seniority_level in a future schema cleanup
   seniority_level: z
     .string()
     .nullable()
+    .optional()
+    .default(null)
     .describe("Seniority level (e.g. Junior, Mid, Senior, Lead, Staff, Principal) or null"),
   skills_required: z
     .array(SkillRequirementItemSchema)
