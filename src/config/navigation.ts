@@ -17,6 +17,7 @@ export const ROUTES = {
   EDIT_JOB: (id: string) => `/jobs/${id}/edit`,
   REVIEW: "/review",
   GROUPS: "/groups",
+  UPLOADS: "/uploads",
 } as const;
 
 /**
@@ -36,6 +37,13 @@ export const SIDEBAR_NAV_ITEMS: NavItem[] = [
     href: ROUTES.REVIEW,
     description: "Rapid candidate screening queue with two-layer evidence disclosure",
     matchPatterns: ["/review"],
+  },
+  {
+    id: "uploads",
+    label: "Resume Uploads",
+    href: ROUTES.UPLOADS,
+    description: "Candidate resumes stored in Vercel Blob Storage staged for Step 2",
+    matchPatterns: ["/uploads"],
   },
   {
     id: "groups",
@@ -60,6 +68,7 @@ export const ROUTE_LABEL_MAP: Record<string, string> = {
   jobs: "Job Postings",
   new: "New Requirement Schema",
   review: "Review Queue",
+  uploads: "Resume Uploads",
   candidates: "Candidates",
   analytics: "Analytics",
   settings: "Settings",
