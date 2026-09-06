@@ -7,7 +7,7 @@ Completed
 ```json
 {
   "title": "string",
-  "seniority_level": "string | null",
+  "seniority_level": "string | null", // TODO: Deprecated - to be removed in future schema cleanup
   "skills_required": [
     { "skill": "string", "blocking": true }
   ],

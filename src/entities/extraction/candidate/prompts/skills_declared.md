@@ -56,7 +56,7 @@ Computed once per candidate profile, not per skill:
 }
 ```
 - **density_anomaly** — ratio of declared-skill-count to work-history-entry-count
-  (or seniority level) sits well outside the typical baseline for the role.
+   sits well outside the typical baseline for the role.
   Surfaces resumes with dense keyword stuffing but thin narrative support.
 
 ## Design Decisions

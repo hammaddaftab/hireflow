@@ -25,11 +25,10 @@ export const CreateJobSchema = z.object({
   employmentType: z.enum(["full-time", "part-time", "contract", "remote"], {
     errorMap: () => ({ message: "Employment type must be full-time, part-time, contract, or remote" }),
   }),
-  description: z
-    .string({ required_error: "Job description is required" })
-    .min(10, "Job description must be at least 10 characters")
-    .max(5000, "Job description cannot exceed 5000 characters"),
-  seniority_level: z.string().nullable().optional(),
+  // TODO: Remove description from database schema and migrations in a future full schema cleanup
+  description: z.string().max(5000).nullable().optional().default(null),
+  // TODO: Remove seniority_level from database schema and migrations in a future full schema cleanup
+  seniority_level: z.string().nullable().optional().default(null),
 
   // Canonical extraction / matching criteria
   skills_required: z.array(SkillRequirementItemSchema).optional().default([]),
@@ -49,7 +48,9 @@ export const UpdateJobSchema = z.object({
   department: z.string().min(2, "Department must be at least 2 characters").max(100).optional(),
   location: z.string().min(2, "Location must be at least 2 characters").max(100).optional(),
   employmentType: z.enum(["full-time", "part-time", "contract", "remote"]).optional(),
-  description: z.string().min(10, "Job description must be at least 10 characters").max(5000).optional(),
+  // TODO: Remove description from database schema and migrations in a future full schema cleanup
+  description: z.string().min(10, "Job description must be at least 10 characters").max(5000).nullable().optional(),
+  // TODO: Remove seniority_level from database schema and migrations in a future full schema cleanup
   seniority_level: z.string().nullable().optional(),
 
   // Canonical extraction / matching criteria

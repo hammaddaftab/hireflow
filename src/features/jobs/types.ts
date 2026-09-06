@@ -26,7 +26,9 @@ export interface CreateJobInput {
   department: string;
   location: string;
   employmentType: "full-time" | "part-time" | "contract" | "remote";
-  description: string;
+  // TODO: Remove description from database schema and migrations in a future full schema cleanup
+  description?: string | null;
+  // TODO: Remove seniority_level from database schema and migrations in a future full schema cleanup
   seniority_level?: string | null;
 
   // Canonical extraction / matching criteria
@@ -47,7 +49,9 @@ export interface UpdateJobInput {
   department?: string;
   location?: string;
   employmentType?: "full-time" | "part-time" | "contract" | "remote";
-  description?: string;
+  // TODO: Remove description from database schema and migrations in a future full schema cleanup
+  description?: string | null;
+  // TODO: Remove seniority_level from database schema and migrations in a future full schema cleanup
   seniority_level?: string | null;
 
   // Canonical extraction / matching criteria
