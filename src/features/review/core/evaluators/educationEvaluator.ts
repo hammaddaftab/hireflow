@@ -1,6 +1,10 @@
 import type { EducationRequirement } from "@/entities/job";
 import type { EducationEntry } from "@/entities/extraction/candidate/aspects/education";
-import type { EvaluatedEducationRequirement, EducationStatus } from "./evaluationStatuses";
+import type {
+  EvaluatedEducationRequirement,
+  EducationStatus,
+  EvaluationPair,
+} from "./evaluationStatuses";
 import { isFieldEquivalent, normalizeFieldOfStudy } from "@/features/extraction/fieldOfStudyNormalizer";
 
 const DEGREE_LEVEL_RANKS: Record<string, number> = {
@@ -11,18 +15,26 @@ const DEGREE_LEVEL_RANKS: Record<string, number> = {
   doctorate: 5,
 };
 
-export type EducationEvaluatorInput = {
-  education_requirement: EducationRequirement | null;
-  education_entries: EducationEntry[];
-  id?: string;
-};
+export type EducationEvaluatorInput = EvaluationPair<
+  EducationRequirement,
+  EducationEntry[]
+>;
 
-export function evaluateEducation(input: EducationEvaluatorInput): EvaluatedEducationRequirement {
-  const { education_requirement, education_entries, id } = input;
-  const requiredDegree = education_requirement?.degree_level || null;
+export function evaluateEducation(
+  input: EducationEvaluatorInput,
+  id?: string
+): EvaluatedEducationRequirement | null {
+  const { requirement: education_requirement, candidate: education_entries } = input;
+
+  // Invariant: If criterion is not active, omit completely
+  if (education_requirement.active === false) {
+    return null;
+  }
+
+  const requiredDegree = education_requirement.degree_level || null;
   const requiredRank = requiredDegree ? DEGREE_LEVEL_RANKS[requiredDegree] || 3 : 0;
-  const requiredField = education_requirement?.field?.trim() || null;
-  const isBlocking = Boolean(education_requirement?.blocking);
+  const requiredField = education_requirement.field?.trim() || null;
+  const isBlocking = Boolean(education_requirement.blocking);
 
   const completedDegrees = education_entries.filter((e) => !e.is_current);
   const hasEducation = education_entries.length > 0;

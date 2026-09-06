@@ -107,23 +107,27 @@ export function JobDashboardList({ initialJobs }: JobDashboardListProps) {
                 </Typography>
 
                 <div className="mt-4 space-y-2 border-t border-outline-variant pt-3">
-                  <div className="flex items-center justify-between text-xs">
-                    <Typography variant="label-small" className="text-on-surface-variant">
-                      Min Experience:
-                    </Typography>
-                    <Typography variant="label-small" className="font-semibold text-on-surface">
-                      {job.min_experience?.years ?? 0} Years
-                    </Typography>
-                  </div>
-                  <div className="flex items-center justify-between text-xs">
-                    <Typography variant="label-small" className="text-on-surface-variant">
-                      Strict Knockout:
-                    </Typography>
-                    <Typography variant="label-small" className="font-semibold text-on-surface">
-                      {job.min_experience?.blocking ? "Enabled" : "Disabled"}
-                    </Typography>
-                  </div>
-                  {job.work_mode && (
+                  {job.min_experience?.active && (
+                    <>
+                      <div className="flex items-center justify-between text-xs">
+                        <Typography variant="label-small" className="text-on-surface-variant">
+                          Min Experience:
+                        </Typography>
+                        <Typography variant="label-small" className="font-semibold text-on-surface">
+                          {job.min_experience.years ?? 0} Years
+                        </Typography>
+                      </div>
+                      <div className="flex items-center justify-between text-xs">
+                        <Typography variant="label-small" className="text-on-surface-variant">
+                          Strict Knockout:
+                        </Typography>
+                        <Typography variant="label-small" className="font-semibold text-on-surface">
+                          {job.min_experience.blocking ? "Enabled" : "Disabled"}
+                        </Typography>
+                      </div>
+                    </>
+                  )}
+                  {job.work_mode?.active && (
                     <div className="flex items-center justify-between text-xs">
                       <Typography variant="label-small" className="text-on-surface-variant">
                         Work Mode:
@@ -136,16 +140,20 @@ export function JobDashboardList({ initialJobs }: JobDashboardListProps) {
                 </div>
 
                 <div className="mt-3 flex flex-wrap gap-1">
-                  {(job.skills_required || []).map((item) => (
-                    <Badge key={item.skill} variant="primary">
-                      {item.skill}
-                    </Badge>
-                  ))}
-                  {(job.skills_preferred || []).map((item) => (
-                    <Badge key={item.skill} variant="default">
-                      {item.skill}
-                    </Badge>
-                  ))}
+                  {(job.skills_required || [])
+                    .filter((item) => item.active !== false)
+                    .map((item) => (
+                      <Badge key={item.skill} variant="primary">
+                        {item.skill}
+                      </Badge>
+                    ))}
+                  {(job.skills_preferred || [])
+                    .filter((item) => item.active !== false)
+                    .map((item) => (
+                      <Badge key={item.skill} variant="default">
+                        {item.skill}
+                      </Badge>
+                    ))}
                 </div>
               </div>
 

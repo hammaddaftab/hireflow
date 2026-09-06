@@ -7,8 +7,21 @@ import type {
   EvaluatedExperienceRequirement,
   EvaluatedEducationRequirement,
 } from "./core/evaluators/evaluationStatuses";
-import type { SkillEvaluatorOutput } from "./core/evaluators/skillEvaluator";
-import type { LogisticsEvaluatorOutput } from "./core/evaluators/logisticsEvaluator";
+import type {
+  EvaluatedSkillsRequirement,
+  SkillEvaluatorOutput,
+} from "./core/evaluators/skillEvaluator";
+import type {
+  EvaluatedLogisticsRequirement,
+  LogisticsEvaluatorOutput,
+} from "./core/evaluators/logisticsEvaluator";
+
+export type {
+  EvaluatedSkillsRequirement,
+  SkillEvaluatorOutput,
+  EvaluatedLogisticsRequirement,
+  LogisticsEvaluatorOutput,
+};
 
 export interface CandidateReviewItem {
   candidate: ParsedCandidateProfile;
@@ -16,11 +29,11 @@ export interface CandidateReviewItem {
   evaluations: EvaluatedRequirement[];
   decision: ReviewDecision;
 
-  // Direct Concept Evaluator Outputs
-  experience: EvaluatedExperienceRequirement;
-  skills: SkillEvaluatorOutput;
-  education: EvaluatedEducationRequirement;
-  logistics: LogisticsEvaluatorOutput;
+  // Direct Concept Evaluator Outputs (null if criterion was disabled/inactive)
+  experience: EvaluatedExperienceRequirement | null;
+  skills: EvaluatedSkillsRequirement | null;
+  education: EvaluatedEducationRequirement | null;
+  logistics: EvaluatedLogisticsRequirement | null;
 
   // Knockout sorting and queue metrics
   blockingItems: EvaluatedRequirement[];

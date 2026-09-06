@@ -21,6 +21,7 @@ export function RequirementField({
   onBlur,
 }: RequirementFieldProps) {
   const isHard = field.mode === "hard";
+  const isActive = field.active !== false;
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     // Hold/press Shift+X or Alt+X to toggle mode while focused
@@ -39,30 +40,40 @@ export function RequirementField({
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-1.5">
-          <Typography variant="label-medium" as="label" htmlFor={field.id} className="block">
+          <Typography
+            variant="label-medium"
+            as="label"
+            htmlFor={field.id}
+            className={`block transition-colors ${!isActive ? "text-on-surface-variant/60 line-through" : ""}`}
+          >
             {field.label}
           </Typography>
           {field.helperText && <Tooltip content={field.helperText} />}
         </div>
 
-        {/* Mode Toggle Button */}
-        <button
-          type="button"
-          onClick={() => onToggleMode(field.id)}
-          aria-label={`Toggle requirement mode for ${field.label}. Currently ${field.mode}`}
-          className={`inline-flex items-center gap-1 rounded-md px-2.5 py-0.5 text-[11px] transition-colors cursor-pointer select-none ${
-            isHard
-              ? "shadow-xs hover:bg-on-surface/90 border text-surface bg-on-surface font-semibold"
-              : "border text-on-surface-variant"
-          }`}
-        >
-          {isHard ? "HARD" : "SOFT"}
-          <span className="text-[9px] font-normal">(Shift+X)</span>
-        </button>
+        <div className="flex items-center gap-1.5">
+          {/* Mode Toggle Button */}
+          <button
+            type="button"
+            disabled={!isActive}
+            onClick={() => onToggleMode(field.id)}
+            aria-label={`Toggle requirement mode for ${field.label}. Currently ${field.mode}`}
+            className={`inline-flex items-center gap-1 rounded-md px-2.5 py-0.5 text-[11px] transition-colors cursor-pointer select-none ${
+              !isActive
+                ? "border border-outline-variant/30 text-on-surface-variant/40 cursor-not-allowed"
+                : isHard
+                ? "shadow-xs hover:bg-on-surface/90 border text-surface bg-on-surface font-semibold"
+                : "border text-on-surface-variant"
+            }`}
+          >
+            {isHard ? "HARD" : "SOFT"}
+            <span className="text-[9px] font-normal">(Shift+X)</span>
+          </button>
+        </div>
       </div>
 
       {/* Form Control with Standard Neutral Styling */}
-      <div className="relative">
+      <div className={`relative transition-opacity ${!isActive ? "opacity-40 pointer-events-none select-none" : ""}`}>
         {field.options ? (
           <select
             id={field.id}

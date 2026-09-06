@@ -1,6 +1,10 @@
 import type { MaxNoticePeriodRequirement } from "@/entities/job";
 import type { CandidateNoticePeriod } from "@/entities/extraction/candidate/aspects/logistics";
-import type { EvaluatedNoticePeriodRequirement, NoticePeriodStatus } from "./evaluationStatuses";
+import type {
+  EvaluatedNoticePeriodRequirement,
+  NoticePeriodStatus,
+  EvaluationPair,
+} from "./evaluationStatuses";
 
 function noticeToDays(value: number | null, unit: string | null): number | null {
   if (value === null || !unit) return null;
@@ -16,17 +20,25 @@ function noticeToDays(value: number | null, unit: string | null): number | null 
   }
 }
 
-export type NoticePeriodEvaluatorInput = {
-  notice_period_requirement: MaxNoticePeriodRequirement | null;
-  notice_period: CandidateNoticePeriod;
-  id?: string;
-};
+export type NoticePeriodEvaluatorInput = EvaluationPair<
+  MaxNoticePeriodRequirement,
+  CandidateNoticePeriod
+>;
 
-export function evaluateNoticePeriod(input: NoticePeriodEvaluatorInput): EvaluatedNoticePeriodRequirement {
-  const { notice_period_requirement, notice_period, id } = input;
+export function evaluateNoticePeriod(
+  input: NoticePeriodEvaluatorInput,
+  id?: string
+): EvaluatedNoticePeriodRequirement | null {
+  const { requirement: notice_period_requirement, candidate: notice_period } = input;
+
+  // Invariant: If criterion is not active, omit completely
+  if (notice_period_requirement.active === false) {
+    return null;
+  }
+
   const candNotice = notice_period.normalized;
-  const isBlocking = Boolean(notice_period_requirement?.blocking);
-  const jobMaxDays = noticeToDays(notice_period_requirement?.value ?? null, notice_period_requirement?.unit ?? null);
+  const isBlocking = Boolean(notice_period_requirement.blocking);
+  const jobMaxDays = noticeToDays(notice_period_requirement.value, notice_period_requirement.unit);
 
   let status: NoticePeriodStatus = "not_stated";
   let reasoning = "Candidate did not state a notice period.";

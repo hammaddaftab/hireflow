@@ -12,17 +12,73 @@ import type { CreateJobInput, UpdateJobInput } from "./types";
 import { normalizeSkill } from "@/features/extraction/skillNormalizer";
 import { normalizeFieldOfStudy } from "@/features/extraction/fieldOfStudyNormalizer";
 
+function normalizeJobActiveFlags(job: Job): Job {
+  return {
+    ...job,
+    skills_required: (job.skills_required || []).map((s) =>
+      s.active === false
+        ? { ...s, active: false as const }
+        : {
+            ...s,
+            active: true as const,
+            skill: "skill" in s && typeof s.skill === "string" ? s.skill : "",
+            blocking: s.blocking ?? true,
+          }
+    ),
+    skills_preferred: (job.skills_preferred || []).map((s) =>
+      s.active === false
+        ? { ...s, active: false as const }
+        : {
+            ...s,
+            active: true as const,
+            skill: "skill" in s && typeof s.skill === "string" ? s.skill : "",
+            blocking: s.blocking ?? false,
+          }
+    ),
+    min_experience: job.min_experience
+      ? (job.min_experience.active === false
+          ? { active: false as const, blocking: job.min_experience.blocking }
+          : { ...job.min_experience, active: true as const })
+      : { active: false as const, blocking: false },
+    education_min: job.education_min
+      ? (job.education_min.active === false
+          ? { active: false as const, blocking: job.education_min.blocking }
+          : { ...job.education_min, active: true as const })
+      : { active: false as const, blocking: false },
+    location_requirement: job.location_requirement
+      ? (job.location_requirement.active === false
+          ? { active: false as const, blocking: job.location_requirement.blocking }
+          : { ...job.location_requirement, active: true as const })
+      : { active: false as const, blocking: false },
+    work_mode: job.work_mode
+      ? (job.work_mode.active === false
+          ? { active: false as const, blocking: job.work_mode.blocking }
+          : { ...job.work_mode, active: true as const })
+      : { active: false as const, blocking: false },
+    compensation_band: job.compensation_band
+      ? (job.compensation_band.active === false
+          ? { active: false as const, blocking: job.compensation_band.blocking }
+          : { ...job.compensation_band, active: true as const })
+      : { active: false as const, blocking: false },
+    max_notice_period: job.max_notice_period
+      ? (job.max_notice_period.active === false
+          ? { active: false as const, blocking: job.max_notice_period.blocking }
+          : { ...job.max_notice_period, active: true as const })
+      : { active: false as const, blocking: false },
+  };
+}
+
 export class JobsService {
   private jobs: Map<string, Job> = new Map();
 
   constructor(initialJobs?: Job[]) {
     if (initialJobs) {
-      initialJobs.forEach((j) => this.jobs.set(j.id, j));
+      initialJobs.forEach((j) => this.jobs.set(j.id, normalizeJobActiveFlags(j)));
     }
   }
 
   async getAllJobs(filters?: { status?: string; search?: string }): Promise<Job[]> {
-    let list = Array.from(this.jobs.values());
+    let list = Array.from(this.jobs.values()).map(normalizeJobActiveFlags);
 
     if (filters?.status) {
       list = list.filter((j) => j.status === filters.status);
@@ -44,61 +100,68 @@ export class JobsService {
   }
 
   async getJobById(id: string): Promise<Job | null> {
-    return this.jobs.get(id) || null;
+    const job = this.jobs.get(id);
+    return job ? normalizeJobActiveFlags(job) : null;
   }
 
   async createJob(input: CreateJobInput): Promise<Job> {
     const id = `job-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
     const now = new Date();
 
-    const skillsRequired = (input.skills_required ?? []).map((s) => ({
-      ...s,
-      skill: normalizeSkill(s.skill),
-    }));
-    const skillsPreferred = (input.skills_preferred ?? []).map((s) => ({
-      ...s,
-      skill: normalizeSkill(s.skill),
-    }));
+    const skillsRequired = (input.skills_required ?? []).map((s) =>
+      s.active === false
+        ? { ...s, active: false as const }
+        : {
+            ...s,
+            active: true as const,
+            skill: normalizeSkill(s.skill),
+            blocking: s.blocking ?? true,
+          }
+    );
+    const skillsPreferred = (input.skills_preferred ?? []).map((s) =>
+      s.active === false
+        ? { ...s, active: false as const }
+        : {
+            ...s,
+            active: true as const,
+            skill: normalizeSkill(s.skill),
+            blocking: s.blocking ?? false,
+          }
+    );
 
-    const minExperience: MinExperienceRequirement = input.min_experience ?? {
-      years: 0,
-      blocking: false,
-    };
+    const minExperience: MinExperienceRequirement =
+      input.min_experience && input.min_experience.active !== false
+        ? { ...input.min_experience, active: true as const }
+        : { active: false as const, blocking: input.min_experience?.blocking };
 
-    const educationMin: EducationRequirement = input.education_min
-      ? {
-          ...input.education_min,
-          field: input.education_min.field ? normalizeFieldOfStudy(input.education_min.field) : null,
-        }
-      : {
-          degree_level: null,
-          field: null,
-          blocking: false,
-        };
+    const educationMin: EducationRequirement =
+      input.education_min && input.education_min.active !== false
+        ? {
+            ...input.education_min,
+            active: true as const,
+            field: input.education_min.field ? normalizeFieldOfStudy(input.education_min.field) : null,
+          }
+        : { active: false as const, blocking: input.education_min?.blocking };
 
-    const locationReq: LocationRequirement = input.location_requirement ?? {
-      city: null,
-      province: null,
-      blocking: false,
-    };
+    const locationReq: LocationRequirement =
+      input.location_requirement && input.location_requirement.active !== false
+        ? { ...input.location_requirement, active: true as const }
+        : { active: false as const, blocking: input.location_requirement?.blocking };
 
-    const workModeReq: WorkModeRequirement = input.work_mode ?? {
-      mode: "hybrid",
-      blocking: false,
-    };
+    const workModeReq: WorkModeRequirement =
+      input.work_mode && input.work_mode.active !== false
+        ? { ...input.work_mode, active: true as const }
+        : { active: false as const, blocking: input.work_mode?.blocking };
 
-    const compensationBand: CompensationBandRequirement = input.compensation_band ?? {
-      min: null,
-      max: null,
-      currency: "PKR",
-      blocking: false,
-    };
+    const compensationBand: CompensationBandRequirement =
+      input.compensation_band && input.compensation_band.active !== false
+        ? { ...input.compensation_band, active: true as const }
+        : { active: false as const, blocking: input.compensation_band?.blocking };
 
-    const maxNoticePeriod: MaxNoticePeriodRequirement = input.max_notice_period ?? {
-      value: null,
-      unit: "days",
-      blocking: false,
-    };
+    const maxNoticePeriod: MaxNoticePeriodRequirement =
+      input.max_notice_period && input.max_notice_period.active !== false
+        ? { ...input.max_notice_period, active: true as const }
+        : { active: false as const, blocking: input.max_notice_period?.blocking };
 
     const job: Job = {
       id,
@@ -146,32 +209,52 @@ export class JobsService {
       ...existing,
       ...input,
       skills_required: input.skills_required
-        ? input.skills_required.map((s) => ({ ...s, skill: normalizeSkill(s.skill) }))
+        ? input.skills_required.map((s) =>
+            s.active === false
+              ? { ...s, active: false as const }
+              : { ...s, active: true as const, skill: normalizeSkill(s.skill), blocking: s.blocking ?? true }
+          )
         : existing.skills_required,
       skills_preferred: input.skills_preferred
-        ? input.skills_preferred.map((s) => ({ ...s, skill: normalizeSkill(s.skill) }))
+        ? input.skills_preferred.map((s) =>
+            s.active === false
+              ? { ...s, active: false as const }
+              : { ...s, active: true as const, skill: normalizeSkill(s.skill), blocking: s.blocking ?? false }
+          )
         : existing.skills_preferred,
       min_experience: input.min_experience !== undefined
-        ? (input.min_experience ? { ...existing.min_experience, ...input.min_experience } : existing.min_experience)
+        ? (input.min_experience.active === false
+            ? { active: false as const, blocking: input.min_experience.blocking }
+            : { ...input.min_experience, active: true as const })
         : existing.min_experience,
       education_min: input.education_min !== undefined
-        ? (input.education_min ? {
-            ...existing.education_min,
-            ...input.education_min,
-            field: input.education_min.field ? normalizeFieldOfStudy(input.education_min.field) : (existing.education_min?.field ? normalizeFieldOfStudy(existing.education_min.field) : null),
-          } : existing.education_min)
+        ? (input.education_min.active === false
+            ? { active: false as const, blocking: input.education_min.blocking }
+            : {
+                ...input.education_min,
+                active: true as const,
+                field: input.education_min.field ? normalizeFieldOfStudy(input.education_min.field) : null,
+              })
         : existing.education_min,
       location_requirement: input.location_requirement !== undefined
-        ? (input.location_requirement ? { ...existing.location_requirement, ...input.location_requirement } : existing.location_requirement)
+        ? (input.location_requirement.active === false
+            ? { active: false as const, blocking: input.location_requirement.blocking }
+            : { ...input.location_requirement, active: true as const })
         : existing.location_requirement,
       work_mode: input.work_mode !== undefined
-        ? (input.work_mode ? { ...existing.work_mode, ...input.work_mode } : existing.work_mode)
+        ? (input.work_mode.active === false
+            ? { active: false as const, blocking: input.work_mode.blocking }
+            : { ...input.work_mode, active: true as const })
         : existing.work_mode,
       compensation_band: input.compensation_band !== undefined
-        ? (input.compensation_band ? { ...existing.compensation_band, ...input.compensation_band } : existing.compensation_band)
+        ? (input.compensation_band.active === false
+            ? { active: false as const, blocking: input.compensation_band.blocking }
+            : { ...input.compensation_band, active: true as const })
         : existing.compensation_band,
       max_notice_period: input.max_notice_period !== undefined
-        ? (input.max_notice_period ? { ...existing.max_notice_period, ...input.max_notice_period } : existing.max_notice_period)
+        ? (input.max_notice_period.active === false
+            ? { active: false as const, blocking: input.max_notice_period.blocking }
+            : { ...input.max_notice_period, active: true as const })
         : existing.max_notice_period,
       updatedAt: new Date(),
     };
@@ -189,7 +272,10 @@ export class JobsService {
   }
 
   seedInitialData(): void {
-    if (this.jobs.size > 0) return;
+    // Migrate any existing jobs in-memory so active defaults to true
+    for (const [key, val] of this.jobs.entries()) {
+      this.jobs.set(key, normalizeJobActiveFlags(val));
+    }
 
     const sampleJob: Job = {
       id: "job-sample-1",
@@ -200,40 +286,46 @@ export class JobsService {
       description: "We are seeking an experienced Full Stack Engineer to lead next-generation hiring intelligence tools.",
       seniority_level: "Senior Level",
       skills_required: [
-        { skill: normalizeSkill("TypeScript"), blocking: true },
-        { skill: normalizeSkill("React"), blocking: true },
-        { skill: normalizeSkill("Node.js"), blocking: true },
+        { active: true, skill: normalizeSkill("TypeScript"), blocking: true },
+        { active: true, skill: normalizeSkill("React"), blocking: true },
+        { active: true, skill: normalizeSkill("Node.js"), blocking: true },
       ],
       skills_preferred: [
-        { skill: normalizeSkill("Next.js"), blocking: false },
-        { skill: normalizeSkill("Tailwind CSS"), blocking: false },
-        { skill: normalizeSkill("PostgreSQL"), blocking: false },
+        { active: true, skill: normalizeSkill("Next.js"), blocking: false },
+        { active: true, skill: normalizeSkill("Tailwind CSS"), blocking: false },
+        { active: true, skill: normalizeSkill("PostgreSQL"), blocking: false },
       ],
       min_experience: {
+        active: true,
         years: 5,
         blocking: true,
       },
       education_min: {
+        active: true,
         degree_level: "bachelors",
         field: normalizeFieldOfStudy("Computer Science"),
         blocking: true,
       },
       location_requirement: {
+        active: true,
         city: "San Francisco",
         province: "CA",
         blocking: false,
       },
       work_mode: {
+        active: true,
         mode: "remote",
         blocking: true,
       },
       compensation_band: {
+        active: true,
         min: 400000,
         max: 600000,
         currency: "PKR",
         blocking: true,
       },
       max_notice_period: {
+        active: true,
         value: 1,
         unit: "months",
         blocking: true,

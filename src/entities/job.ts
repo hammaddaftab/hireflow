@@ -1,5 +1,7 @@
 import { pgTable, text, timestamp, varchar, jsonb } from "drizzle-orm/pg-core";
 import type {
+  InactiveRequirement,
+  BaseRequirement,
   SkillRequirementItem,
   MinExperienceRequirement,
   EducationRequirement,
@@ -40,6 +42,8 @@ export type JobRecord = Job;
 export type NewJobRecord = NewJob;
 
 export type {
+  InactiveRequirement,
+  BaseRequirement,
   SkillRequirementItem,
   MinExperienceRequirement,
   EducationRequirement,

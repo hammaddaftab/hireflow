@@ -1,28 +1,44 @@
 import type { WorkModeRequirement, LocationRequirement } from "@/entities/job";
 import type { NormalizedLocation } from "@/entities/extraction/candidate/aspects/identity";
-import type { EvaluatedWorkModeRequirement, WorkModeStatus } from "./evaluationStatuses";
+import type {
+  EvaluatedWorkModeRequirement,
+  WorkModeStatus,
+  EvaluationPair,
+} from "./evaluationStatuses";
 
-export type WorkModeEvaluatorInput = {
-  work_mode_requirement: WorkModeRequirement | null;
-  stated_relocation_willingness?: string | null;
-  location_requirement?: LocationRequirement | null;
+export interface CandidateWorkModeContext {
   normalized_location?: NormalizedLocation | null;
-  id?: string;
-};
+  stated_relocation_willingness?: string | null;
+  target_location?: LocationRequirement | null;
+}
 
-export function evaluateWorkMode(input: WorkModeEvaluatorInput): EvaluatedWorkModeRequirement {
+export type WorkModeEvaluatorInput = EvaluationPair<
+  WorkModeRequirement,
+  CandidateWorkModeContext
+>;
+
+export function evaluateWorkMode(
+  input: WorkModeEvaluatorInput,
+  id?: string
+): EvaluatedWorkModeRequirement | null {
+  const { requirement: work_mode_requirement, candidate } = input;
+
+  // Invariant: If criterion is not active, omit completely
+  if (work_mode_requirement.active === false) {
+    return null;
+  }
+
   const {
-    work_mode_requirement,
     stated_relocation_willingness,
-    location_requirement,
+    target_location: location_requirement,
     normalized_location,
-    id,
-  } = input;
-  const isBlocking = Boolean(work_mode_requirement?.blocking);
-  const mode = work_mode_requirement?.mode || "flexible";
+  } = candidate;
 
-  const reqCity = location_requirement?.city?.toLowerCase() || null;
-  const reqProvince = location_requirement?.province?.toLowerCase() || null;
+  const isBlocking = Boolean(work_mode_requirement.blocking);
+  const mode = work_mode_requirement.mode;
+
+  const reqCity = (location_requirement?.active ? location_requirement.city?.toLowerCase() : null) || null;
+  const reqProvince = (location_requirement?.active ? location_requirement.province?.toLowerCase() : null) || null;
   const candCity = normalized_location?.normalized?.city?.toLowerCase() || null;
   const candProvince = normalized_location?.normalized?.province?.toLowerCase() || null;
 

@@ -3,19 +3,27 @@ import type { WorkHistoryEntry } from "@/entities/extraction/candidate/aspects/w
 import type {
   EvaluatedExperienceRequirement,
   ExperienceStatus,
+  EvaluationPair,
 } from "./evaluationStatuses";
 
-export type ExperienceEvaluatorInput = {
-  experience_requirement: MinExperienceRequirement | null;
-  work_history_entries: WorkHistoryEntry[];
-};
+export type ExperienceEvaluatorInput = EvaluationPair<
+  MinExperienceRequirement,
+  WorkHistoryEntry[]
+>;
 
 export function evaluateExperience(
-  input: ExperienceEvaluatorInput
-): EvaluatedExperienceRequirement {
-  const { experience_requirement, work_history_entries } = input;
-  const minYears = experience_requirement?.years ?? 0;
-  const isBlocking = Boolean(experience_requirement?.blocking);
+  input: ExperienceEvaluatorInput,
+  id?: string
+): EvaluatedExperienceRequirement | null {
+  const { requirement: experience_requirement, candidate: work_history_entries } = input;
+
+  // Invariant: If criterion is not active, omit completely
+  if (experience_requirement.active === false) {
+    return null;
+  }
+
+  const minYears = experience_requirement.years ?? 0;
+  const isBlocking = Boolean(experience_requirement.blocking);
 
   const totalMonths = work_history_entries
     .filter((e) => e.employment_type?.value === "full_time")
