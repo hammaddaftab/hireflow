@@ -26,8 +26,8 @@ import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Typography } from "@/components/ui/Typography";
 import { Tooltip } from "@/components/ui/Tooltip";
-import type { UploadedResumeRecord } from "../uploadsService";
-import { ResumeDropOverlay } from "@/features/review/views/queue/components/ResumeDropOverlay";
+import type { UploadedResumeRecord } from "@/lib/upload/types";
+import { ResumeDropOverlay } from "@/components/upload";
 
 export interface UploadsPageProps {
   initialUploads: UploadedResumeRecord[];
