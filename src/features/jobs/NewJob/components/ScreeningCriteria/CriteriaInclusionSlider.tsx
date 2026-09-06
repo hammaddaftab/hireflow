@@ -107,14 +107,18 @@ export function CriteriaInclusionSlider({
           {/* Metrics & Quick Actions Bar */}
           <div className="flex items-center justify-between pt-1">
             <div className="flex items-center gap-2">
-              <span className="text-[11px] font-bold px-2 py-0.5 rounded-md bg-surface-container text-on-surface border border-outline-variant/40">
-                {activeCount} Active
-              </span>
-              {excludedCount > 0 && (
-                <span className="text-[11px] font-semibold px-2 py-0.5 rounded-md bg-surface-container-lowest text-on-surface-variant/80 border border-outline-variant/30">
+              {excludedCount > 0 ? (
+                <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-md bg-on-surface text-surface shadow-xs">
                   {excludedCount} Excluded
                 </span>
+              ) : (
+                <span className="text-[11px] font-medium text-on-surface-variant">
+                  All criteria active
+                </span>
               )}
+              <span className="text-[11px] text-on-surface-variant/70">
+                ({activeCount} of {totalCount} active)
+              </span>
             </div>
 
             {excludedCount > 0 && onIncludeAll && (
@@ -139,61 +143,58 @@ export function CriteriaInclusionSlider({
 
             if (groupFields.length === 0) return null;
 
+            const groupExcludedCount = groupFields.filter((f) => f.active === false).length;
+
             return (
               <div key={group.name} className="space-y-2.5">
-                <div className="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant">
-                  {group.name}
+                <div className="flex items-center justify-between">
+                  <div className="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant">
+                    {group.name}
+                  </div>
+                  {groupExcludedCount > 0 && (
+                    <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-on-surface text-surface">
+                      {groupExcludedCount} excluded
+                    </span>
+                  )}
                 </div>
 
                 <div className="space-y-1.5 bg-surface-container/50 rounded-xl p-2.5 border border-outline-variant/30">
                   {groupFields.map((field) => {
                     const isActive = field.active !== false;
-                    const isHard = field.mode === "hard";
 
                     return (
                       <div
                         key={field.id}
-                        className={`flex items-center justify-between p-2 rounded-lg transition-all ${
+                        className={`flex items-center justify-between p-2.5 rounded-lg transition-all ${
                           isActive
-                            ? "bg-surface hover:bg-surface-container-high/60"
-                            : "bg-surface-container-lowest/60 opacity-60"
+                            ? "bg-transparent hover:bg-surface-container-high/40"
+                            : "bg-surface-container-highest border border-outline/50 shadow-xs"
                         }`}
                       >
                         <div className="flex-1 min-w-0 pr-3">
                           <div
-                            className={`text-xs font-medium truncate ${
+                            className={`text-xs truncate ${
                               !isActive
-                                ? "text-on-surface-variant line-through"
-                                : "text-on-surface font-semibold"
+                                ? "text-on-surface font-semibold line-through decoration-on-surface-variant/60"
+                                : "text-on-surface font-normal"
                             }`}
                           >
                             {field.label}
                           </div>
-                          <div className="text-[10px] text-on-surface-variant flex items-center gap-1.5 mt-0.5">
-                            <span
-                              className={`px-1.5 py-0.2 rounded font-mono text-[9px] ${
-                                isHard
-                                  ? "bg-on-surface text-surface font-bold"
-                                  : "bg-surface-container-high text-on-surface-variant"
-                              }`}
-                            >
-                              {isHard ? "KNOCKOUT" : "BONUS"}
-                            </span>
-                          </div>
                         </div>
 
-                        {/* Interactive Active / Excluded Badge Button */}
+                        {/* Interactive Active / Excluded Toggle Button */}
                         <button
                           type="button"
                           onClick={() => onToggleActive(field.id)}
                           aria-label={`Toggle active status for ${field.label}. Currently ${isActive ? "Active" : "Excluded"}`}
-                          className={`inline-flex items-center px-2.5 py-1 rounded-md text-[10px] font-bold tracking-wider uppercase transition-all cursor-pointer select-none border shrink-0 ${
+                          className={`inline-flex items-center px-2.5 py-1 rounded-md text-[10px] tracking-wider uppercase transition-all cursor-pointer select-none shrink-0 ${
                             isActive
-                              ? "bg-primary text-on-primary border-primary shadow-2xs hover:bg-primary/90"
-                              : "bg-surface-container-lowest text-on-surface-variant/60 border-outline-variant/40 line-through hover:text-on-surface hover:border-outline-variant"
+                              ? "text-on-surface-variant/70 hover:text-on-surface hover:bg-surface-container border border-transparent hover:border-outline-variant/40 font-medium"
+                              : "bg-on-surface text-surface font-bold shadow-xs hover:bg-on-surface/90"
                           }`}
                         >
-                          {isActive ? "ACTIVE" : "EXCLUDED"}
+                          {isActive ? "Active" : "EXCLUDED"}
                         </button>
                       </div>
                     );

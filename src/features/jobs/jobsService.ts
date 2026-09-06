@@ -1,3 +1,5 @@
+import { produce } from "immer";
+import { eq } from "drizzle-orm";
 import { db, jobs } from "@/db";
 import type {
   Job,
@@ -13,59 +15,52 @@ import { normalizeSkill } from "@/features/extraction/skillNormalizer";
 import { normalizeFieldOfStudy } from "@/features/extraction/fieldOfStudyNormalizer";
 
 function normalizeJobActiveFlags(job: Job): Job {
-  return {
-    ...job,
-    skills_required: (job.skills_required || []).map((s) =>
-      s.active === false
-        ? { ...s, active: false as const }
-        : {
-            ...s,
-            active: true as const,
-            skill: "skill" in s && typeof s.skill === "string" ? s.skill : "",
-            blocking: s.blocking ?? true,
-          }
-    ),
-    skills_preferred: (job.skills_preferred || []).map((s) =>
-      s.active === false
-        ? { ...s, active: false as const }
-        : {
-            ...s,
-            active: true as const,
-            skill: "skill" in s && typeof s.skill === "string" ? s.skill : "",
-            blocking: s.blocking ?? false,
-          }
-    ),
-    min_experience: job.min_experience
-      ? (job.min_experience.active === false
-          ? { active: false as const, blocking: job.min_experience.blocking }
-          : { ...job.min_experience, active: true as const })
-      : { active: false as const, blocking: false },
-    education_min: job.education_min
-      ? (job.education_min.active === false
-          ? { active: false as const, blocking: job.education_min.blocking }
-          : { ...job.education_min, active: true as const })
-      : { active: false as const, blocking: false },
-    location_requirement: job.location_requirement
-      ? (job.location_requirement.active === false
-          ? { active: false as const, blocking: job.location_requirement.blocking }
-          : { ...job.location_requirement, active: true as const })
-      : { active: false as const, blocking: false },
-    work_mode: job.work_mode
-      ? (job.work_mode.active === false
-          ? { active: false as const, blocking: job.work_mode.blocking }
-          : { ...job.work_mode, active: true as const })
-      : { active: false as const, blocking: false },
-    compensation_band: job.compensation_band
-      ? (job.compensation_band.active === false
-          ? { active: false as const, blocking: job.compensation_band.blocking }
-          : { ...job.compensation_band, active: true as const })
-      : { active: false as const, blocking: false },
-    max_notice_period: job.max_notice_period
-      ? (job.max_notice_period.active === false
-          ? { active: false as const, blocking: job.max_notice_period.blocking }
-          : { ...job.max_notice_period, active: true as const })
-      : { active: false as const, blocking: false },
-  };
+  return produce(job, (draft) => {
+    // Normalize active flags on mandatory skills
+    if (draft.skills_required) {
+      draft.skills_required = draft.skills_required.map((s) => {
+        if (s.active === false) {
+          return { active: false, blocking: s.blocking };
+        }
+        return {
+          active: true,
+          skill: "skill" in s && typeof s.skill === "string" ? s.skill : "",
+          blocking: s.blocking ?? true,
+        };
+      });
+    }
+
+    // Normalize active flags on preferred skills
+    if (draft.skills_preferred) {
+      draft.skills_preferred = draft.skills_preferred.map((s) => {
+        if (s.active === false) {
+          return { active: false, blocking: s.blocking };
+        }
+        return {
+          active: true,
+          skill: "skill" in s && typeof s.skill === "string" ? s.skill : "",
+          blocking: s.blocking ?? false,
+        };
+      });
+    }
+
+    // Normalize structured criteria with active booleans
+    const criteriaKeys = [
+      "min_experience",
+      "education_min",
+      "location_requirement",
+      "work_mode",
+      "compensation_band",
+      "max_notice_period",
+    ] as const;
+
+    for (const key of criteriaKeys) {
+      const item = draft[key];
+      if (item) {
+        item.active = item.active !== false;
+      }
+    }
+  });
 }
 
 export class JobsService {
@@ -205,61 +200,86 @@ export class JobsService {
       return null;
     }
 
-    const updated: Job = {
-      ...existing,
-      ...input,
-      skills_required: input.skills_required
-        ? input.skills_required.map((s) =>
-            s.active === false
-              ? { ...s, active: false as const }
-              : { ...s, active: true as const, skill: normalizeSkill(s.skill), blocking: s.blocking ?? true }
-          )
-        : existing.skills_required,
-      skills_preferred: input.skills_preferred
-        ? input.skills_preferred.map((s) =>
-            s.active === false
-              ? { ...s, active: false as const }
-              : { ...s, active: true as const, skill: normalizeSkill(s.skill), blocking: s.blocking ?? false }
-          )
-        : existing.skills_preferred,
-      min_experience: input.min_experience !== undefined
-        ? (input.min_experience.active === false
+    const updated = produce(existing, (draft) => {
+      // Direct updates to role identity and status
+      if (input.title !== undefined) draft.title = input.title;
+      if (input.department !== undefined) draft.department = input.department;
+      if (input.location !== undefined) draft.location = input.location;
+      if (input.employmentType !== undefined) draft.employmentType = input.employmentType;
+      if (input.description !== undefined) draft.description = input.description;
+      if (input.seniority_level !== undefined) draft.seniority_level = input.seniority_level;
+      if (input.status !== undefined) draft.status = input.status;
+
+      // Update skills with canonical normalization
+      if (input.skills_required !== undefined) {
+        draft.skills_required = input.skills_required.map((s) =>
+          s.active === false
+            ? { ...s, active: false as const }
+            : { ...s, active: true as const, skill: normalizeSkill(s.skill), blocking: s.blocking ?? true }
+        );
+      }
+      if (input.skills_preferred !== undefined) {
+        draft.skills_preferred = input.skills_preferred.map((s) =>
+          s.active === false
+            ? { ...s, active: false as const }
+            : { ...s, active: true as const, skill: normalizeSkill(s.skill), blocking: s.blocking ?? false }
+        );
+      }
+
+      // Update structured criteria
+      if (input.min_experience !== undefined) {
+        draft.min_experience =
+          input.min_experience.active === false
             ? { active: false as const, blocking: input.min_experience.blocking }
-            : { ...input.min_experience, active: true as const })
-        : existing.min_experience,
-      education_min: input.education_min !== undefined
-        ? (input.education_min.active === false
+            : { ...input.min_experience, active: true as const };
+      }
+      if (input.education_min !== undefined) {
+        draft.education_min =
+          input.education_min.active === false
             ? { active: false as const, blocking: input.education_min.blocking }
             : {
                 ...input.education_min,
                 active: true as const,
                 field: input.education_min.field ? normalizeFieldOfStudy(input.education_min.field) : null,
-              })
-        : existing.education_min,
-      location_requirement: input.location_requirement !== undefined
-        ? (input.location_requirement.active === false
+              };
+      }
+      if (input.location_requirement !== undefined) {
+        draft.location_requirement =
+          input.location_requirement.active === false
             ? { active: false as const, blocking: input.location_requirement.blocking }
-            : { ...input.location_requirement, active: true as const })
-        : existing.location_requirement,
-      work_mode: input.work_mode !== undefined
-        ? (input.work_mode.active === false
+            : { ...input.location_requirement, active: true as const };
+      }
+      if (input.work_mode !== undefined) {
+        draft.work_mode =
+          input.work_mode.active === false
             ? { active: false as const, blocking: input.work_mode.blocking }
-            : { ...input.work_mode, active: true as const })
-        : existing.work_mode,
-      compensation_band: input.compensation_band !== undefined
-        ? (input.compensation_band.active === false
+            : { ...input.work_mode, active: true as const };
+      }
+      if (input.compensation_band !== undefined) {
+        draft.compensation_band =
+          input.compensation_band.active === false
             ? { active: false as const, blocking: input.compensation_band.blocking }
-            : { ...input.compensation_band, active: true as const })
-        : existing.compensation_band,
-      max_notice_period: input.max_notice_period !== undefined
-        ? (input.max_notice_period.active === false
+            : { ...input.compensation_band, active: true as const };
+      }
+      if (input.max_notice_period !== undefined) {
+        draft.max_notice_period =
+          input.max_notice_period.active === false
             ? { active: false as const, blocking: input.max_notice_period.blocking }
-            : { ...input.max_notice_period, active: true as const })
-        : existing.max_notice_period,
-      updatedAt: new Date(),
-    };
+            : { ...input.max_notice_period, active: true as const };
+      }
+
+      draft.updatedAt = new Date();
+    });
 
     this.jobs.set(id, updated);
+
+    // Persist to Drizzle database table
+    try {
+      await db.update(jobs).set(updated).where(eq(jobs.id, id));
+    } catch (dbErr) {
+      console.warn("Drizzle database job update warning (in-memory updated):", dbErr instanceof Error ? dbErr.message : String(dbErr));
+    }
+
     return updated;
   }
 
