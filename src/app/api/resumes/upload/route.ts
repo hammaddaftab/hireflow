@@ -42,8 +42,8 @@ export async function POST(request: NextRequest) {
     // Delegate to pure ingestion utility
     const uploadedItems = await ingestResumeFiles(files, jobId);
 
-    // Register into shared domain uploads service
-    uploadsService.addBatch(uploadedItems);
+    // Register into shared domain uploads service backed by PostgreSQL
+    await uploadsService.addBatch(uploadedItems);
 
     return createSuccessResponse(
       {
@@ -61,8 +61,8 @@ export async function POST(request: NextRequest) {
 // Thin controller returning Vercel Blob configuration and registry contents
 export async function GET() {
   const isConfigured = Boolean(process.env.BLOB_READ_WRITE_TOKEN);
-  const uploads = uploadsService.getAll();
-  const stats = uploadsService.getStats();
+  const uploads = await uploadsService.getAll();
+  const stats = await uploadsService.getStats();
 
   return createSuccessResponse({
     storage: "vercel-blob",
@@ -82,14 +82,14 @@ export async function DELETE(request: NextRequest) {
     const id = searchParams.get("id");
 
     if (id) {
-      const deleted = uploadsService.delete(id);
+      const deleted = await uploadsService.delete(id);
       if (!deleted) {
         throw ApiError.notFound(`Upload with ID '${id}' not found`, "/api/resumes/upload");
       }
       return createSuccessResponse({ deleted: true, id });
     }
 
-    uploadsService.clear();
+    await uploadsService.clear();
     return createSuccessResponse({ cleared: true });
   } catch (error) {
     return createErrorResponse(error, "/api/resumes/upload");

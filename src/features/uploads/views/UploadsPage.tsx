@@ -518,9 +518,9 @@ export function UploadsPage({ initialUploads, isBlobConfigured }: UploadsPagePro
 
                       {/* SHA-256 Digest */}
                       <td className="py-3 px-4 font-mono text-[11px] text-on-surface-variant whitespace-nowrap">
-                        <Tooltip content={item.hash}>
+                        <Tooltip content={item.hash ? item.hash : "Hashing disabled by default so you can re-drop the same resume. Set ENABLE_RESUME_HASHING=true in .env to enable."}>
                           <span className="cursor-help underline decoration-dotted">
-                            {item.hash ? `${item.hash.slice(0, 8)}...${item.hash.slice(-6)}` : "—"}
+                            {item.hash ? `${item.hash.slice(0, 8)}...${item.hash.slice(-6)}` : "Off (re-drop enabled)"}
                           </span>
                         </Tooltip>
                       </td>

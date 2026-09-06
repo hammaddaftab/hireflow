@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 };
 
 export default async function UploadsRoute() {
-  const uploads = uploadsService.getAll();
+  const uploads = await uploadsService.getAll();
   const isBlobConfigured = Boolean(process.env.BLOB_READ_WRITE_TOKEN);
 
   return (
