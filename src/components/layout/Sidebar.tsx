@@ -7,6 +7,7 @@ import {
   LayoutDashboard, 
   Inbox, 
   FilePlus, 
+  Network,
   PanelLeftClose, 
   PanelLeftOpen,
   Info
@@ -28,6 +29,8 @@ export function Sidebar({ currentPath }: SidebarProps) {
         return <LayoutDashboard className="h-4 w-4 shrink-0" />;
       case "review-queue":
         return <Inbox className="h-4 w-4 shrink-0" />;
+      case "groups":
+        return <Network className="h-4 w-4 shrink-0" />;
       case "create-requirement":
       default:
         return <FilePlus className="h-4 w-4 shrink-0" />;
