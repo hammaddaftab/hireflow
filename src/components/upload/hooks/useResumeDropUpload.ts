@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useCallback, useEffect, useRef } from "react";
-import type { DroppedResumeItem, ResumeUploadApiResponse } from "../../../types";
+import type { DroppedResumeItem, ResumeUploadApiResponse } from "@/lib/upload/types";
+import { isValidResumeExtension } from "@/lib/upload/validateResume";
 
 export interface UseResumeDropUploadProps {
   jobId?: string;
@@ -17,14 +18,6 @@ export interface UseResumeDropUploadReturn {
   uploadFiles: (fileList: FileList | File[]) => Promise<void>;
   removeUpload: (id: string) => void;
   clearCompleted: () => void;
-}
-
-// Supported file extensions for resume triage ingestion
-const ALLOWED_EXTENSIONS = [".pdf", ".txt", ".docx", ".doc", ".md"];
-
-function isAllowedFile(file: File): boolean {
-  const name = file.name.toLowerCase();
-  return ALLOWED_EXTENSIONS.some((ext) => name.endsWith(ext));
 }
 
 export function useResumeDropUpload({
@@ -56,7 +49,7 @@ export function useResumeDropUpload({
       const invalidEntries: DroppedResumeItem[] = [];
 
       incomingFiles.forEach((file) => {
-        if (isAllowedFile(file)) {
+        if (isValidResumeExtension(file.name)) {
           validFiles.push(file);
         } else {
           invalidEntries.push({
@@ -124,7 +117,7 @@ export function useResumeDropUpload({
         const json = await response.json();
         const data: ResumeUploadApiResponse = json.data;
 
-        // Replace pending items with real stored Vercel Blob records
+        // Replace pending items with confirmed Vercel Blob records
         setUploads((prev) => {
           let updated = [...prev];
           data.uploads.forEach((uploaded: DroppedResumeItem) => {
@@ -160,7 +153,6 @@ export function useResumeDropUpload({
   useEffect(() => {
     const handleDragEnter = (e: DragEvent) => {
       e.preventDefault();
-      // Check if dragged items are files
       if (e.dataTransfer && Array.from(e.dataTransfer.types).includes("Files")) {
         dragCounterRef.current += 1;
         setIsDraggingOver(true);

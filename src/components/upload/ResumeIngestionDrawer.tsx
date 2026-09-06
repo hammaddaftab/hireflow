@@ -21,7 +21,7 @@ import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Typography } from "@/components/ui/Typography";
 import { Tooltip } from "@/components/ui/Tooltip";
-import type { DroppedResumeItem } from "../../../types";
+import type { DroppedResumeItem } from "@/lib/upload/types";
 
 export interface ResumeIngestionDrawerProps {
   isOpen: boolean;

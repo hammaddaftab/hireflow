@@ -14,10 +14,12 @@ import { CandidateCard } from "../../core/components/card/CandidateCard";
 import { ReviewDeckControls } from "./components/ReviewDeckControls";
 import { EvidentiaryLegend } from "./components/EvidentiaryLegend";
 import { KeyboardShortcutBar } from "./components/KeyboardShortcutBar";
-import { useResumeDropUpload } from "./hooks/useResumeDropUpload";
-import { ResumeDropOverlay } from "./components/ResumeDropOverlay";
-import { ResumeDropTrigger } from "./components/ResumeDropTrigger";
-import { ResumeIngestionDrawer } from "./components/ResumeIngestionDrawer";
+import {
+  useResumeDropUpload,
+  ResumeDropOverlay,
+  ResumeDropTrigger,
+  ResumeIngestionDrawer,
+} from "@/components/upload";
 
 export interface ReviewQueuePageProps {
   initialJob: Job;

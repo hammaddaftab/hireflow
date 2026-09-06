@@ -32,7 +32,6 @@ export function ResumeDropTrigger({
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       onFilesSelected(e.target.files);
-      // Reset input value so subsequent identical files can be selected
       e.target.value = "";
     }
   };
