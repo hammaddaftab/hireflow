@@ -1,15 +1,21 @@
 "use client";
 
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+import React, { useState, useEffect, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { HelpCircle } from "lucide-react";
+import { produce } from "immer";
 import { Button } from "@/components/ui/Button";
 import { Alert } from "@/components/ui/Alert";
 import { Typography } from "@/components/ui/Typography";
 import { OverlayContainer } from "@/components/ui/OverlayContainer";
 import { ROUTES } from "@/config/navigation";
 import type { FormFieldState, RequirementMode, CreateJobInput } from "@/features/jobs/types";
-import { useCreateJobMutation } from "@/features/jobs/jobsApi";
+import type { Job } from "@/entities/job";
+import {
+  useGetJobByIdQuery,
+  useCreateJobMutation,
+  useUpdateJobMutation,
+} from "@/features/jobs/jobsApi";
 
 // 4 Direct Children from components/
 import { JobFormStepper } from "./components/JobFormStepper";
@@ -26,9 +32,119 @@ function parseSkillStrings(value: string | number | undefined): string[] {
     .filter(Boolean);
 }
 
-export function NewJobPage() {
+// Populates form fields from an existing job record using Immer produce
+function populateFieldsFromJob(
+  job: Job,
+  baseFields: Record<string, FormFieldState>
+): Record<string, FormFieldState> {
+  return produce(baseFields, (draft) => {
+    if (draft.minExperience && job.min_experience) {
+      const exp = job.min_experience;
+      draft.minExperience.value = "years" in exp && typeof exp.years === "number" ? exp.years : 0;
+      draft.minExperience.mode = exp.blocking ? "hard" : "soft";
+      draft.minExperience.active = exp.active !== false;
+    }
+    if (draft.skillsRequired && job.skills_required) {
+      const skills = job.skills_required
+        .map((s) => ("skill" in s && typeof s.skill === "string" ? s.skill : ""))
+        .filter(Boolean);
+      draft.skillsRequired.value = skills.join(", ");
+      draft.skillsRequired.mode = job.skills_required.some((s) => s.blocking) ? "hard" : "soft";
+      draft.skillsRequired.active =
+        job.skills_required.length > 0 ? job.skills_required.some((s) => s.active !== false) : false;
+    }
+    if (draft.skillsPreferred && job.skills_preferred) {
+      const skills = job.skills_preferred
+        .map((s) => ("skill" in s && typeof s.skill === "string" ? s.skill : ""))
+        .filter(Boolean);
+      draft.skillsPreferred.value = skills.join(", ");
+      draft.skillsPreferred.mode = job.skills_preferred.some((s) => s.blocking) ? "hard" : "soft";
+      draft.skillsPreferred.active =
+        job.skills_preferred.length > 0 ? job.skills_preferred.some((s) => s.active !== false) : false;
+    }
+    if (draft.degreeLevel && job.education_min) {
+      const edu = job.education_min;
+      draft.degreeLevel.value =
+        "degree_level" in edu && typeof edu.degree_level === "string" ? edu.degree_level : "none";
+      draft.degreeLevel.mode = edu.blocking ? "hard" : "soft";
+      draft.degreeLevel.active = edu.active !== false;
+    }
+    if (draft.fieldOfStudy && job.education_min) {
+      const edu = job.education_min;
+      draft.fieldOfStudy.value = "field" in edu && typeof edu.field === "string" ? edu.field : "";
+      draft.fieldOfStudy.mode = edu.blocking ? "hard" : "soft";
+      draft.fieldOfStudy.active = edu.active !== false;
+    }
+    if (draft.locationCity && job.location_requirement) {
+      const loc = job.location_requirement;
+      draft.locationCity.value = "city" in loc && typeof loc.city === "string" ? loc.city : "Any";
+      draft.locationCity.mode = loc.blocking ? "hard" : "soft";
+      draft.locationCity.active = loc.active !== false;
+    }
+    if (draft.locationProvince && job.location_requirement) {
+      const loc = job.location_requirement;
+      draft.locationProvince.value =
+        "province" in loc && typeof loc.province === "string" ? loc.province : "Any";
+      draft.locationProvince.mode = loc.blocking ? "hard" : "soft";
+      draft.locationProvince.active = loc.active !== false;
+    }
+    if (draft.workMode && job.work_mode) {
+      const wm = job.work_mode;
+      draft.workMode.value = "mode" in wm && typeof wm.mode === "string" ? wm.mode : "hybrid";
+      draft.workMode.mode = wm.blocking ? "hard" : "soft";
+      draft.workMode.active = wm.active !== false;
+    }
+    if (draft.compensationMin && job.compensation_band) {
+      const cb = job.compensation_band;
+      draft.compensationMin.value = "min" in cb && typeof cb.min === "number" ? cb.min : 400000;
+      draft.compensationMin.mode = cb.blocking ? "hard" : "soft";
+      draft.compensationMin.active = cb.active !== false;
+    }
+    if (draft.compensationMax && job.compensation_band) {
+      const cb = job.compensation_band;
+      draft.compensationMax.value = "max" in cb && typeof cb.max === "number" ? cb.max : 600000;
+      draft.compensationMax.mode = cb.blocking ? "hard" : "soft";
+      draft.compensationMax.active = cb.active !== false;
+    }
+    if (draft.compensationCurrency && job.compensation_band) {
+      const cb = job.compensation_band;
+      draft.compensationCurrency.value =
+        "currency" in cb && typeof cb.currency === "string" ? cb.currency : "PKR";
+      draft.compensationCurrency.mode = cb.blocking ? "hard" : "soft";
+      draft.compensationCurrency.active = cb.active !== false;
+    }
+    if (draft.noticePeriod && job.max_notice_period) {
+      const np = job.max_notice_period;
+      draft.noticePeriod.value = "value" in np && typeof np.value === "number" ? np.value : 30;
+      draft.noticePeriod.mode = np.blocking ? "hard" : "soft";
+      draft.noticePeriod.active = np.active !== false;
+    }
+    if (draft.noticePeriodUnit && job.max_notice_period) {
+      const np = job.max_notice_period;
+      draft.noticePeriodUnit.value = "unit" in np && typeof np.unit === "string" ? np.unit : "days";
+      draft.noticePeriodUnit.mode = np.blocking ? "hard" : "soft";
+      draft.noticePeriodUnit.active = np.active !== false;
+    }
+  });
+}
+
+export interface NewJobPageProps {
+  jobId?: string;
+}
+
+function JobFormInner({ jobId }: NewJobPageProps) {
   const router = useRouter();
-  const [createJob, { isLoading: isSaving }] = useCreateJobMutation();
+  const searchParams = useSearchParams();
+  const activeJobId = jobId || searchParams?.get("id") || searchParams?.get("jobId") || undefined;
+  const isEditMode = Boolean(activeJobId);
+
+  const { data: existingJob, isLoading: isLoadingExisting, error: fetchError } = useGetJobByIdQuery(
+    activeJobId!,
+    { skip: !activeJobId }
+  );
+  const [createJob, { isLoading: isCreating }] = useCreateJobMutation();
+  const [updateJob, { isLoading: isUpdating }] = useUpdateJobMutation();
+  const isSaving = isCreating || isUpdating;
 
   const [step, setStep] = useState<1 | 2>(1);
   const [isGuideOpen, setIsGuideOpen] = useState(false);
@@ -40,6 +156,15 @@ export function NewJobPage() {
 
   // Step 2: Screening Criteria State
   const [fields, setFields] = useState<Record<string, FormFieldState>>(initialRequirementsFields);
+
+  // Pre-fill existing job data when in edit mode
+  useEffect(() => {
+    if (existingJob) {
+      setTitle(existingJob.title || "");
+      setDepartment(existingJob.department || "");
+      setFields((prev) => populateFieldsFromJob(existingJob, prev));
+    }
+  }, [existingJob]);
 
   const [alert, setAlert] = useState<{
     variant: "success" | "info" | "error";
@@ -203,12 +328,21 @@ export function NewJobPage() {
     };
 
     try {
-      await createJob(payload).unwrap();
-      setAlert({
-        variant: "success",
-        title: "Requirements Specification Saved",
-        message: "Unified criteria configured and persisted to database. Ready for resume ingestion evaluation.",
-      });
+      if (isEditMode && activeJobId) {
+        await updateJob({ id: activeJobId, input: payload }).unwrap();
+        setAlert({
+          variant: "success",
+          title: "Requirements Specification Updated",
+          message: "Job criteria updated and persisted to database. Ready for resume ingestion evaluation.",
+        });
+      } else {
+        await createJob(payload).unwrap();
+        setAlert({
+          variant: "success",
+          title: "Requirements Specification Saved",
+          message: "Unified criteria configured and persisted to database. Ready for resume ingestion evaluation.",
+        });
+      }
 
       setTimeout(() => {
         router.push(ROUTES.DASHBOARD);
@@ -217,11 +351,38 @@ export function NewJobPage() {
       console.error("Failed to save job requirements:", err);
       setAlert({
         variant: "error",
-        title: "Save Failed",
+        title: isEditMode ? "Update Failed" : "Save Failed",
         message: err instanceof Error ? err.message : "Failed to persist job requirements. Please check inputs.",
       });
     }
   };
+
+  if (activeJobId && isLoadingExisting) {
+    return (
+      <div className="space-y-6 max-w-6xl mx-auto py-12">
+        <div className="animate-pulse space-y-4">
+          <div className="h-8 bg-surface-container rounded w-1/3" />
+          <div className="h-4 bg-surface-container rounded w-1/2" />
+          <div className="h-64 bg-surface-container rounded-xl mt-8" />
+        </div>
+      </div>
+    );
+  }
+
+  if (activeJobId && fetchError) {
+    return (
+      <div className="space-y-6 max-w-6xl mx-auto py-12">
+        <Alert variant="error" title="Job Not Found">
+          Unable to locate requirements for this position. The position may have been deleted or archived.
+        </Alert>
+        <div>
+          <Button variant="primary" size="md" onClick={() => router.push(ROUTES.DASHBOARD)}>
+            Return to Dashboard
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6 max-w-6xl mx-auto">
@@ -229,10 +390,12 @@ export function NewJobPage() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <Typography variant="headline-large" as="h1">
-            Define Job Requirements
+            {isEditMode ? "Edit Job Requirements" : "Define Job Requirements"}
           </Typography>
           <Typography variant="body-medium" className="text-on-surface-variant mt-1">
-            Configure hard knockout criteria for deterministic rejection and soft weighted scoring preferences.
+            {isEditMode
+              ? "Update role identity, knockout dealbreakers, and soft scoring preferences."
+              : "Configure hard knockout criteria for deterministic rejection and soft weighted scoring preferences."}
           </Typography>
         </div>
 
@@ -289,6 +452,7 @@ export function NewJobPage() {
           onBack={() => setStep(1)}
           onSave={handleSave}
           onPreviewOverlay={() => setIsOverlayOpen(true)}
+          submitLabel={isEditMode ? "Update Requirements Schema" : "Save Requirements Schema"}
         />
       )}
 
@@ -354,5 +518,13 @@ export function NewJobPage() {
         </div>
       </OverlayContainer>
     </div>
+  );
+}
+
+export function NewJobPage(props: NewJobPageProps) {
+  return (
+    <Suspense fallback={<div className="p-8 text-center text-on-surface-variant">Loading requirements form...</div>}>
+      <JobFormInner {...props} />
+    </Suspense>
   );
 }

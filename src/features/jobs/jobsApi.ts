@@ -1,6 +1,6 @@
 import { baseApi } from "@/lib/redux/api";
 import type { Job } from "@/entities/job";
-import type { CreateJobInput } from "./types";
+import type { CreateJobInput, UpdateJobInput } from "./types";
 
 export interface ApiResponse<T> {
   success: boolean;
@@ -45,6 +45,21 @@ export const jobsApi = baseApi.injectEndpoints({
       },
       invalidatesTags: [{ type: "Job", id: "LIST" }],
     }),
+    updateJob: builder.mutation<Job, { id: string; input: UpdateJobInput }>({
+      query: ({ id, input }) => ({
+        url: `/jobs/${id}`,
+        method: "PUT",
+        body: input,
+      }),
+      transformResponse: (response: ApiResponse<Job>) => {
+        if (!response.data) throw new Error("Failed to update job");
+        return response.data;
+      },
+      invalidatesTags: (_result, _error, { id }) => [
+        { type: "Job", id },
+        { type: "Job", id: "LIST" },
+      ],
+    }),
     deleteJob: builder.mutation<void, string>({
       query: (id) => ({
         url: `/jobs/${id}`,
@@ -62,5 +77,6 @@ export const {
   useGetJobsQuery,
   useGetJobByIdQuery,
   useCreateJobMutation,
+  useUpdateJobMutation,
   useDeleteJobMutation,
 } = jobsApi;

@@ -14,6 +14,7 @@ export const ROUTES = {
   DASHBOARD: "/",
   NEW_JOB: "/jobs/new",
   JOB_DETAILS: (id: string) => `/jobs/${id}`,
+  EDIT_JOB: (id: string) => `/jobs/${id}/edit`,
   REVIEW: "/review",
   GROUPS: "/groups",
 } as const;

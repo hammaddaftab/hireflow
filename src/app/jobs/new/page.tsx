@@ -1,1 +1,7 @@
-export { NewJobPage as default } from "@/features/jobs";
+import React from "react";
+import { NewJobPage } from "@/features/jobs";
+
+export default function NewJobRoute() {
+  return <NewJobPage />;
+}
+

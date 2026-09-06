@@ -16,6 +16,7 @@ export interface ScreeningCriteriaFormProps {
   onBack: () => void;
   onSave: (e: React.FormEvent) => void;
   onPreviewOverlay: () => void;
+  submitLabel?: string;
 }
 
 export function ScreeningCriteriaForm({
@@ -26,6 +27,7 @@ export function ScreeningCriteriaForm({
   onBack,
   onSave,
   onPreviewOverlay,
+  submitLabel,
 }: ScreeningCriteriaFormProps) {
   const [_focusedId, setFocusedId] = useState<string | null>(null);
   const [isSliderOpen, setIsSliderOpen] = useState(false);
@@ -50,17 +52,6 @@ export function ScreeningCriteriaForm({
       {/* Header with Live Counts and Right-Hand Slider Trigger */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
-          {onToggleActive && (
-            <button
-              type="button"
-              onClick={() => setIsSliderOpen(true)}
-              className="inline-flex items-center gap-2 rounded-lg bg-surface-container-high hover:bg-surface-container-highest border border-outline-variant px-3 py-1.5 text-xs font-semibold text-on-surface transition-colors cursor-pointer shadow-xs"
-              title="Open Criteria Inclusion Slider"
-            >
-              <SlidersHorizontal className="h-3.5 w-3.5 text-primary shrink-0" />
-              <span>Criteria Inclusion ({activeCount}/{fieldList.length} Active)</span>
-            </button>
-          )}
         </div>
         <div className="flex items-center gap-2 shrink-0">
           <span className="rounded-md bg-on-surface text-surface px-2.5 py-1 text-xs font-bold shadow-xs">
@@ -69,11 +60,6 @@ export function ScreeningCriteriaForm({
           <span className="rounded-md bg-surface-container-high text-on-surface px-2.5 py-1 text-xs font-semibold shadow-xs">
             {softCount} Soft Bonus Criteria
           </span>
-          {excludedCount > 0 && (
-            <span className="rounded-md bg-surface-container text-on-surface-variant px-2.5 py-1 text-xs font-semibold shadow-xs border border-outline-variant/40">
-              {excludedCount} Excluded
-            </span>
-          )}
         </div>
       </div>
 
@@ -90,6 +76,7 @@ export function ScreeningCriteriaForm({
                 field={fields.minExperience}
                 onToggleMode={onToggleMode}
                 onUpdateValue={onUpdateValue}
+                onToggleActive={onToggleActive}
                 onFocus={() => setFocusedId(fields.minExperience.id)}
                 onBlur={() => setFocusedId((curr) => (curr === fields.minExperience.id ? null : curr))}
               />
@@ -101,6 +88,7 @@ export function ScreeningCriteriaForm({
                   field={fields.skillsRequired}
                   onToggleMode={onToggleMode}
                   onUpdateValue={onUpdateValue}
+                  onToggleActive={onToggleActive}
                   onFocus={() => setFocusedId(fields.skillsRequired.id)}
                   onBlur={() => setFocusedId((curr) => (curr === fields.skillsRequired.id ? null : curr))}
                 />
@@ -112,6 +100,7 @@ export function ScreeningCriteriaForm({
                   field={fields.skillsPreferred}
                   onToggleMode={onToggleMode}
                   onUpdateValue={onUpdateValue}
+                  onToggleActive={onToggleActive}
                   onFocus={() => setFocusedId(fields.skillsPreferred.id)}
                   onBlur={() => setFocusedId((curr) => (curr === fields.skillsPreferred.id ? null : curr))}
                 />
@@ -132,6 +121,7 @@ export function ScreeningCriteriaForm({
                 field={fields.degreeLevel}
                 onToggleMode={onToggleMode}
                 onUpdateValue={onUpdateValue}
+                onToggleActive={onToggleActive}
                 onFocus={() => setFocusedId(fields.degreeLevel.id)}
                 onBlur={() => setFocusedId((curr) => (curr === fields.degreeLevel.id ? null : curr))}
               />
@@ -141,6 +131,7 @@ export function ScreeningCriteriaForm({
                 field={fields.fieldOfStudy}
                 onToggleMode={onToggleMode}
                 onUpdateValue={onUpdateValue}
+                onToggleActive={onToggleActive}
                 onFocus={() => setFocusedId(fields.fieldOfStudy.id)}
                 onBlur={() => setFocusedId((curr) => (curr === fields.fieldOfStudy.id ? null : curr))}
               />
@@ -160,6 +151,7 @@ export function ScreeningCriteriaForm({
                 field={fields.locationCity}
                 onToggleMode={onToggleMode}
                 onUpdateValue={onUpdateValue}
+                onToggleActive={onToggleActive}
                 onFocus={() => setFocusedId(fields.locationCity.id)}
                 onBlur={() => setFocusedId((curr) => (curr === fields.locationCity.id ? null : curr))}
               />
@@ -169,6 +161,7 @@ export function ScreeningCriteriaForm({
                 field={fields.locationProvince}
                 onToggleMode={onToggleMode}
                 onUpdateValue={onUpdateValue}
+                onToggleActive={onToggleActive}
                 onFocus={() => setFocusedId(fields.locationProvince.id)}
                 onBlur={() => setFocusedId((curr) => (curr === fields.locationProvince.id ? null : curr))}
               />
@@ -178,6 +171,7 @@ export function ScreeningCriteriaForm({
                 field={fields.workMode}
                 onToggleMode={onToggleMode}
                 onUpdateValue={onUpdateValue}
+                onToggleActive={onToggleActive}
                 onFocus={() => setFocusedId(fields.workMode.id)}
                 onBlur={() => setFocusedId((curr) => (curr === fields.workMode.id ? null : curr))}
               />
@@ -197,6 +191,7 @@ export function ScreeningCriteriaForm({
                 field={fields.compensationMin}
                 onToggleMode={onToggleMode}
                 onUpdateValue={onUpdateValue}
+                onToggleActive={onToggleActive}
                 onFocus={() => setFocusedId(fields.compensationMin.id)}
                 onBlur={() => setFocusedId((curr) => (curr === fields.compensationMin.id ? null : curr))}
               />
@@ -206,6 +201,7 @@ export function ScreeningCriteriaForm({
                 field={fields.compensationMax}
                 onToggleMode={onToggleMode}
                 onUpdateValue={onUpdateValue}
+                onToggleActive={onToggleActive}
                 onFocus={() => setFocusedId(fields.compensationMax.id)}
                 onBlur={() => setFocusedId((curr) => (curr === fields.compensationMax.id ? null : curr))}
               />
@@ -215,6 +211,7 @@ export function ScreeningCriteriaForm({
                 field={fields.compensationCurrency}
                 onToggleMode={onToggleMode}
                 onUpdateValue={onUpdateValue}
+                onToggleActive={onToggleActive}
                 onFocus={() => setFocusedId(fields.compensationCurrency.id)}
                 onBlur={() => setFocusedId((curr) => (curr === fields.compensationCurrency.id ? null : curr))}
               />
@@ -224,6 +221,7 @@ export function ScreeningCriteriaForm({
                 field={fields.noticePeriod}
                 onToggleMode={onToggleMode}
                 onUpdateValue={onUpdateValue}
+                onToggleActive={onToggleActive}
                 onFocus={() => setFocusedId(fields.noticePeriod.id)}
                 onBlur={() => setFocusedId((curr) => (curr === fields.noticePeriod.id ? null : curr))}
               />
@@ -233,6 +231,7 @@ export function ScreeningCriteriaForm({
                 field={fields.noticePeriodUnit}
                 onToggleMode={onToggleMode}
                 onUpdateValue={onUpdateValue}
+                onToggleActive={onToggleActive}
                 onFocus={() => setFocusedId(fields.noticePeriodUnit.id)}
                 onBlur={() => setFocusedId((curr) => (curr === fields.noticePeriodUnit.id ? null : curr))}
               />
@@ -269,7 +268,7 @@ export function ScreeningCriteriaForm({
             Preview in Overlay Container
           </Button>
           <Button type="submit" variant="primary" size="md">
-            Save Requirements Schema
+            {submitLabel || "Save Requirements Schema"}
           </Button>
         </div>
       </div>
@@ -286,8 +285,12 @@ export function ScreeningCriteriaForm({
           <SlidersHorizontal className="h-4 w-4 text-primary shrink-0 group-hover:scale-110 transition-transform" />
           <div className="hidden sm:flex flex-col items-start text-left">
             <span className="text-[11px] font-bold text-on-surface">Criteria</span>
-            <span className="text-[10px] text-on-surface-variant font-medium">
-              {activeCount}/{fieldList.length} Active
+            <span className="text-[10px] font-medium">
+              {excludedCount > 0 ? (
+                <span className="font-bold text-on-surface">{excludedCount} Excluded</span>
+              ) : (
+                <span className="text-on-surface-variant">{activeCount} Active</span>
+              )}
             </span>
           </div>
         </button>
