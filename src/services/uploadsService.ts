@@ -1,73 +1,107 @@
-// Singleton registry for uploaded candidate resumes stored in Vercel Blob Storage
+// Service for candidate resume uploads persisted directly in PostgreSQL via Drizzle ORM
 
+import { db, resumeUploads } from "@/db";
+import { desc, eq } from "drizzle-orm";
 import type { UploadedResumeRecord } from "@/lib/upload";
+import type { ResumeUploadRecord } from "@/entities/resumeUpload";
 
-// Initial seed data reflecting sample resumes in workspace
-const INITIAL_SEEDS: UploadedResumeRecord[] = [
-  {
-    id: "upl_mock_resume_a",
-    filename: "mock_resume_a.pdf",
-    size: 292618,
-    contentType: "application/pdf",
-    status: "stored",
-    blobUrl: "storage://resumes/mock_resume_a.pdf",
-    pathname: "resumes/mock_resume_a.pdf",
-    hash: "2dc311a21fd4bfab3102ecdccd7bd226a0ac8fc927722bc162873a49d23183b5",
-    jobId: "job-sample-1",
-    uploadedAt: new Date(Date.now() - 1000 * 60 * 35).toISOString(),
-  },
-  {
-    id: "upl_mock_resume_b",
-    filename: "mock_resume_b.pdf",
-    size: 517151,
-    contentType: "application/pdf",
-    status: "stored",
-    blobUrl: "storage://resumes/mock_resume_b.pdf",
-    pathname: "resumes/mock_resume_b.pdf",
-    hash: "ae32a851ce3e56b6c00f76798732a39eb207cc569d437de005bdbbf517ebfefa",
-    jobId: "job-sample-1",
-    uploadedAt: new Date(Date.now() - 1000 * 60 * 15).toISOString(),
-  },
-];
+// Transform database row into domain UploadedResumeRecord contract
+function toDomainRecord(row: ResumeUploadRecord): UploadedResumeRecord {
+  return {
+    id: row.id,
+    filename: row.filename,
+    size: row.size,
+    contentType: row.contentType,
+    status: (row.status as "stored" | "uploading" | "error") || "stored",
+    blobUrl: row.blobUrl,
+    pathname: row.pathname,
+    hash: row.hash || "",
+    jobId: row.jobId,
+    uploadedAt: row.createdAt.toISOString(),
+  };
+}
 
 export class UploadsService {
-  private registry: Map<string, UploadedResumeRecord> = new Map();
+  // Query all uploaded resume records ordered by most recent first
+  async getAll(): Promise<UploadedResumeRecord[]> {
+    const rows = await db
+      .select()
+      .from(resumeUploads)
+      .orderBy(desc(resumeUploads.createdAt));
 
-  constructor(initialRecords?: UploadedResumeRecord[]) {
-    const seeds = initialRecords || INITIAL_SEEDS;
-    seeds.forEach((rec) => this.registry.set(rec.id, rec));
+    return rows.map(toDomainRecord);
   }
 
-  getAll(): UploadedResumeRecord[] {
-    return Array.from(this.registry.values()).sort(
-      (a, b) => new Date(b.uploadedAt).getTime() - new Date(a.uploadedAt).getTime()
-    );
+  // Find a specific resume upload by unique ID
+  async getById(id: string): Promise<UploadedResumeRecord | null> {
+    const rows = await db
+      .select()
+      .from(resumeUploads)
+      .where(eq(resumeUploads.id, id))
+      .limit(1);
+
+    if (rows.length === 0) return null;
+    return toDomainRecord(rows[0]);
   }
 
-  getById(id: string): UploadedResumeRecord | null {
-    return this.registry.get(id) || null;
-  }
-
-  add(record: UploadedResumeRecord): UploadedResumeRecord {
-    this.registry.set(record.id, record);
+  // Insert a single uploaded resume record into PostgreSQL
+  async add(record: UploadedResumeRecord): Promise<UploadedResumeRecord> {
+    const now = new Date();
+    await db.insert(resumeUploads).values({
+      id: record.id,
+      filename: record.filename,
+      size: record.size,
+      contentType: record.contentType,
+      blobUrl: record.blobUrl,
+      pathname: record.pathname,
+      hash: record.hash || null,
+      jobId: record.jobId || null,
+      status: record.status || "stored",
+      createdAt: record.uploadedAt ? new Date(record.uploadedAt) : now,
+      updatedAt: now,
+    });
     return record;
   }
 
-  addBatch(records: UploadedResumeRecord[]): UploadedResumeRecord[] {
-    records.forEach((rec) => this.registry.set(rec.id, rec));
+  // Batch insert multiple uploaded resume records into PostgreSQL
+  async addBatch(records: UploadedResumeRecord[]): Promise<UploadedResumeRecord[]> {
+    if (records.length === 0) return [];
+    const now = new Date();
+    const values = records.map((record) => ({
+      id: record.id,
+      filename: record.filename,
+      size: record.size,
+      contentType: record.contentType,
+      blobUrl: record.blobUrl,
+      pathname: record.pathname,
+      hash: record.hash || null,
+      jobId: record.jobId || null,
+      status: record.status || "stored",
+      createdAt: record.uploadedAt ? new Date(record.uploadedAt) : now,
+      updatedAt: now,
+    }));
+    await db.insert(resumeUploads).values(values);
     return records;
   }
 
-  delete(id: string): boolean {
-    return this.registry.delete(id);
+  // Delete a specific upload record by ID
+  async delete(id: string): Promise<boolean> {
+    const result = await db
+      .delete(resumeUploads)
+      .where(eq(resumeUploads.id, id))
+      .returning({ id: resumeUploads.id });
+
+    return result.length > 0;
   }
 
-  clear(): void {
-    this.registry.clear();
+  // Clear all uploaded resume records from database
+  async clear(): Promise<void> {
+    await db.delete(resumeUploads);
   }
 
-  getStats() {
-    const items = this.getAll();
+  // Compute aggregate metrics directly from database records
+  async getStats(): Promise<{ total: number; totalBytes: number; stored: number }> {
+    const items = await this.getAll();
     const totalBytes = items.reduce((acc, item) => acc + item.size, 0);
     const stored = items.filter((item) => item.status === "stored").length;
     return {
@@ -78,10 +112,5 @@ export class UploadsService {
   }
 }
 
-// Global singleton instance for in-memory persistence in development / API routes
-const globalForUploads = globalThis as unknown as { uploadsService?: UploadsService };
-export const uploadsService = globalForUploads.uploadsService ?? new UploadsService();
-
-if (process.env.NODE_ENV !== "production") {
-  globalForUploads.uploadsService = uploadsService;
-}
+// Global singleton instance for database-backed resume uploads
+export const uploadsService = new UploadsService();

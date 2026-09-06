@@ -4,7 +4,7 @@ import * as schema from "./schema";
 
 const connectionString =
   process.env.DATABASE_URL ||
-  "postgres://localhost:5432/hireflow";
+  "postgresql://postgres:12345678@localhost:5432/agentra";
 
 // Global singleton for postgres connection pool across Next.js hot reloads
 const globalForDb = globalThis as unknown as {

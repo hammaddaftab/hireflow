@@ -7,6 +7,6 @@ export default defineConfig({
   dbCredentials: {
     url:
       process.env.DATABASE_URL ||
-      "postgres://localhost:5432/hireflow",
+      "postgresql://postgres:12345678@localhost:5432/agentra",
   },
 });

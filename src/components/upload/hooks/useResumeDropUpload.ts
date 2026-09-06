@@ -120,10 +120,9 @@ export function useResumeDropUpload({
         // Replace pending items with confirmed Vercel Blob records
         setUploads((prev) => {
           let updated = [...prev];
-          data.uploads.forEach((uploaded: DroppedResumeItem) => {
-            const matchIndex = updated.findIndex(
-              (u) => u.filename === uploaded.filename && u.status === "uploading"
-            );
+          data.uploads.forEach((uploaded: DroppedResumeItem, idx: number) => {
+            const pendingId = pendingItems[idx]?.id;
+            const matchIndex = updated.findIndex((u) => u.id === pendingId);
             if (matchIndex !== -1) {
               updated[matchIndex] = uploaded;
             } else {

@@ -8,6 +8,13 @@
       "when": 1788522030644,
       "tag": "0000_oval_red_skull",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1788724781681,
+      "tag": "0001_mixed_green_goblin",
+      "breakpoints": true
     }
   ]
 }

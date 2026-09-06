@@ -7,7 +7,7 @@ import { ApiError } from "@/lib/errors/api-error";
 
 export { openai, google };
 
-const DEFAULT_OPENAI_MODEL = "gpt-4o-mini";
+const DEFAULT_OPENAI_MODEL = "gpt-5.6-luna";
 const DEFAULT_GOOGLE_MODEL = "gemini-3.5-flash";
 
 /**
