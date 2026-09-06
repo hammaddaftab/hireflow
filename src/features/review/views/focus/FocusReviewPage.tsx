@@ -9,9 +9,7 @@ import type { QueueFilterTab } from "@/entities/review";
 import type { CandidateReviewItem } from "../../types";
 import { useReviewData } from "../../core/hooks/useReviewData";
 import { useFocusCarousel } from "./hooks/useFocusCarousel";
-import { CandidateCard } from "../../core/components/card/CandidateCard";
-import { CircularRingCardHint } from "./components/CircularRingCardHint";
-import { CircularRingTrack } from "./components/CircularRingTrack";
+import { SpatialFocusDeck } from "./components/SpatialFocusDeck";
 import { FocusCommandBar } from "./components/FocusCommandBar";
 import { ReviewFilterPane } from "./components/ReviewFilterPane";
 import { buildReviewQueryString } from "../../core/utils/reviewQueryParams";
@@ -73,11 +71,6 @@ export function FocusReviewPage({
     setIsLocationOpen,
     filteredQueue,
     scopedActiveItem,
-    hasNext,
-    hasPrev,
-    direction,
-    animKey,
-    pulsingHint,
     hasActiveFilters,
     handleNext,
     handlePrev,
@@ -166,80 +159,21 @@ export function FocusReviewPage({
         </button>
       </div>
 
-      {/* Center Field: Circular Ring Deck Stage (Apex Card + Circumference Hints) */}
+      {/* Center Field: Spatial 3D Card Deck (Apex Center Card + Side Depth Cards on Common Baseline) */}
       <main
         className={`relative flex-1 min-h-0 w-full flex justify-center overflow-hidden transition-all duration-300 ${
           isEvidenceOpen ? "py-0 items-stretch" : "py-4 items-center"
         }`}
       >
-        {/* Ambient 3D Circular Ring Track SVG beneath center card */}
-        <CircularRingTrack
+        <SpatialFocusDeck
+          items={filteredQueue}
           activeIndex={activeIndex}
-          totalCandidates={totalCandidates}
-        />
-
-        {/* Left Circumferential Ring Perspective Card Hint */}
-        <CircularRingCardHint
-          direction="left"
-          onClick={handlePrev}
-          isPulsing={pulsingHint === "left"}
-          disabled={!hasPrev}
-        />
-
-        {/* Center Apex Candidate Card Container */}
-        <div
-          className={`relative z-20 flex justify-center transition-all duration-300 ${
-            isEvidenceOpen
-              ? "w-full max-w-5xl h-full px-4"
-              : "w-full max-w-2xl px-4"
-          }`}
-        >
-          {scopedActiveItem ? (
-            <div
-              key={animKey}
-              className={`w-full ${
-                direction === "next"
-                  ? "animate-arc-in-right"
-                  : direction === "prev"
-                  ? "animate-arc-in-left"
-                  : ""
-              } ${isEvidenceOpen ? "h-full" : ""}`}
-            >
-              <CandidateCard
-                item={scopedActiveItem}
-                isActive={true}
-                onDecision={handleDecision}
-                hideActionButtons={true}
-                isLayer2Expanded={isEvidenceOpen}
-                onToggleLayer2={() => setIsEvidenceOpen(!isEvidenceOpen)}
-                expandedFullHeight={isEvidenceOpen}
-              />
-            </div>
-          ) : (
-            <div className="p-12 text-center border border-dashed border-outline-variant rounded-2xl bg-surface-container-low max-w-md">
-              <Typography variant="title-medium" className="text-on-surface font-semibold">
-                No candidates match the active filter criteria.
-              </Typography>
-              <Typography variant="body-small" className="text-on-surface-variant mt-2">
-                Switch to All Candidates or reset filters.
-              </Typography>
-              <button
-                type="button"
-                onClick={resetFilters}
-                className="mt-4 px-4 py-2 rounded-xl bg-primary text-on-primary text-xs font-bold cursor-pointer"
-              >
-                Reset All Filters
-              </button>
-            </div>
-          )}
-        </div>
-
-        {/* Right Circumferential Ring Perspective Card Hint */}
-        <CircularRingCardHint
-          direction="right"
-          onClick={handleNext}
-          isPulsing={pulsingHint === "right"}
-          disabled={!hasNext}
+          onNext={handleNext}
+          onPrev={handlePrev}
+          onDecision={handleDecision}
+          isEvidenceOpen={isEvidenceOpen}
+          onToggleEvidence={() => setIsEvidenceOpen(!isEvidenceOpen)}
+          resetFilters={resetFilters}
         />
       </main>
 
