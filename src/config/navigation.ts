@@ -15,6 +15,7 @@ export const ROUTES = {
   NEW_JOB: "/jobs/new",
   JOB_DETAILS: (id: string) => `/jobs/${id}`,
   REVIEW: "/review",
+  GROUPS: "/groups",
 } as const;
 
 /**
@@ -34,6 +35,13 @@ export const SIDEBAR_NAV_ITEMS: NavItem[] = [
     href: ROUTES.REVIEW,
     description: "Rapid candidate screening queue with two-layer evidence disclosure",
     matchPatterns: ["/review"],
+  },
+  {
+    id: "groups",
+    label: "Candidate Groups",
+    href: ROUTES.GROUPS,
+    description: "Interactive node graph of candidate clusters and pipeline branches",
+    matchPatterns: ["/groups"],
   },
   {
     id: "create-requirement",

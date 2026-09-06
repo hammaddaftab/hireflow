@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import { 
   Building2, 
   MapPin, 
@@ -332,7 +333,11 @@ export function CandidateCard({
       </div>
 
       {/* LAYER 1: Category-Grouped Evidence Display with Exception Collapse */}
-      <div className="mt-5 p-4 rounded-2xl bg-surface-container space-y-3 border-0">
+      <motion.div
+        layout
+        transition={{ type: "spring", stiffness: 350, damping: 30 }}
+        className="mt-5 p-4 rounded-2xl bg-surface-container space-y-3 border-0"
+      >
         <div className="flex flex-col md:flex-row md:items-start justify-between gap-3">
           {/* Category Rows (Experience, Skills, Education, Logistics) */}
           <div className="flex-1">
@@ -362,21 +367,41 @@ export function CandidateCard({
             </Button>
           </div>
         </div>
-      </div>
+      </motion.div>
 
-      {/* LAYER 2: On-Demand Categorical Evidence Drawer */}
-      {isLayer2Expanded && (
-        <EvidenceDrawer
-          item={item}
-          onClose={toggleLayer2}
-        />
-      )}
+      {/* LAYER 2: On-Demand Categorical Evidence Drawer with spring layout physics */}
+      <AnimatePresence initial={false}>
+        {isLayer2Expanded && (
+          <motion.div
+            key="evidence-drawer"
+            layout
+            initial={{ opacity: 0, scale: 0.98, y: -6 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.98, y: -6 }}
+            transition={{
+              type: "spring",
+              stiffness: 350,
+              damping: 30,
+              opacity: { duration: 0.18, ease: [0.4, 0, 0.2, 1] },
+            }}
+          >
+            <EvidenceDrawer
+              item={item}
+              onClose={toggleLayer2}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-      {/* Footer Action Slot */}
+      {/* Footer Action Slot with spring layout transition */}
       {footerActionSlot && (
-        <div className="mt-4 pt-3 border-t border-outline-variant/30">
+        <motion.div
+          layout
+          transition={{ type: "spring", stiffness: 350, damping: 30 }}
+          className="mt-4 pt-3 border-t border-outline-variant/30"
+        >
           {footerActionSlot}
-        </div>
+        </motion.div>
       )}
     </Card>
   );
