@@ -172,7 +172,10 @@ export function buildJobPayload(
         : {
             active: true as const,
             degree_level: validDegree,
-            field: String(fields.fieldOfStudy?.value || "").trim() || null,
+            field:
+              fields.fieldOfStudy?.value && fields.fieldOfStudy.value !== "Any"
+                ? String(fields.fieldOfStudy.value).trim()
+                : null,
             blocking: fields.degreeLevel?.mode === "hard",
           },
     location_requirement:

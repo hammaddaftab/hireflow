@@ -56,6 +56,22 @@ export const FIELD_SYNONYMS: Record<string, string> = {
   "accounting & finance": "Accounting & Finance",
 };
 
+// Curated closed set of canonical fields of study for job requirements
+export const CANONICAL_FIELDS_OF_STUDY: string[] = [
+  "Any",
+  "Computer Science",
+  "Software Engineering",
+  "Information Technology",
+  "Data Science",
+  "Artificial Intelligence",
+  "Computer Engineering",
+  "Electrical Engineering",
+  "Mechanical Engineering",
+  "Civil Engineering",
+  "Business Administration",
+  "Accounting & Finance",
+];
+
 // Discipline equivalence clusters for related fields of study
 export const FIELD_EQUIVALENCE_CLUSTERS: Record<string, string[]> = {
   "Computer Science": [
