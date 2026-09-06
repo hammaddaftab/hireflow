@@ -1,4 +1,6 @@
 import type { FormFieldState } from "@/features/jobs/types";
+import { CANONICAL_SKILLS } from "@/features/extraction/skillNormalizer";
+import { CANONICAL_FIELDS_OF_STUDY } from "@/features/extraction/fieldOfStudyNormalizer";
 
 export const initialRequirementsFields: Record<string, FormFieldState> = {
   minExperience: {
@@ -13,17 +15,19 @@ export const initialRequirementsFields: Record<string, FormFieldState> = {
   skillsRequired: {
     id: "skillsRequired",
     label: "Mandatory Skills (Knockout)",
-    helperText: "Comma-separated must-have skills that are hard knockouts if missing",
+    helperText: "Select canonical must-have skills that are hard knockouts if missing",
     mode: "hard",
     value: "TypeScript, React, Node.js",
+    options: CANONICAL_SKILLS,
     active: true,
   },
   skillsPreferred: {
     id: "skillsPreferred",
     label: "Preferred Skills (Bonus)",
-    helperText: "Comma-separated nice-to-have skills scored for bonus qualification",
+    helperText: "Select canonical nice-to-have skills scored for bonus qualification",
     mode: "soft",
     value: "Next.js, Tailwind CSS, PostgreSQL",
+    options: CANONICAL_SKILLS,
     active: true,
   },
   degreeLevel: {
@@ -38,9 +42,10 @@ export const initialRequirementsFields: Record<string, FormFieldState> = {
   fieldOfStudy: {
     id: "fieldOfStudy",
     label: "Field of Study",
-    helperText: "Canonical academic discipline or major",
+    helperText: "Canonical academic discipline or major from closed set",
     mode: "soft",
     value: "Computer Science",
+    options: CANONICAL_FIELDS_OF_STUDY,
     active: true,
   },
   locationCity: {
