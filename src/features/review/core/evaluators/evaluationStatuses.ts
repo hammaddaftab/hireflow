@@ -1,4 +1,10 @@
 import type { SyntacticTier } from "@/entities/extraction/candidate/aspects/skillsDemonstrated";
+import type { BaseRequirement } from "@/entities/job";
+
+export interface EvaluationPair<TRequirement extends BaseRequirement, TCandidateFact> {
+  requirement: TRequirement;
+  candidate: TCandidateFact;
+}
 
 export type ExperienceStatus = "confirmed" | "contradicted" | "not_stated";
 export type SkillStatus = "confirmed" | "ambiguous" | "contradicted" | "not_stated";

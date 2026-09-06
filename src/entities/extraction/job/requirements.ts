@@ -1,6 +1,42 @@
 import { z } from "zod";
 
-export const SkillRequirementItemSchema = z.object({
+export interface InactiveRequirement {
+  active: false;
+  blocking?: boolean;
+}
+
+export interface ActiveRequirement {
+  active: true;
+  blocking: boolean;
+}
+
+export type BaseRequirement = InactiveRequirement | ActiveRequirement;
+
+export const InactiveRequirementSchema = z
+  .object({
+    active: z.literal(false),
+    blocking: z.boolean().default(false).optional(),
+  })
+  .passthrough();
+
+function createRequirementSchema<TActive extends z.ZodRawShape>(activeShape: TActive) {
+  const activeSchema = z.object({
+    active: z.literal(true).default(true),
+    ...activeShape,
+  });
+
+  return z.preprocess(
+    (val: unknown) => {
+      if (val && typeof val === "object" && (val as Record<string, unknown>).active === undefined) {
+        return { ...(val as Record<string, unknown>), active: true };
+      }
+      return val;
+    },
+    z.discriminatedUnion("active", [InactiveRequirementSchema, activeSchema])
+  );
+}
+
+export const SkillRequirementItemSchema = createRequirementSchema({
   skill: z
     .string()
     .describe("Name of the required or preferred skill"),
@@ -9,7 +45,7 @@ export const SkillRequirementItemSchema = z.object({
     .describe("True for mandatory knockout skills, false for nice-to-have preferences"),
 });
 
-export const MinExperienceRequirementSchema = z.object({
+export const MinExperienceRequirementSchema = createRequirementSchema({
   years: z
     .number()
     .nullable()
@@ -30,7 +66,7 @@ export const DegreeLevelEnum = z.enum([
 
 export type DegreeLevel = z.infer<typeof DegreeLevelEnum>;
 
-export const EducationRequirementSchema = z.object({
+export const EducationRequirementSchema = createRequirementSchema({
   degree_level: DegreeLevelEnum
     .nullable()
     .describe("Canonical degree tier enum (bachelors, masters, doctorate, diploma, high_school), or null if not stated"),
@@ -44,7 +80,7 @@ export const EducationRequirementSchema = z.object({
     .describe("Whether minimum education is a hard knockout requirement"),
 });
 
-export const LocationRequirementSchema = z.object({
+export const LocationRequirementSchema = createRequirementSchema({
   city: z
     .string()
     .nullable()
@@ -59,7 +95,7 @@ export const LocationRequirementSchema = z.object({
     .describe("Whether location is a strict dealbreaker"),
 });
 
-export const WorkModeRequirementSchema = z.object({
+export const WorkModeRequirementSchema = createRequirementSchema({
   mode: z
     .enum(["remote", "hybrid", "onsite"])
     .describe("Work mode requirement"),
@@ -69,7 +105,7 @@ export const WorkModeRequirementSchema = z.object({
     .describe("Whether work mode is a strict dealbreaker"),
 });
 
-export const CompensationBandRequirementSchema = z.object({
+export const CompensationBandRequirementSchema = createRequirementSchema({
   min: z
     .number()
     .nullable()
@@ -88,7 +124,7 @@ export const CompensationBandRequirementSchema = z.object({
     .describe("Whether budget ceiling is a strict dealbreaker"),
 });
 
-export const MaxNoticePeriodRequirementSchema = z.object({
+export const MaxNoticePeriodRequirementSchema = createRequirementSchema({
   value: z
     .number()
     .nullable()

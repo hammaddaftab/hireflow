@@ -1,6 +1,10 @@
 import type { CompensationBandRequirement } from "@/entities/job";
 import type { CandidateSalaryExpectation } from "@/entities/extraction/candidate/aspects/logistics";
-import type { EvaluatedCompensationRequirement, CompensationStatus } from "./evaluationStatuses";
+import type {
+  EvaluatedCompensationRequirement,
+  CompensationStatus,
+  EvaluationPair,
+} from "./evaluationStatuses";
 
 function formatSalaryNumber(num: number): string {
   if (num >= 1000000) {
@@ -14,21 +18,23 @@ function formatSalaryNumber(num: number): string {
   return num.toLocaleString();
 }
 
-export type CompensationEvaluatorInput = {
-  compensation_requirement: CompensationBandRequirement | null;
-  salary_expectation: CandidateSalaryExpectation;
-  id?: string;
-};
+export type CompensationEvaluatorInput = EvaluationPair<
+  CompensationBandRequirement,
+  CandidateSalaryExpectation
+>;
 
-export function evaluateCompensation(input: CompensationEvaluatorInput): EvaluatedCompensationRequirement {
-  const { compensation_requirement, salary_expectation, id } = input;
-  const band = compensation_requirement || {
-    min: 400000,
-    max: 600000,
-    currency: "PKR",
-    blocking: false,
-  };
-  const isBlocking = Boolean(compensation_requirement?.blocking);
+export function evaluateCompensation(
+  input: CompensationEvaluatorInput,
+  id?: string
+): EvaluatedCompensationRequirement | null {
+  const { requirement: band, candidate: salary_expectation } = input;
+
+  // Invariant: If criterion is not active, omit completely
+  if (band.active === false) {
+    return null;
+  }
+
+  const isBlocking = Boolean(band.blocking);
   const norm = salary_expectation.normalized;
   const bandStr = `budget ${formatSalaryNumber(band.min || 0)}–${formatSalaryNumber(band.max || 0)} ${band.currency || "PKR"}`;
 

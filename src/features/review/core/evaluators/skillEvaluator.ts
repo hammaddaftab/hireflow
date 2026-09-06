@@ -1,16 +1,23 @@
-import type { SkillRequirementItem } from "@/entities/job";
+import type { SkillRequirementItem, BaseRequirement } from "@/entities/job";
 import type { SkillDemonstratedItem } from "@/entities/extraction/candidate/aspects/skillsDemonstrated";
-import type { EvaluatedSkillRequirement } from "./evaluationStatuses";
+import type { EvaluatedSkillRequirement, EvaluationPair } from "./evaluationStatuses";
 import { matchSkill } from "@/features/extraction/skillNormalizer";
 
-export type SkillEvaluatorInput = {
-  skills_required?: SkillRequirementItem[] | null;
-  skills_preferred?: SkillRequirementItem[] | null;
-  skills_demonstrated: SkillDemonstratedItem[];
-  skills_declared: string[];
-};
+export type SkillGroupRequirement =
+  | { active: false; blocking?: boolean }
+  | { active: true; blocking: boolean; items: SkillRequirementItem[] };
 
-export interface SkillEvaluatorOutput {
+export interface CandidateSkillsContext {
+  demonstrated: SkillDemonstratedItem[];
+  declared: string[];
+}
+
+export interface SkillEvaluatorInput {
+  requiredSkills: EvaluationPair<SkillGroupRequirement, CandidateSkillsContext>;
+  preferredSkills: EvaluationPair<SkillGroupRequirement, CandidateSkillsContext>;
+}
+
+export interface EvaluatedSkillsRequirement {
   evaluations: EvaluatedSkillRequirement[];
   statedSkills: EvaluatedSkillRequirement[];
   notStatedSkills: EvaluatedSkillRequirement[];
@@ -26,26 +33,38 @@ export interface SkillEvaluatorOutput {
   };
 }
 
-export function evaluateSkills(input: SkillEvaluatorInput): SkillEvaluatorOutput {
-  const {
-    skills_required = [],
-    skills_preferred = [],
-    skills_demonstrated,
-    skills_declared,
-  } = input;
+// Backward compatibility alias
+export type SkillEvaluatorOutput = EvaluatedSkillsRequirement;
+
+export function evaluateSkills(input: SkillEvaluatorInput): EvaluatedSkillsRequirement | null {
+  const { requiredSkills, preferredSkills } = input;
+
+  // Symmetrically check requiredSkills.requirement.active and preferredSkills.requirement.active
+  const isRequiredActive =
+    requiredSkills.requirement.active && requiredSkills.requirement.items.length > 0;
+  const isPreferredActive =
+    preferredSkills.requirement.active && preferredSkills.requirement.items.length > 0;
+
+  // Null if neither required nor preferred skills are active
+  if (!isRequiredActive && !isPreferredActive) {
+    return null;
+  }
+
+  const demonstrated = requiredSkills.candidate.demonstrated;
+  const declared = requiredSkills.candidate.declared;
 
   // Assumes normalized candidate skills from extraction pipeline and normalized requirements from job pipeline
   const demonstratedMap = new Map<string, SkillDemonstratedItem>();
-  for (const s of skills_demonstrated) {
+  for (const s of demonstrated) {
     demonstratedMap.set(s.skill, s);
   }
 
-  const declaredSet = new Set(skills_declared);
+  const declaredSet = new Set(declared);
 
   // Unverified candidate claims: declared in resume but not demonstrated in work history
-  const orphanSkillsList = skills_declared.filter((declared) => {
-    if (demonstratedMap.has(declared)) return false;
-    return !skills_demonstrated.some((item) => matchSkill(declared, item.skill));
+  const orphanSkillsList = declared.filter((item) => {
+    if (demonstratedMap.has(item)) return false;
+    return !demonstrated.some((d) => matchSkill(item, d.skill));
   });
   const orphanSkillsCount = orphanSkillsList.length;
 
@@ -55,7 +74,7 @@ export function evaluateSkills(input: SkillEvaluatorInput): SkillEvaluatorOutput
     const direct = demonstratedMap.get(skillName);
     if (direct) return direct;
 
-    for (const item of skills_demonstrated) {
+    for (const item of demonstrated) {
       if (matchSkill(skillName, item.skill)) {
         return item;
       }
@@ -66,8 +85,8 @@ export function evaluateSkills(input: SkillEvaluatorInput): SkillEvaluatorOutput
   // Checks if required skill was declared in candidate's profile
   function isSkillDeclared(skillName: string): boolean {
     if (declaredSet.has(skillName)) return true;
-    for (const declared of skills_declared) {
-      if (matchSkill(skillName, declared)) {
+    for (const d of declared) {
+      if (matchSkill(skillName, d)) {
         return true;
       }
     }
@@ -81,7 +100,29 @@ export function evaluateSkills(input: SkillEvaluatorInput): SkillEvaluatorOutput
     isBlocking: boolean,
     id: string
   ): EvaluatedSkillRequirement {
-    const skillName = reqItem.skill;
+    const skillName = "skill" in reqItem && typeof reqItem.skill === "string" ? reqItem.skill : "";
+    if (!skillName) {
+      return {
+        id,
+        category: "skill",
+        label: "Unknown Skill",
+        blocking: isBlocking,
+        status: "not_stated",
+        hasOutcome: false,
+        outcome_attached: null,
+        isOrphan: false,
+        evidence_span: null,
+        reasoning: "Skill not specified.",
+        syntactic_tier: null,
+        orphanSkills: orphanSkillsList,
+        derived: {
+          dotType: "not_stated",
+          pillText: "Unknown Skill",
+          badgeText: "Not Stated",
+        },
+      };
+    }
+
     const demonstrated = findDemonstrated(skillName);
 
     if (demonstrated) {
@@ -143,15 +184,19 @@ export function evaluateSkills(input: SkillEvaluatorInput): SkillEvaluatorOutput
     };
   }
 
-  // 1. Evaluate required skills
-  (skills_required || []).forEach((reqItem, idx) => {
-    evaluations.push(evaluateOne(reqItem, true, `req_skill_req_${idx}`));
-  });
+  // 1. Evaluate active required skills
+  if (requiredSkills.requirement.active) {
+    requiredSkills.requirement.items.forEach((reqItem, idx) => {
+      evaluations.push(evaluateOne(reqItem, reqItem.blocking ?? true, `req_skill_req_${idx}`));
+    });
+  }
 
-  // 2. Evaluate preferred skills
-  (skills_preferred || []).forEach((prefItem, idx) => {
-    evaluations.push(evaluateOne(prefItem, false, `req_skill_pref_${idx}`));
-  });
+  // 2. Evaluate active preferred skills
+  if (preferredSkills.requirement.active) {
+    preferredSkills.requirement.items.forEach((prefItem, idx) => {
+      evaluations.push(evaluateOne(prefItem, prefItem.blocking ?? false, `req_skill_pref_${idx}`));
+    });
+  }
 
   const statedSkills = evaluations.filter((s) => s.status !== "not_stated");
   const notStatedSkills = evaluations.filter((s) => s.status === "not_stated");

@@ -1,19 +1,36 @@
 import type { LocationRequirement } from "@/entities/job";
 import type { NormalizedLocation } from "@/entities/extraction/candidate/aspects/identity";
-import type { EvaluatedLocationRequirement, LocationStatus } from "./evaluationStatuses";
+import type {
+  EvaluatedLocationRequirement,
+  LocationStatus,
+  EvaluationPair,
+} from "./evaluationStatuses";
 
-export type LocationEvaluatorInput = {
-  location_requirement: LocationRequirement | null;
+export interface CandidateLocationContext {
   normalized_location: NormalizedLocation;
   stated_relocation_willingness?: string | null;
-  id?: string;
-};
+}
 
-export function evaluateLocation(input: LocationEvaluatorInput): EvaluatedLocationRequirement {
-  const { location_requirement, normalized_location, stated_relocation_willingness, id } = input;
-  const reqCity = location_requirement?.city || null;
-  const reqProvince = location_requirement?.province || null;
-  const isBlocking = Boolean(location_requirement?.blocking);
+export type LocationEvaluatorInput = EvaluationPair<
+  LocationRequirement,
+  CandidateLocationContext
+>;
+
+export function evaluateLocation(
+  input: LocationEvaluatorInput,
+  id?: string
+): EvaluatedLocationRequirement | null {
+  const { requirement: location_requirement, candidate } = input;
+
+  // Invariant: If criterion is not active, omit completely
+  if (location_requirement.active === false) {
+    return null;
+  }
+
+  const { normalized_location, stated_relocation_willingness } = candidate;
+  const reqCity = location_requirement.city || null;
+  const reqProvince = location_requirement.province || null;
+  const isBlocking = Boolean(location_requirement.blocking);
 
   const candCity = normalized_location.normalized?.city || null;
   const candProvince = normalized_location.normalized?.province || null;

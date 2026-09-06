@@ -82,6 +82,20 @@ export function NewJobPage() {
     });
   };
 
+  const handleToggleFieldActive = (id: string) => {
+    setFields((prev) => {
+      const current = prev[id];
+      if (!current) return prev;
+      return {
+        ...prev,
+        [id]: {
+          ...current,
+          active: current.active === false ? true : false,
+        },
+      };
+    });
+  };
+
   const handleUpdateFieldValue = (id: string, value: string | number) => {
     setFields((prev) => ({
       ...prev,
@@ -119,43 +133,75 @@ export function NewJobPage() {
       seniority_level: seniority,
 
       // Canonical schema fields matching JobRequirementsExtractionSchema & Drizzle jobs table
-      skills_required: mandatorySkillsList.map((skill) => ({
-        skill,
-        blocking: fields.skillsRequired?.mode === "hard",
-      })),
-      skills_preferred: preferredSkillsList.map((skill) => ({
-        skill,
-        blocking: fields.skillsPreferred?.mode === "hard",
-      })),
-      min_experience: {
-        years: Number(fields.minExperience?.value) || 0,
-        blocking: fields.minExperience?.mode === "hard",
-      },
-      education_min: {
-        degree_level: validDegree,
-        field: String(fields.fieldOfStudy?.value || "").trim() || null,
-        blocking: fields.degreeLevel?.mode === "hard",
-      },
-      location_requirement: {
-        city: fields.locationCity?.value && fields.locationCity.value !== "Any" ? String(fields.locationCity.value).trim() : null,
-        province: fields.locationProvince?.value && fields.locationProvince.value !== "Any" ? String(fields.locationProvince.value).trim() : null,
-        blocking: fields.locationCity?.mode === "hard",
-      },
-      work_mode: {
-        mode: workModeValue,
-        blocking: fields.workMode?.mode === "hard",
-      },
-      compensation_band: {
-        min: Number(fields.compensationMin?.value) || null,
-        max: Number(fields.compensationMax?.value) || null,
-        currency: String(fields.compensationCurrency?.value || "PKR"),
-        blocking: fields.compensationMax?.mode === "hard",
-      },
-      max_notice_period: {
-        value: Number(fields.noticePeriod?.value) || null,
-        unit: noticeUnitValue,
-        blocking: fields.noticePeriod?.mode === "hard",
-      },
+      skills_required: mandatorySkillsList.map((skill) =>
+        fields.skillsRequired?.active === false
+          ? { active: false as const, blocking: fields.skillsRequired?.mode === "hard" }
+          : { active: true as const, skill, blocking: fields.skillsRequired?.mode === "hard" }
+      ),
+      skills_preferred: preferredSkillsList.map((skill) =>
+        fields.skillsPreferred?.active === false
+          ? { active: false as const, blocking: fields.skillsPreferred?.mode === "hard" }
+          : { active: true as const, skill, blocking: fields.skillsPreferred?.mode === "hard" }
+      ),
+      min_experience:
+        fields.minExperience?.active === false
+          ? { active: false as const, blocking: fields.minExperience?.mode === "hard" }
+          : {
+              active: true as const,
+              years: Number(fields.minExperience?.value) || 0,
+              blocking: fields.minExperience?.mode === "hard",
+            },
+      education_min:
+        fields.degreeLevel?.active === false
+          ? { active: false as const, blocking: fields.degreeLevel?.mode === "hard" }
+          : {
+              active: true as const,
+              degree_level: validDegree,
+              field: String(fields.fieldOfStudy?.value || "").trim() || null,
+              blocking: fields.degreeLevel?.mode === "hard",
+            },
+      location_requirement:
+        fields.locationCity?.active === false
+          ? { active: false as const, blocking: fields.locationCity?.mode === "hard" }
+          : {
+              active: true as const,
+              city:
+                fields.locationCity?.value && fields.locationCity.value !== "Any"
+                  ? String(fields.locationCity.value).trim()
+                  : null,
+              province:
+                fields.locationProvince?.value && fields.locationProvince.value !== "Any"
+                  ? String(fields.locationProvince.value).trim()
+                  : null,
+              blocking: fields.locationCity?.mode === "hard",
+            },
+      work_mode:
+        fields.workMode?.active === false
+          ? { active: false as const, blocking: fields.workMode?.mode === "hard" }
+          : {
+              active: true as const,
+              mode: workModeValue,
+              blocking: fields.workMode?.mode === "hard",
+            },
+      compensation_band:
+        fields.compensationMax?.active === false
+          ? { active: false as const, blocking: fields.compensationMax?.mode === "hard" }
+          : {
+              active: true as const,
+              min: Number(fields.compensationMin?.value) || null,
+              max: Number(fields.compensationMax?.value) || null,
+              currency: String(fields.compensationCurrency?.value || "PKR"),
+              blocking: fields.compensationMax?.mode === "hard",
+            },
+      max_notice_period:
+        fields.noticePeriod?.active === false
+          ? { active: false as const, blocking: fields.noticePeriod?.mode === "hard" }
+          : {
+              active: true as const,
+              value: Number(fields.noticePeriod?.value) || null,
+              unit: noticeUnitValue,
+              blocking: fields.noticePeriod?.mode === "hard",
+            },
       status: "active",
     };
 
@@ -246,6 +292,7 @@ export function NewJobPage() {
           fields={fields}
           onToggleMode={handleToggleFieldMode}
           onUpdateValue={handleUpdateFieldValue}
+          onToggleActive={handleToggleFieldActive}
           onBack={() => setStep(1)}
           onSave={handleSave}
           onPreviewOverlay={() => setIsOverlayOpen(true)}

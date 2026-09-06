@@ -27,7 +27,7 @@ export function EvidenceDrawer({ item, onClose }: EvidenceDrawerProps) {
   const { candidate, evaluations } = item;
 
   const expItem = evaluations.find((e) => e.category === "experience");
-  const minYears = expItem?.label ? parseInt(expItem.label, 10) || 5 : 5;
+  const minYears = expItem?.label ? parseInt(expItem.label, 10) || 0 : 0;
   const verifiedYears = item.verifiedYearsExperience;
   const isExpConfirmed = expItem ? expItem.status === "confirmed" : true;
 
@@ -69,46 +69,49 @@ export function EvidenceDrawer({ item, onClose }: EvidenceDrawerProps) {
       </div>
 
       {/* Section 1: Experience */}
-      <div className="space-y-1.5">
-        <p className="text-[11px] font-bold uppercase tracking-wider text-on-surface-variant">
-          experience
-        </p>
-        <div className="bg-surface rounded-xl p-3 shadow-2xs space-y-2 border-0">
-          <div className="flex items-center justify-between text-[13px]">
-            <span className="font-medium text-on-surface">Total verified years</span>
-            <span className="inline-flex items-center gap-2">
-              <EvidentiaryDot type={isExpConfirmed ? "confirmed" : "gap"} />
-              <span className={isExpConfirmed ? "text-on-surface font-semibold" : "text-amber-700 dark:text-amber-300 font-semibold"}>
-                {verifiedYears} stated · needs {minYears}+
+      {expItem && (
+        <div className="space-y-1.5">
+          <p className="text-[11px] font-bold uppercase tracking-wider text-on-surface-variant">
+            experience
+          </p>
+          <div className="bg-surface rounded-xl p-3 shadow-2xs space-y-2 border-0">
+            <div className="flex items-center justify-between text-[13px]">
+              <span className="font-medium text-on-surface">Total verified years</span>
+              <span className="inline-flex items-center gap-2">
+                <EvidentiaryDot type={isExpConfirmed ? "confirmed" : "gap"} />
+                <span className={isExpConfirmed ? "text-on-surface font-semibold" : "text-amber-700 dark:text-amber-300 font-semibold"}>
+                  {verifiedYears} stated · needs {minYears}+
+                </span>
               </span>
-            </span>
-          </div>
-
-          {candidate.work_history.entries.length > 0 && (
-            <div className="text-xs text-on-surface-variant pt-1 border-t border-outline-variant/30 space-y-1">
-              <div className="font-medium text-on-surface">Work history breakdown:</div>
-              {candidate.work_history.entries.map((role) => (
-                <div key={role.entry_id} className="flex justify-between items-center text-[12px]">
-                  <span>
-                    {role.title} at {role.employer}
-                  </span>
-                  <span className="font-mono text-[11px]">
-                    {role.start_date} – {role.is_current ? "Present" : role.end_date || "N/A"}
-                  </span>
-                </div>
-              ))}
             </div>
-          )}
+
+            {candidate.work_history.entries.length > 0 && (
+              <div className="text-xs text-on-surface-variant pt-1 border-t border-outline-variant/30 space-y-1">
+                <div className="font-medium text-on-surface">Work history breakdown:</div>
+                {candidate.work_history.entries.map((role) => (
+                  <div key={role.entry_id} className="flex justify-between items-center text-[12px]">
+                    <span>
+                      {role.title} at {role.employer}
+                    </span>
+                    <span className="font-mono text-[11px]">
+                      {role.start_date} – {role.is_current ? "Present" : role.end_date || "N/A"}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Section 2: Skills (Required) */}
-      <div className="space-y-1.5">
-        <p className="text-[11px] font-bold uppercase tracking-wider text-on-surface-variant">
-          skills (required)
-        </p>
-        <div className="bg-surface rounded-xl p-3 shadow-2xs divide-y divide-outline-variant/30 border-0">
-          {skillGroups.map((group) => {
+      {skillItems.length > 0 && (
+        <div className="space-y-1.5">
+          <p className="text-[11px] font-bold uppercase tracking-wider text-on-surface-variant">
+            skills (required)
+          </p>
+          <div className="bg-surface rounded-xl p-3 shadow-2xs divide-y divide-outline-variant/30 border-0">
+            {skillGroups.map((group) => {
             if (group.skills.length > 1) {
               return (
                 <div key={group.id} className="py-2.5 first:pt-0.5 last:pb-0.5 space-y-2">
@@ -200,6 +203,7 @@ export function EvidenceDrawer({ item, onClose }: EvidenceDrawerProps) {
           })}
         </div>
       </div>
+      )}
 
       {/* Section 3: Compensation */}
       {compItem && (

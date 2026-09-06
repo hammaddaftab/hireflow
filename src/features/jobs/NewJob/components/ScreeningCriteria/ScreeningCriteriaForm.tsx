@@ -1,15 +1,18 @@
 "use client";
 
 import React, { useState } from "react";
+import { SlidersHorizontal } from "lucide-react";
 import { GroupContainer } from "@/components/ui/GroupContainer";
 import { Button } from "@/components/ui/Button";
 import type { FormFieldState } from "@/features/jobs/types";
 import { RequirementField } from "./RequirementField";
+import { CriteriaInclusionSlider } from "./CriteriaInclusionSlider";
 
 export interface ScreeningCriteriaFormProps {
   fields: Record<string, FormFieldState>;
   onToggleMode: (id: string) => void;
   onUpdateValue: (id: string, value: string | number) => void;
+  onToggleActive?: (id: string) => void;
   onBack: () => void;
   onSave: (e: React.FormEvent) => void;
   onPreviewOverlay: () => void;
@@ -19,21 +22,46 @@ export function ScreeningCriteriaForm({
   fields,
   onToggleMode,
   onUpdateValue,
+  onToggleActive,
   onBack,
   onSave,
   onPreviewOverlay,
 }: ScreeningCriteriaFormProps) {
   const [_focusedId, setFocusedId] = useState<string | null>(null);
+  const [isSliderOpen, setIsSliderOpen] = useState(false);
 
   const fieldList = Object.values(fields);
-  const hardCount = fieldList.filter((f) => f.mode === "hard").length;
-  const softCount = fieldList.filter((f) => f.mode === "soft").length;
+  const hardCount = fieldList.filter((f) => f.active !== false && f.mode === "hard").length;
+  const softCount = fieldList.filter((f) => f.active !== false && f.mode === "soft").length;
+  const excludedCount = fieldList.filter((f) => f.active === false).length;
+  const activeCount = fieldList.length - excludedCount;
+
+  const handleIncludeAll = () => {
+    if (!onToggleActive) return;
+    fieldList.forEach((f) => {
+      if (f.active === false) {
+        onToggleActive(f.id);
+      }
+    });
+  };
 
   return (
     <form onSubmit={onSave} className="space-y-6">
-      {/* Header with Live Counts */}
+      {/* Header with Live Counts and Right-Hand Slider Trigger */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        <div />
+        <div>
+          {onToggleActive && (
+            <button
+              type="button"
+              onClick={() => setIsSliderOpen(true)}
+              className="inline-flex items-center gap-2 rounded-lg bg-surface-container-high hover:bg-surface-container-highest border border-outline-variant px-3 py-1.5 text-xs font-semibold text-on-surface transition-colors cursor-pointer shadow-xs"
+              title="Open Criteria Inclusion Slider"
+            >
+              <SlidersHorizontal className="h-3.5 w-3.5 text-primary shrink-0" />
+              <span>Criteria Inclusion ({activeCount}/{fieldList.length} Active)</span>
+            </button>
+          )}
+        </div>
         <div className="flex items-center gap-2 shrink-0">
           <span className="rounded-md bg-on-surface text-surface px-2.5 py-1 text-xs font-bold shadow-xs">
             {hardCount} Hard Dealbreakers
@@ -41,6 +69,11 @@ export function ScreeningCriteriaForm({
           <span className="rounded-md bg-surface-container-high text-on-surface px-2.5 py-1 text-xs font-semibold shadow-xs">
             {softCount} Soft Bonus Criteria
           </span>
+          {excludedCount > 0 && (
+            <span className="rounded-md bg-surface-container text-on-surface-variant px-2.5 py-1 text-xs font-semibold shadow-xs border border-outline-variant/40">
+              {excludedCount} Excluded
+            </span>
+          )}
         </div>
       </div>
 
@@ -240,6 +273,36 @@ export function ScreeningCriteriaForm({
           </Button>
         </div>
       </div>
+
+      {/* Right-edge Docked Slider Trigger Tab */}
+      {onToggleActive && (
+        <button
+          type="button"
+          onClick={() => setIsSliderOpen(true)}
+          className="fixed right-0 top-1/2 -translate-y-1/2 z-30 flex items-center gap-2 rounded-l-xl bg-surface-container-highest border-l-2 border-y border-l-primary border-outline-variant px-3 py-2.5 shadow-lg hover:bg-surface-container-high transition-colors cursor-pointer group"
+          title="Open Criteria Inclusion Slider"
+          aria-label="Open Criteria Inclusion Slider"
+        >
+          <SlidersHorizontal className="h-4 w-4 text-primary shrink-0 group-hover:scale-110 transition-transform" />
+          <div className="hidden sm:flex flex-col items-start text-left">
+            <span className="text-[11px] font-bold text-on-surface">Criteria</span>
+            <span className="text-[10px] text-on-surface-variant font-medium">
+              {activeCount}/{fieldList.length} Active
+            </span>
+          </div>
+        </button>
+      )}
+
+      {/* Right-Hand Expandable Criteria Inclusion Slider */}
+      {onToggleActive && (
+        <CriteriaInclusionSlider
+          isOpen={isSliderOpen}
+          onClose={() => setIsSliderOpen(false)}
+          fields={fields}
+          onToggleActive={onToggleActive}
+          onIncludeAll={handleIncludeAll}
+        />
+      )}
     </form>
   );
 }

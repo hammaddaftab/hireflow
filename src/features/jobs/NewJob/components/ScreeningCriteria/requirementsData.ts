@@ -8,6 +8,7 @@ export const initialRequirementsFields: Record<string, FormFieldState> = {
     mode: "hard",
     value: 4,
     unit: "years",
+    active: true,
   },
   skillsRequired: {
     id: "skillsRequired",
@@ -15,6 +16,7 @@ export const initialRequirementsFields: Record<string, FormFieldState> = {
     helperText: "Comma-separated must-have skills that are hard knockouts if missing",
     mode: "hard",
     value: "TypeScript, React, Node.js",
+    active: true,
   },
   skillsPreferred: {
     id: "skillsPreferred",
@@ -22,6 +24,7 @@ export const initialRequirementsFields: Record<string, FormFieldState> = {
     helperText: "Comma-separated nice-to-have skills scored for bonus qualification",
     mode: "soft",
     value: "Next.js, Tailwind CSS, PostgreSQL",
+    active: true,
   },
   degreeLevel: {
     id: "degreeLevel",
@@ -30,6 +33,7 @@ export const initialRequirementsFields: Record<string, FormFieldState> = {
     mode: "hard",
     value: "bachelors",
     options: ["none", "high_school", "diploma", "bachelors", "masters", "doctorate"],
+    active: true,
   },
   fieldOfStudy: {
     id: "fieldOfStudy",
@@ -37,6 +41,7 @@ export const initialRequirementsFields: Record<string, FormFieldState> = {
     helperText: "Canonical academic discipline or major",
     mode: "soft",
     value: "Computer Science",
+    active: true,
   },
   locationCity: {
     id: "locationCity",
@@ -59,6 +64,7 @@ export const initialRequirementsFields: Record<string, FormFieldState> = {
       "Hyderabad",
       "Abbottabad",
     ],
+    active: true,
   },
   locationProvince: {
     id: "locationProvince",
@@ -76,6 +82,7 @@ export const initialRequirementsFields: Record<string, FormFieldState> = {
       "Azad Jammu and Kashmir",
       "Gilgit-Baltistan",
     ],
+    active: true,
   },
   workMode: {
     id: "workMode",
@@ -84,6 +91,7 @@ export const initialRequirementsFields: Record<string, FormFieldState> = {
     mode: "hard",
     value: "hybrid",
     options: ["onsite", "hybrid", "remote"],
+    active: true,
   },
   compensationMin: {
     id: "compensationMin",
@@ -91,6 +99,7 @@ export const initialRequirementsFields: Record<string, FormFieldState> = {
     helperText: "Starting base compensation floor",
     mode: "soft",
     value: 400000,
+    active: true,
   },
   compensationMax: {
     id: "compensationMax",
@@ -98,6 +107,7 @@ export const initialRequirementsFields: Record<string, FormFieldState> = {
     helperText: "Maximum allocated budget for candidate base salary",
     mode: "hard",
     value: 600000,
+    active: true,
   },
   compensationCurrency: {
     id: "compensationCurrency",
@@ -105,7 +115,8 @@ export const initialRequirementsFields: Record<string, FormFieldState> = {
     helperText: "Currency unit for compensation band",
     mode: "soft",
     value: "PKR",
-    options: ["PKR", "USD", "EUR", "GBP"],
+    options: ["PKR", "USD"],
+    active: true,
   },
   noticePeriod: {
     id: "noticePeriod",
@@ -114,6 +125,7 @@ export const initialRequirementsFields: Record<string, FormFieldState> = {
     mode: "hard",
     value: 30,
     unit: "days",
+    active: true,
   },
   noticePeriodUnit: {
     id: "noticePeriodUnit",
@@ -122,5 +134,6 @@ export const initialRequirementsFields: Record<string, FormFieldState> = {
     mode: "hard",
     value: "days",
     options: ["days", "weeks", "months"],
+    active: true,
   },
 };

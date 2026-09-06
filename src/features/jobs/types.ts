@@ -18,6 +18,7 @@ export interface FormFieldState {
   value: string | number;
   unit?: string;
   options?: string[];
+  active?: boolean;
 }
 
 export interface CreateJobInput {
@@ -52,12 +53,12 @@ export interface UpdateJobInput {
   // Canonical extraction / matching criteria
   skills_required?: SkillRequirementItem[];
   skills_preferred?: SkillRequirementItem[];
-  min_experience?: Partial<MinExperienceRequirement>;
-  education_min?: Partial<EducationRequirement>;
-  location_requirement?: Partial<LocationRequirement>;
-  work_mode?: Partial<WorkModeRequirement>;
-  compensation_band?: Partial<CompensationBandRequirement>;
-  max_notice_period?: Partial<MaxNoticePeriodRequirement>;
+  min_experience?: MinExperienceRequirement;
+  education_min?: EducationRequirement;
+  location_requirement?: LocationRequirement;
+  work_mode?: WorkModeRequirement;
+  compensation_band?: CompensationBandRequirement;
+  max_notice_period?: MaxNoticePeriodRequirement;
 
   status?: "draft" | "active" | "archived";
 }
