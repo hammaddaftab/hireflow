@@ -106,7 +106,14 @@ export function NewJobPage() {
     const payload: CreateJobInput = {
       title,
       department,
-      location: `${fields.locationCity?.value || "Lahore"}, ${fields.locationProvince?.value || "Punjab"}`,
+      location: (() => {
+        const c = fields.locationCity?.value && fields.locationCity.value !== "Any" ? String(fields.locationCity.value).trim() : null;
+        const p = fields.locationProvince?.value && fields.locationProvince.value !== "Any" ? String(fields.locationProvince.value).trim() : null;
+        if (c && p) return `${c}, ${p}`;
+        if (c) return c;
+        if (p) return `${p}, Pakistan`;
+        return "Flexible / Remote";
+      })(),
       employmentType: "full-time",
       description,
       seniority_level: seniority,
@@ -130,8 +137,8 @@ export function NewJobPage() {
         blocking: fields.degreeLevel?.mode === "hard",
       },
       location_requirement: {
-        city: String(fields.locationCity?.value || "").trim() || null,
-        province: String(fields.locationProvince?.value || "").trim() || null,
+        city: fields.locationCity?.value && fields.locationCity.value !== "Any" ? String(fields.locationCity.value).trim() : null,
+        province: fields.locationProvince?.value && fields.locationProvince.value !== "Any" ? String(fields.locationProvince.value).trim() : null,
         blocking: fields.locationCity?.mode === "hard",
       },
       work_mode: {

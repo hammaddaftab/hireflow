@@ -9,6 +9,8 @@ import type {
   MaxNoticePeriodRequirement,
 } from "@/entities/job";
 import type { CreateJobInput, UpdateJobInput } from "./types";
+import { normalizeSkill } from "@/features/extraction/skillNormalizer";
+import { normalizeFieldOfStudy } from "@/features/extraction/fieldOfStudyNormalizer";
 
 export class JobsService {
   private jobs: Map<string, Job> = new Map();
@@ -49,19 +51,30 @@ export class JobsService {
     const id = `job-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
     const now = new Date();
 
-    const skillsRequired = input.skills_required ?? [];
-    const skillsPreferred = input.skills_preferred ?? [];
+    const skillsRequired = (input.skills_required ?? []).map((s) => ({
+      ...s,
+      skill: normalizeSkill(s.skill),
+    }));
+    const skillsPreferred = (input.skills_preferred ?? []).map((s) => ({
+      ...s,
+      skill: normalizeSkill(s.skill),
+    }));
 
     const minExperience: MinExperienceRequirement = input.min_experience ?? {
       years: 0,
       blocking: false,
     };
 
-    const educationMin: EducationRequirement = input.education_min ?? {
-      degree_level: null,
-      field: null,
-      blocking: false,
-    };
+    const educationMin: EducationRequirement = input.education_min
+      ? {
+          ...input.education_min,
+          field: input.education_min.field ? normalizeFieldOfStudy(input.education_min.field) : null,
+        }
+      : {
+          degree_level: null,
+          field: null,
+          blocking: false,
+        };
 
     const locationReq: LocationRequirement = input.location_requirement ?? {
       city: null,
@@ -132,13 +145,21 @@ export class JobsService {
     const updated: Job = {
       ...existing,
       ...input,
-      skills_required: input.skills_required ?? existing.skills_required,
-      skills_preferred: input.skills_preferred ?? existing.skills_preferred,
+      skills_required: input.skills_required
+        ? input.skills_required.map((s) => ({ ...s, skill: normalizeSkill(s.skill) }))
+        : existing.skills_required,
+      skills_preferred: input.skills_preferred
+        ? input.skills_preferred.map((s) => ({ ...s, skill: normalizeSkill(s.skill) }))
+        : existing.skills_preferred,
       min_experience: input.min_experience !== undefined
         ? (input.min_experience ? { ...existing.min_experience, ...input.min_experience } : existing.min_experience)
         : existing.min_experience,
       education_min: input.education_min !== undefined
-        ? (input.education_min ? { ...existing.education_min, ...input.education_min } : existing.education_min)
+        ? (input.education_min ? {
+            ...existing.education_min,
+            ...input.education_min,
+            field: input.education_min.field ? normalizeFieldOfStudy(input.education_min.field) : (existing.education_min?.field ? normalizeFieldOfStudy(existing.education_min.field) : null),
+          } : existing.education_min)
         : existing.education_min,
       location_requirement: input.location_requirement !== undefined
         ? (input.location_requirement ? { ...existing.location_requirement, ...input.location_requirement } : existing.location_requirement)
@@ -179,14 +200,14 @@ export class JobsService {
       description: "We are seeking an experienced Full Stack Engineer to lead next-generation hiring intelligence tools.",
       seniority_level: "Senior Level",
       skills_required: [
-        { skill: "TypeScript", blocking: true },
-        { skill: "React", blocking: true },
-        { skill: "Node.js", blocking: true },
+        { skill: normalizeSkill("TypeScript"), blocking: true },
+        { skill: normalizeSkill("React"), blocking: true },
+        { skill: normalizeSkill("Node.js"), blocking: true },
       ],
       skills_preferred: [
-        { skill: "Next.js", blocking: false },
-        { skill: "Tailwind CSS", blocking: false },
-        { skill: "PostgreSQL", blocking: false },
+        { skill: normalizeSkill("Next.js"), blocking: false },
+        { skill: normalizeSkill("Tailwind CSS"), blocking: false },
+        { skill: normalizeSkill("PostgreSQL"), blocking: false },
       ],
       min_experience: {
         years: 5,
@@ -194,7 +215,7 @@ export class JobsService {
       },
       education_min: {
         degree_level: "bachelors",
-        field: "Computer Science",
+        field: normalizeFieldOfStudy("Computer Science"),
         blocking: true,
       },
       location_requirement: {

@@ -23,9 +23,10 @@ import {
 } from "@/entities/extraction/candidate/aspects/skillsDemonstrated";
 import {
   type SkillsDeclaredExtraction,
-  type SkillDeclaredItem,
 } from "@/entities/extraction/candidate/aspects/skillsDeclared";
 import { normalizeUniversity } from "./universityNormalizer";
+import { normalizeFieldOfStudy } from "./fieldOfStudyNormalizer";
+import { normalizeSkill } from "./skillNormalizer";
 import {
   type LogisticsExtraction,
 } from "@/entities/extraction/candidate/aspects/logistics";
@@ -368,8 +369,8 @@ export function extractEducationHeuristic(text: string): EducationExtraction {
           normalized: degreeLevel,
         },
         field: {
-          raw: lower.includes("computer") ? "Computer Science" : lower.includes("mechanical") ? "Mechanical Engineering" : "General",
-          normalized: lower.includes("computer") ? "Computer Science" : lower.includes("mechanical") ? "Mechanical Engineering" : null,
+          raw: line,
+          normalized: normalizeFieldOfStudy(line),
         },
         start_date: startYear,
         end_date: endYear,
@@ -441,7 +442,9 @@ export function extractSkillsDeclaredHeuristic(text: string): SkillsDeclaredExtr
   }
 
   return {
-    skills_declared: Array.from(skillsSet).slice(0, 30),
+    skills_declared: Array.from(
+      new Set(Array.from(skillsSet).map(normalizeSkill).filter(Boolean))
+    ).slice(0, 30),
   };
 }
 
@@ -492,7 +495,7 @@ export function extractSkillsDemonstratedHeuristic(
           const outcomeMatch = sentence.match(/\b(?:\d+%\s*(?:latency|reduction|increase|improvement)?|\d+M\b|cutting\s+\w+\s+by\s+\d+%|reduced\s+\w+\s+by\s+\d+%)/i);
 
           demonstrated.push({
-            skill,
+            skill: normalizeSkill(skill),
             source_entry_ref: entry.entry_id,
             syntactic_tier: tier,
             outcome_attached: outcomeMatch ? outcomeMatch[0] : null,

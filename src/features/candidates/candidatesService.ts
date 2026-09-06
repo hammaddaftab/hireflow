@@ -1,12 +1,43 @@
 import type { ParsedCandidateProfile } from "@/entities/candidate";
 import { MOCK_CANDIDATES } from "@/lib/mockCandidates";
+import { normalizeSkill } from "@/features/extraction/skillNormalizer";
+import { normalizeFieldOfStudy } from "@/features/extraction/fieldOfStudyNormalizer";
+
+function normalizeCandidateProfile(c: ParsedCandidateProfile): ParsedCandidateProfile {
+  return {
+    ...c,
+    education: {
+      ...c.education,
+      entries: (c.education?.entries || []).map((e) => ({
+        ...e,
+        field: {
+          raw: e.field?.raw || e.field?.normalized || "",
+          normalized: normalizeFieldOfStudy(e.field?.raw || e.field?.normalized),
+        },
+      })),
+    },
+    skills_demonstrated: {
+      ...c.skills_demonstrated,
+      skills: (c.skills_demonstrated?.skills || []).map((s) => ({
+        ...s,
+        skill: normalizeSkill(s.skill),
+      })),
+    },
+    skills_declared: {
+      ...c.skills_declared,
+      skills_declared: Array.from(
+        new Set((c.skills_declared?.skills_declared || []).map(normalizeSkill).filter(Boolean))
+      ),
+    },
+  };
+}
 
 export class CandidatesService {
   private candidates: Map<string, ParsedCandidateProfile> = new Map();
 
   constructor(initialCandidates?: ParsedCandidateProfile[]) {
     const seed = initialCandidates || MOCK_CANDIDATES;
-    seed.forEach((c) => this.candidates.set(c.id, c));
+    seed.forEach((c) => this.candidates.set(c.id, normalizeCandidateProfile(c)));
   }
 
   async getAllCandidates(filters?: { jobId?: string; search?: string }): Promise<ParsedCandidateProfile[]> {

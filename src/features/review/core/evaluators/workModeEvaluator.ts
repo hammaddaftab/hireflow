@@ -1,16 +1,36 @@
-import type { WorkModeRequirement } from "@/entities/job";
+import type { WorkModeRequirement, LocationRequirement } from "@/entities/job";
+import type { NormalizedLocation } from "@/entities/extraction/candidate/aspects/identity";
 import type { EvaluatedWorkModeRequirement, WorkModeStatus } from "./evaluationStatuses";
 
 export type WorkModeEvaluatorInput = {
   work_mode_requirement: WorkModeRequirement | null;
   stated_relocation_willingness?: string | null;
+  location_requirement?: LocationRequirement | null;
+  normalized_location?: NormalizedLocation | null;
   id?: string;
 };
 
 export function evaluateWorkMode(input: WorkModeEvaluatorInput): EvaluatedWorkModeRequirement {
-  const { work_mode_requirement, stated_relocation_willingness, id } = input;
+  const {
+    work_mode_requirement,
+    stated_relocation_willingness,
+    location_requirement,
+    normalized_location,
+    id,
+  } = input;
   const isBlocking = Boolean(work_mode_requirement?.blocking);
   const mode = work_mode_requirement?.mode || "flexible";
+
+  const reqCity = location_requirement?.city?.toLowerCase() || null;
+  const reqProvince = location_requirement?.province?.toLowerCase() || null;
+  const candCity = normalized_location?.normalized?.city?.toLowerCase() || null;
+  const candProvince = normalized_location?.normalized?.province?.toLowerCase() || null;
+
+  // Check if candidate is already located in the target jurisdiction
+  const isLocalMatch = Boolean(
+    (reqCity && candCity && reqCity === candCity) ||
+    (!reqCity && reqProvince && candProvince && reqProvince === candProvince)
+  );
 
   let status: WorkModeStatus = "confirmed";
   let reasoning = `Role operates in ${mode} mode.`;
@@ -18,12 +38,20 @@ export function evaluateWorkMode(input: WorkModeEvaluatorInput): EvaluatedWorkMo
   if (mode === "remote") {
     status = "confirmed";
     reasoning = "Remote role, fully flexible for candidate location.";
+  } else if (isLocalMatch) {
+    status = "confirmed";
+    const locDisplay = candCity ? candCity.charAt(0).toUpperCase() + candCity.slice(1) : candProvince || "target area";
+    reasoning = `Role requires ${mode} presence. Candidate is already located in ${locDisplay}.`;
+  } else if (stated_relocation_willingness === "willing") {
+    status = "confirmed";
+    reasoning = `Role requires ${mode} presence. Candidate located in ${candCity || "different location"}, but stated willing to relocate.`;
   } else if (stated_relocation_willingness === "unwilling") {
     status = "contradicted";
     reasoning = `Role requires ${mode} presence, but candidate stated unwilling to relocate.`;
-  } else if (!stated_relocation_willingness || stated_relocation_willingness === "not_stated") {
+  } else {
     status = "ambiguous";
-    reasoning = `Role requires ${mode} presence; relocation willingness is not stated.`;
+    const targetLoc = [location_requirement?.city, location_requirement?.province].filter(Boolean).join(", ");
+    reasoning = `Role requires ${mode} presence in ${targetLoc || "specified location"}; candidate is in ${candCity || "different location"} and relocation willingness is not stated.`;
   }
 
   const dotType =
@@ -40,13 +68,19 @@ export function evaluateWorkMode(input: WorkModeEvaluatorInput): EvaluatedWorkMo
       ? "Contradicted"
       : "Ambiguous";
 
+  const evidenceSpan = isLocalMatch
+    ? normalized_location?.raw || (candCity ? `Location: ${candCity}` : null)
+    : stated_relocation_willingness
+    ? `Relocation: ${stated_relocation_willingness}`
+    : normalized_location?.raw || null;
+
   return {
     id: id || "req_work_mode",
     category: "work_mode",
     label: pillText,
     blocking: isBlocking,
     status,
-    evidence_span: stated_relocation_willingness ? `Relocation: ${stated_relocation_willingness}` : null,
+    evidence_span: evidenceSpan,
     reasoning,
     derived: {
       dotType,

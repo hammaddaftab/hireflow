@@ -6,6 +6,7 @@ import {
   getCityDistribution,
   type ReviewStats,
 } from "../utils/queueCalculations";
+import { normalizeSkill } from "@/features/extraction/skillNormalizer";
 
 export interface UseReviewDataReturn {
   queue: CandidateReviewItem[];
@@ -52,7 +53,7 @@ export function useReviewData(
           .filter((c) =>
             c.candidate.skills_demonstrated.skills.some(
               (s) =>
-                s.skill.toLowerCase() === "python" &&
+                normalizeSkill(s.skill) === "python" &&
                 s.evidence_status === "confirmed"
             )
           )
@@ -65,7 +66,7 @@ export function useReviewData(
           .filter((c) =>
             c.candidate.skills_demonstrated.skills.some((s) =>
               ["node.js", "go", "postgresql", "system design", "kafka", "redis"].includes(
-                s.skill.toLowerCase()
+                normalizeSkill(s.skill)
               )
             )
           )

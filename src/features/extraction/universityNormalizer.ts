@@ -1,6 +1,11 @@
 import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import type { UniversityEntry } from "./fetchUniversities";
+import {
+  sanitizeText,
+  rawSimilarityRatio,
+  isLengthRatioSafe,
+} from "@/lib/matching/stringSimilarity";
 
 // Normalized entity contract produced by the two-tier normalizer
 export interface NormalizedInstitutionResult {
@@ -38,16 +43,6 @@ export function stripCampusSuffix(text: string): string {
     .replace(/\s+campus\b.*$/gi, "")
     .trim();
 }
-
-// Strips punctuation and normalizes whitespace
-export function sanitizeText(text: string): string {
-  return text
-    .toLowerCase()
-    .replace(/[^a-z0-9\s]/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
 // Prunes stopwords and returns alphabetically sorted tokens joined by a single space
 export function pruneAndSortTokens(sanitized: string): string {
   const tokens = sanitized
@@ -56,40 +51,9 @@ export function pruneAndSortTokens(sanitized: string): string {
   return tokens.sort().join(" ");
 }
 
-// Standard Levenshtein distance calculation
-export function levenshteinDistance(s1: string, s2: string): number {
-  if (s1 === s2) return 0;
-  if (s1.length === 0) return s2.length;
-  if (s2.length === 0) return s1.length;
-
-  const len1 = s1.length;
-  const len2 = s2.length;
-  let prev = Array.from({ length: len2 + 1 }, (_, i) => i);
-  let curr = new Array(len2 + 1).fill(0);
-
-  for (let i = 1; i <= len1; i++) {
-    curr[0] = i;
-    const c1 = s1.charCodeAt(i - 1);
-    for (let j = 1; j <= len2; j++) {
-      const cost = c1 === s2.charCodeAt(j - 1) ? 0 : 1;
-      curr[j] = Math.min(
-        curr[j - 1] + 1,
-        prev[j] + 1,
-        prev[j - 1] + cost
-      );
-    }
-    [prev, curr] = [curr, prev];
-  }
-
-  return prev[len2];
-}
-
-// Calculates Levenshtein similarity ratio between 0.0 and 1.0
+// Calculates Levenshtein similarity ratio between 0.0 and 1.0 for pruned sorted tokens
 export function tokenSortRatio(s1: string, s2: string): number {
-  const maxLen = Math.max(s1.length, s2.length);
-  if (maxLen === 0) return 1.0;
-  const dist = levenshteinDistance(s1, s2);
-  return (maxLen - dist) / maxLen;
+  return rawSimilarityRatio(s1, s2);
 }
 
 // In-memory catalog state initialized once at module load
@@ -241,7 +205,7 @@ export function normalizeUniversity(rawInput: string): NormalizedInstitutionResu
     const targetLen = target.tokenLength;
 
     // Step 3: Length Disparity Guard (prevents ITU/BUITEMS collision)
-    if (inputLen < 0.6 * targetLen || targetLen < 0.6 * inputLen) {
+    if (!isLengthRatioSafe(inputLen, targetLen, 0.6)) {
       continue;
     }
 
