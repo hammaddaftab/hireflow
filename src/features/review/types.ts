@@ -49,3 +49,5 @@ export interface QueryGroup {
   name: string;
   candidateIds: string[];
 }
+
+export * from "./core/types/resumeUpload";

@@ -14,6 +14,10 @@ import { CandidateCard } from "../../core/components/card/CandidateCard";
 import { ReviewDeckControls } from "./components/ReviewDeckControls";
 import { EvidentiaryLegend } from "./components/EvidentiaryLegend";
 import { KeyboardShortcutBar } from "./components/KeyboardShortcutBar";
+import { useResumeDropUpload } from "./hooks/useResumeDropUpload";
+import { ResumeDropOverlay } from "./components/ResumeDropOverlay";
+import { ResumeDropTrigger } from "./components/ResumeDropTrigger";
+import { ResumeIngestionDrawer } from "./components/ResumeIngestionDrawer";
 
 export interface ReviewQueuePageProps {
   initialJob: Job;
@@ -56,6 +60,20 @@ export function ReviewQueuePage({
     onDecision: updateDecision,
   });
 
+  // Tier 2.5: Drag and Drop Resume Ingestion Engine (Vercel Blob Storage)
+  const {
+    isDraggingOver,
+    uploads,
+    isDrawerOpen,
+    isUploading,
+    setIsDrawerOpen,
+    uploadFiles,
+    removeUpload,
+    clearCompleted,
+  } = useResumeDropUpload({
+    jobId: initialJob.id,
+  });
+
   // Track main pane width and left offset for floating hotkeys dock
   const mainPaneRef = useRef<HTMLElement>(null);
   const [mainBounds, setMainBounds] = useState<{ left: number; width: number } | null>(null);
@@ -86,7 +104,10 @@ export function ReviewQueuePage({
   }, []);
 
   return (
-    <div className="max-w-[1600px] mx-auto pb-16">
+    <div className="max-w-[1600px] mx-auto pb-16 relative">
+      {/* Visual Drag and Drop Overlay for Candidate Resumes */}
+      <ResumeDropOverlay isVisible={isDraggingOver} />
+
       {/* Top Application Header */}
       <header className="mb-6 space-y-2">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -140,7 +161,7 @@ export function ReviewQueuePage({
 
       {/* Main Candidate Review Queue Area */}
       <main ref={mainPaneRef} className="max-w-4xl mx-auto w-full space-y-4 pb-20">
-        {/* Top Bar: Queue Segmented Tabs + Focus Trigger */}
+        {/* Top Bar: Queue Segmented Tabs + Focus Trigger + Resume Drop Trigger */}
         <ReviewDeckControls
           activeTab={activeTab}
           onSelectTab={(tab) => {
@@ -149,6 +170,14 @@ export function ReviewQueuePage({
           }}
           tabCounts={tabCounts}
           onEnterFocusMode={handleEnterFocusMode}
+          rightSlot={
+            <ResumeDropTrigger
+              onFilesSelected={uploadFiles}
+              onToggleDrawer={() => setIsDrawerOpen(!isDrawerOpen)}
+              uploadCount={uploads.length}
+              isUploading={isUploading}
+            />
+          }
         />
 
         {/* Evidentiary Status Legend */}
@@ -172,12 +201,18 @@ export function ReviewQueuePage({
               No candidates match the selected queue tab.
             </Typography>
             <Typography variant="body-medium" className="text-on-surface-variant mt-1 text-xs">
-              Try switching to &quot;All Candidates&quot; or resetting the queue filters.
+              Try switching to &quot;All Candidates&quot;, resetting the queue filters, or dropping new candidate resumes.
             </Typography>
             <div className="flex justify-center gap-2 mt-4">
               <Button variant="primary" size="sm" onClick={resetFilters}>
                 Reset All Filters
               </Button>
+              <ResumeDropTrigger
+                onFilesSelected={uploadFiles}
+                onToggleDrawer={() => setIsDrawerOpen(true)}
+                uploadCount={uploads.length}
+                isUploading={isUploading}
+              />
             </div>
           </Card>
         )}
@@ -196,6 +231,17 @@ export function ReviewQueuePage({
           </div>
         </div>
       </main>
+
+      {/* Floating Ingestion Tray / Drawer for Vercel Blob Storage */}
+      <ResumeIngestionDrawer
+        isOpen={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+        uploads={uploads}
+        onRemoveUpload={removeUpload}
+        onClearCompleted={clearCompleted}
+        onFilesSelected={uploadFiles}
+        isUploading={isUploading}
+      />
     </div>
   );
 }

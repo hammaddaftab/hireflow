@@ -15,6 +15,7 @@ export interface ReviewDeckControlsProps {
     contradicted: number;
   };
   onEnterFocusMode: () => void;
+  rightSlot?: React.ReactNode;
 }
 
 export function ReviewDeckControls({
@@ -22,6 +23,7 @@ export function ReviewDeckControls({
   onSelectTab,
   tabCounts,
   onEnterFocusMode,
+  rightSlot,
 }: ReviewDeckControlsProps) {
   return (
     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-surface-container-low p-2 rounded-2xl border-0 shadow-xs">
@@ -76,8 +78,9 @@ export function ReviewDeckControls({
           </button>
         </div>
 
-      {/* Focus Mode Trigger */}
+      {/* Right controls: Slots & Focus Mode Trigger */}
       <div className="flex items-center gap-2 self-end sm:self-center">
+        {rightSlot}
         <Button
           variant="secondary"
           size="sm"
