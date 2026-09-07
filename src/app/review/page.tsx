@@ -3,7 +3,7 @@ export const dynamic = "force-dynamic";
 import React from "react";
 import { jobsService } from "@/features/jobs";
 import { candidatesService } from "@/features/candidates";
-import { buildReviewQueue, ReviewQueuePage } from "@/features/review";
+import { buildReviewQueue, ReviewQueuePage, reviewsService } from "@/features/review";
 
 import type { QueueFilterTab } from "@/entities/review";
 
@@ -30,7 +30,8 @@ export default async function ReviewPage({
   }
 
   const allCandidates = await candidatesService.getAllCandidates();
-  const queue = buildReviewQueue(allCandidates, activeJob);
+  const priorDecisions = await reviewsService.getDecisionsForJob(activeJob.id);
+  const queue = buildReviewQueue(allCandidates, activeJob, priorDecisions);
 
   const initialIndex = params.candidateIndex ? parseInt(params.candidateIndex, 10) : 0;
 

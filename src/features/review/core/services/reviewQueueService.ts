@@ -1,5 +1,6 @@
 import type { Job } from "@/entities/job";
 import type { ParsedCandidateProfile } from "@/entities/candidate";
+import type { ReviewDecision } from "@/entities/review";
 import type { CandidateReviewItem, EvaluatedRequirement } from "../../types";
 import { evaluateExperience } from "../evaluators/experienceEvaluator";
 import { evaluateSkills } from "../evaluators/skillEvaluator";
@@ -9,13 +10,11 @@ import { sortReviewQueue, getCityDistribution } from "../utils/queueCalculations
 
 export { getCityDistribution };
 
-/**
- * Builds review queue items from candidate profiles and job requirements,
- * evaluating requirements with modular domain evaluators.
- */
+// Builds review queue items from candidate profiles and job requirements
 export function buildReviewQueue(
   candidates: ParsedCandidateProfile[],
-  rawJob: Job
+  rawJob: Job,
+  priorDecisions: Map<string, ReviewDecision> = new Map()
 ): CandidateReviewItem[] {
   const job: Job = {
     ...rawJob,
@@ -162,7 +161,7 @@ export function buildReviewQueue(
       skills,
       education,
       logistics,
-      decision: "pending",
+      decision: priorDecisions.get(candidate.id) ?? "pending",
 
       // Queue metrics and sort metadata
       blockingItems,
