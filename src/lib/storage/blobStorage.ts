@@ -29,6 +29,16 @@ export async function uploadResumeToBlob(
   if (!token) {
     // Graceful fallback for local development without active Vercel token
     const localRef = `storage://resumes/${filename}`;
+    try {
+      const { promises: fs } = await import("fs");
+      const path = await import("path");
+      const uploadsDir = path.join(process.cwd(), ".uploads", "resumes");
+      await fs.mkdir(uploadsDir, { recursive: true });
+      await fs.writeFile(path.join(uploadsDir, path.basename(safeFilename)), payload);
+    } catch {
+      // Ignore local disk write errors
+    }
+
     return {
       url: localRef,
       pathname: safeFilename,
