@@ -1,5 +1,7 @@
+// Service for job postings and criteria persisted directly in PostgreSQL via Drizzle ORM
+
 import { produce } from "immer";
-import { eq } from "drizzle-orm";
+import { eq, desc, and, or, ilike, type SQL } from "drizzle-orm";
 import { db, jobs } from "@/db";
 import type {
   Job,
@@ -14,7 +16,7 @@ import type { CreateJobInput, UpdateJobInput } from "./types";
 import { normalizeSkill } from "@/features/extraction/skillNormalizer";
 import { normalizeFieldOfStudy } from "@/features/extraction/fieldOfStudyNormalizer";
 
-function normalizeJobActiveFlags(job: Job): Job {
+export function normalizeJobActiveFlags(job: Job): Job {
   return produce(job, (draft) => {
     // Normalize active flags on mandatory skills
     if (draft.skills_required) {
@@ -64,41 +66,51 @@ function normalizeJobActiveFlags(job: Job): Job {
 }
 
 export class JobsService {
-  private jobs: Map<string, Job> = new Map();
-
-  constructor(initialJobs?: Job[]) {
-    if (initialJobs) {
-      initialJobs.forEach((j) => this.jobs.set(j.id, normalizeJobActiveFlags(j)));
-    }
-  }
-
+  // Query all jobs from PostgreSQL ordered by newest first
   async getAllJobs(filters?: { status?: string; search?: string }): Promise<Job[]> {
-    let list = Array.from(this.jobs.values()).map(normalizeJobActiveFlags);
+    const conditions: SQL[] = [];
 
     if (filters?.status) {
-      list = list.filter((j) => j.status === filters.status);
+      conditions.push(eq(jobs.status, filters.status));
     }
 
     if (filters?.search) {
-      const q = filters.search.toLowerCase();
-      list = list.filter(
-        (j) =>
-          j.title.toLowerCase().includes(q) ||
-          (j.department ? j.department.toLowerCase().includes(q) : false) ||
-          (j.location ? j.location.toLowerCase().includes(q) : false) ||
-          (j.description ? j.description.toLowerCase().includes(q) : false)
+      const term = `%${filters.search.toLowerCase()}%`;
+      conditions.push(
+        or(
+          ilike(jobs.title, term),
+          ilike(jobs.department, term),
+          ilike(jobs.location, term),
+          ilike(jobs.description, term)
+        )!
       );
     }
 
-    // Sort by createdAt descending
-    return list.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    const query = db
+      .select()
+      .from(jobs)
+      .orderBy(desc(jobs.createdAt));
+
+    const rows = conditions.length > 0
+      ? await query.where(and(...conditions))
+      : await query;
+
+    return rows.map(normalizeJobActiveFlags);
   }
 
+  // Get a single job by ID from PostgreSQL
   async getJobById(id: string): Promise<Job | null> {
-    const job = this.jobs.get(id);
-    return job ? normalizeJobActiveFlags(job) : null;
+    const rows = await db
+      .select()
+      .from(jobs)
+      .where(eq(jobs.id, id))
+      .limit(1);
+
+    if (rows.length === 0) return null;
+    return normalizeJobActiveFlags(rows[0]);
   }
 
+  // Insert a new job into PostgreSQL
   async createJob(input: CreateJobInput): Promise<Job> {
     const id = `job-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
     const now = new Date();
@@ -182,20 +194,13 @@ export class JobsService {
       updatedAt: now,
     };
 
-    this.jobs.set(id, job);
-
-    // Persist to Drizzle database table
-    try {
-      await db.insert(jobs).values(job).onConflictDoNothing();
-    } catch (dbErr) {
-      console.warn("Drizzle database job insert warning (skipped):", dbErr instanceof Error ? dbErr.message : String(dbErr));
-    }
-
+    await db.insert(jobs).values(job);
     return job;
   }
 
+  // Update an existing job in PostgreSQL
   async updateJob(id: string, input: UpdateJobInput): Promise<Job | null> {
-    const existing = this.jobs.get(id);
+    const existing = await this.getJobById(id);
     if (!existing) {
       return null;
     }
@@ -271,102 +276,26 @@ export class JobsService {
       draft.updatedAt = new Date();
     });
 
-    this.jobs.set(id, updated);
-
-    // Persist to Drizzle database table
-    try {
-      await db.update(jobs).set(updated).where(eq(jobs.id, id));
-    } catch (dbErr) {
-      console.warn("Drizzle database job update warning (in-memory updated):", dbErr instanceof Error ? dbErr.message : String(dbErr));
-    }
-
+    await db.update(jobs).set(updated).where(eq(jobs.id, id));
     return updated;
   }
 
+  // Delete a job by ID from PostgreSQL
   async deleteJob(id: string): Promise<boolean> {
-    return this.jobs.delete(id);
+    const result = await db
+      .delete(jobs)
+      .where(eq(jobs.id, id))
+      .returning({ id: jobs.id });
+
+    return result.length > 0;
   }
 
+  // Clear all jobs from PostgreSQL
   async clear(): Promise<void> {
-    this.jobs.clear();
-  }
-
-  seedInitialData(): void {
-    // Migrate any existing jobs in-memory so active defaults to true
-    for (const [key, val] of this.jobs.entries()) {
-      this.jobs.set(key, normalizeJobActiveFlags(val));
-    }
-
-    const sampleJob: Job = {
-      id: "job-sample-1",
-      title: "Senior Full Stack Engineer",
-      department: "Engineering",
-      location: "San Francisco, CA (Remote)",
-      employmentType: "full-time",
-      // TODO: Remove description and seniority_level in a future schema cleanup
-      description: null,
-      seniority_level: null,
-      skills_required: [
-        { active: true, skill: normalizeSkill("TypeScript"), blocking: true },
-        { active: true, skill: normalizeSkill("React"), blocking: true },
-        { active: true, skill: normalizeSkill("Node.js"), blocking: true },
-      ],
-      skills_preferred: [
-        { active: true, skill: normalizeSkill("Next.js"), blocking: false },
-        { active: true, skill: normalizeSkill("Tailwind CSS"), blocking: false },
-        { active: true, skill: normalizeSkill("PostgreSQL"), blocking: false },
-      ],
-      min_experience: {
-        active: true,
-        years: 5,
-        blocking: true,
-      },
-      education_min: {
-        active: true,
-        degree_level: "bachelors",
-        field: normalizeFieldOfStudy("Computer Science"),
-        blocking: true,
-      },
-      location_requirement: {
-        active: true,
-        city: "San Francisco",
-        province: "CA",
-        blocking: false,
-      },
-      work_mode: {
-        active: true,
-        mode: "remote",
-        blocking: true,
-      },
-      compensation_band: {
-        active: true,
-        min: 400000,
-        max: 600000,
-        currency: "PKR",
-        blocking: true,
-      },
-      max_notice_period: {
-        active: true,
-        value: 1,
-        unit: "months",
-        blocking: true,
-      },
-      status: "active",
-      createdAt: new Date("2026-08-28T10:00:00.000Z"),
-      updatedAt: new Date("2026-08-28T10:00:00.000Z"),
-    };
-
-    this.jobs.set(sampleJob.id, sampleJob);
+    await db.delete(jobs);
   }
 }
 
-// Global singleton instance for in-memory persistence in development / API routes
-const globalForJobService = globalThis as unknown as { jobsService?: JobsService; jobService?: JobsService };
-export const jobsService = globalForJobService.jobsService ?? globalForJobService.jobService ?? new JobsService();
+// Global singleton instance for database-backed jobs operations
+export const jobsService = new JobsService();
 export const jobService = jobsService;
-
-if (process.env.NODE_ENV !== "production") {
-  globalForJobService.jobsService = jobsService;
-  globalForJobService.jobService = jobsService;
-}
-jobsService.seedInitialData();

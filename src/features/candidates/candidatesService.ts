@@ -1,9 +1,16 @@
-import type { ParsedCandidateProfile } from "@/entities/candidate";
-import { MOCK_CANDIDATES } from "@/lib/mockCandidates";
+// Service for candidate profiles persisted directly in PostgreSQL via Drizzle ORM
+
+import { db, candidates } from "@/db";
+import { desc, eq, and, or, ilike, type SQL } from "drizzle-orm";
+import {
+  candidateProfileToRow,
+  candidateRowToProfile,
+  type ParsedCandidateProfile,
+} from "@/entities/candidate";
 import { normalizeSkill } from "@/features/extraction/skillNormalizer";
 import { normalizeFieldOfStudy } from "@/features/extraction/fieldOfStudyNormalizer";
 
-function normalizeCandidateProfile(c: ParsedCandidateProfile): ParsedCandidateProfile {
+export function normalizeCandidateProfile(c: ParsedCandidateProfile): ParsedCandidateProfile {
   return {
     ...c,
     education: {
@@ -33,48 +40,73 @@ function normalizeCandidateProfile(c: ParsedCandidateProfile): ParsedCandidatePr
 }
 
 export class CandidatesService {
-  private candidates: Map<string, ParsedCandidateProfile> = new Map();
-
-  constructor(initialCandidates?: ParsedCandidateProfile[]) {
-    const seed = initialCandidates || MOCK_CANDIDATES;
-    seed.forEach((c) => this.candidates.set(c.id, normalizeCandidateProfile(c)));
-  }
-
+  // Query all candidates from PostgreSQL ordered by newest first
   async getAllCandidates(filters?: { jobId?: string; search?: string }): Promise<ParsedCandidateProfile[]> {
-    let list = Array.from(this.candidates.values());
+    const conditions: SQL[] = [];
 
     if (filters?.jobId) {
-      list = list.filter((c) => c.applied_job_id === filters.jobId);
+      conditions.push(eq(candidates.appliedJobId, filters.jobId));
     }
 
     if (filters?.search) {
-      const q = filters.search.toLowerCase();
-      list = list.filter(
-        (c) =>
-          c.identity.name.toLowerCase().includes(q) ||
-          (c.identity.email && c.identity.email.toLowerCase().includes(q)) ||
-          (c.identity.location.raw && c.identity.location.raw.toLowerCase().includes(q)) ||
-          c.skills_declared.skills_declared.some((s) => s.toLowerCase().includes(q))
+      const term = `%${filters.search.toLowerCase()}%`;
+      conditions.push(
+        or(
+          ilike(candidates.name, term),
+          ilike(candidates.email, term),
+          ilike(candidates.city, term),
+          ilike(candidates.currentRoleTitle, term)
+        )!
       );
     }
 
-    return list.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+    const query = db
+      .select()
+      .from(candidates)
+      .orderBy(desc(candidates.createdAt));
+
+    const rows = conditions.length > 0
+      ? await query.where(and(...conditions))
+      : await query;
+
+    return rows.map((row) => normalizeCandidateProfile(candidateRowToProfile(row)));
   }
 
+  // Get a single candidate by ID from PostgreSQL
   async getCandidateById(id: string): Promise<ParsedCandidateProfile | null> {
-    return this.candidates.get(id) || null;
+    const rows = await db
+      .select()
+      .from(candidates)
+      .where(eq(candidates.id, id))
+      .limit(1);
+
+    if (rows.length === 0) return null;
+    return normalizeCandidateProfile(candidateRowToProfile(rows[0]));
   }
 
+  // Insert a candidate profile into PostgreSQL
   async createCandidate(candidate: ParsedCandidateProfile): Promise<ParsedCandidateProfile> {
-    this.candidates.set(candidate.id, candidate);
-    return candidate;
+    const normalized = normalizeCandidateProfile(candidate);
+    const row = candidateProfileToRow(normalized);
+    await db.insert(candidates).values(row);
+    return normalized;
+  }
+
+  // Delete candidate by ID
+  async deleteCandidate(id: string): Promise<boolean> {
+    const result = await db
+      .delete(candidates)
+      .where(eq(candidates.id, id))
+      .returning({ id: candidates.id });
+
+    return result.length > 0;
+  }
+
+  // Clear all candidates from PostgreSQL
+  async clear(): Promise<void> {
+    await db.delete(candidates);
   }
 }
 
-// Global singleton instance for in-memory persistence in development / API routes
-const globalForCandidateService = globalThis as unknown as { candidatesService?: CandidatesService };
-export const candidatesService = globalForCandidateService.candidatesService ?? new CandidatesService();
-
-if (process.env.NODE_ENV !== "production") {
-  globalForCandidateService.candidatesService = candidatesService;
-}
+// Global singleton instance for database-backed candidate operations
+export const candidatesService = new CandidatesService();
