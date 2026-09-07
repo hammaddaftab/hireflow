@@ -14,7 +14,7 @@ export function ResumeDropOverlay({ isVisible }: ResumeDropOverlayProps) {
   return (
     <div
       aria-hidden="true"
-      className="fixed inset-0 z-50 pointer-events-none flex items-center justify-center p-6 sm:p-12 bg-background/80 backdrop-blur-sm animate-in fade-in-50 duration-150"
+      className="fixed inset-0 z-50 !m-0 pointer-events-none flex items-center justify-center p-6 sm:p-12 bg-background/80 backdrop-blur-sm animate-in fade-in-50 duration-150"
     >
       <div className="max-w-xl w-full border-2 border-dashed border-primary bg-surface-container-low/95 shadow-2xl rounded-3xl p-8 sm:p-12 flex flex-col items-center justify-center text-center space-y-4">
         <div className="h-16 w-16 rounded-2xl bg-primary-container text-on-primary-container flex items-center justify-center shadow-xs">

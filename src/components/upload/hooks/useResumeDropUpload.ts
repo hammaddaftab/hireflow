@@ -2,19 +2,22 @@
 
 import { useState, useCallback, useEffect, useRef } from "react";
 import type { DroppedResumeItem, ResumeUploadApiResponse } from "@/lib/upload/types";
+import type { ParsedCandidateProfile } from "@/entities/candidate";
 import { isValidResumeExtension } from "@/lib/upload/validateResume";
 
 export interface UseResumeDropUploadProps {
   jobId?: string;
+  onCandidateIngested?: (candidate: ParsedCandidateProfile) => void;
+  onIngestComplete?: (count: number) => void;
+  onError?: (error: string) => void;
   onStoredInBlob?: (upload: DroppedResumeItem) => void;
 }
 
 export interface UseResumeDropUploadReturn {
   isDraggingOver: boolean;
   uploads: DroppedResumeItem[];
-  isDrawerOpen: boolean;
   isUploading: boolean;
-  setIsDrawerOpen: (open: boolean) => void;
+  statusLabel: string | null;
   uploadFiles: (fileList: FileList | File[]) => Promise<void>;
   removeUpload: (id: string) => void;
   clearCompleted: () => void;
@@ -22,12 +25,15 @@ export interface UseResumeDropUploadReturn {
 
 export function useResumeDropUpload({
   jobId,
+  onCandidateIngested,
+  onIngestComplete,
+  onError,
   onStoredInBlob,
 }: UseResumeDropUploadProps = {}): UseResumeDropUploadReturn {
   const [isDraggingOver, setIsDraggingOver] = useState(false);
   const [uploads, setUploads] = useState<DroppedResumeItem[]>([]);
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const [statusLabel, setStatusLabel] = useState<string | null>(null);
 
   // Counter to prevent flickering over child DOM elements during drag
   const dragCounterRef = useRef(0);
@@ -66,7 +72,7 @@ export function useResumeDropUpload({
 
       if (invalidEntries.length > 0) {
         setUploads((prev) => [...invalidEntries, ...prev]);
-        setIsDrawerOpen(true);
+        onError?.(`Unsupported file format. Allowed: PDF, DOCX, TXT`);
       }
 
       if (validFiles.length === 0) return;
@@ -83,8 +89,8 @@ export function useResumeDropUpload({
       }));
 
       setUploads((prev) => [...pendingItems, ...prev]);
-      setIsDrawerOpen(true);
       setIsUploading(true);
+      setStatusLabel("Uploading resumes...");
 
       const formData = new FormData();
       if (jobId) {
@@ -111,6 +117,7 @@ export function useResumeDropUpload({
                 : item
             )
           );
+          onError?.(errMsg);
           return;
         }
 
@@ -132,6 +139,49 @@ export function useResumeDropUpload({
           });
           return updated;
         });
+
+        // Sequentially execute candidate profile extraction, strictly scoped to current jobId
+        if (jobId && data.uploads && data.uploads.length > 0) {
+          let ingestedCount = 0;
+          for (let i = 0; i < data.uploads.length; i++) {
+            const uploadedItem = data.uploads[i];
+            setStatusLabel(
+              data.uploads.length > 1
+                ? `Extracting profile ${i + 1} of ${data.uploads.length}...`
+                : "Extracting candidate profile..."
+            );
+
+            try {
+              const ingestResponse = await fetch("/api/resumes/ingest", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  uploadId: uploadedItem.id,
+                  jobId, // Scoped to current job
+                }),
+              });
+
+              if (!ingestResponse.ok) {
+                const errData = await ingestResponse.json().catch(() => ({}));
+                const reason = errData?.error?.message || `Extraction failed for ${uploadedItem.filename}`;
+                onError?.(reason);
+                continue;
+              }
+
+              const ingestJson = await ingestResponse.json();
+              const candidate: ParsedCandidateProfile = ingestJson.data.candidate;
+              onCandidateIngested?.(candidate);
+              ingestedCount++;
+            } catch (ingestErr) {
+              const msg = ingestErr instanceof Error ? ingestErr.message : String(ingestErr);
+              onError?.(`Failed to extract ${uploadedItem.filename}: ${msg}`);
+            }
+          }
+
+          if (ingestedCount > 0) {
+            onIngestComplete?.(ingestedCount);
+          }
+        }
       } catch (err) {
         const message = err instanceof Error ? err.message : "Network error uploading to Vercel Blob";
         setUploads((prev) =>
@@ -141,11 +191,13 @@ export function useResumeDropUpload({
               : item
           )
         );
+        onError?.(message);
       } finally {
         setIsUploading(false);
+        setStatusLabel(null);
       }
     },
-    [jobId, onStoredInBlob]
+    [jobId, onCandidateIngested, onIngestComplete, onError, onStoredInBlob]
   );
 
   // Global window drag and drop listener for candidate resume drops
@@ -199,9 +251,8 @@ export function useResumeDropUpload({
   return {
     isDraggingOver,
     uploads,
-    isDrawerOpen,
     isUploading,
-    setIsDrawerOpen,
+    statusLabel,
     uploadFiles,
     removeUpload,
     clearCompleted,
