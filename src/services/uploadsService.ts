@@ -99,6 +99,17 @@ export class UploadsService {
     await db.delete(resumeUploads);
   }
 
+  // Associate a resume upload with an applied job ID
+  async updateJobId(id: string, jobId: string): Promise<boolean> {
+    const result = await db
+      .update(resumeUploads)
+      .set({ jobId, updatedAt: new Date() })
+      .where(eq(resumeUploads.id, id))
+      .returning({ id: resumeUploads.id });
+
+    return result.length > 0;
+  }
+
   // Compute aggregate metrics directly from database records
   async getStats(): Promise<{ total: number; totalBytes: number; stored: number }> {
     const items = await this.getAll();

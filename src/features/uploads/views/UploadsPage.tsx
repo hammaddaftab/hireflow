@@ -21,7 +21,8 @@ import {
   Clock,
   Briefcase,
   Layers,
-  Inbox
+  Inbox,
+  Sparkles
 } from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
@@ -29,11 +30,14 @@ import { Badge } from "@/components/ui/Badge";
 import { Typography } from "@/components/ui/Typography";
 import { Tooltip } from "@/components/ui/Tooltip";
 import type { UploadedResumeRecord } from "@/lib/upload/types";
+import type { Job } from "@/entities/job";
 import { ResumeDropOverlay } from "@/components/upload";
+import { ResumeIngestionModal } from "../components/ResumeIngestionModal";
 
 export interface UploadsPageProps {
   initialUploads: UploadedResumeRecord[];
   isBlobConfigured: boolean;
+  initialJobs?: Job[];
 }
 
 function formatBytes(bytes: number): string {
@@ -58,8 +62,9 @@ function formatDate(isoString: string): string {
   }
 }
 
-export function UploadsPage({ initialUploads, isBlobConfigured }: UploadsPageProps) {
+export function UploadsPage({ initialUploads, isBlobConfigured, initialJobs = [] }: UploadsPageProps) {
   const [uploads, setUploads] = useState<UploadedResumeRecord[]>(initialUploads);
+  const [jobs, setJobs] = useState<Job[]>(initialJobs);
   const [searchQuery, setSearchQuery] = useState("");
   const [isUploading, setIsUploading] = useState(false);
   const [isDraggingOver, setIsDraggingOver] = useState(false);
@@ -67,9 +72,27 @@ export function UploadsPage({ initialUploads, isBlobConfigured }: UploadsPagePro
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
   const [previewItem, setPreviewItem] = useState<UploadedResumeRecord | null>(null);
+  const [isIngestionOpen, setIsIngestionOpen] = useState(false);
+  const [preselectedUploadId, setPreselectedUploadId] = useState<string | null>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const dragCounterRef = useRef(0);
+
+  // Fetch jobs if none passed in initial props
+  useEffect(() => {
+    if (jobs.length === 0) {
+      fetch("/api/jobs")
+        .then((res) => res.json())
+        .then((json) => {
+          if (json.data && Array.isArray(json.data)) {
+            setJobs(json.data);
+          }
+        })
+        .catch(() => {
+          // Ignore job fetch error
+        });
+    }
+  }, [jobs.length]);
 
   // Compute preview URL: direct Vercel Blob URL or local streaming endpoint
   const getPreviewUrl = (item: UploadedResumeRecord): string => {
@@ -338,6 +361,21 @@ export function UploadsPage({ initialUploads, isBlobConfigured }: UploadsPagePro
             </Link>
 
             <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => {
+                setPreselectedUploadId(null);
+                setIsIngestionOpen(true);
+              }}
+              disabled={uploads.length === 0}
+              className="h-8 px-3 rounded-xl gap-1.5 text-xs font-semibold"
+              title="Extract uploaded resumes into candidate profiles for a selected job"
+            >
+              <Sparkles className="h-3.5 w-3.5 text-primary" />
+              <span>Ingest into Job</span>
+            </Button>
+
+            <Button
               variant="primary"
               size="sm"
               onClick={() => fileInputRef.current?.click()}
@@ -598,6 +636,20 @@ export function UploadsPage({ initialUploads, isBlobConfigured }: UploadsPagePro
                       {/* Actions */}
                       <td className="py-3 px-4 text-right whitespace-nowrap">
                         <div className="inline-flex items-center gap-1 justify-end">
+                          {/* Ingest document into a job */}
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => {
+                              setPreselectedUploadId(item.id);
+                              setIsIngestionOpen(true);
+                            }}
+                            className="h-7 w-7 p-0 text-on-surface-variant hover:text-primary rounded-lg cursor-pointer"
+                            title="Ingest document into a job"
+                          >
+                            <Sparkles className="h-3.5 w-3.5 text-primary" />
+                          </Button>
+
                           {/* Preview document (Eye icon) */}
                           <Button
                             variant="ghost"
@@ -661,16 +713,32 @@ export function UploadsPage({ initialUploads, isBlobConfigured }: UploadsPagePro
           </div>
         </div>
 
-        <Link href="/review" className="shrink-0 self-end sm:self-center">
+        <div className="flex items-center gap-2 shrink-0 self-end sm:self-center">
           <Button
-            variant="secondary"
+            variant="primary"
             size="sm"
-            className="h-8 px-3.5 text-xs font-semibold rounded-xl gap-1.5"
+            onClick={() => {
+              setPreselectedUploadId(null);
+              setIsIngestionOpen(true);
+            }}
+            disabled={uploads.length === 0}
+            className="h-8 px-3.5 text-xs font-semibold rounded-xl gap-1.5 shadow-xs"
           >
-            <span>Go to Review Queue</span>
-            <ArrowRight className="h-3.5 w-3.5" />
+            <Sparkles className="h-3.5 w-3.5" />
+            <span>Ingest into Job</span>
           </Button>
-        </Link>
+
+          <Link href="/review">
+            <Button
+              variant="secondary"
+              size="sm"
+              className="h-8 px-3.5 text-xs font-semibold rounded-xl gap-1.5"
+            >
+              <span>Go to Review Queue</span>
+              <ArrowRight className="h-3.5 w-3.5" />
+            </Button>
+          </Link>
+        </div>
       </Card>
 
       {/* Document Preview Modal */}
@@ -743,6 +811,18 @@ export function UploadsPage({ initialUploads, isBlobConfigured }: UploadsPagePro
           </div>
         </div>
       )}
+
+      {/* Resume Ingestion & Extraction Modal with Stacked Deck Feedback */}
+      <ResumeIngestionModal
+        isOpen={isIngestionOpen}
+        onClose={() => {
+          setIsIngestionOpen(false);
+          setPreselectedUploadId(null);
+        }}
+        uploads={preselectedUploadId ? uploads.filter((u) => u.id === preselectedUploadId) : uploads}
+        jobs={jobs}
+        onExtractionComplete={refreshUploads}
+      />
     </div>
   );
 }
