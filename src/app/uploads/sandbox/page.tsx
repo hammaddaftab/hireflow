@@ -3,7 +3,7 @@ export const dynamic = "force-dynamic";
 import React from "react";
 import Link from "next/link";
 import type { Metadata } from "next";
-import { ArrowLeft, Sparkles, Layers, Sliders } from "lucide-react";
+import { ArrowLeft, Layers } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Typography } from "@/components/ui/Typography";
 import { IsolatedUploadDialogue } from "@/features/uploads/components/IsolatedUploadDialogue";

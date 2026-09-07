@@ -30,7 +30,7 @@ A naive exact-string match between candidate data and job requirements causes ma
 ### For University Entity Normalization:
 
 #### Option 1A: Two-Tier In-Memory Hash + Token-Sort Gate (Chosen)
-A hybrid deterministic architecture running against a static catalog of ~220 HEC-recognized Pakistani universities:
+A hybrid deterministic architecture running against a static catalog of 136 HEC-recognized Pakistani universities:
 * **Tier 1**: Exact $O(1)$ hash map lookup over pre-computed canonical names, known spelling variations, and curated acronyms.
 * **Tier 2**: Token-sorted Levenshtein distance gate with campus clause stripping, educational stopword pruning, and a length disparity safety guard.
 
@@ -105,7 +105,7 @@ Build a comprehensive in-code gazetteer of Pakistani sectors, neighborhoods, teh
 ## 5. Implementation Details
 
 ### 1. Canonical University Store & Alias Preservation
-* Canonical catalog is maintained at [`/src/data/universities_pk.json`](/src/data/universities_pk.json), sourced from HEC-recognized institutions and seeded with the top 25 Pakistani university acronyms (`/src/features/extraction/data/university_aliases.json`).
+* Canonical catalog is maintained at [`/src/data/universities_pk.json`](/src/data/universities_pk.json), sourcing 136 HEC-recognized institutions seeded with curated acronym aliases (`/src/features/extraction/data/university_aliases.json`).
 * Ingestion synchronization utility [`/src/features/extraction/entityCatalog.ts`](/src/features/extraction/entityCatalog.ts) and fetch script [`/src/features/extraction/fetchUniversities.ts`](/src/features/extraction/fetchUniversities.ts) enforce an **alias preservation contract**: re-fetching or syncing the canonical dataset never overwrites or purges manually curated acronym mappings.
 
 ### 2. Two-Tier In-Memory Normalizer (`universityNormalizer.ts`)

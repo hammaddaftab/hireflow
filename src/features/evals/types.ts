@@ -1,4 +1,4 @@
-import type { WorkHistoryExtraction, WorkHistoryEntry } from "@/entities/extraction/candidate/aspects/workHistory";
+import type { WorkHistoryExtraction } from "@/entities/extraction/candidate/aspects/workHistory";
 import type { EvaluatedExperienceRequirement } from "@/features/review/core/evaluators/evaluationStatuses";
 
 export type FixtureCategory =

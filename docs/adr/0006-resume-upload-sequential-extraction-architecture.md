@@ -12,13 +12,13 @@ Candidate documents enter HireFlow either through the bulk `/uploads` hub (for m
 
 Handling document uploads and subsequent LLM candidate extraction introduces two key architectural requirements:
 * **Decoupled Binary Storage**: Raw document files (`.pdf`, `.docx`, `.txt`) must be stored durably without bloating the PostgreSQL database with binary payloads.
-* **LLM Rate-Limit and Token Control**: Ingesting multiple resumes concurrently triggers multi-aspect profile extraction across 7 schemas. Firing extraction requests in parallel risks saturating Gemini API rate limits and token quotas.
+* **LLM Rate-Limit and Token Control**: Ingesting multiple resumes concurrently triggers multi-aspect profile extraction across 7 schemas. Firing extraction requests in parallel risks saturating provider LLM rate limits and token quotas (e.g., OpenAI RPM/TPM and Google Gemini rate limits).
 
 ---
 
 ## 2. Decision Drivers
 
-* **Rate-Limit Resilience**: Prevent Gemini LLM quota exhaustions during multi-file uploads.
+* **Rate-Limit Resilience**: Prevent provider LLM quota exhaustions and rate-limit bursts during multi-file uploads.
 * **Granular Progress Telemetry**: Expose deterministic step-by-step progress (`Extracting profile 1 of N...`) for transparent real-time feedback.
 * **Guaranteed Job Scoping**: Ensure candidate extraction and evaluations are strictly bound to the target `jobId`.
 * **Storage Portability**: Support Vercel Blob cloud storage with automatic local filesystem fallbacks for offline and local development.
@@ -77,7 +77,7 @@ Upload files to blob storage first, then sequentially invoke LLM extraction per 
 ### 5.2 Extraction Layer (`/src/app/api/resumes/ingest/route.ts`)
 - Accepts `{ uploadId: string, jobId: string }`.
 - Verifies target job and upload record in PostgreSQL.
-- Parses PDF document text (`extractTextFromPdf`) and runs multi-aspect Gemini extraction (`extractCandidateProfile`), strictly scoped to `appliedJobId: jobId`.
+- Parses PDF document text (`extractTextFromPdf`) and runs multi-aspect LLM extraction (`extractCandidateProfile` via OpenAI or Gemini), strictly scoped to `appliedJobId: jobId`.
 - Persists candidate profile in PostgreSQL and updates the upload record's `jobId`.
 
 ### 5.3 Sequential Execution (`/src/components/upload/hooks/useResumeDropUpload.ts`)

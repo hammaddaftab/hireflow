@@ -19,7 +19,6 @@ import {
   X
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
-import { Badge } from "@/components/ui/Badge";
 import type { Job } from "@/entities/job";
 import type { ParsedCandidateProfile } from "@/entities/candidate";
 import type { CandidateReviewItem } from "@/features/review/types";

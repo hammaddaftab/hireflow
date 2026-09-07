@@ -3,7 +3,7 @@
 import React from "react";
 import { Play, Edit2, Trash2, Copy, CheckCircle2, AlertTriangle, XCircle } from "lucide-react";
 import { Button } from "@/components/ui/Button";
-import type { ExperienceTestFixture, ExperienceEvalResult, FixtureCategory } from "../types";
+import type { ExperienceTestFixture, ExperienceEvalResult } from "../types";
 
 export interface FixtureListProps {
   fixtures: ExperienceTestFixture[];

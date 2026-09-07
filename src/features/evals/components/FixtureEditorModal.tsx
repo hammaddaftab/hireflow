@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { X, Save, Plus } from "lucide-react";
+import { X, Save } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import type { ExperienceTestFixture, FixtureCategory } from "../types";
@@ -37,7 +37,7 @@ export function FixtureEditorModal({
   const [minYearsRequirement, setMinYearsRequirement] = useState(
     initialFixture?.targetJobRequirement.minYears ?? 5
   );
-  const [toleranceYears, setToleranceYears] = useState(
+  const [toleranceYears] = useState(
     initialFixture?.toleranceYears ?? 0.2
   );
 
