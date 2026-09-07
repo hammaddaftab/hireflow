@@ -2,7 +2,6 @@ import { NextRequest } from "next/server";
 import { z } from "zod";
 import { extractTextFromPdf, isPdfBuffer } from "@/lib/pdf";
 import { uploadResumeToBlob } from "@/lib/storage";
-import { db, candidates } from "@/db";
 import { extractCandidateProfile } from "@/features/extraction";
 import { candidatesService } from "@/features/candidates";
 import { ApiError, createErrorResponse, createSuccessResponse } from "@/lib/errors/api-error";
@@ -13,120 +12,6 @@ const JsonUploadPayloadSchema = z.object({
   filename: z.string().optional(),
   appliedJobId: z.string().optional(),
 });
-
-const DEGREE_RANKS: Record<string, number> = {
-  high_school: 1,
-  diploma: 2,
-  bachelors: 3,
-  masters: 4,
-  doctorate: 5,
-};
-
-function extractCandidateProfileColumns(profile: ParsedCandidateProfile) {
-  const activeRole = profile.work_history.entries.find((e) => e.is_current) || profile.work_history.entries[0];
-  const currentRoleTitle = activeRole?.title || null;
-  const currentCompany = activeRole?.employer || null;
-
-  const totalMonths = profile.work_history.entries.reduce((acc, entry) => {
-    const start = new Date(entry.start_date).getTime();
-    const end = entry.end_date ? new Date(entry.end_date).getTime() : Date.now();
-    if (isNaN(start)) return acc;
-    const validEnd = isNaN(end) ? Date.now() : end;
-    const months = Math.max(1, Math.round((validEnd - start) / (1000 * 60 * 60 * 24 * 30.4375)));
-    return acc + months;
-  }, 0);
-  const totalYearsExperience = totalMonths > 0 ? (Math.round((totalMonths / 12) * 10) / 10).toString() : null;
-
-  let highestDegreeLevel: string | null = null;
-  let highestDegreeField: string | null = null;
-  let highestRank = 0;
-
-  for (const entry of profile.education.entries) {
-    const normLevel = entry.degree_level.normalized;
-    const rank = normLevel ? DEGREE_RANKS[normLevel] || 0 : 0;
-    if (rank > highestRank) {
-      highestRank = rank;
-      highestDegreeLevel = normLevel;
-      highestDegreeField = entry.field.normalized || entry.field.raw || null;
-    }
-  }
-
-  const salaryNorm = profile.logistics.salary_expectation.normalized;
-  const expectedSalaryMin = salaryNorm?.min != null ? String(salaryNorm.min) : null;
-  const expectedSalaryMax = salaryNorm?.max != null ? String(salaryNorm.max) : null;
-  const salaryCurrency = salaryNorm?.currency || null;
-
-  const noticeNorm = profile.logistics.notice_period.normalized;
-  let noticePeriodDays: number | null = null;
-  if (noticeNorm?.value != null && noticeNorm.unit) {
-    switch (noticeNorm.unit) {
-      case "days":
-        noticePeriodDays = noticeNorm.value;
-        break;
-      case "weeks":
-        noticePeriodDays = noticeNorm.value * 7;
-        break;
-      case "months":
-        noticePeriodDays = noticeNorm.value * 30;
-        break;
-      default:
-        noticePeriodDays = noticeNorm.value;
-    }
-  }
-
-  return {
-    currentRoleTitle,
-    currentCompany,
-    totalYearsExperience,
-    highestDegreeLevel,
-    highestDegreeField,
-    expectedSalaryMin,
-    expectedSalaryMax,
-    salaryCurrency,
-    noticePeriodDays,
-  };
-}
-
-async function persistCandidateToDatabase(candidateProfile: ParsedCandidateProfile) {
-  try {
-    const summaryColumns = extractCandidateProfileColumns(candidateProfile);
-
-    await db.insert(candidates).values({
-      id: candidateProfile.id,
-      appliedJobId: candidateProfile.applied_job_id ?? null,
-      name: candidateProfile.identity.name,
-      email: candidateProfile.identity.email,
-      phone: candidateProfile.identity.phone,
-      cnic: candidateProfile.identity.cnic,
-      city: candidateProfile.identity.location.normalized?.city ?? null,
-      province: candidateProfile.identity.location.normalized?.province ?? null,
-      pdfUrl: candidateProfile.source_document.url ?? null,
-
-      currentRoleTitle: summaryColumns.currentRoleTitle,
-      currentCompany: summaryColumns.currentCompany,
-      totalYearsExperience: summaryColumns.totalYearsExperience,
-      highestDegreeLevel: summaryColumns.highestDegreeLevel,
-      highestDegreeField: summaryColumns.highestDegreeField,
-      expectedSalaryMin: summaryColumns.expectedSalaryMin,
-      expectedSalaryMax: summaryColumns.expectedSalaryMax,
-      salaryCurrency: summaryColumns.salaryCurrency,
-      noticePeriodDays: summaryColumns.noticePeriodDays,
-
-      sourceDocument: candidateProfile.source_document,
-      identity: candidateProfile.identity,
-      workHistory: candidateProfile.work_history,
-      education: candidateProfile.education,
-      skillsDemonstrated: candidateProfile.skills_demonstrated,
-      skillsDeclared: candidateProfile.skills_declared,
-      logistics: candidateProfile.logistics,
-      extractionMetadata: candidateProfile.extraction_metadata,
-      createdAt: new Date(candidateProfile.created_at),
-      updatedAt: new Date(candidateProfile.updated_at),
-    }).onConflictDoNothing();
-  } catch (dbErr) {
-    console.warn("Drizzle database insert warning (skipped):", dbErr instanceof Error ? dbErr.message : String(dbErr));
-  }
-}
 
 /**
  * POST /api/candidates/upload
@@ -222,7 +107,6 @@ export async function POST(request: NextRequest) {
         });
 
         await candidatesService.createCandidate(candidateProfile);
-        await persistCandidateToDatabase(candidateProfile);
         savedCandidates.push(candidateProfile);
       }
 
@@ -235,7 +119,6 @@ export async function POST(request: NextRequest) {
         });
 
         await candidatesService.createCandidate(candidateProfile);
-        await persistCandidateToDatabase(candidateProfile);
         savedCandidates.push(candidateProfile);
       }
     } else if (contentType.includes("application/json")) {
@@ -267,7 +150,6 @@ export async function POST(request: NextRequest) {
       });
 
       await candidatesService.createCandidate(candidateProfile);
-      await persistCandidateToDatabase(candidateProfile);
       savedCandidates.push(candidateProfile);
     } else {
       throw ApiError.badRequest(

@@ -1,54 +1,31 @@
-// Persistent database seeder for fresh database setup
-// Seeds baseline resume upload records directly into PostgreSQL via Drizzle ORM
+// Master database seeder
+// Orchestrates concept seeders in foreign-key-safe dependency order:
+// 1. Jobs (root entity, required by candidates and resume uploads)
+// 2. Candidates (references jobs via applied_job_id)
+// 3. Resume uploads (references jobs via job_id)
 
-import { db, resumeUploads, conn } from "@/db";
+import { conn } from "@/db";
+import { seedJobs } from "./seeds/jobs";
+import { seedCandidates } from "./seeds/candidates";
+import { seedResumeUploads } from "./seeds/resumes";
 
-export const INITIAL_RESUME_UPLOADS = [
-  {
-    id: "upl_mock_resume_a",
-    filename: "mock_resume_a.pdf",
-    size: 292618,
-    contentType: "application/pdf",
-    blobUrl: "storage://resumes/mock_resume_a.pdf",
-    pathname: "resumes/mock_resume_a.pdf",
-    hash: "2dc311a21fd4bfab3102ecdccd7bd226a0ac8fc927722bc162873a49d23183b5",
-    jobId: "job-sample-1",
-    candidateId: null,
-    status: "stored",
-    errorMessage: null,
-    createdAt: new Date("2026-09-06T19:07:47.686Z"),
-    updatedAt: new Date("2026-09-06T19:07:47.686Z"),
-  },
-  {
-    id: "upl_mock_resume_b",
-    filename: "mock_resume_b.pdf",
-    size: 517151,
-    contentType: "application/pdf",
-    blobUrl: "storage://resumes/mock_resume_b.pdf",
-    pathname: "resumes/mock_resume_b.pdf",
-    hash: "ae32a851ce3e56b6c00f76798732a39eb207cc569d437de005bdbbf517ebfefa",
-    jobId: "job-sample-1",
-    candidateId: null,
-    status: "stored",
-    errorMessage: null,
-    createdAt: new Date("2026-09-06T19:27:47.686Z"),
-    updatedAt: new Date("2026-09-06T19:27:47.686Z"),
-  },
-];
-
-// Direct insert assuming a fresh database without existence checks
-export async function seedResumeUploads() {
-  await db.insert(resumeUploads).values(INITIAL_RESUME_UPLOADS);
-}
-
-async function run() {
-  console.log("Seeding resume uploads into database...");
+export async function seedAll() {
+  console.log("Starting full database seed in dependency order...");
+  // Step 1: Jobs must be seeded first due to foreign key constraints
+  await seedJobs();
+  // Step 2: Candidates reference jobs via applied_job_id
+  await seedCandidates();
+  // Step 3: Resume uploads reference jobs and candidates
   await seedResumeUploads();
-  console.log(`Successfully seeded ${INITIAL_RESUME_UPLOADS.length} resume uploads.`);
-  await conn.end();
+  console.log("Full database seed completed successfully.");
 }
 
-run().catch((error) => {
-  console.error("Database seed failed:", error);
-  process.exit(1);
-});
+// Standalone execution support
+if (process.argv[1]?.includes("seed.ts") || process.argv[1]?.endsWith("seed")) {
+  seedAll()
+    .then(() => conn.end())
+    .catch((err) => {
+      console.error("Database seed failed:", err);
+      process.exit(1);
+    });
+}
