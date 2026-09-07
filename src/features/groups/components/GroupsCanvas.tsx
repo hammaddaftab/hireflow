@@ -21,17 +21,49 @@ import { GroupDetailsDrawer } from "./GroupDetailsDrawer";
 export interface GroupsCanvasProps {
   initialNodes: GroupNode[];
   initialEdges: GroupEdge[];
+  activeJobId?: string | null;
+  activeGroupId?: string | null;
+  onActivateGroup?: (groupId: string) => void;
+  onClose?: () => void;
+  className?: string;
 }
 
 export function GroupsCanvas({
   initialNodes,
   initialEdges,
+  activeJobId = null,
+  activeGroupId = null,
+  onActivateGroup,
+  onClose,
+  className,
 }: GroupsCanvasProps) {
   const [nodes, setNodes] = useState<GroupNode[]>(initialNodes);
   const [edges, setEdges] = useState<GroupEdge[]>(initialEdges);
+
+  useEffect(() => {
+    setNodes(initialNodes);
+    setEdges(initialEdges);
+  }, [initialNodes, initialEdges]);
+
+  const targetInitialId =
+    activeGroupId && activeGroupId !== "grp_all"
+      ? activeGroupId
+      : "node-root";
+
   const [selectedNodeId, setSelectedNodeId] = useState<string>(
-    initialNodes[0]?.id || "node-root"
+    initialNodes.some((n) => n.id === targetInitialId)
+      ? targetInitialId
+      : initialNodes[0]?.id || "node-root"
   );
+
+  useEffect(() => {
+    if (activeGroupId) {
+      const targetId = activeGroupId === "grp_all" ? "node-root" : activeGroupId;
+      if (initialNodes.some((n) => n.id === targetId)) {
+        setSelectedNodeId(targetId);
+      }
+    }
+  }, [activeGroupId, initialNodes]);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [containerDimensions, setContainerDimensions] = useState({
@@ -48,7 +80,6 @@ export function GroupsCanvas({
     isDragging,
     centerOnNode,
     navigateToWorldPoint,
-    ensureNodeVisible,
     panBy,
     zoomIn,
     zoomOut,
@@ -149,13 +180,28 @@ export function GroupsCanvas({
         return;
       }
 
-      if (e.key === "Escape" && isFullscreen) {
-        e.preventDefault();
-        setIsFullscreen(false);
-        return;
+      if (e.key === "Escape") {
+        if (isFullscreen) {
+          e.preventDefault();
+          setIsFullscreen(false);
+          return;
+        }
+        if (onClose) {
+          e.preventDefault();
+          onClose();
+          return;
+        }
       }
 
       if (!selectedNode) return;
+
+      if (e.key === "Enter") {
+        e.preventDefault();
+        if (onActivateGroup && selectedNode) {
+          onActivateGroup(selectedNode.id === "node-root" ? "grp_all" : selectedNode.id);
+        }
+        return;
+      }
 
       if (e.key === "ArrowDown") {
         e.preventDefault();
@@ -238,6 +284,8 @@ export function GroupsCanvas({
     toggleFullscreen,
     isFullscreen,
     isDrawerOpen,
+    onActivateGroup,
+    onClose,
   ]);
 
   // Minimap click to pan smoothly to world point
@@ -245,23 +293,27 @@ export function GroupsCanvas({
     navigateToWorldPoint(worldX, worldY, isDrawerOpen);
   };
 
-  // Add mock subgroup
-  const handleAddSubgroup = (parentId: string) => {
+  // Add subgroup with database persistence
+  const handleAddSubgroup = async (parentId: string) => {
     const parent = nodes.find((n) => n.id === parentId);
     if (!parent) return;
 
-    const newId = `node-sub-${Date.now()}`;
+    const newId = `grp_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`;
     const siblingCount = parent.childrenIds.length;
-    const offsetSpacing = 240;
-    const newX = parent.x + (siblingCount === 0 ? 0 : siblingCount * offsetSpacing);
-    const newY = parent.y + 240;
+    const totalChildren = siblingCount + 1;
+    const childSpacing = 240;
+    const spanWidth = (totalChildren - 1) * childSpacing;
+    const firstChildX = parent.x - spanWidth / 2;
+    const newX = Math.round(firstChildX + siblingCount * childSpacing);
+    const newY = parent.y + 210;
+    const title = `${parent.title} Subgroup ${siblingCount + 1}`;
 
     const newNode: GroupNode = {
       id: newId,
-      title: `Subgroup ${siblingCount + 1}`,
+      title,
       subtitle: `Derived from ${parent.title}`,
       description: `Custom candidate sub-segment with refined filter criteria.`,
-      badge: "Custom Group",
+      badge: "Subgroup",
       status: "active",
       parentId: parent.id,
       childrenIds: [],
@@ -269,9 +321,9 @@ export function GroupsCanvas({
       y: newY,
       width: 56,
       height: 56,
-      candidateCount: 0,
+      candidateCount: parent.candidates.length,
       criteriaDescription: `Subset of ${parent.title} screening rules.`,
-      candidates: [],
+      candidates: parent.candidates,
     };
 
     const newEdge: GroupEdge = {
@@ -280,16 +332,46 @@ export function GroupsCanvas({
       targetId: newId,
     };
 
+    // Reposition existing siblings so all children are symmetrically centered
+    const updatedSiblingPositions = new Map<string, number>();
+    parent.childrenIds.forEach((cid, idx) => {
+      updatedSiblingPositions.set(cid, Math.round(firstChildX + idx * childSpacing));
+    });
+
     setNodes((prev) => [
-      ...prev.map((n) =>
-        n.id === parent.id
-          ? { ...n, childrenIds: [...n.childrenIds, newId] }
-          : n
-      ),
+      ...prev.map((n) => {
+        if (n.id === parent.id) {
+          return { ...n, childrenIds: [...n.childrenIds, newId] };
+        }
+        if (updatedSiblingPositions.has(n.id)) {
+          return { ...n, x: updatedSiblingPositions.get(n.id)! };
+        }
+        return n;
+      }),
       newNode,
     ]);
 
     setEdges((prev) => [...prev, newEdge]);
+
+    if (activeJobId) {
+      try {
+        await fetch("/api/groups", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            id: newId,
+            jobId: activeJobId,
+            parentId: parent.id.startsWith("node-") ? null : parent.id,
+            name: title,
+            description: `Derived from ${parent.title}`,
+            candidateIds: parent.candidates.map((c) => c.id),
+          }),
+        });
+      } catch (err) {
+        console.error("Failed to persist subgroup to database:", err);
+      }
+    }
+
     handleSelectNode(newNode);
   };
 
@@ -298,7 +380,7 @@ export function GroupsCanvas({
       className={`overflow-hidden bg-neutral-100/50 dark:bg-black select-none ${
         isFullscreen
           ? "fixed inset-0 z-50 w-screen h-screen rounded-none border-0 shadow-none"
-          : "relative w-full h-[calc(100vh-8rem)] min-h-[550px] rounded-2xl border border-neutral-300 dark:border-neutral-800 shadow-md"
+          : className || "relative w-full h-[calc(100vh-8rem)] min-h-[550px] rounded-2xl border border-neutral-300 dark:border-neutral-800 shadow-md"
       }`}
     >
       {/* Canvas Viewport Area (Fixed dimensions avoid parent layout reflows) */}
@@ -375,15 +457,23 @@ export function GroupsCanvas({
           </svg>
 
           {/* HTML Nodes Layer */}
-          {nodes.map((node) => (
-            <GroupNodeComponent
-              key={node.id}
-              node={node}
-              isSelected={node.id === selectedNodeId}
-              isAncestor={activeAncestorIds.has(node.id)}
-              onSelect={handleSelectNode}
-            />
-          ))}
+          {nodes.map((node) => {
+            const isNodeActive =
+              activeGroupId === "grp_all" || !activeGroupId
+                ? node.id === "node-root"
+                : node.id === activeGroupId;
+
+            return (
+              <GroupNodeComponent
+                key={node.id}
+                node={node}
+                isSelected={node.id === selectedNodeId}
+                isAncestor={activeAncestorIds.has(node.id)}
+                isActive={isNodeActive}
+                onSelect={handleSelectNode}
+              />
+            );
+          })}
         </motion.div>
 
         {/* Floating Top Breadcrumb Bar */}
@@ -511,6 +601,12 @@ export function GroupsCanvas({
               onCenterNode={() => centerOnNode(selectedNode, isDrawerOpen)}
               onSelectNode={handleSelectNode}
               onAddSubgroup={handleAddSubgroup}
+              onActivateGroup={onActivateGroup}
+              isActive={
+                activeGroupId === "grp_all" || !activeGroupId
+                  ? selectedNode.id === "node-root"
+                  : selectedNode.id === activeGroupId
+              }
             />
           )}
         </AnimatePresence>

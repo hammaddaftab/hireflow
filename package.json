@@ -13,6 +13,7 @@
     "db:seed:jobs": "npx tsx --env-file=.env src/db/seeds/jobs.ts",
     "db:seed:candidates": "npx tsx --env-file=.env src/db/seeds/candidates.ts",
     "db:seed:resumes": "npx tsx --env-file=.env src/db/seeds/resumes.ts",
+    "db:seed:groups": "npx tsx --env-file=.env src/db/seeds/groups.ts",
     "db:reset": "npx tsx --env-file=.env src/db/reset.ts",
     "seed": "npm run db:seed",
     "test": "vitest run",

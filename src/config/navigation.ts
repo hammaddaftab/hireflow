@@ -1,3 +1,5 @@
+import { FEATURES } from "./features";
+
 export interface NavItem {
   id: string;
   label: string;
@@ -20,10 +22,8 @@ export const ROUTES = {
   UPLOADS: "/uploads",
 } as const;
 
-/**
- * Centralized Sidebar Navigation Items with Route Matching Rules
- */
-export const SIDEBAR_NAV_ITEMS: NavItem[] = [
+// Centralized Sidebar Navigation Items with Route Matching Rules
+const ALL_SIDEBAR_NAV_ITEMS: NavItem[] = [
   {
     id: "dashboard",
     label: "Dashboard",
@@ -60,6 +60,13 @@ export const SIDEBAR_NAV_ITEMS: NavItem[] = [
     matchPatterns: ["/jobs/new"],
   },
 ];
+
+export const SIDEBAR_NAV_ITEMS: NavItem[] = ALL_SIDEBAR_NAV_ITEMS.filter((item) => {
+  if (item.id === "groups" && !FEATURES.CANDIDATE_GROUPS) {
+    return false;
+  }
+  return true;
+});
 
 /**
  * Route segment labels used for dynamic breadcrumbs

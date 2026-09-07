@@ -4,6 +4,7 @@ import React from "react";
 import { jobsService } from "@/features/jobs";
 import { candidatesService } from "@/features/candidates";
 import { buildReviewQueue, FocusReviewPage, reviewsService } from "@/features/review";
+import { groupsService } from "@/features/groups/groupsService";
 import type { QueueFilterTab } from "@/entities/review";
 
 export default async function FocusRoutePage({
@@ -30,6 +31,7 @@ export default async function FocusRoutePage({
 
   const allCandidates = await candidatesService.getAllCandidates();
   const priorDecisions = await reviewsService.getDecisionsForJob(activeJob.id);
+  const persistedGroups = await groupsService.getGroupsForJob(activeJob.id);
   const queue = buildReviewQueue(allCandidates, activeJob, priorDecisions);
 
   const initialIndex = params.candidateIndex ? parseInt(params.candidateIndex, 10) : 0;
@@ -38,6 +40,7 @@ export default async function FocusRoutePage({
     <FocusReviewPage
       initialJob={activeJob}
       initialQueue={queue}
+      initialPersistedGroups={persistedGroups}
       initialIndex={isNaN(initialIndex) ? 0 : initialIndex}
       initialTab={(params.tab as QueueFilterTab) || "all"}
       initialCity={params.city || null}

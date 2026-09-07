@@ -1,12 +1,13 @@
 import { useState, useCallback, useMemo, useRef } from "react";
 import type { CandidateReviewItem, QueryGroup } from "../../types";
 import type { ReviewDecision } from "@/entities/review";
+import type { PersistedGroupWithMembers } from "@/features/groups";
 import {
   calculateReviewStats,
   getCityDistribution,
   type ReviewStats,
 } from "../utils/queueCalculations";
-import { normalizeSkill } from "@/features/extraction/skillNormalizer";
+import { DEFAULT_GROUP_ID } from "../utils/reviewQueryParams";
 
 export interface UseReviewDataReturn {
   queue: CandidateReviewItem[];
@@ -15,15 +16,38 @@ export interface UseReviewDataReturn {
   stats: ReviewStats;
   queryGroups: QueryGroup[];
   cityDistribution: Array<{ city: string; count: number }>;
+  persistedGroups: PersistedGroupWithMembers[];
+  createGroup: (name: string, candidateIds: string[], parentId?: string | null) => Promise<PersistedGroupWithMembers>;
 }
 
 // Headless domain hook managing candidate records, evaluation mutations, query groups, and review stats
 export function useReviewData(
-  initialQueue: CandidateReviewItem[]
+  initialQueue: CandidateReviewItem[],
+  initialPersistedGroups: PersistedGroupWithMembers[] = []
 ): UseReviewDataReturn {
   const [queue, setQueue] = useState<CandidateReviewItem[]>(initialQueue);
+  const [persistedGroups, setPersistedGroups] = useState<PersistedGroupWithMembers[]>(initialPersistedGroups);
   const queueRef = useRef(queue);
   queueRef.current = queue;
+
+  const createGroup = useCallback(
+    async (name: string, candidateIds: string[], parentId?: string | null) => {
+      const jobId = queueRef.current[0]?.jobId;
+      const res = await fetch("/api/groups", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ jobId, name, parentId: parentId || null, candidateIds }),
+      });
+      const json = await res.json();
+      if (!res.ok || !json.success) {
+        throw new Error(json.error || "Failed to create group");
+      }
+      const newGroup: PersistedGroupWithMembers = json.data;
+      setPersistedGroups((prev) => [newGroup, ...prev]);
+      return newGroup;
+    },
+    []
+  );
 
   const handleDecision = useCallback(
     (candidateId: string, decision: ReviewDecision) => {
@@ -53,58 +77,22 @@ export function useReviewData(
     []
   );
 
-  // Pre-defined recruiter query filter groups
-  const queryGroups: QueryGroup[] = useMemo(
-    () => [
-      {
-        id: "grp_all",
-        name: "All Candidates",
-        candidateIds: queue.map((c) => c.candidate.id),
-      },
-      {
-        id: "grp_python",
-        name: "Strong Python match",
-        candidateIds: queue
-          .filter((c) =>
-            c.candidate.skills_demonstrated.skills.some(
-              (s) =>
-                normalizeSkill(s.skill) === "python" &&
-                s.evidence_status === "confirmed"
-            )
-          )
-          .map((c) => c.candidate.id),
-      },
-      {
-        id: "grp_backend",
-        name: "Backend Systems",
-        candidateIds: queue
-          .filter((c) =>
-            c.candidate.skills_demonstrated.skills.some((s) =>
-              ["node.js", "go", "postgresql", "system design", "kafka", "redis"].includes(
-                normalizeSkill(s.skill)
-              )
-            )
-          )
-          .map((c) => c.candidate.id),
-      },
-      {
-        id: "grp_entrepreneurial",
-        name: "Entrepreneurial background",
-        candidateIds: queue
-          .filter((c) =>
-            c.candidate.work_history.entries.some(
-              (w) =>
-                w.raw_description.toLowerCase().includes("founder") ||
-                w.raw_description.toLowerCase().includes("lead") ||
-                w.raw_description.toLowerCase().includes("championed") ||
-                w.raw_description.toLowerCase().includes("mentorship")
-            )
-          )
-          .map((c) => c.candidate.id),
-      },
-    ],
-    [queue]
-  );
+  // Recruiter query groups: default root pool and persisted groups
+  const queryGroups: QueryGroup[] = useMemo(() => {
+    const defaultRootGroup: QueryGroup = {
+      id: DEFAULT_GROUP_ID,
+      name: "All Applicants (Default)",
+      candidateIds: queue.map((c) => c.candidate.id),
+    };
+
+    const persistedMapped: QueryGroup[] = persistedGroups.map((g) => ({
+      id: g.id,
+      name: g.parentId ? `Sub: ${g.name}` : g.name,
+      candidateIds: g.candidateIds,
+    }));
+
+    return [defaultRootGroup, ...persistedMapped];
+  }, [queue, persistedGroups]);
 
   const cityDistribution = useMemo(() => {
     return getCityDistribution(queue);
@@ -121,6 +109,8 @@ export function useReviewData(
     stats,
     queryGroups,
     cityDistribution,
+    persistedGroups,
+    createGroup,
   };
 }
 
