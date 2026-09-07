@@ -8,6 +8,7 @@ import { conn } from "@/db";
 import { seedJobs } from "./seeds/jobs";
 import { seedCandidates } from "./seeds/candidates";
 import { seedResumeUploads } from "./seeds/resumes";
+import { seedGroups } from "./seeds/groups";
 
 export async function seedAll() {
   console.log("Starting full database seed in dependency order...");
@@ -17,6 +18,8 @@ export async function seedAll() {
   await seedCandidates();
   // Step 3: Resume uploads reference jobs and candidates
   await seedResumeUploads();
+  // Step 4: Groups and candidate memberships reference jobs and candidates
+  await seedGroups();
   console.log("Full database seed completed successfully.");
 }
 

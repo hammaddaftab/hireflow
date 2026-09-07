@@ -1,9 +1,14 @@
 "use client";
 
-import { useState, useCallback, useMemo, useEffect, useRef } from "react";
+import { useState, useCallback, useMemo, useEffect } from "react";
 import type { CandidateReviewItem, QueryGroup } from "../../../types";
 import type { QueueFilterTab, ReviewDecision } from "@/entities/review";
 import { filterReviewQueue } from "../../../core/utils/queueCalculations";
+import {
+  DEFAULT_GROUP_ID,
+  isDefaultGroup,
+} from "../../../core/utils/reviewQueryParams";
+import { FEATURES } from "@/config/features";
 
 export interface UseFocusCarouselProps {
   queue: CandidateReviewItem[];
@@ -24,10 +29,12 @@ export interface UseFocusCarouselReturn {
   setActiveTab: (tab: QueueFilterTab) => void;
   selectedCity: string | null;
   setSelectedCity: (city: string | null) => void;
-  selectedGroupId: string | null;
+  selectedGroupId: string;
   setSelectedGroupId: (id: string | null) => void;
   isFilterPaneOpen: boolean;
   setIsFilterPaneOpen: (open: boolean) => void;
+  isGroupModalOpen: boolean;
+  setIsGroupModalOpen: (open: boolean) => void;
   isGroupsOpen: boolean;
   setIsGroupsOpen: (open: boolean) => void;
   isLocationOpen: boolean;
@@ -62,10 +69,18 @@ export function useFocusCarousel({
   const [activeIndex, setActiveIndex] = useState(initialIndex);
   const [activeTab, setActiveTab] = useState<QueueFilterTab>(initialTab);
   const [selectedCity, setSelectedCity] = useState<string | null>(initialCity);
-  const [selectedGroupId, setSelectedGroupId] = useState<string | null>(initialGroupId);
+  const [selectedGroupId, setSelectedGroupIdState] = useState<string>(
+    !isDefaultGroup(initialGroupId) ? initialGroupId! : DEFAULT_GROUP_ID
+  );
   const [isFilterPaneOpen, setIsFilterPaneOpen] = useState(false);
+  const [isGroupModalOpen, setIsGroupModalOpen] = useState(false);
   const [isGroupsOpen, setIsGroupsOpen] = useState(true);
   const [isLocationOpen, setIsLocationOpen] = useState(true);
+
+  const setSelectedGroupId = useCallback((id: string | null) => {
+    setSelectedGroupIdState(isDefaultGroup(id) ? DEFAULT_GROUP_ID : id!);
+    setActiveIndex(0);
+  }, []);
 
   const [direction, setDirection] = useState<"next" | "prev" | "none">("none");
   const [animKey, setAnimKey] = useState(0);
@@ -85,17 +100,22 @@ export function useFocusCarousel({
   const hasPrev = activeIndex > 0;
 
   const hasActiveFilters =
-    selectedGroupId !== null ||
+    (FEATURES.CANDIDATE_GROUPS && !isDefaultGroup(selectedGroupId)) ||
     selectedCity !== null ||
     activeTab !== "all";
 
-  // Sync URL search params with active candidate index
+  // Sync URL search params with active candidate index and active group
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     params.set("candidateIndex", String(activeIndex));
+    if (FEATURES.CANDIDATE_GROUPS && !isDefaultGroup(selectedGroupId)) {
+      params.set("group", selectedGroupId);
+    } else {
+      params.delete("group");
+    }
     const newUrl = `${window.location.pathname}?${params.toString()}`;
     window.history.replaceState(null, "", newUrl);
-  }, [activeIndex]);
+  }, [activeIndex, selectedGroupId]);
 
   const handleNext = useCallback(() => {
     if (hasNext) {
@@ -134,16 +154,21 @@ export function useFocusCarousel({
   );
 
   const resetFilters = useCallback(() => {
-    setSelectedGroupId(null);
+    setSelectedGroupId(DEFAULT_GROUP_ID);
     setSelectedCity(null);
     setActiveTab("all");
     setActiveIndex(0);
-  }, []);
+  }, [setSelectedGroupId]);
 
   // Focus View Keyboard Shortcuts: [A] Keep, [F] Flag, [R] Pass, [E] Evidence, [Q] Filters, [Esc] Exit
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (["INPUT", "TEXTAREA", "SELECT"].includes((e.target as HTMLElement)?.tagName)) {
+        return;
+      }
+
+      // Allow GroupsCanvas to exclusively capture keyboard navigation when modal is open
+      if (isGroupModalOpen) {
         return;
       }
 
@@ -177,6 +202,12 @@ export function useFocusCarousel({
           e.preventDefault();
           setIsFilterPaneOpen((prev) => !prev);
           break;
+        case "g":
+          if (FEATURES.CANDIDATE_GROUPS) {
+            e.preventDefault();
+            setIsGroupModalOpen((prev) => !prev);
+          }
+          break;
         case "escape":
           e.preventDefault();
           if (isFilterPaneOpen) {
@@ -192,7 +223,15 @@ export function useFocusCarousel({
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [handleDecision, handleNext, handlePrev, onToggleEvidence, onExitFocus, isFilterPaneOpen]);
+  }, [
+    handleDecision,
+    handleNext,
+    handlePrev,
+    onToggleEvidence,
+    onExitFocus,
+    isFilterPaneOpen,
+    isGroupModalOpen,
+  ]);
 
   return {
     activeIndex,
@@ -205,6 +244,8 @@ export function useFocusCarousel({
     setSelectedGroupId,
     isFilterPaneOpen,
     setIsFilterPaneOpen,
+    isGroupModalOpen,
+    setIsGroupModalOpen,
     isGroupsOpen,
     setIsGroupsOpen,
     isLocationOpen,

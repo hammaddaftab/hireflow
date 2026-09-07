@@ -39,3 +39,15 @@ export interface ViewportState {
   y: number;
   scale: number;
 }
+
+export interface PersistedGroupWithMembers {
+  id: string;
+  jobId: string | null;
+  parentId: string | null;
+  name: string;
+  description: string | null;
+  createdAt: Date | string;
+  updatedAt: Date | string;
+  candidateIds: string[];
+  childrenCount: number;
+}

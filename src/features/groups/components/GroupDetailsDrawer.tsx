@@ -9,6 +9,7 @@ import {
   ExternalLink,
   Plus,
   GitBranch,
+  Check,
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import type { GroupNode } from "../types";
@@ -20,6 +21,8 @@ export interface GroupDetailsDrawerProps {
   onCenterNode: () => void;
   onSelectNode: (node: GroupNode) => void;
   onAddSubgroup?: (parentNodeId: string) => void;
+  onActivateGroup?: (groupId: string) => void;
+  isActive?: boolean;
 }
 
 export function GroupDetailsDrawer({
@@ -29,6 +32,8 @@ export function GroupDetailsDrawer({
   onCenterNode,
   onSelectNode,
   onAddSubgroup,
+  onActivateGroup,
+  isActive = false,
 }: GroupDetailsDrawerProps) {
   const childrenNodes = node.childrenIds
     .map((cid) => allNodes.find((n) => n.id === cid))
@@ -56,10 +61,15 @@ export function GroupDetailsDrawer({
       <div className="p-4 border-b border-neutral-200 dark:border-neutral-800 flex items-start justify-between gap-3 shrink-0">
         <div className="space-y-1 min-w-0">
           <div className="flex items-center gap-2">
-            <span className="h-2 w-2 rounded-full shrink-0 bg-neutral-900 dark:bg-white" />
+            <span className={`h-2 w-2 rounded-full shrink-0 ${isActive ? "bg-emerald-500" : "bg-neutral-900 dark:bg-white"}`} />
             <h2 className="text-sm font-bold text-neutral-900 dark:text-white truncate">
               {node.title}
             </h2>
+            {isActive && (
+              <span className="text-[9px] font-mono px-1.5 py-0.2 rounded-full font-bold uppercase tracking-wider bg-emerald-600/20 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30 shrink-0">
+                Active
+              </span>
+            )}
           </div>
           <p className="text-[11px] text-neutral-500 dark:text-neutral-400 font-mono truncate">
             {node.subtitle}
@@ -215,12 +225,27 @@ export function GroupDetailsDrawer({
 
       {/* Footer Quick Actions */}
       <div className="p-4 border-t border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-[#0c0c0c] shrink-0 space-y-2">
-        <Link href="/review" className="block w-full">
-          <Button variant="primary" size="sm" className="w-full text-xs font-bold gap-1.5 bg-neutral-900 hover:bg-black text-white dark:bg-white dark:text-black dark:hover:bg-neutral-100">
-            <ExternalLink className="h-3.5 w-3.5" />
-            <span>Open in Review Queue</span>
+        {onActivateGroup ? (
+          <Button
+            variant="primary"
+            size="sm"
+            onClick={() => onActivateGroup(node.id === "node-root" ? "grp_all" : node.id)}
+            className="w-full text-xs font-bold gap-1.5 bg-primary hover:bg-primary/90 text-on-primary shadow-xs cursor-pointer"
+          >
+            <Check className="h-3.5 w-3.5" />
+            <span>{isActive ? "Currently Active Group" : "Activate This Group (Enter)"}</span>
           </Button>
-        </Link>
+        ) : (
+          <Link
+            href={node.id === "node-root" ? "/review" : `/review?group=${node.id}`}
+            className="block w-full"
+          >
+            <Button variant="primary" size="sm" className="w-full text-xs font-bold gap-1.5 bg-neutral-900 hover:bg-black text-white dark:bg-white dark:text-black dark:hover:bg-neutral-100">
+              <ExternalLink className="h-3.5 w-3.5" />
+              <span>Open in Review Queue</span>
+            </Button>
+          </Link>
+        )}
 
         {onAddSubgroup && (
           <Button
@@ -237,7 +262,7 @@ export function GroupDetailsDrawer({
         {/* Keyboard navigation hints */}
         <div className="pt-1 text-[10px] text-neutral-400 flex items-center justify-between font-mono">
           <span>Arrows: Nav</span>
-          <span>Space: Center</span>
+          {onActivateGroup ? <span>Enter: Activate</span> : <span>Space: Center</span>}
           <span>0: Fit</span>
         </div>
       </div>

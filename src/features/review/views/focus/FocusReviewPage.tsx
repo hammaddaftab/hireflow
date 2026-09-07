@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useMemo, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { Minimize2, Filter } from "lucide-react";
+import { Minimize2, Filter, Network } from "lucide-react";
 import { Typography } from "@/components/ui/Typography";
 import type { Job } from "@/entities/job";
 import type { QueueFilterTab } from "@/entities/review";
@@ -13,10 +13,13 @@ import { SpatialFocusDeck } from "./components/SpatialFocusDeck";
 import { FocusCommandBar } from "./components/FocusCommandBar";
 import { ReviewFilterPane } from "./components/ReviewFilterPane";
 import { buildReviewQueryString } from "../../core/utils/reviewQueryParams";
+import { type PersistedGroupWithMembers, ActiveGroupCanvasModal } from "@/features/groups";
+import { FEATURES } from "@/config/features";
 
 export interface FocusReviewPageProps {
   initialJob: Job;
   initialQueue: CandidateReviewItem[];
+  initialPersistedGroups?: PersistedGroupWithMembers[];
   initialIndex?: number;
   initialTab?: QueueFilterTab;
   initialCity?: string | null;
@@ -26,6 +29,7 @@ export interface FocusReviewPageProps {
 export function FocusReviewPage({
   initialJob,
   initialQueue,
+  initialPersistedGroups = [],
   initialIndex = 0,
   initialTab = "all",
   initialCity = null,
@@ -41,17 +45,11 @@ export function FocusReviewPage({
     queryGroups,
     cityDistribution,
     stats,
-  } = useReviewData(initialQueue);
+    persistedGroups,
+  } = useReviewData(initialQueue, initialPersistedGroups);
 
-  const handleExitFocus = useCallback(() => {
-    const q = buildReviewQueryString({
-      candidateIndex: activeIndex,
-      tab: activeTab,
-      city: selectedCity,
-      group: selectedGroupId,
-    });
-    router.push(q ? `/review?${q}` : "/review");
-  }, [router]);
+  const candidates = useMemo(() => queue.map((item) => item.candidate), [queue]);
+  const exitFocusRef = useRef<() => void>(() => {});
 
   // Tier 2: Viewport State Controller
   const {
@@ -65,8 +63,8 @@ export function FocusReviewPage({
     setSelectedGroupId,
     isFilterPaneOpen,
     setIsFilterPaneOpen,
-    isGroupsOpen,
-    setIsGroupsOpen,
+    isGroupModalOpen,
+    setIsGroupModalOpen,
     isLocationOpen,
     setIsLocationOpen,
     filteredQueue,
@@ -84,11 +82,25 @@ export function FocusReviewPage({
     initialCity,
     initialGroupId,
     onDecision: updateDecision,
-    onExitFocus: handleExitFocus,
+    onExitFocus: () => exitFocusRef.current(),
     onToggleEvidence: () => setIsEvidenceOpen((prev) => !prev),
   });
 
+  const handleExitFocus = useCallback(() => {
+    const q = buildReviewQueryString({
+      candidateIndex: activeIndex,
+      tab: activeTab,
+      city: selectedCity,
+      group: selectedGroupId,
+    });
+    router.push(q ? `/review?${q}` : "/review");
+  }, [router, activeIndex, activeTab, selectedCity, selectedGroupId]);
+
+  exitFocusRef.current = handleExitFocus;
+
   const totalCandidates = filteredQueue.length;
+  const activeGroupName = queryGroups.find((g) => g.id === selectedGroupId)?.name || "All Applicants (Default)";
+  const activeGroupCount = queryGroups.find((g) => g.id === selectedGroupId)?.candidateIds.length ?? queue.length;
 
   return (
     <div className="fixed inset-0 z-50 flex flex-col bg-surface overflow-hidden">
@@ -127,8 +139,30 @@ export function FocusReviewPage({
         </button>
       </div>
 
-      {/* Top-Right Position Indicator (n/m), Decision Counts, and Discreet Exit */}
-      <div className="absolute top-5 right-6 z-40 flex items-start gap-3 select-none">
+      {/* Top-Right Active Group Selector, Position Indicator (n/m), Decision Counts, and Discreet Exit */}
+      <div className="absolute top-5 right-6 z-40 flex items-center gap-3 select-none">
+        {/* Active Group Button (Opens Canvas Modal) */}
+        {FEATURES.CANDIDATE_GROUPS && (
+          <button
+            type="button"
+            onClick={() => setIsGroupModalOpen(true)}
+            className="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-outline-variant/40 bg-surface-container/80 hover:bg-surface-container text-on-surface transition-colors cursor-pointer text-xs font-semibold shadow-2xs"
+            title="Change Active Group (G)"
+            aria-label="Change Active Group"
+          >
+            <Network className="h-3.5 w-3.5 text-primary shrink-0" />
+            <div className="flex flex-col text-left">
+              <span className="text-[9px] font-mono text-on-surface-variant uppercase tracking-wider">Active Group</span>
+              <span className="text-xs font-bold text-on-surface truncate max-w-[130px]">
+                {activeGroupName}
+              </span>
+            </div>
+            <span className="text-[10px] font-mono px-1.5 py-0.2 rounded-full bg-surface-container-high font-bold text-on-surface-variant ml-0.5">
+              {activeGroupCount}
+            </span>
+          </button>
+        )}
+
         <div className="flex flex-col items-end gap-1">
           <Typography variant="title-large" className="text-on-surface text-2xl sm:text-3xl leading-none">
             {totalCandidates > 0 ? `${activeIndex + 1} / ${totalCandidates}` : "0 / 0"}
@@ -190,21 +224,13 @@ export function FocusReviewPage({
         variant="overlay"
         isOpen={isFilterPaneOpen}
         onClose={() => setIsFilterPaneOpen(false)}
-        selectedGroupId={selectedGroupId}
-        onSelectGroup={(id) => {
-          setSelectedGroupId(id);
-          setActiveIndex(0);
-        }}
         selectedCity={selectedCity}
         onSelectCity={(city) => {
           setSelectedCity(city);
           setActiveIndex(0);
         }}
-        isGroupsOpen={isGroupsOpen}
-        onToggleGroups={() => setIsGroupsOpen(!isGroupsOpen)}
         isLocationOpen={isLocationOpen}
         onToggleLocation={() => setIsLocationOpen(!isLocationOpen)}
-        queryGroups={queryGroups}
         cityDistribution={cityDistribution}
         totalCandidates={queue.length}
         onResetFilters={resetFilters}
@@ -222,6 +248,22 @@ export function FocusReviewPage({
           contradicted: queue.filter((i) => i.hasContradicted).length,
         }}
       />
+
+      {/* Active Group Canvas Topology Selection Modal */}
+      {FEATURES.CANDIDATE_GROUPS && (
+        <ActiveGroupCanvasModal
+          isOpen={isGroupModalOpen}
+          onClose={() => setIsGroupModalOpen(false)}
+          activeGroupId={selectedGroupId}
+          onActivateGroup={(groupId) => {
+            setSelectedGroupId(groupId);
+            setActiveIndex(0);
+          }}
+          candidates={candidates}
+          persistedGroups={persistedGroups}
+          activeJobId={initialJob.id}
+        />
+      )}
     </div>
   );
 }

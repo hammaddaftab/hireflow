@@ -2,17 +2,22 @@
 
 import { useState, useCallback, useMemo, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import type { CandidateReviewItem } from "../../../types";
+import type { CandidateReviewItem, QueryGroup } from "../../../types";
 import type { QueueFilterTab, ReviewDecision } from "@/entities/review";
 import {
   filterReviewQueue,
   calculateTabCounts,
   type TabCounts,
 } from "../../../core/utils/queueCalculations";
-import { buildReviewQueryString } from "../../../core/utils/reviewQueryParams";
+import {
+  buildReviewQueryString,
+  DEFAULT_GROUP_ID,
+  isDefaultGroup,
+} from "../../../core/utils/reviewQueryParams";
 
 export interface UseQueueViewProps {
   queue: CandidateReviewItem[];
+  queryGroups?: QueryGroup[];
   initialIndex?: number;
   initialTab?: QueueFilterTab;
   initialCity?: string | null;
@@ -25,6 +30,8 @@ export interface UseQueueViewReturn {
   setActiveIndex: (index: number) => void;
   activeTab: QueueFilterTab;
   setActiveTab: (tab: QueueFilterTab) => void;
+  selectedGroupId: string;
+  setSelectedGroupId: (groupId: string) => void;
   filteredQueue: CandidateReviewItem[];
   activeItem: CandidateReviewItem | null;
   tabCounts: TabCounts;
@@ -37,6 +44,7 @@ export interface UseQueueViewReturn {
 
 export function useQueueView({
   queue,
+  queryGroups = [],
   initialIndex = 0,
   initialTab = "all",
   initialCity = null,
@@ -46,10 +54,23 @@ export function useQueueView({
   const router = useRouter();
   const [activeIndex, setActiveIndex] = useState(initialIndex);
   const [activeTab, setActiveTab] = useState<QueueFilterTab>(initialTab);
+  const [selectedGroupId, setSelectedGroupIdState] = useState<string>(
+    !isDefaultGroup(initialGroupId) ? initialGroupId! : DEFAULT_GROUP_ID
+  );
+
+  const setSelectedGroupId = useCallback((id: string | null | undefined) => {
+    setSelectedGroupIdState(isDefaultGroup(id) ? DEFAULT_GROUP_ID : id!);
+    setActiveIndex(0);
+  }, []);
 
   const filteredQueue = useMemo(() => {
-    return filterReviewQueue(queue, { activeTab });
-  }, [queue, activeTab]);
+    return filterReviewQueue(queue, {
+      activeTab,
+      selectedGroupId,
+      queryGroups,
+      selectedCity: initialCity,
+    });
+  }, [queue, activeTab, selectedGroupId, queryGroups, initialCity]);
 
   const activeItem = filteredQueue[activeIndex] || filteredQueue[0] || null;
 
@@ -86,12 +107,13 @@ export function useQueueView({
       candidateIndex: activeIndex,
       tab: activeTab,
       city: initialCity,
-      group: initialGroupId,
+      group: selectedGroupId,
     });
     router.push(q ? `/review/focus?${q}` : "/review/focus");
-  }, [activeIndex, activeTab, initialCity, initialGroupId, router]);
+  }, [activeIndex, activeTab, initialCity, selectedGroupId, router]);
 
   const resetFilters = useCallback(() => {
+    setSelectedGroupIdState(DEFAULT_GROUP_ID);
     setActiveTab("all");
     setActiveIndex(0);
   }, []);
@@ -139,6 +161,8 @@ export function useQueueView({
     setActiveIndex,
     activeTab,
     setActiveTab,
+    selectedGroupId,
+    setSelectedGroupId,
     filteredQueue,
     activeItem,
     tabCounts,

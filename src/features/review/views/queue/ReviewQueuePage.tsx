@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useRef, useState, useEffect } from "react";
-import { Briefcase, MapPin, CheckCircle2, AlertCircle, X } from "lucide-react";
+import React, { useRef, useState, useEffect, useMemo } from "react";
+import { Briefcase, MapPin, CheckCircle2, AlertCircle, X, Network } from "lucide-react";
 import { Typography } from "@/components/ui/Typography";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
@@ -21,9 +21,13 @@ import {
   ResumeDropTrigger,
 } from "@/components/upload";
 
+import { type PersistedGroupWithMembers, ActiveGroupCanvasModal } from "@/features/groups";
+import { FEATURES } from "@/config/features";
+
 export interface ReviewQueuePageProps {
   initialJob: Job;
   initialQueue: CandidateReviewItem[];
+  initialPersistedGroups?: PersistedGroupWithMembers[];
   initialIndex?: number;
   initialTab?: QueueFilterTab;
   initialCity?: string | null;
@@ -33,13 +37,24 @@ export interface ReviewQueuePageProps {
 export function ReviewQueuePage({
   initialJob,
   initialQueue,
+  initialPersistedGroups = [],
   initialIndex = 0,
   initialTab = "all",
   initialCity = null,
   initialGroupId = null,
 }: ReviewQueuePageProps) {
   // Tier 1: Domain State Engine
-  const { queue, setQueue, handleDecision: updateDecision, stats } = useReviewData(initialQueue);
+  const {
+    queue,
+    setQueue,
+    handleDecision: updateDecision,
+    stats,
+    queryGroups,
+    persistedGroups,
+  } = useReviewData(initialQueue, initialPersistedGroups);
+
+  const candidates = useMemo(() => queue.map((item) => item.candidate), [queue]);
+  const [isGroupModalOpen, setIsGroupModalOpen] = useState(false);
 
   // Real-time feedback alert banner
   const [feedback, setFeedback] = useState<{ type: "success" | "error"; message: string } | null>(null);
@@ -50,6 +65,8 @@ export function ReviewQueuePage({
     setActiveIndex,
     activeTab,
     setActiveTab,
+    selectedGroupId,
+    setSelectedGroupId,
     filteredQueue,
     activeItem,
     tabCounts,
@@ -58,12 +75,16 @@ export function ReviewQueuePage({
     resetFilters,
   } = useQueueView({
     queue,
+    queryGroups,
     initialIndex,
     initialTab,
     initialCity,
     initialGroupId,
     onDecision: updateDecision,
   });
+
+  const activeGroupName = queryGroups.find((g) => g.id === selectedGroupId)?.name || "All Applicants (Default)";
+  const activeGroupCount = queryGroups.find((g) => g.id === selectedGroupId)?.candidateIds.length ?? queue.length;
 
   // Tier 2.5: Drag and Drop Resume Ingestion Engine (Vercel Blob Storage + Sequential LLM Extraction)
   const {
@@ -164,23 +185,45 @@ export function ReviewQueuePage({
             </div>
           </div>
 
-          {/* Candidate Position and Decision Counts */}
-          <div className="flex flex-col items-start sm:items-end gap-1 self-start sm:self-center">
-            <Typography variant="title-large" className="text-on-surface text-3xl sm:text-4xl leading-none">
-              {filteredQueue.length > 0 ? `${activeIndex + 1} / ${filteredQueue.length}` : "0 / 0"}
-            </Typography>
-            <div className="flex flex-col gap-0.5 w-28 text-xs text-on-surface-variant font-medium">
-              <div className="flex items-center justify-between">
-                <span>Keep:</span>
-                <span className="font-mono font-medium text-emerald-700 dark:text-emerald-400">{stats.keptCount}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span>Flagged:</span>
-                <span className="font-mono font-medium text-amber-700 dark:text-amber-400">{stats.flaggedCount}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span>Passed:</span>
-                <span className="font-mono font-medium text-rose-700 dark:text-rose-400">{stats.passedCount}</span>
+          {/* Candidate Position, Decision Counts, and Active Group Selector */}
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 self-start sm:self-center">
+            {/* Active Group Button (Opens Canvas Modal) */}
+            {FEATURES.CANDIDATE_GROUPS && (
+              <button
+                type="button"
+                onClick={() => setIsGroupModalOpen(true)}
+                className="flex items-center gap-2.5 px-3.5 py-2 rounded-xl border border-outline-variant/40 bg-surface-container hover:bg-surface-container-high transition-colors cursor-pointer text-xs font-semibold text-on-surface shadow-2xs"
+                title="Change Active Group (Canvas Topology)"
+                aria-label="Change Active Group"
+              >
+                <Network className="h-4 w-4 text-primary shrink-0" />
+                <div className="flex flex-col text-left">
+                  <span className="text-[10px] font-mono text-on-surface-variant uppercase tracking-wider">Active Group</span>
+                  <span className="text-xs font-bold text-on-surface truncate max-w-[160px]">{activeGroupName}</span>
+                </div>
+                <span className="text-[11px] font-mono px-2 py-0.5 rounded-full bg-surface-container-high font-bold text-on-surface-variant ml-0.5">
+                  {activeGroupCount}
+                </span>
+              </button>
+            )}
+
+            <div className="flex flex-col items-start sm:items-end gap-1">
+              <Typography variant="title-large" className="text-on-surface text-3xl sm:text-4xl leading-none">
+                {filteredQueue.length > 0 ? `${activeIndex + 1} / ${filteredQueue.length}` : "0 / 0"}
+              </Typography>
+              <div className="flex flex-col gap-0.5 w-28 text-xs text-on-surface-variant font-medium">
+                <div className="flex items-center justify-between">
+                  <span>Keep:</span>
+                  <span className="font-mono font-medium text-emerald-700 dark:text-emerald-400">{stats.keptCount}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span>Flagged:</span>
+                  <span className="font-mono font-medium text-amber-700 dark:text-amber-400">{stats.flaggedCount}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span>Passed:</span>
+                  <span className="font-mono font-medium text-rose-700 dark:text-rose-400">{stats.passedCount}</span>
+                </div>
               </div>
             </div>
           </div>
@@ -217,6 +260,8 @@ export function ReviewQueuePage({
             </Button>
           </div>
         )}
+
+
 
         {/* Top Bar: Queue Segmented Tabs + Focus Trigger + Resume Drop Trigger */}
         <ReviewDeckControls
@@ -288,6 +333,22 @@ export function ReviewQueuePage({
           </div>
         </div>
       </main>
+
+      {/* Active Group Canvas Topology Selection Modal */}
+      {FEATURES.CANDIDATE_GROUPS && (
+        <ActiveGroupCanvasModal
+          isOpen={isGroupModalOpen}
+          onClose={() => setIsGroupModalOpen(false)}
+          activeGroupId={selectedGroupId}
+          onActivateGroup={(groupId) => {
+            setSelectedGroupId(groupId);
+            setActiveIndex(0);
+          }}
+          candidates={candidates}
+          persistedGroups={persistedGroups}
+          activeJobId={initialJob.id}
+        />
+      )}
     </div>
   );
 }

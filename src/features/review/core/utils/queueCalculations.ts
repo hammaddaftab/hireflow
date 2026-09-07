@@ -1,5 +1,6 @@
 import type { CandidateReviewItem, QueryGroup } from "../../types";
 import type { QueueFilterTab } from "@/entities/review";
+import { isDefaultGroup } from "./reviewQueryParams";
 
 export interface ReviewStats {
   totalCount: number;
@@ -110,8 +111,8 @@ export function filterReviewQueue(
   } = options;
 
   return queue.filter((item) => {
-    // 1. Group filter
-    if (selectedGroupId && selectedGroupId !== "grp_all") {
+    // 1. Group filter (active group always enforced; default group encompasses all candidates)
+    if (!isDefaultGroup(selectedGroupId)) {
       const group = queryGroups.find((g) => g.id === selectedGroupId);
       if (group && !group.candidateIds.includes(item.candidate.id)) {
         return false;

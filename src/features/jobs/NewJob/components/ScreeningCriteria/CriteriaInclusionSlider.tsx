@@ -72,14 +72,14 @@ export function CriteriaInclusionSlider({
     <div className="fixed inset-0 z-50 overflow-hidden" role="dialog" aria-modal="true">
       {/* Backdrop Scrim */}
       <div
-        className="fixed inset-0 bg-black/50 backdrop-blur-xs transition-opacity animate-in fade-in-0 duration-200"
+        className="fixed inset-0 z-40 bg-black/50 backdrop-blur-xs transition-opacity animate-in fade-in-0 duration-200"
         onClick={onClose}
         aria-hidden="true"
       />
 
       {/* Right-Hand Expandable Slide-over Panel */}
       <aside
-        className="fixed top-0 bottom-0 right-0 z-50 w-84 sm:w-96 flex flex-col bg-surface-container-low/98 dark:bg-[#0c121e]/98 backdrop-blur-xl border-l border-outline-variant/40 shadow-2xl overflow-hidden animate-in slide-in-from-right duration-200"
+        className="fixed top-0 bottom-0 right-0 z-50 w-84 sm:w-96 flex flex-col bg-surface-container-low border-l border-outline-variant/40 shadow-2xl overflow-hidden animate-in slide-in-from-right duration-200"
       >
         {/* Slider Header */}
         <div className="p-5 border-b border-outline-variant/40 space-y-3 shrink-0">
@@ -158,7 +158,7 @@ export function CriteriaInclusionSlider({
                   )}
                 </div>
 
-                <div className="space-y-1.5 bg-surface-container/50 rounded-xl p-2.5 border border-outline-variant/30">
+                <div className="space-y-1.5 bg-surface-container rounded-xl p-2.5 border border-outline-variant/30">
                   {groupFields.map((field) => {
                     const isActive = field.active !== false;
 
@@ -167,7 +167,7 @@ export function CriteriaInclusionSlider({
                         key={field.id}
                         className={`flex items-center justify-between p-2.5 rounded-lg transition-all ${
                           isActive
-                            ? "bg-transparent hover:bg-surface-container-high/40"
+                            ? "bg-transparent hover:bg-surface-container-high"
                             : "bg-surface-container-highest border border-outline/50 shadow-xs"
                         }`}
                       >
@@ -206,7 +206,7 @@ export function CriteriaInclusionSlider({
         </div>
 
         {/* Slider Bottom Action Bar */}
-        <div className="p-4 border-t border-outline-variant/40 bg-surface-container-low/90 shrink-0">
+        <div className="p-4 border-t border-outline-variant/40 bg-surface-container-low shrink-0">
           <Button
             type="button"
             variant="primary"

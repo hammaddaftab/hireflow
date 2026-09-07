@@ -11,6 +11,7 @@ export interface GroupNodeComponentProps {
   node: GroupNode;
   isSelected: boolean;
   isAncestor: boolean;
+  isActive?: boolean;
   onSelect: (node: GroupNode) => void;
 }
 
@@ -18,6 +19,7 @@ export function GroupNodeComponent({
   node,
   isSelected,
   isAncestor,
+  isActive = false,
   onSelect,
 }: GroupNodeComponentProps) {
   return (
@@ -40,6 +42,13 @@ export function GroupNodeComponent({
         height: NODE_SIZE,
       }}
     >
+      {/* Active Group Indicator */}
+      {isActive && (
+        <span className="absolute -top-3 z-30 px-1.5 py-0.2 rounded-full text-[9px] font-mono font-bold uppercase tracking-wider bg-emerald-600 text-white shadow-xs">
+          Active
+        </span>
+      )}
+
       {/* Monochrome Geometric Circle with GNOME spring hover/tap physics */}
       <Tooltip
         content={`${node.title} · ${node.candidateCount} Candidates`}
