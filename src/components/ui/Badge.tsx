@@ -51,7 +51,7 @@ export function Badge({
       )}
       {...props}
     >
-      <span>{children}</span>
+      {children}
       {onRemove && (
         <button
           type="button"

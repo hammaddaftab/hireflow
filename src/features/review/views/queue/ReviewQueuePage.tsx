@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef, useState, useEffect } from "react";
-import { Briefcase, MapPin } from "lucide-react";
+import { Briefcase, MapPin, CheckCircle2, AlertCircle, X } from "lucide-react";
 import { Typography } from "@/components/ui/Typography";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
@@ -9,6 +9,7 @@ import type { Job } from "@/entities/job";
 import type { QueueFilterTab } from "@/entities/review";
 import type { CandidateReviewItem } from "../../types";
 import { useReviewData } from "../../core/hooks/useReviewData";
+import { buildReviewQueue } from "../../core/services/reviewQueueService";
 import { useQueueView } from "./hooks/useQueueView";
 import { CandidateCard } from "../../core/components/card/CandidateCard";
 import { ReviewDeckControls } from "./components/ReviewDeckControls";
@@ -18,7 +19,6 @@ import {
   useResumeDropUpload,
   ResumeDropOverlay,
   ResumeDropTrigger,
-  ResumeIngestionDrawer,
 } from "@/components/upload";
 
 export interface ReviewQueuePageProps {
@@ -39,7 +39,10 @@ export function ReviewQueuePage({
   initialGroupId = null,
 }: ReviewQueuePageProps) {
   // Tier 1: Domain State Engine
-  const { queue, handleDecision: updateDecision, stats } = useReviewData(initialQueue);
+  const { queue, setQueue, handleDecision: updateDecision, stats } = useReviewData(initialQueue);
+
+  // Real-time feedback alert banner
+  const [feedback, setFeedback] = useState<{ type: "success" | "error"; message: string } | null>(null);
 
   // Tier 2: Viewport State Controller
   const {
@@ -62,18 +65,41 @@ export function ReviewQueuePage({
     onDecision: updateDecision,
   });
 
-  // Tier 2.5: Drag and Drop Resume Ingestion Engine (Vercel Blob Storage)
+  // Tier 2.5: Drag and Drop Resume Ingestion Engine (Vercel Blob Storage + Sequential LLM Extraction)
   const {
     isDraggingOver,
     uploads,
-    isDrawerOpen,
     isUploading,
-    setIsDrawerOpen,
+    statusLabel,
     uploadFiles,
-    removeUpload,
-    clearCompleted,
   } = useResumeDropUpload({
     jobId: initialJob.id,
+    onCandidateIngested: (candidate) => {
+      // Evaluate candidate profile against active job requirements and append to triage queue
+      const evaluatedItems = buildReviewQueue([candidate], initialJob);
+      if (evaluatedItems.length > 0) {
+        setQueue((prev) => {
+          if (prev.some((item) => item.candidate.id === candidate.id)) {
+            return prev;
+          }
+          return [...prev, ...evaluatedItems];
+        });
+      }
+    },
+    onIngestComplete: (count) => {
+      setFeedback({
+        type: "success",
+        message: `Successfully ingested and evaluated ${count} candidate(s) for ${initialJob.title}.`,
+      });
+      setTimeout(() => setFeedback(null), 5000);
+    },
+    onError: (errorMessage) => {
+      setFeedback({
+        type: "error",
+        message: errorMessage,
+      });
+      setTimeout(() => setFeedback(null), 6000);
+    },
   });
 
   // Track main pane width and left offset for floating hotkeys dock
@@ -163,6 +189,35 @@ export function ReviewQueuePage({
 
       {/* Main Candidate Review Queue Area */}
       <main ref={mainPaneRef} className="max-w-4xl mx-auto w-full space-y-4 pb-20">
+        {/* Real-time Ingestion Feedback Notification */}
+        {feedback && (
+          <div
+            className={`flex items-center justify-between p-3.5 rounded-xl border text-xs animate-in fade-in duration-150 ${
+              feedback.type === "success"
+                ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-950 dark:text-emerald-200"
+                : "bg-rose-500/10 border-rose-500/30 text-rose-950 dark:text-rose-200"
+            }`}
+          >
+            <div className="flex items-center gap-2">
+              {feedback.type === "success" ? (
+                <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+              ) : (
+                <AlertCircle className="h-4 w-4 text-rose-600 dark:text-rose-400 shrink-0" />
+              )}
+              <span className="font-medium">{feedback.message}</span>
+            </div>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setFeedback(null)}
+              className="h-6 w-6 p-0 text-on-surface-variant hover:text-on-surface rounded-md cursor-pointer"
+              title="Dismiss notification"
+            >
+              <X className="h-3.5 w-3.5" />
+            </Button>
+          </div>
+        )}
+
         {/* Top Bar: Queue Segmented Tabs + Focus Trigger + Resume Drop Trigger */}
         <ReviewDeckControls
           activeTab={activeTab}
@@ -175,9 +230,9 @@ export function ReviewQueuePage({
           rightSlot={
             <ResumeDropTrigger
               onFilesSelected={uploadFiles}
-              onToggleDrawer={() => setIsDrawerOpen(!isDrawerOpen)}
               uploadCount={uploads.length}
               isUploading={isUploading}
+              statusLabel={statusLabel}
             />
           }
         />
@@ -211,9 +266,9 @@ export function ReviewQueuePage({
               </Button>
               <ResumeDropTrigger
                 onFilesSelected={uploadFiles}
-                onToggleDrawer={() => setIsDrawerOpen(true)}
                 uploadCount={uploads.length}
                 isUploading={isUploading}
+                statusLabel={statusLabel}
               />
             </div>
           </Card>
@@ -233,17 +288,6 @@ export function ReviewQueuePage({
           </div>
         </div>
       </main>
-
-      {/* Floating Ingestion Tray / Drawer for Vercel Blob Storage */}
-      <ResumeIngestionDrawer
-        isOpen={isDrawerOpen}
-        onClose={() => setIsDrawerOpen(false)}
-        uploads={uploads}
-        onRemoveUpload={removeUpload}
-        onClearCompleted={clearCompleted}
-        onFilesSelected={uploadFiles}
-        isUploading={isUploading}
-      />
     </div>
   );
 }

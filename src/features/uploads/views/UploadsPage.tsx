@@ -14,13 +14,10 @@ import {
   Maximize2,
   Trash2,
   Search,
-  Database,
   ArrowRight,
   RefreshCw,
-  HardDrive,
   Clock,
   Briefcase,
-  Layers,
   Inbox,
   Sparkles
 } from "lucide-react";
@@ -28,11 +25,12 @@ import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Typography } from "@/components/ui/Typography";
-import { Tooltip } from "@/components/ui/Tooltip";
 import type { UploadedResumeRecord } from "@/lib/upload/types";
 import type { Job } from "@/entities/job";
+import type { ParsedCandidateProfile } from "@/entities/candidate";
 import { ResumeDropOverlay } from "@/components/upload";
 import { ResumeIngestionModal } from "../components/ResumeIngestionModal";
+import { IngestionFeedbackDeck } from "../components/IngestionFeedbackDeck";
 
 export interface UploadsPageProps {
   initialUploads: UploadedResumeRecord[];
@@ -74,6 +72,25 @@ export function UploadsPage({ initialUploads, isBlobConfigured, initialJobs = []
   const [previewItem, setPreviewItem] = useState<UploadedResumeRecord | null>(null);
   const [isIngestionOpen, setIsIngestionOpen] = useState(false);
   const [preselectedUploadId, setPreselectedUploadId] = useState<string | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [isClearingAll, setIsClearingAll] = useState(false);
+
+  // Ingestion processing & feedback deck state in main outer window
+  const [isIngesting, setIsIngesting] = useState(false);
+  const [ingestionJobId, setIngestionJobId] = useState<string | null>(null);
+  const [ingestProgress, setIngestProgress] = useState<{
+    current: number;
+    total: number;
+    filename: string;
+  }>({ current: 0, total: 0, filename: "" });
+  const [extractedCandidates, setExtractedCandidates] = useState<ParsedCandidateProfile[]>([]);
+  const [ingestionError, setIngestionError] = useState<string | null>(null);
+  const [showFeedbackDeck, setShowFeedbackDeck] = useState(false);
+
+  // Target job entity for feedback deck
+  const currentIngestionJob = useMemo(() => {
+    return jobs.find((j) => j.id === ingestionJobId) || jobs[0];
+  }, [jobs, ingestionJobId]);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const dragCounterRef = useRef(0);
@@ -181,30 +198,105 @@ export function UploadsPage({ initialUploads, isBlobConfigured, initialJobs = []
     }
   };
 
+  // Start sequential extraction and show feedback deck in the main window
+  const handleProceedIngestion = async ({
+    jobId,
+    uploadIds,
+  }: {
+    jobId: string;
+    uploadIds: string[];
+  }) => {
+    if (uploadIds.length === 0 || !jobId) return;
+
+    setIngestionJobId(jobId);
+    setIsIngesting(true);
+    setShowFeedbackDeck(true);
+    setExtractedCandidates([]);
+    setIngestionError(null);
+    setIngestProgress({ current: 0, total: uploadIds.length, filename: "" });
+
+    const queuedUploads = uploads.filter((u) => uploadIds.includes(u.id));
+
+    for (let i = 0; i < queuedUploads.length; i++) {
+      const upload = queuedUploads[i];
+      setIngestProgress({
+        current: i,
+        total: queuedUploads.length,
+        filename: upload.filename,
+      });
+
+      try {
+        const response = await fetch("/api/resumes/ingest", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            uploadId: upload.id,
+            jobId,
+          }),
+        });
+
+        if (!response.ok) {
+          const errData = await response.json().catch(() => ({}));
+          throw new Error(
+            errData.error?.message || `Failed to extract ${upload.filename}`
+          );
+        }
+
+        const data = await response.json();
+        const candidate: ParsedCandidateProfile = data.data.candidate;
+        setExtractedCandidates((prev) => [...prev, candidate]);
+      } catch (err) {
+        const msg = err instanceof Error ? err.message : String(err);
+        setIngestionError(`Error extracting ${upload.filename}: ${msg}`);
+      }
+    }
+
+    setIsIngesting(false);
+    refreshUploads();
+  };
+
   // Delete a specific upload
-  const handleDeleteUpload = async (id: string) => {
+  const handleDeleteUpload = async (id: string, filename?: string) => {
+    setDeletingId(id);
     try {
       const res = await fetch(`/api/resumes/upload?id=${encodeURIComponent(id)}`, {
         method: "DELETE",
       });
       if (res.ok) {
         setUploads((prev) => prev.filter((item) => item.id !== id));
+        setFeedbackMessage(`Removed ${filename ? `"${filename}"` : "document"} from uploads.`);
+        setTimeout(() => setFeedbackMessage(null), 4000);
+      } else {
+        setFeedbackMessage(`Failed to delete ${filename ? `"${filename}"` : "document"}.`);
+        setTimeout(() => setFeedbackMessage(null), 4000);
       }
     } catch {
-      // Ignore delete error
+      setFeedbackMessage(`Network error while deleting ${filename ? `"${filename}"` : "document"}.`);
+      setTimeout(() => setFeedbackMessage(null), 4000);
+    } finally {
+      setDeletingId(null);
     }
   };
 
   // Clear all uploads
   const handleClearAll = async () => {
     if (!confirm("Are you sure you want to clear all uploaded resume records from the list?")) return;
+    setIsClearingAll(true);
     try {
       const res = await fetch("/api/resumes/upload", { method: "DELETE" });
       if (res.ok) {
         setUploads([]);
+        setFeedbackMessage("All uploaded resume records have been removed.");
+        setTimeout(() => setFeedbackMessage(null), 4000);
+      } else {
+        setFeedbackMessage("Failed to clear uploaded resumes.");
+        setTimeout(() => setFeedbackMessage(null), 4000);
       }
     } catch {
-      // Ignore clear error
+      setFeedbackMessage("Network error while clearing uploaded resumes.");
+      setTimeout(() => setFeedbackMessage(null), 4000);
+    } finally {
+      setIsClearingAll(false);
     }
   };
 
@@ -273,27 +365,23 @@ export function UploadsPage({ initialUploads, isBlobConfigured, initialJobs = []
     return uploads.filter(
       (u) =>
         u.filename.toLowerCase().includes(q) ||
-        u.hash.toLowerCase().includes(q) ||
-        (u.jobId && u.jobId.toLowerCase().includes(q)) ||
-        u.pathname.toLowerCase().includes(q)
+        (u.jobId && u.jobId.toLowerCase().includes(q))
     );
   }, [uploads, searchQuery]);
 
-  // Aggregate stats
-  const stats = useMemo(() => {
-    const totalBytes = uploads.reduce((acc, u) => acc + u.size, 0);
-    const stored = uploads.filter((u) => u.status === "stored").length;
-    return {
-      total: uploads.length,
-      stored,
-      totalBytes,
-    };
+  // Upload counts (New vs Total)
+  const newUploadsCount = useMemo(() => {
+    return uploads.filter((u) => !u.jobId).length;
   }, [uploads]);
 
+  const totalUploadsCount = uploads.length;
+
   return (
-    <div className="max-w-[1600px] mx-auto pb-16 space-y-6">
+    <>
       {/* Full-screen Drag Overlay */}
       <ResumeDropOverlay isVisible={isDraggingOver} />
+
+      <div className="max-w-[1600px] mx-auto pb-16 space-y-6">
 
       {/* Hidden file picker input */}
       <input
@@ -312,80 +400,76 @@ export function UploadsPage({ initialUploads, isBlobConfigured, initialJobs = []
       />
 
       {/* Header Section */}
-      <header className="space-y-2">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="text-xs uppercase tracking-wider font-semibold text-primary">
-                HireFlow Ingestion
-              </span>
-              <span className="text-xs text-on-surface-variant font-mono">• Vercel Blob Storage</span>
-            </div>
-            <Typography variant="headline-medium" className="text-on-surface font-bold">
-              Resume Uploads & Stored Documents
-            </Typography>
-            <Typography variant="body-medium" className="text-on-surface-variant text-xs mt-1">
-              Repository of candidate resumes stored in Vercel Blob Storage, staged for Step 2 LLM profile extraction.
-            </Typography>
+      {/* Header Section (Emphasizes New, Unemphasized Total, No Sandbox Button) */}
+      <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <div className="flex items-center gap-3">
+            <h1 className="text-xl sm:text-2xl font-bold text-on-surface tracking-tight">
+              {newUploadsCount} New {newUploadsCount === 1 ? "Resume" : "Resumes"}
+            </h1>
+            {newUploadsCount > 0 && (
+              <Badge variant="primary" className="text-xs px-2.5 py-0.5 font-semibold">
+                Awaiting Ingestion
+              </Badge>
+            )}
           </div>
+          <p className="text-xs text-on-surface-variant font-mono mt-0.5">
+            {totalUploadsCount} total document{totalUploadsCount === 1 ? "" : "s"} uploaded
+          </p>
+        </div>
 
-          {/* Header Action Buttons */}
-          <div className="flex items-center gap-2.5">
-            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-surface-container border border-outline-variant/60 text-xs text-on-surface-variant">
-              <Database className="h-3.5 w-3.5 text-primary shrink-0" />
-              <span className="font-medium">
-                {isBlobConfigured ? "Vercel Blob: Connected" : "Vercel Blob: Local Mode"}
-              </span>
-            </div>
+        {/* Header Action Buttons */}
+        <div className="flex items-center gap-2.5">
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={refreshUploads}
+            isLoading={isRefreshing}
+            className="h-8 px-2.5 rounded-xl"
+            title="Refresh upload list"
+          >
+            <RefreshCw className="h-3.5 w-3.5" />
+          </Button>
 
+          <Link href="/review">
             <Button
-              variant="secondary"
+              variant="outline"
               size="sm"
-              onClick={refreshUploads}
-              isLoading={isRefreshing}
-              className="h-8 px-2.5 rounded-xl"
-              title="Refresh upload list"
+              className="h-8 px-3 rounded-xl gap-1.5 text-xs font-semibold"
             >
-              <RefreshCw className="h-3.5 w-3.5" />
+              <Inbox className="h-3.5 w-3.5" />
+              <span>Review Queue</span>
             </Button>
+          </Link>
 
-            <Link href="/review">
-              <Button
-                variant="outline"
-                size="sm"
-                className="h-8 px-3 rounded-xl gap-1.5 text-xs font-semibold"
-              >
-                <Inbox className="h-3.5 w-3.5" />
-                <span>Review Queue</span>
-              </Button>
-            </Link>
-
+          {newUploadsCount > 0 ? (
             <Button
-              variant="secondary"
+              variant="primary"
               size="sm"
               onClick={() => {
                 setPreselectedUploadId(null);
                 setIsIngestionOpen(true);
               }}
-              disabled={uploads.length === 0}
-              className="h-8 px-3 rounded-xl gap-1.5 text-xs font-semibold"
-              title="Extract uploaded resumes into candidate profiles for a selected job"
+              disabled={isUploading}
+              className="h-8 px-3.5 rounded-xl gap-1.5 text-xs font-semibold shadow-xs"
+              title="Extract newly uploaded resumes into candidate profiles"
             >
-              <Sparkles className="h-3.5 w-3.5 text-primary" />
-              <span>Ingest into Job</span>
+              <Sparkles className="h-3.5 w-3.5" />
+              <span>Ingest into Job ({newUploadsCount})</span>
             </Button>
-
+          ) : (
             <Button
               variant="primary"
               size="sm"
               onClick={() => fileInputRef.current?.click()}
               isLoading={isUploading}
               className="h-8 px-3.5 rounded-xl gap-1.5 text-xs font-semibold shadow-xs"
+              title="Upload candidate resumes"
             >
               <UploadCloud className="h-3.5 w-3.5" />
               <span>Upload Resumes</span>
             </Button>
-          </div>
+          )}
         </div>
       </header>
 
@@ -393,7 +477,11 @@ export function UploadsPage({ initialUploads, isBlobConfigured, initialJobs = []
       {feedbackMessage && (
         <div className="p-3.5 rounded-2xl bg-surface-container border border-outline-variant/60 flex items-center justify-between gap-3 text-xs text-on-surface animate-in fade-in-50">
           <div className="flex items-center gap-2">
-            <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+            {feedbackMessage.startsWith("Error") || feedbackMessage.startsWith("Failed") || feedbackMessage.startsWith("Network") ? (
+              <AlertCircle className="h-4 w-4 text-rose-600 dark:text-rose-400 shrink-0" />
+            ) : (
+              <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+            )}
             <span>{feedbackMessage}</span>
           </div>
           <Button
@@ -407,60 +495,19 @@ export function UploadsPage({ initialUploads, isBlobConfigured, initialJobs = []
         </div>
       )}
 
-      {/* Aggregate Metric Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="p-4 bg-surface rounded-2xl border border-outline-variant/60 space-y-1">
-          <div className="flex items-center justify-between text-xs text-on-surface-variant">
-            <span className="font-semibold uppercase tracking-wider">Total Documents</span>
-            <FileText className="h-4 w-4 text-primary" />
-          </div>
-          <Typography variant="title-large" className="text-2xl font-bold text-on-surface">
-            {stats.total}
-          </Typography>
-          <span className="text-[11px] text-on-surface-variant font-mono">
-            Candidate files tracked
-          </span>
-        </Card>
-
-        <Card className="p-4 bg-surface rounded-2xl border border-outline-variant/60 space-y-1">
-          <div className="flex items-center justify-between text-xs text-on-surface-variant">
-            <span className="font-semibold uppercase tracking-wider">Stored in Blob</span>
-            <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
-          </div>
-          <Typography variant="title-large" className="text-2xl font-bold text-emerald-700 dark:text-emerald-400">
-            {stats.stored}
-          </Typography>
-          <span className="text-[11px] text-on-surface-variant font-mono">
-            Persisted to storage
-          </span>
-        </Card>
-
-        <Card className="p-4 bg-surface rounded-2xl border border-outline-variant/60 space-y-1">
-          <div className="flex items-center justify-between text-xs text-on-surface-variant">
-            <span className="font-semibold uppercase tracking-wider">Storage Footprint</span>
-            <HardDrive className="h-4 w-4 text-amber-600 dark:text-amber-400" />
-          </div>
-          <Typography variant="title-large" className="text-2xl font-bold text-on-surface">
-            {formatBytes(stats.totalBytes)}
-          </Typography>
-          <span className="text-[11px] text-on-surface-variant font-mono">
-            Total binary size
-          </span>
-        </Card>
-
-        <Card className="p-4 bg-surface rounded-2xl border border-outline-variant/60 space-y-1">
-          <div className="flex items-center justify-between text-xs text-on-surface-variant">
-            <span className="font-semibold uppercase tracking-wider">Step 2 Status</span>
-            <Layers className="h-4 w-4 text-primary" />
-          </div>
-          <Typography variant="title-large" className="text-2xl font-bold text-primary">
-            {stats.stored} Ready
-          </Typography>
-          <span className="text-[11px] text-on-surface-variant font-mono">
-            Staged for LLM extraction
-          </span>
-        </Card>
-      </div>
+      {/* Main Outer Window Ingestion Processing & Output Cards Feedback */}
+      {showFeedbackDeck && currentIngestionJob && (
+        <IngestionFeedbackDeck
+          isExtracting={isIngesting}
+          currentIndex={ingestProgress.current}
+          totalCount={ingestProgress.total}
+          currentFilename={ingestProgress.filename}
+          candidates={extractedCandidates}
+          targetJob={currentIngestionJob}
+          errorMessage={ingestionError}
+          onDismiss={() => setShowFeedbackDeck(false)}
+        />
+      )}
 
       {/* Prominent Drag and Drop Ingestion Card */}
       <Card
@@ -502,7 +549,7 @@ export function UploadsPage({ initialUploads, isBlobConfigured, initialJobs = []
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search by filename, hash, or job ID..."
+              placeholder="Search by filename or job ID..."
               className="w-full pl-9 pr-3 py-1.5 text-xs rounded-xl bg-surface-container border border-outline-variant/60 text-on-surface placeholder:text-on-surface-variant/70 focus:outline-none focus:border-primary transition-colors"
             />
           </div>
@@ -519,7 +566,9 @@ export function UploadsPage({ initialUploads, isBlobConfigured, initialJobs = []
                 variant="ghost"
                 size="sm"
                 onClick={handleClearAll}
-                className="h-7 px-2 text-xs text-on-surface-variant hover:text-rose-600 rounded-lg"
+                isLoading={isClearingAll}
+                disabled={isClearingAll || deletingId !== null}
+                className="h-7 px-2 text-xs text-on-surface-variant hover:text-rose-600 rounded-lg cursor-pointer"
               >
                 Clear All
               </Button>
@@ -542,8 +591,6 @@ export function UploadsPage({ initialUploads, isBlobConfigured, initialJobs = []
                   <tr className="border-b border-outline-variant/50 bg-surface-container-low text-on-surface-variant text-[11px] font-bold uppercase tracking-wider">
                     <th className="py-3 px-4">Document</th>
                     <th className="py-3 px-4">Size</th>
-                    <th className="py-3 px-4">Vercel Blob Reference</th>
-                    <th className="py-3 px-4">SHA-256 Digest</th>
                     <th className="py-3 px-4">Linked Job</th>
                     <th className="py-3 px-4">Status</th>
                     <th className="py-3 px-4">Uploaded</th>
@@ -566,7 +613,7 @@ export function UploadsPage({ initialUploads, isBlobConfigured, initialJobs = []
                             <button
                               type="button"
                               onClick={(e) => handlePreviewAction(e, item)}
-                              className="font-bold text-on-surface hover:text-primary hover:underline block truncate max-w-[180px] sm:max-w-xs text-left cursor-pointer"
+                              className="font-bold text-on-surface hover:text-primary hover:underline block truncate max-w-[200px] sm:max-w-xs text-left cursor-pointer"
                               title="Click to preview in-app (Ctrl+Click to open in new tab)"
                             >
                               {item.filename}
@@ -583,73 +630,53 @@ export function UploadsPage({ initialUploads, isBlobConfigured, initialJobs = []
                         {formatBytes(item.size)}
                       </td>
 
-                      {/* Blob URL / Path */}
-                      <td className="py-3 px-4 max-w-[220px]">
-                        <Tooltip content={item.blobUrl || item.pathname}>
-                          <span className="font-mono text-[11px] text-on-surface-variant truncate block">
-                            {item.pathname || item.blobUrl}
-                          </span>
-                        </Tooltip>
-                      </td>
-
-                      {/* SHA-256 Digest */}
-                      <td className="py-3 px-4 font-mono text-[11px] text-on-surface-variant whitespace-nowrap">
-                        <Tooltip content={item.hash ? item.hash : "Hashing disabled by default so you can re-drop the same resume. Set ENABLE_RESUME_HASHING=true in .env to enable."}>
-                          <span className="cursor-help underline decoration-dotted">
-                            {item.hash ? `${item.hash.slice(0, 8)}...${item.hash.slice(-6)}` : "Off (re-drop enabled)"}
-                          </span>
-                        </Tooltip>
-                      </td>
-
                       {/* Linked Job */}
                       <td className="py-3 px-4 text-on-surface-variant whitespace-nowrap">
                         {item.jobId ? (
                           <span className="inline-flex items-center gap-1 font-mono text-[11px] text-primary">
-                            <Briefcase className="h-3 w-3" />
-                            {item.jobId}
+                            <Briefcase className="h-3 w-3 shrink-0" />
+                            <span className="truncate max-w-[160px]">
+                              {jobs.find((j) => j.id === item.jobId)?.title || item.jobId}
+                            </span>
                           </span>
                         ) : (
                           <span className="text-on-surface-variant/60 font-mono">—</span>
                         )}
                       </td>
 
-                      {/* Status */}
+                      {/* Status (Only New or Processed with View in queue) */}
                       <td className="py-3 px-4 whitespace-nowrap">
-                        <div className="space-y-0.5">
-                          <Badge variant="success" className="text-[10px] py-0 px-2">
-                            Stored in Blob
+                        {item.jobId ? (
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <Badge variant="neutral" className="text-[10px] py-0.5 px-2 font-mono uppercase">
+                              Processed
+                            </Badge>
+                            <Link
+                              href="/review"
+                              className="inline-flex items-center gap-1 text-[11px] text-primary hover:underline font-medium"
+                            >
+                              <span>View in queue</span>
+                              <ArrowRight className="h-3 w-3" />
+                            </Link>
+                          </div>
+                        ) : (
+                          <Badge variant="primary" className="text-[10px] py-0.5 px-2 font-mono uppercase">
+                            New
                           </Badge>
-                          <span className="text-[10px] font-mono text-primary block">
-                            Ready for Step 2
-                          </span>
-                        </div>
+                        )}
                       </td>
 
                       {/* Upload Date */}
                       <td className="py-3 px-4 font-mono text-[11px] text-on-surface-variant whitespace-nowrap">
                         <span className="inline-flex items-center gap-1">
-                          <Clock className="h-3 w-3 text-on-surface-variant/70" />
+                          <Clock className="h-3 w-3 text-on-surface-variant/70 shrink-0" />
                           {formatDate(item.uploadedAt)}
                         </span>
                       </td>
 
-                      {/* Actions */}
+                      {/* Actions (No star icon) */}
                       <td className="py-3 px-4 text-right whitespace-nowrap">
                         <div className="inline-flex items-center gap-1 justify-end">
-                          {/* Ingest document into a job */}
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => {
-                              setPreselectedUploadId(item.id);
-                              setIsIngestionOpen(true);
-                            }}
-                            className="h-7 w-7 p-0 text-on-surface-variant hover:text-primary rounded-lg cursor-pointer"
-                            title="Ingest document into a job"
-                          >
-                            <Sparkles className="h-3.5 w-3.5 text-primary" />
-                          </Button>
-
                           {/* Preview document (Eye icon) */}
                           <Button
                             variant="ghost"
@@ -680,7 +707,9 @@ export function UploadsPage({ initialUploads, isBlobConfigured, initialJobs = []
                           <Button
                             variant="ghost"
                             size="sm"
-                            onClick={() => handleDeleteUpload(item.id)}
+                            onClick={() => handleDeleteUpload(item.id, item.filename)}
+                            isLoading={deletingId === item.id}
+                            disabled={deletingId !== null || isClearingAll}
                             className="h-7 w-7 p-0 text-on-surface-variant hover:text-rose-600 rounded-lg cursor-pointer"
                             title="Remove upload record"
                           >
@@ -696,55 +725,12 @@ export function UploadsPage({ initialUploads, isBlobConfigured, initialJobs = []
           )}
         </Card>
       </div>
-
-      {/* Step 2 Architecture Callout Card */}
-      <Card className="p-4 rounded-2xl bg-surface-container-low border border-outline-variant/60 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div className="flex items-start gap-3">
-          <div className="h-8 w-8 rounded-xl bg-primary-container text-on-primary-container flex items-center justify-center shrink-0 mt-0.5">
-            <CheckCircle2 className="h-4 w-4" />
-          </div>
-          <div className="space-y-0.5">
-            <Typography variant="title-medium" className="text-on-surface font-bold text-xs">
-              Next Step: Bind to LLM Candidate Extraction
-            </Typography>
-            <p className="text-[11px] text-on-surface-variant leading-relaxed">
-              These uploaded documents in Vercel Blob Storage are ready to be ingested through the multi-aspect LLM extraction pipeline to automatically populate candidate profiles in the Review Queue.
-            </p>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-2 shrink-0 self-end sm:self-center">
-          <Button
-            variant="primary"
-            size="sm"
-            onClick={() => {
-              setPreselectedUploadId(null);
-              setIsIngestionOpen(true);
-            }}
-            disabled={uploads.length === 0}
-            className="h-8 px-3.5 text-xs font-semibold rounded-xl gap-1.5 shadow-xs"
-          >
-            <Sparkles className="h-3.5 w-3.5" />
-            <span>Ingest into Job</span>
-          </Button>
-
-          <Link href="/review">
-            <Button
-              variant="secondary"
-              size="sm"
-              className="h-8 px-3.5 text-xs font-semibold rounded-xl gap-1.5"
-            >
-              <span>Go to Review Queue</span>
-              <ArrowRight className="h-3.5 w-3.5" />
-            </Button>
-          </Link>
-        </div>
-      </Card>
+      </div>
 
       {/* Document Preview Modal */}
       {previewItem && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200"
+          className="fixed inset-0 z-50 !m-0 flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200"
           onClick={() => setPreviewItem(null)}
           role="dialog"
           aria-modal="true"
@@ -812,7 +798,7 @@ export function UploadsPage({ initialUploads, isBlobConfigured, initialJobs = []
         </div>
       )}
 
-      {/* Resume Ingestion & Extraction Modal with Stacked Deck Feedback */}
+      {/* Resume Ingestion Modal (Action Selection Only) */}
       <ResumeIngestionModal
         isOpen={isIngestionOpen}
         onClose={() => {
@@ -821,8 +807,8 @@ export function UploadsPage({ initialUploads, isBlobConfigured, initialJobs = []
         }}
         uploads={preselectedUploadId ? uploads.filter((u) => u.id === preselectedUploadId) : uploads}
         jobs={jobs}
-        onExtractionComplete={refreshUploads}
+        onProceed={handleProceedIngestion}
       />
-    </div>
+    </>
   );
 }
