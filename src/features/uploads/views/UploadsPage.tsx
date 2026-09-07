@@ -9,7 +9,9 @@ import {
   AlertCircle,
   Copy,
   Check,
-  ExternalLink,
+  Eye,
+  X,
+  Maximize2,
   Trash2,
   Search,
   Database,
@@ -64,9 +66,40 @@ export function UploadsPage({ initialUploads, isBlobConfigured }: UploadsPagePro
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
+  const [previewItem, setPreviewItem] = useState<UploadedResumeRecord | null>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const dragCounterRef = useRef(0);
+
+  // Compute preview URL: direct Vercel Blob URL or local streaming endpoint
+  const getPreviewUrl = (item: UploadedResumeRecord): string => {
+    if (item.blobUrl && item.blobUrl.startsWith("http")) {
+      return item.blobUrl;
+    }
+    return `/api/resumes/${encodeURIComponent(item.id)}/view`;
+  };
+
+  // Preview action: Ctrl+Click opens in new tab, normal click opens in-app modal
+  const handlePreviewAction = (e: React.MouseEvent, item: UploadedResumeRecord) => {
+    if (e.ctrlKey || e.metaKey) {
+      window.open(getPreviewUrl(item), "_blank");
+    } else {
+      setPreviewItem(item);
+    }
+  };
+
+  // Close preview modal on Escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setPreviewItem(null);
+      }
+    };
+    if (previewItem) {
+      window.addEventListener("keydown", handleKeyDown);
+    }
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [previewItem]);
 
   // Fetch updated list from server
   const refreshUploads = async () => {
@@ -492,9 +525,14 @@ export function UploadsPage({ initialUploads, isBlobConfigured }: UploadsPagePro
                             <FileText className="h-4 w-4" />
                           </div>
                           <div>
-                            <span className="font-bold text-on-surface block truncate max-w-[180px] sm:max-w-xs" title={item.filename}>
+                            <button
+                              type="button"
+                              onClick={(e) => handlePreviewAction(e, item)}
+                              className="font-bold text-on-surface hover:text-primary hover:underline block truncate max-w-[180px] sm:max-w-xs text-left cursor-pointer"
+                              title="Click to preview in-app (Ctrl+Click to open in new tab)"
+                            >
                               {item.filename}
-                            </span>
+                            </button>
                             <span className="text-[10px] uppercase font-mono text-on-surface-variant">
                               {item.contentType.replace("application/", "")}
                             </span>
@@ -560,35 +598,31 @@ export function UploadsPage({ initialUploads, isBlobConfigured }: UploadsPagePro
                       {/* Actions */}
                       <td className="py-3 px-4 text-right whitespace-nowrap">
                         <div className="inline-flex items-center gap-1 justify-end">
-                          {/* Copy URL */}
-                          {item.blobUrl && (
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => handleCopyUrl(item.id, item.blobUrl)}
-                              className="h-7 w-7 p-0 text-on-surface-variant hover:text-on-surface rounded-lg cursor-pointer"
-                              title="Copy Vercel Blob URL"
-                            >
-                              {copiedId === item.id ? (
-                                <Check className="h-3.5 w-3.5 text-emerald-600" />
-                              ) : (
-                                <Copy className="h-3.5 w-3.5" />
-                              )}
-                            </Button>
-                          )}
+                          {/* Preview document (Eye icon) */}
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={(e) => handlePreviewAction(e, item)}
+                            className="h-7 w-7 p-0 text-on-surface-variant hover:text-primary rounded-lg cursor-pointer"
+                            title="Preview document (Ctrl+Click to open in new tab)"
+                          >
+                            <Eye className="h-3.5 w-3.5" />
+                          </Button>
 
-                          {/* Open external */}
-                          {item.blobUrl && item.blobUrl.startsWith("http") && (
-                            <a
-                              href={item.blobUrl}
-                              target="_blank"
-                              rel="noreferrer"
-                              className="h-7 w-7 inline-flex items-center justify-center text-on-surface-variant hover:text-on-surface rounded-lg transition-colors cursor-pointer"
-                              title="Open document in new tab"
-                            >
-                              <ExternalLink className="h-3.5 w-3.5" />
-                            </a>
-                          )}
+                          {/* Copy URL */}
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleCopyUrl(item.id, getPreviewUrl(item))}
+                            className="h-7 w-7 p-0 text-on-surface-variant hover:text-on-surface rounded-lg cursor-pointer"
+                            title="Copy document URL"
+                          >
+                            {copiedId === item.id ? (
+                              <Check className="h-3.5 w-3.5 text-emerald-600" />
+                            ) : (
+                              <Copy className="h-3.5 w-3.5" />
+                            )}
+                          </Button>
 
                           {/* Delete row */}
                           <Button
@@ -638,6 +672,77 @@ export function UploadsPage({ initialUploads, isBlobConfigured }: UploadsPagePro
           </Button>
         </Link>
       </Card>
+
+      {/* Document Preview Modal */}
+      {previewItem && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200"
+          onClick={() => setPreviewItem(null)}
+          role="dialog"
+          aria-modal="true"
+        >
+          <div
+            className="bg-surface border border-outline-variant/60 rounded-2xl shadow-2xl w-full max-w-4xl h-[90vh] max-h-[90vh] flex flex-col overflow-hidden animate-in zoom-in-95 duration-200"
+            style={{ height: "90vh" }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="flex items-center justify-between px-5 py-3.5 border-b border-outline-variant/40 bg-surface-container-low shrink-0">
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="h-8 w-8 rounded-lg bg-primary-container text-on-primary-container flex items-center justify-center shrink-0">
+                  <FileText className="h-4 w-4" />
+                </div>
+                <div className="min-w-0">
+                  <div className="flex items-center gap-2">
+                    <Typography variant="title-medium" className="text-on-surface font-bold text-sm truncate">
+                      {previewItem.filename}
+                    </Typography>
+                    <Badge variant="neutral" className="text-[10px] py-0 px-2 uppercase font-mono">
+                      {previewItem.contentType.replace("application/", "")}
+                    </Badge>
+                  </div>
+                  <p className="text-[11px] font-mono text-on-surface-variant truncate">
+                    {formatBytes(previewItem.size)} • {previewItem.pathname || previewItem.blobUrl}
+                  </p>
+                </div>
+              </div>
+
+              {/* Header Actions */}
+              <div className="flex items-center gap-2 shrink-0">
+                <a
+                  href={getPreviewUrl(previewItem)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors"
+                  title="Open in new tab"
+                >
+                  <Maximize2 className="h-3.5 w-3.5" />
+                  <span className="hidden sm:inline">New Tab</span>
+                </a>
+
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setPreviewItem(null)}
+                  className="h-8 w-8 p-0 text-on-surface-variant hover:text-on-surface rounded-lg cursor-pointer"
+                  title="Close preview (Esc)"
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+
+            {/* Modal Body / Document Frame */}
+            <div className="flex-1 w-full min-h-0 relative bg-surface-container-lowest">
+              <iframe
+                src={getPreviewUrl(previewItem)}
+                title={`Preview of ${previewItem.filename}`}
+                className="absolute inset-0 w-full h-full border-0"
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
