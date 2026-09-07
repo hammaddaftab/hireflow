@@ -88,8 +88,8 @@ function JobFormInner({ jobId }: NewJobPageProps) {
           </Typography>
           <Typography variant="body-medium" className="text-on-surface-variant mt-1">
             {isEditMode
-              ? "Update role identity, knockout dealbreakers, and soft scoring preferences."
-              : "Configure hard knockout criteria for deterministic rejection and soft weighted scoring preferences."}
+              ? "Update role identity, dealbreaker criteria, and soft scoring preferences."
+              : "Configure hard dealbreaker criteria for deterministic evaluation and soft weighted scoring preferences."}
           </Typography>
         </div>
 
@@ -146,6 +146,7 @@ function JobFormInner({ jobId }: NewJobPageProps) {
           onBack={() => setStep(1)}
           onSave={handleSave}
           onPreviewOverlay={() => setIsOverlayOpen(true)}
+          onOpenGuide={() => setIsGuideOpen(true)}
           submitLabel={isEditMode ? "Update Requirements Schema" : "Save Requirements Schema"}
         />
       )}

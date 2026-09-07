@@ -14,8 +14,8 @@ export const initialRequirementsFields: Record<string, FormFieldState> = {
   },
   skillsRequired: {
     id: "skillsRequired",
-    label: "Mandatory Skills (Knockout)",
-    helperText: "Select canonical must-have skills that are hard knockouts if missing",
+    label: "Mandatory Skills (Dealbreaker)",
+    helperText: "Select canonical must-have skills that are hard dealbreakers if missing",
     mode: "hard",
     value: "TypeScript, React, Node.js",
     options: CANONICAL_SKILLS,
@@ -33,7 +33,7 @@ export const initialRequirementsFields: Record<string, FormFieldState> = {
   degreeLevel: {
     id: "degreeLevel",
     label: "Minimum Degree Level",
-    helperText: "Standardized degree tier required (toggle to Hard for strict knockout)",
+    helperText: "Standardized degree tier required (toggle to Hard for strict dealbreaker)",
     mode: "hard",
     value: "bachelors",
     options: ["none", "high_school", "diploma", "bachelors", "masters", "doctorate"],

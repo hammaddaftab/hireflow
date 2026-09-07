@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Maximize2 } from "lucide-react";
+import { Maximize2, Filter } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import type { QueueFilterTab } from "@/entities/review";
 
@@ -15,6 +15,8 @@ export interface ReviewDeckControlsProps {
     contradicted: number;
   };
   onEnterFocusMode: () => void;
+  onToggleFilters?: () => void;
+  hasActiveFilters?: boolean;
   rightSlot?: React.ReactNode;
 }
 
@@ -23,6 +25,8 @@ export function ReviewDeckControls({
   onSelectTab,
   tabCounts,
   onEnterFocusMode,
+  onToggleFilters,
+  hasActiveFilters = false,
   rightSlot,
 }: ReviewDeckControlsProps) {
   return (
@@ -78,9 +82,28 @@ export function ReviewDeckControls({
           </button>
         </div>
 
-      {/* Right controls: Slots & Focus Mode Trigger */}
+      {/* Right controls: Slots, Filters & Focus Mode Trigger */}
       <div className="flex items-center gap-2 self-end sm:self-center">
         {rightSlot}
+        {onToggleFilters && (
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={onToggleFilters}
+            className={`h-8 px-3.5 gap-1.5 text-xs font-bold rounded-xl border-0 cursor-pointer transition-colors ${
+              hasActiveFilters
+                ? "bg-amber-100 dark:bg-amber-950/80 text-amber-950 dark:text-amber-200 font-bold"
+                : "bg-surface-container hover:bg-surface-container-high text-on-surface"
+            }`}
+            title="Toggle Queue Filters (Experience, Salary, Location)"
+          >
+            <Filter className="h-3.5 w-3.5 shrink-0" />
+            <span>Filters</span>
+            {hasActiveFilters && (
+              <span className="h-1.5 w-1.5 rounded-full bg-amber-600 dark:bg-amber-400" />
+            )}
+          </Button>
+        )}
         <Button
           variant="secondary"
           size="sm"

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { SlidersHorizontal } from "lucide-react";
+import { SlidersHorizontal, HelpCircle } from "lucide-react";
 import { GroupContainer } from "@/components/ui/GroupContainer";
 import { Button } from "@/components/ui/Button";
 import type { FormFieldState } from "@/features/jobs/types";
@@ -16,6 +16,7 @@ export interface ScreeningCriteriaFormProps {
   onBack: () => void;
   onSave: (e: React.FormEvent) => void;
   onPreviewOverlay: () => void;
+  onOpenGuide?: () => void;
   submitLabel?: string;
 }
 
@@ -27,6 +28,7 @@ export function ScreeningCriteriaForm({
   onBack,
   onSave,
   onPreviewOverlay,
+  onOpenGuide,
   submitLabel,
 }: ScreeningCriteriaFormProps) {
   const [_focusedId, setFocusedId] = useState<string | null>(null);
@@ -49,9 +51,21 @@ export function ScreeningCriteriaForm({
 
   return (
     <form onSubmit={onSave} className="space-y-6">
-      {/* Header with Live Counts and Right-Hand Slider Trigger */}
+      {/* Header with Live Counts, How Screening Works Trigger, and Slider Trigger */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
+          {onOpenGuide && (
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              icon={<HelpCircle className="h-3.5 w-3.5" />}
+              onClick={onOpenGuide}
+              className="text-xs h-7.5 px-3 font-semibold text-on-surface-variant hover:text-on-surface cursor-pointer"
+            >
+              How Screening Works
+            </Button>
+          )}
         </div>
         <div className="flex items-center gap-2 shrink-0">
           <span className="rounded-md bg-on-surface text-surface px-2.5 py-1 text-xs font-bold shadow-xs">
@@ -247,7 +261,7 @@ export function ScreeningCriteriaForm({
           <kbd className="rounded bg-surface-container-high px-2 py-0.5 font-mono text-xs font-bold text-on-surface border border-outline-variant shadow-2xs">
             Shift+X
           </kbd>{" "}
-          to swap between Hard Knockout and Soft Scored.
+          to swap between Hard Dealbreaker and Soft Scored.
         </div>
 
         <div className="flex items-center gap-3">

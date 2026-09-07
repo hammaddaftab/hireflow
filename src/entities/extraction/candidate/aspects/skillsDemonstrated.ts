@@ -33,7 +33,6 @@ export const SkillDemonstratedItemSchema = z.object({
 export const SkillsDemonstratedExtractionSchema = z.object({
   skills: z
     .array(SkillDemonstratedItemSchema)
-    .default([])
     .describe("List of verified skills demonstrated in work history and projects"),
 });
 

@@ -70,6 +70,14 @@ export function FocusReviewPage({
     filteredQueue,
     scopedActiveItem,
     hasActiveFilters,
+    experienceRange,
+    setExperienceRange,
+    experienceBounds,
+    salaryRange,
+    setSalaryRange,
+    salaryBounds,
+    includeUnstatedSalary,
+    toggleIncludeUnstatedSalary,
     handleNext,
     handlePrev,
     handleDecision,
@@ -247,6 +255,14 @@ export function FocusReviewPage({
           ).length,
           contradicted: queue.filter((i) => i.hasContradicted).length,
         }}
+        experienceRange={experienceRange}
+        onExperienceChange={setExperienceRange}
+        experienceBounds={experienceBounds}
+        salaryRange={salaryRange}
+        onSalaryChange={setSalaryRange}
+        salaryBounds={salaryBounds}
+        includeUnstatedSalary={includeUnstatedSalary}
+        onToggleIncludeUnstatedSalary={toggleIncludeUnstatedSalary}
       />
 
       {/* Active Group Canvas Topology Selection Modal */}
