@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useRef } from "react";
 import type { CandidateReviewItem, QueryGroup } from "../../types";
 import type { ReviewDecision } from "@/entities/review";
 import {
@@ -17,15 +17,13 @@ export interface UseReviewDataReturn {
   cityDistribution: Array<{ city: string; count: number }>;
 }
 
-/**
- * Tier 1 Headless Domain Hook:
- * Manages candidate records, evaluation mutations, query group definitions, and review stats.
- * Completely decoupled from viewport mechanics, 3D math, and pagination.
- */
+// Headless domain hook managing candidate records, evaluation mutations, query groups, and review stats
 export function useReviewData(
   initialQueue: CandidateReviewItem[]
 ): UseReviewDataReturn {
   const [queue, setQueue] = useState<CandidateReviewItem[]>(initialQueue);
+  const queueRef = useRef(queue);
+  queueRef.current = queue;
 
   const handleDecision = useCallback(
     (candidateId: string, decision: ReviewDecision) => {
@@ -34,6 +32,23 @@ export function useReviewData(
           item.candidate.id === candidateId ? { ...item, decision } : item
         )
       );
+
+      const targetItem = queueRef.current.find(
+        (item) => item.candidate.id === candidateId
+      );
+      const jobId = targetItem?.jobId;
+
+      if (jobId) {
+        fetch(`/api/candidates/${candidateId}/decision`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ jobId, decision }),
+        }).catch((err) => {
+          console.error("Failed to persist decision:", err);
+        });
+      }
     },
     []
   );

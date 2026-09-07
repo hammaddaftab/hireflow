@@ -15,6 +15,13 @@
       "when": 1788724781681,
       "tag": "0001_mixed_green_goblin",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1788772634940,
+      "tag": "0002_candidate_reviews_unique",
+      "breakpoints": true
     }
   ]
 }
