@@ -23,6 +23,7 @@ import {
 
 import { type PersistedGroupWithMembers, ActiveGroupCanvasModal } from "@/features/groups";
 import { FEATURES } from "@/config/features";
+import { ReviewFilterPane } from "../focus/components/ReviewFilterPane";
 
 export interface ReviewQueuePageProps {
   initialJob: Job;
@@ -50,6 +51,7 @@ export function ReviewQueuePage({
     handleDecision: updateDecision,
     stats,
     queryGroups,
+    cityDistribution,
     persistedGroups,
   } = useReviewData(initialQueue, initialPersistedGroups);
 
@@ -65,8 +67,21 @@ export function ReviewQueuePage({
     setActiveIndex,
     activeTab,
     setActiveTab,
+    selectedCity,
+    setSelectedCity,
     selectedGroupId,
     setSelectedGroupId,
+    isFilterPaneOpen,
+    setIsFilterPaneOpen,
+    experienceRange,
+    setExperienceRange,
+    experienceBounds,
+    salaryRange,
+    setSalaryRange,
+    salaryBounds,
+    includeUnstatedSalary,
+    toggleIncludeUnstatedSalary,
+    hasActiveFilters,
     filteredQueue,
     activeItem,
     tabCounts,
@@ -272,6 +287,8 @@ export function ReviewQueuePage({
           }}
           tabCounts={tabCounts}
           onEnterFocusMode={handleEnterFocusMode}
+          onToggleFilters={() => setIsFilterPaneOpen((prev: boolean) => !prev)}
+          hasActiveFilters={hasActiveFilters}
           rightSlot={
             <ResumeDropTrigger
               onFilesSelected={uploadFiles}
@@ -333,6 +350,42 @@ export function ReviewQueuePage({
           </div>
         </div>
       </main>
+
+      {/* Integrated Queue Filters HUD Drawer */}
+      <ReviewFilterPane
+        variant="overlay"
+        isOpen={isFilterPaneOpen}
+        onClose={() => setIsFilterPaneOpen(false)}
+        selectedCity={selectedCity}
+        onSelectCity={(city) => {
+          setSelectedCity(city);
+          setActiveIndex(0);
+        }}
+        cityDistribution={cityDistribution}
+        totalCandidates={queue.length}
+        onResetFilters={resetFilters}
+        activeTab={activeTab}
+        onSelectTab={(tab) => {
+          setActiveTab(tab);
+          setActiveIndex(0);
+        }}
+        tabCounts={{
+          all: queue.length,
+          fastClear: stats.fastClearCount,
+          needsAttention: queue.filter(
+            (i) => !i.isAllBlockingConfirmed && !i.hasContradicted
+          ).length,
+          contradicted: queue.filter((i) => i.hasContradicted).length,
+        }}
+        experienceRange={experienceRange}
+        onExperienceChange={setExperienceRange}
+        experienceBounds={experienceBounds}
+        salaryRange={salaryRange}
+        onSalaryChange={setSalaryRange}
+        salaryBounds={salaryBounds}
+        includeUnstatedSalary={includeUnstatedSalary}
+        onToggleIncludeUnstatedSalary={toggleIncludeUnstatedSalary}
+      />
 
       {/* Active Group Canvas Topology Selection Modal */}
       {FEATURES.CANDIDATE_GROUPS && (

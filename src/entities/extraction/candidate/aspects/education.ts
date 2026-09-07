@@ -52,7 +52,6 @@ export const EducationEntrySchema = z.object({
     .describe("End/graduation year formatted as YYYY or YYYY-MM, or null if currently enrolled (never string 'present')"),
   is_current: z
     .boolean()
-    .default(false)
     .describe("True if currently enrolled / ongoing education, false if completed / past"),
   grade: z
     .string()
@@ -63,7 +62,6 @@ export const EducationEntrySchema = z.object({
 export const EducationExtractionSchema = z.object({
   entries: z
     .array(EducationEntrySchema)
-    .default([])
     .describe("List of education entries in reverse chronological order"),
 });
 

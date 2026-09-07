@@ -20,6 +20,7 @@ export const ROUTES = {
   REVIEW: "/review",
   GROUPS: "/groups",
   UPLOADS: "/uploads",
+  EVALS: "/evals/experience",
 } as const;
 
 // Centralized Sidebar Navigation Items with Route Matching Rules
@@ -44,6 +45,13 @@ const ALL_SIDEBAR_NAV_ITEMS: NavItem[] = [
     href: ROUTES.UPLOADS,
     description: "Candidate resumes stored in Vercel Blob Storage staged for Step 2",
     matchPatterns: ["/uploads"],
+  },
+  {
+    id: "evals",
+    label: "AI Stress Test",
+    href: ROUTES.EVALS,
+    description: "Benchmark AI experience parsing, date arithmetic, and extraction accuracy",
+    matchPatterns: ["/evals"],
   },
   {
     id: "groups",

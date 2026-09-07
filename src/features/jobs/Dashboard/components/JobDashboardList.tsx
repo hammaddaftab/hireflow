@@ -123,7 +123,7 @@ export function JobDashboardList({ initialJobs }: JobDashboardListProps) {
             Job Positions
           </Typography>
           <Typography variant="body-medium" className="text-on-surface-variant mt-1">
-            Configure transparent candidate filtering criteria, knockout rules, and weighted soft scores.
+            Configure transparent candidate filtering criteria, dealbreaker rules, and weighted soft scores.
           </Typography>
         </div>
         <Link href={ROUTES.NEW_JOB}>
@@ -152,7 +152,7 @@ export function JobDashboardList({ initialJobs }: JobDashboardListProps) {
             No Job Positions Found
           </Typography>
           <Typography variant="body-medium" className="text-on-surface-variant mt-1">
-            Get started by creating your first position with transparent knockout filters.
+            Get started by creating your first position with transparent dealbreaker filters.
           </Typography>
           <div className="mt-6">
             <Link href={ROUTES.NEW_JOB}>
@@ -166,7 +166,7 @@ export function JobDashboardList({ initialJobs }: JobDashboardListProps) {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {jobs.map((job) => {
-            const { hardCount, softCount, requiredSkills, preferredSkills } = getScreeningSummary(job);
+            const { requiredSkills, preferredSkills } = getScreeningSummary(job);
             const experienceText = formatExperience(job.min_experience);
             const educationText = formatEducation(job.education_min);
             const workModeText = job.work_mode?.active && job.work_mode.mode

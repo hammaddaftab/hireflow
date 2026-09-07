@@ -25,12 +25,33 @@ export function evaluateExperience(
   const minYears = experience_requirement.years ?? 0;
   const isBlocking = Boolean(experience_requirement.blocking);
 
+  // Helper to parse YYYY or YYYY-MM into numeric year and month [1..12]
+  const parseDate = (d: string | null | undefined, fallbackMonth = 1) => {
+    if (!d) return null;
+    const match = d.trim().match(/^(\d{4})(?:-(\d{1,2}))?/);
+    if (!match) return null;
+    return {
+      year: parseInt(match[1], 10),
+      month: match[2] ? parseInt(match[2], 10) : fallbackMonth,
+    };
+  };
+
   const totalMonths = work_history_entries
     .filter((e) => e.employment_type?.value === "full_time")
     .reduce((acc, entry) => {
-      const start = new Date(entry.start_date).getTime();
-      const end = entry.end_date ? new Date(entry.end_date).getTime() : Date.now();
-      const months = Math.max(1, Math.round((end - start) / (1000 * 60 * 60 * 24 * 30.4375)));
+      const start = parseDate(entry.start_date, 1);
+      if (!start) return acc;
+
+      let end: { year: number; month: number };
+      if (entry.is_current || !entry.end_date) {
+        const now = new Date();
+        end = { year: now.getFullYear(), month: now.getMonth() + 1 };
+      } else {
+        end = parseDate(entry.end_date, 12) || { year: start.year, month: start.month };
+      }
+
+      // Inclusive calendar months: (endYear - startYear) * 12 + (endMonth - startMonth) + 1
+      const months = Math.max(1, (end.year - start.year) * 12 + (end.month - start.month) + 1);
       return acc + months;
     }, 0);
 

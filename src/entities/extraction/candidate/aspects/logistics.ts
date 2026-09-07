@@ -65,7 +65,6 @@ export const LogisticsExtractionSchema = z.object({
     .describe("Explicitly stated start date or availability, else exactly 'not_stated'"),
   languages: z
     .array(z.string())
-    .default([])
     .describe("Languages mentioned in the document (e.g. English, Urdu)"),
 });
 

@@ -86,18 +86,43 @@ export function EvidenceDrawer({ item, onClose }: EvidenceDrawerProps) {
             </div>
 
             {candidate.work_history.entries.length > 0 && (
-              <div className="text-xs text-on-surface-variant pt-1 border-t border-outline-variant/30 space-y-1">
-                <div className="font-medium text-on-surface">Work history breakdown:</div>
-                {candidate.work_history.entries.map((role) => (
-                  <div key={role.entry_id} className="flex justify-between items-center text-[12px]">
-                    <span>
-                      {role.title} at {role.employer}
-                    </span>
-                    <span className="font-mono text-[11px]">
-                      {role.start_date} – {role.is_current ? "Present" : role.end_date || "N/A"}
-                    </span>
-                  </div>
-                ))}
+              <div className="text-xs text-on-surface-variant pt-1 border-t border-outline-variant/30 space-y-1.5">
+                <div className="flex items-center justify-between font-medium text-on-surface text-[12px]">
+                  <span>Work history breakdown:</span>
+                  <span className="text-[11px] text-on-surface-variant font-normal">
+                    {candidate.work_history.entries.filter((r) => r.employment_type?.value === "full_time").length} of {candidate.work_history.entries.length} full-time
+                  </span>
+                </div>
+                {candidate.work_history.entries.map((role) => {
+                  const isFullTime = role.employment_type?.value === "full_time";
+                  const empTypeLabel = (role.employment_type?.value || "full_time").replace("_", " ");
+                  return (
+                    <div key={role.entry_id} className="flex justify-between items-center text-[12px] gap-2">
+                      <div className="flex items-center gap-1.5 min-w-0 truncate">
+                        <span className="truncate">
+                          {role.title} at {role.employer}
+                        </span>
+                        <span
+                          className={`text-[10px] px-1.5 py-0.5 rounded font-mono uppercase tracking-wider shrink-0 ${
+                            isFullTime
+                              ? "bg-surface-container-high text-on-surface-variant"
+                              : "bg-amber-500/10 text-amber-700 dark:text-amber-300 border border-amber-500/20"
+                          }`}
+                        >
+                          {empTypeLabel}
+                        </span>
+                      </div>
+                      <span className="font-mono text-[11px] shrink-0 text-on-surface-variant">
+                        {role.start_date} – {role.is_current ? "Present" : role.end_date || "N/A"}
+                      </span>
+                    </div>
+                  );
+                })}
+                {candidate.work_history.entries.some((r) => r.employment_type?.value !== "full_time") && (
+                  <p className="text-[10px] text-on-surface-variant/80 italic pt-0.5">
+                    Non-full-time roles (e.g. contract or internship) are excluded from the verified full-time requirement total.
+                  </p>
+                )}
               </div>
             )}
           </div>

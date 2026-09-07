@@ -11,7 +11,8 @@ import {
   UploadCloud,
   PanelLeftClose, 
   PanelLeftOpen,
-  Info
+  Info,
+  Gauge,
 } from "lucide-react";
 import { SIDEBAR_NAV_ITEMS, isNavItemActive } from "@/config/navigation";
 import { Tooltip } from "@/components/ui/Tooltip";
@@ -32,6 +33,8 @@ export function Sidebar({ currentPath }: SidebarProps) {
         return <Inbox className="h-4 w-4 shrink-0" />;
       case "uploads":
         return <UploadCloud className="h-4 w-4 shrink-0" />;
+      case "evals":
+        return <Gauge className="h-4 w-4 shrink-0" />;
       case "groups":
         return <Network className="h-4 w-4 shrink-0" />;
       case "create-requirement":

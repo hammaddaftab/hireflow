@@ -37,7 +37,6 @@ export const WorkHistoryEntrySchema = z.object({
     .describe("End date formatted as YYYY-MM or YYYY, or null if is_current is true (never string 'present')"),
   is_current: z
     .boolean()
-    .default(false)
     .describe("True if currently working in this role, false otherwise"),
   employment_type: EmploymentTypeSchema.describe(
     "Employment type structured as { value, status }"
@@ -50,7 +49,6 @@ export const WorkHistoryEntrySchema = z.object({
 export const WorkHistoryExtractionSchema = z.object({
   entries: z
     .array(WorkHistoryEntrySchema)
-    .default([])
     .describe("List of work history and professional experience entries in reverse chronological order"),
 });
 

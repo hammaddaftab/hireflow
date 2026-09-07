@@ -3,6 +3,8 @@
 import React, { useState } from "react";
 import { X, ChevronUp, ChevronDown } from "lucide-react";
 import type { QueueFilterTab } from "@/entities/review";
+import { DualRangeSlider } from "@/components/ui/DualRangeSlider";
+import { formatSalaryNumber } from "@/features/review/core/utils/queueCalculations";
 
 export interface ReviewFilterPaneProps {
   isOpen: boolean;
@@ -25,6 +27,14 @@ export interface ReviewFilterPaneProps {
     needsAttention: number;
     contradicted: number;
   };
+  experienceRange?: [number, number];
+  onExperienceChange?: (range: [number, number]) => void;
+  experienceBounds?: { min: number; max: number; step: number };
+  salaryRange?: [number, number];
+  onSalaryChange?: (range: [number, number]) => void;
+  salaryBounds?: { min: number; max: number; step: number; currency: string };
+  includeUnstatedSalary?: boolean;
+  onToggleIncludeUnstatedSalary?: () => void;
 }
 
 export function ReviewFilterPane({
@@ -42,9 +52,19 @@ export function ReviewFilterPane({
   activeTab = "all",
   onSelectTab,
   tabCounts,
+  experienceRange,
+  onExperienceChange,
+  experienceBounds = { min: 0, max: 15, step: 1 },
+  salaryRange,
+  onSalaryChange,
+  salaryBounds = { min: 0, max: 1000000, step: 25000, currency: "PKR" },
+  includeUnstatedSalary = true,
+  onToggleIncludeUnstatedSalary,
 }: ReviewFilterPaneProps) {
   const [internalLocationOpen, setInternalLocationOpen] = useState(true);
   const [internalStatusOpen, setInternalStatusOpen] = useState(true);
+  const [experienceOpen, setExperienceOpen] = useState(true);
+  const [salaryOpen, setSalaryOpen] = useState(true);
 
   if (!isOpen) return null;
 
@@ -81,6 +101,44 @@ export function ReviewFilterPane({
       id: `city-${selectedCity}`,
       label: selectedCity,
       onRemove: () => onSelectCity(null),
+    });
+  }
+
+  // Active chip for experience filter
+  if (
+    experienceRange &&
+    (experienceRange[0] > experienceBounds.min || experienceRange[1] < experienceBounds.max)
+  ) {
+    const maxExpLabel =
+      experienceRange[1] >= experienceBounds.max
+        ? `${experienceRange[1]}+`
+        : `${experienceRange[1]}`;
+    activeChips.push({
+      id: "filter-exp",
+      label: `Exp: ${experienceRange[0]}–${maxExpLabel} yrs`,
+      onRemove: () => onExperienceChange?.([experienceBounds.min, experienceBounds.max]),
+    });
+  }
+
+  // Active chip for salary filter
+  if (
+    salaryRange &&
+    (salaryRange[0] > salaryBounds.min ||
+      salaryRange[1] < salaryBounds.max ||
+      includeUnstatedSalary === false)
+  ) {
+    const minSalLabel = formatSalaryNumber(salaryRange[0]);
+    const maxSalLabel = formatSalaryNumber(salaryRange[1]);
+    const unstatedSuffix = includeUnstatedSalary === false ? " (stated only)" : "";
+    activeChips.push({
+      id: "filter-salary",
+      label: `Salary: ${minSalLabel}–${maxSalLabel} ${salaryBounds.currency}${unstatedSuffix}`,
+      onRemove: () => {
+        onSalaryChange?.([salaryBounds.min, salaryBounds.max]);
+        if (includeUnstatedSalary === false) {
+          onToggleIncludeUnstatedSalary?.();
+        }
+      },
     });
   }
 
@@ -264,6 +322,84 @@ export function ReviewFilterPane({
             </div>
           )}
         </div>
+
+        {/* Category 3: Experience */}
+        {experienceRange && onExperienceChange && (
+          <>
+            <div className="h-px bg-outline-variant/30" />
+            <div className="space-y-1.5">
+              <button
+                type="button"
+                onClick={() => setExperienceOpen((prev) => !prev)}
+                className="w-full flex items-center justify-between text-xs font-bold text-on-surface hover:text-primary transition-colors cursor-pointer py-1"
+              >
+                <span className="truncate">
+                  Experience · {experienceRange[0]}–{experienceRange[1] >= experienceBounds.max ? `${experienceRange[1]}+` : experienceRange[1]} yrs
+                </span>
+                {experienceOpen ? <ChevronUp className="h-3.5 w-3.5 shrink-0" /> : <ChevronDown className="h-3.5 w-3.5 shrink-0" />}
+              </button>
+
+              {experienceOpen && (
+                <div className="px-1 pt-1 pb-2">
+                  <DualRangeSlider
+                    min={experienceBounds.min}
+                    max={experienceBounds.max}
+                    step={experienceBounds.step}
+                    value={experienceRange}
+                    onChange={onExperienceChange}
+                    formatValue={(val) => (val >= experienceBounds.max ? `${val}+ yrs` : `${val} yr${val === 1 ? "" : "s"}`)}
+                    formatBound={(val) => (val >= experienceBounds.max ? `${val}+` : String(val))}
+                  />
+                </div>
+              )}
+            </div>
+          </>
+        )}
+
+        {/* Category 4: Salary Expectation */}
+        {salaryRange && onSalaryChange && (
+          <>
+            <div className="h-px bg-outline-variant/30" />
+            <div className="space-y-1.5">
+              <button
+                type="button"
+                onClick={() => setSalaryOpen((prev) => !prev)}
+                className="w-full flex items-center justify-between text-xs font-bold text-on-surface hover:text-primary transition-colors cursor-pointer py-1"
+              >
+                <span className="truncate">
+                  Salary · {formatSalaryNumber(salaryRange[0])}–{formatSalaryNumber(salaryRange[1])} {salaryBounds.currency}
+                </span>
+                {salaryOpen ? <ChevronUp className="h-3.5 w-3.5 shrink-0" /> : <ChevronDown className="h-3.5 w-3.5 shrink-0" />}
+              </button>
+
+              {salaryOpen && (
+                <div className="px-1 pt-1 pb-2 space-y-3">
+                  <DualRangeSlider
+                    min={salaryBounds.min}
+                    max={salaryBounds.max}
+                    step={salaryBounds.step}
+                    value={salaryRange}
+                    onChange={onSalaryChange}
+                    formatValue={(val) => `${formatSalaryNumber(val)} ${salaryBounds.currency}`}
+                    formatBound={(val) => formatSalaryNumber(val)}
+                  />
+
+                  {onToggleIncludeUnstatedSalary && (
+                    <label className="flex items-center gap-2 pt-1 text-xs text-on-surface-variant hover:text-on-surface cursor-pointer select-none">
+                      <input
+                        type="checkbox"
+                        checked={includeUnstatedSalary}
+                        onChange={onToggleIncludeUnstatedSalary}
+                        className="rounded border-outline-variant text-primary focus:ring-primary h-3.5 w-3.5 cursor-pointer"
+                      />
+                      <span>Include unstated salary</span>
+                    </label>
+                  )}
+                </div>
+              )}
+            </div>
+          </>
+        )}
       </div>
     </aside>
   );

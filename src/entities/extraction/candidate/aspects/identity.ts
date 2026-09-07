@@ -80,7 +80,6 @@ export const IdentityExtractionSchema = z.object({
   ),
   links: z
     .array(LinkItemSchema)
-    .default([])
     .describe("Candidate profile, portfolio, and code URLs structured as { address, platform: { raw, normalized } }"),
 });
 

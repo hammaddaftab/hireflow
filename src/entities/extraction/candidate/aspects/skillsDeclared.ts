@@ -7,7 +7,6 @@ import { z } from "zod";
 export const SkillsDeclaredExtractionSchema = z.object({
   skills_declared: z
     .array(z.string())
-    .default([])
     .describe("Flat list of technical skills, languages, frameworks, and tools from explicit Skills section"),
 });
 

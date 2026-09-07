@@ -3,7 +3,11 @@
 import { useState, useCallback, useMemo, useEffect } from "react";
 import type { CandidateReviewItem, QueryGroup } from "../../../types";
 import type { QueueFilterTab, ReviewDecision } from "@/entities/review";
-import { filterReviewQueue } from "../../../core/utils/queueCalculations";
+import {
+  filterReviewQueue,
+  calculateExperienceBounds,
+  calculateSalaryBounds,
+} from "../../../core/utils/queueCalculations";
 import {
   DEFAULT_GROUP_ID,
   isDefaultGroup,
@@ -39,6 +43,14 @@ export interface UseFocusCarouselReturn {
   setIsGroupsOpen: (open: boolean) => void;
   isLocationOpen: boolean;
   setIsLocationOpen: (open: boolean) => void;
+  experienceRange: [number, number];
+  setExperienceRange: (range: [number, number]) => void;
+  experienceBounds: { min: number; max: number; step: number };
+  salaryRange: [number, number];
+  setSalaryRange: (range: [number, number]) => void;
+  salaryBounds: { min: number; max: number; step: number; currency: string };
+  includeUnstatedSalary: boolean;
+  toggleIncludeUnstatedSalary: () => void;
   filteredQueue: CandidateReviewItem[];
   scopedActiveItem: CandidateReviewItem | null;
   hasNext: boolean;
@@ -77,6 +89,35 @@ export function useFocusCarousel({
   const [isGroupsOpen, setIsGroupsOpen] = useState(true);
   const [isLocationOpen, setIsLocationOpen] = useState(true);
 
+  // Dynamic bounds calculated from queue candidates
+  const experienceBounds = useMemo(() => calculateExperienceBounds(queue), [queue]);
+  const salaryBounds = useMemo(() => calculateSalaryBounds(queue), [queue]);
+
+  const [experienceRange, setExperienceRangeState] = useState<[number, number]>([
+    experienceBounds.min,
+    experienceBounds.max,
+  ]);
+  const [salaryRange, setSalaryRangeState] = useState<[number, number]>([
+    salaryBounds.min,
+    salaryBounds.max,
+  ]);
+  const [includeUnstatedSalary, setIncludeUnstatedSalary] = useState(true);
+
+  const setExperienceRange = useCallback((range: [number, number]) => {
+    setExperienceRangeState(range);
+    setActiveIndex(0);
+  }, []);
+
+  const setSalaryRange = useCallback((range: [number, number]) => {
+    setSalaryRangeState(range);
+    setActiveIndex(0);
+  }, []);
+
+  const toggleIncludeUnstatedSalary = useCallback(() => {
+    setIncludeUnstatedSalary((prev) => !prev);
+    setActiveIndex(0);
+  }, []);
+
   const setSelectedGroupId = useCallback((id: string | null) => {
     setSelectedGroupIdState(isDefaultGroup(id) ? DEFAULT_GROUP_ID : id!);
     setActiveIndex(0);
@@ -92,17 +133,42 @@ export function useFocusCarousel({
       selectedCity,
       activeTab,
       queryGroups,
+      experienceRange,
+      salaryRange,
+      includeUnstatedSalary,
+      targetCurrency: salaryBounds.currency,
     });
-  }, [queue, selectedGroupId, selectedCity, activeTab, queryGroups]);
+  }, [
+    queue,
+    selectedGroupId,
+    selectedCity,
+    activeTab,
+    queryGroups,
+    experienceRange,
+    salaryRange,
+    includeUnstatedSalary,
+    salaryBounds.currency,
+  ]);
 
   const scopedActiveItem = filteredQueue[activeIndex] || filteredQueue[0] || null;
   const hasNext = activeIndex < filteredQueue.length - 1;
   const hasPrev = activeIndex > 0;
 
+  const isExpFiltered =
+    experienceRange[0] > experienceBounds.min ||
+    experienceRange[1] < experienceBounds.max;
+
+  const isSalaryFiltered =
+    salaryRange[0] > salaryBounds.min ||
+    salaryRange[1] < salaryBounds.max ||
+    !includeUnstatedSalary;
+
   const hasActiveFilters =
     (FEATURES.CANDIDATE_GROUPS && !isDefaultGroup(selectedGroupId)) ||
     selectedCity !== null ||
-    activeTab !== "all";
+    activeTab !== "all" ||
+    isExpFiltered ||
+    isSalaryFiltered;
 
   // Sync URL search params with active candidate index and active group
   useEffect(() => {
@@ -157,8 +223,11 @@ export function useFocusCarousel({
     setSelectedGroupId(DEFAULT_GROUP_ID);
     setSelectedCity(null);
     setActiveTab("all");
+    setExperienceRangeState([experienceBounds.min, experienceBounds.max]);
+    setSalaryRangeState([salaryBounds.min, salaryBounds.max]);
+    setIncludeUnstatedSalary(true);
     setActiveIndex(0);
-  }, [setSelectedGroupId]);
+  }, [setSelectedGroupId, experienceBounds, salaryBounds]);
 
   // Focus View Keyboard Shortcuts: [A] Keep, [F] Flag, [R] Pass, [E] Evidence, [Q] Filters, [Esc] Exit
   useEffect(() => {
@@ -250,6 +319,14 @@ export function useFocusCarousel({
     setIsGroupsOpen,
     isLocationOpen,
     setIsLocationOpen,
+    experienceRange,
+    setExperienceRange,
+    experienceBounds,
+    salaryRange,
+    setSalaryRange,
+    salaryBounds,
+    includeUnstatedSalary,
+    toggleIncludeUnstatedSalary,
     filteredQueue,
     scopedActiveItem,
     hasNext,
