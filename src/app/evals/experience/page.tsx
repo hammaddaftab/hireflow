@@ -2,9 +2,11 @@ export const dynamic = "force-dynamic";
 
 import React from "react";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { ArrowLeft, Gauge, Layers } from "lucide-react";
 import { Button } from "@/components/ui/Button";
+import { FEATURES } from "@/config/features";
 import { StressTestWorkbench } from "@/features/evals/components/StressTestWorkbench";
 
 export const metadata: Metadata = {
@@ -14,6 +16,10 @@ export const metadata: Metadata = {
 };
 
 export default function ExperienceEvalsPage() {
+  if (!FEATURES.AI_EVALS) {
+    notFound();
+  }
+
   return (
     <div className="max-w-[1400px] mx-auto pb-16 space-y-6">
       {/* Top Breadcrumb & Quick Navigation */}

@@ -73,6 +73,9 @@ export const SIDEBAR_NAV_ITEMS: NavItem[] = ALL_SIDEBAR_NAV_ITEMS.filter((item) 
   if (item.id === "groups" && !FEATURES.CANDIDATE_GROUPS) {
     return false;
   }
+  if (item.id === "evals" && !FEATURES.AI_EVALS) {
+    return false;
+  }
   return true;
 });
 
