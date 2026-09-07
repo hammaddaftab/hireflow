@@ -334,7 +334,6 @@ export function extractEducationHeuristic(text: string): EducationExtraction {
 
   for (let i = 0; i < relevantLines.length; i++) {
     const line = relevantLines[i];
-    const lower = line.toLowerCase();
 
     let degreeLevel: "bachelors" | "masters" | "doctorate" | "diploma" | "high_school" | null = null;
     if (/\b(bachelor|bs|bsc|b\.s|b\.e|bba|software engineering|computer science)\b/i.test(line)) {

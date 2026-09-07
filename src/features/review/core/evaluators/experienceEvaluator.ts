@@ -13,7 +13,7 @@ export type ExperienceEvaluatorInput = EvaluationPair<
 
 export function evaluateExperience(
   input: ExperienceEvaluatorInput,
-  id?: string
+  _id?: string
 ): EvaluatedExperienceRequirement | null {
   const { requirement: experience_requirement, candidate: work_history_entries } = input;
 
@@ -36,24 +36,43 @@ export function evaluateExperience(
     };
   };
 
-  const totalMonths = work_history_entries
+  // Convert full-time entries to [startMonth, endMonth] numeric intervals
+  // where the unit is absolute calendar months (year * 12 + month)
+  const now = new Date();
+  const intervals: Array<[number, number]> = work_history_entries
     .filter((e) => e.employment_type?.value === "full_time")
-    .reduce((acc, entry) => {
+    .reduce<Array<[number, number]>>((acc, entry) => {
       const start = parseDate(entry.start_date, 1);
       if (!start) return acc;
 
       let end: { year: number; month: number };
       if (entry.is_current || !entry.end_date) {
-        const now = new Date();
         end = { year: now.getFullYear(), month: now.getMonth() + 1 };
       } else {
         end = parseDate(entry.end_date, 12) || { year: start.year, month: start.month };
       }
 
-      // Inclusive calendar months: (endYear - startYear) * 12 + (endMonth - startMonth) + 1
-      const months = Math.max(1, (end.year - start.year) * 12 + (end.month - start.month) + 1);
-      return acc + months;
-    }, 0);
+      const startAbsolute = start.year * 12 + start.month;
+      const endAbsolute = end.year * 12 + end.month;
+      if (endAbsolute >= startAbsolute) {
+        acc.push([startAbsolute, endAbsolute]);
+      }
+      return acc;
+    }, []);
+
+  // Merge overlapping intervals so concurrent roles don't double-count tenure
+  intervals.sort((a, b) => a[0] - b[0]);
+  const merged: Array<[number, number]> = [];
+  for (const [start, end] of intervals) {
+    if (merged.length === 0 || start > merged[merged.length - 1][1] + 1) {
+      merged.push([start, end]);
+    } else {
+      merged[merged.length - 1][1] = Math.max(merged[merged.length - 1][1], end);
+    }
+  }
+
+  // Sum inclusive months across merged non-overlapping spans
+  const totalMonths = merged.reduce((acc, [start, end]) => acc + (end - start + 1), 0);
 
   const verifiedYears = Math.round((totalMonths / 12) * 10) / 10;
   const isPassed = verifiedYears >= minYears;

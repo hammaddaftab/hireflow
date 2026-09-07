@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Play, Plus, RotateCcw, CheckCircle2, AlertTriangle, XCircle, Gauge } from "lucide-react";
+import { Play, Plus, RotateCcw, CheckCircle2, AlertTriangle, XCircle } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import type { BatchEvalSummary } from "../types";
 
@@ -16,7 +16,7 @@ export interface StressTestSummaryBannerProps {
 
 export function StressTestSummaryBanner({
   summary,
-  totalFixturesCount,
+  totalFixturesCount: _totalFixturesCount,
   isRunningBatch,
   onRunBatch,
   onOpenCreateModal,

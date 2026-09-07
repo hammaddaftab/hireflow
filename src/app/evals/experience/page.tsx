@@ -4,7 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { ArrowLeft, Gauge, Layers } from "lucide-react";
+import { ArrowLeft, Layers } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { FEATURES } from "@/config/features";
 import { StressTestWorkbench } from "@/features/evals/components/StressTestWorkbench";

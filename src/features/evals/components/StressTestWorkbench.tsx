@@ -1,14 +1,10 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Play,
   FileText,
-  Clock,
-  Sparkles,
   AlertCircle,
-  RefreshCw,
-  CheckCircle2,
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { DEFAULT_EXPERIENCE_FIXTURES } from "../data/defaultFixtures";
@@ -26,7 +22,6 @@ import { RawJsonViewer } from "./RawJsonViewer";
 import { FixtureEditorModal } from "./FixtureEditorModal";
 
 const STORAGE_KEY_CUSTOM_FIXTURES = "hireflow_eval_custom_fixtures";
-const STORAGE_KEY_EVAL_RESULTS = "hireflow_eval_results";
 
 export function StressTestWorkbench() {
   const [fixtures, setFixtures] = useState<ExperienceTestFixture[]>(DEFAULT_EXPERIENCE_FIXTURES);

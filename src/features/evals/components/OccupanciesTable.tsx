@@ -2,7 +2,7 @@
 
 import React from "react";
 import type { ExtractedOccupancyAnalysis } from "../types";
-import { Check, X, FileText } from "lucide-react";
+import { Check, X } from "lucide-react";
 
 export interface OccupanciesTableProps {
   entries: ExtractedOccupancyAnalysis[];

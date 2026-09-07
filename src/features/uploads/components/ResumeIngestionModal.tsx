@@ -10,7 +10,6 @@ import {
   Check
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
-import { Badge } from "@/components/ui/Badge";
 import { Typography } from "@/components/ui/Typography";
 import type { Job } from "@/entities/job";
 import type { UploadedResumeRecord } from "@/lib/upload";

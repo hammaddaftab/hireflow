@@ -1,4 +1,4 @@
-import type { SkillRequirementItem, BaseRequirement } from "@/entities/job";
+import type { SkillRequirementItem } from "@/entities/job";
 import type { SkillDemonstratedItem } from "@/entities/extraction/candidate/aspects/skillsDemonstrated";
 import type { EvaluatedSkillRequirement, EvaluationPair } from "./evaluationStatuses";
 import { matchSkill } from "@/features/extraction/skillNormalizer";

@@ -60,7 +60,7 @@ function formatDate(isoString: string): string {
   }
 }
 
-export function UploadsPage({ initialUploads, isBlobConfigured, initialJobs = [] }: UploadsPageProps) {
+export function UploadsPage({ initialUploads, isBlobConfigured: _isBlobConfigured, initialJobs = [] }: UploadsPageProps) {
   const [uploads, setUploads] = useState<UploadedResumeRecord[]>(initialUploads);
   const [jobs, setJobs] = useState<Job[]>(initialJobs);
   const [searchQuery, setSearchQuery] = useState("");

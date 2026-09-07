@@ -15,7 +15,7 @@ export interface ResumeDropTriggerProps {
 
 export function ResumeDropTrigger({
   onFilesSelected,
-  uploadCount = 0,
+  uploadCount: _uploadCount = 0,
   isUploading = false,
   statusLabel = null,
   className = "",

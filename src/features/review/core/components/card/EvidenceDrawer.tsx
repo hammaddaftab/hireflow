@@ -3,19 +3,18 @@
 import React, { useMemo } from "react";
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/Button";
-import type { CandidateReviewItem, EvaluatedRequirement } from "../../../types";
+import type { CandidateReviewItem } from "../../../types";
 import type {
   EvaluatedWorkModeRequirement,
   EvaluatedLocationRequirement,
 } from "../../evaluators/evaluationStatuses";
-import { EvidentiaryDot, EvidentiaryDotType } from "./EvidentiaryDot";
+import { EvidentiaryDot } from "./EvidentiaryDot";
 import {
   getEvidentiaryDotType,
   getStatusTextColor,
 } from "../../utils/evidentiaryStyles";
 import {
   groupSkillsByEvidenceQuote,
-  type SkillEvidenceGroup,
 } from "../../utils/evidenceGrouping";
 
 export interface EvidenceDrawerProps {

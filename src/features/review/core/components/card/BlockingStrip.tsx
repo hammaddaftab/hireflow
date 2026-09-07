@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Quote, Tag, AlertCircle } from "lucide-react";
+import { Quote, Tag } from "lucide-react";
 import type {
   EvaluatedExperienceRequirement,
   EvaluatedEducationRequirement,
@@ -9,11 +9,9 @@ import type {
 } from "../../evaluators/evaluationStatuses";
 import type {
   EvaluatedSkillsRequirement,
-  SkillEvaluatorOutput,
 } from "../../evaluators/skillEvaluator";
 import type {
   EvaluatedLogisticsRequirement,
-  LogisticsEvaluatorOutput,
 } from "../../evaluators/logisticsEvaluator";
 import { Tooltip } from "@/components/ui/Tooltip";
 import { EvidentiaryDot } from "./EvidentiaryDot";
