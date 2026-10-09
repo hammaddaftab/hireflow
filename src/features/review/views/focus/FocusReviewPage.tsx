@@ -12,6 +12,8 @@ import { useFocusCarousel } from "./hooks/useFocusCarousel";
 import { SpatialFocusDeck } from "./components/SpatialFocusDeck";
 import { FocusCommandBar } from "./components/FocusCommandBar";
 import { ReviewFilterPane } from "./components/ReviewFilterPane";
+import { DecisionSnackbar } from "../../core/components/feedback/DecisionSnackbar";
+import { DecisionProgressStrip } from "../../core/components/feedback/DecisionProgressStrip";
 import { buildReviewQueryString } from "../../core/utils/reviewQueryParams";
 import { type PersistedGroupWithMembers, ActiveGroupCanvasModal } from "@/features/groups";
 import { FEATURES } from "@/config/features";
@@ -42,6 +44,7 @@ export function FocusReviewPage({
   const {
     queue,
     handleDecision: updateDecision,
+    retryDecision,
     queryGroups,
     cityDistribution,
     stats,
@@ -82,6 +85,16 @@ export function FocusReviewPage({
     handlePrev,
     handleDecision,
     resetFilters,
+    committingCandidateId,
+    commitDecision,
+    isCommitting,
+    snackbarState,
+    canUndo,
+    dismissSnackbar,
+    handleUndo,
+    handleClearCurrent,
+    handleNextUndecided,
+    flushCommitBeat,
   } = useFocusCarousel({
     queue,
     queryGroups,
@@ -105,6 +118,13 @@ export function FocusReviewPage({
   }, [router, activeIndex, activeTab, selectedCity, selectedGroupId]);
 
   exitFocusRef.current = handleExitFocus;
+
+  // Moves keyboard focus to the command bar action dock
+  const handleFocusCommandBar = useCallback(() => {
+    const bar = document.getElementById("focus-command-bar");
+    const firstButton = bar?.querySelector<HTMLButtonElement>("button");
+    firstButton?.focus();
+  }, []);
 
   const totalCandidates = filteredQueue.length;
   const activeGroupName = queryGroups.find((g) => g.id === selectedGroupId)?.name || "All Applicants (Default)";
@@ -178,17 +198,25 @@ export function FocusReviewPage({
           <div className="flex flex-col gap-0.5 w-24 text-[11px] text-on-surface-variant font-medium">
             <div className="flex items-center justify-between">
               <span>Keep:</span>
-              <span className="font-mono font-medium text-emerald-700 dark:text-emerald-400">{stats.keptCount}</span>
+              <span className={`font-mono font-medium transition-colors duration-200 text-emerald-700 dark:text-emerald-400 ${commitDecision === "keep" ? "font-bold scale-110" : ""}`}>{stats.keptCount}</span>
             </div>
             <div className="flex items-center justify-between">
               <span>Flagged:</span>
-              <span className="font-mono font-medium text-amber-700 dark:text-amber-400">{stats.flaggedCount}</span>
+              <span className={`font-mono font-medium transition-colors duration-200 text-amber-700 dark:text-amber-400 ${commitDecision === "flag" ? "font-bold scale-110" : ""}`}>{stats.flaggedCount}</span>
             </div>
             <div className="flex items-center justify-between">
               <span>Passed:</span>
-              <span className="font-mono font-medium text-rose-700 dark:text-rose-400">{stats.passedCount}</span>
+              <span className={`font-mono font-medium transition-colors duration-200 text-rose-700 dark:text-rose-400 ${commitDecision === "pass" ? "font-bold scale-110" : ""}`}>{stats.passedCount}</span>
             </div>
           </div>
+          {totalCandidates > 0 && (
+            <DecisionProgressStrip
+              items={filteredQueue}
+              activeIndex={activeIndex}
+              onSelectIndex={setActiveIndex}
+              className="w-24 sm:w-28 mt-0.5"
+            />
+          )}
         </div>
         <button
           type="button"
@@ -216,15 +244,33 @@ export function FocusReviewPage({
           isEvidenceOpen={isEvidenceOpen}
           onToggleEvidence={() => setIsEvidenceOpen(!isEvidenceOpen)}
           resetFilters={resetFilters}
+          committingCandidateId={committingCandidateId}
+          onClearDecision={handleClearCurrent}
+          onRetrySync={() => scopedActiveItem && retryDecision(scopedActiveItem.candidate.id)}
+          onChangeFocus={handleFocusCommandBar}
         />
       </main>
+
+      {/* Floating Decision Feedback Snackbar */}
+      <div className="absolute bottom-16 left-0 right-0 z-40 pointer-events-none flex justify-center px-4">
+        <DecisionSnackbar
+          state={snackbarState}
+          onUndo={handleUndo}
+          onRetry={(candidateId) => retryDecision(candidateId)}
+          onDismiss={dismissSnackbar}
+        />
+      </div>
 
       {/* Fixed Bottom Action Dock */}
       <FocusCommandBar
         currentDecision={scopedActiveItem?.decision}
+        decidedAt={scopedActiveItem?.decidedAt}
         isEvidenceOpen={isEvidenceOpen}
+        canUndo={canUndo}
         onDecision={handleDecision}
         onToggleEvidence={() => setIsEvidenceOpen(!isEvidenceOpen)}
+        onUndo={handleUndo}
+        onClear={handleClearCurrent}
       />
 
       {/* Integrated Queue Filters HUD Drawer */}

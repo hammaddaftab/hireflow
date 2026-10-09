@@ -17,10 +17,11 @@ import {
 } from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
-import { Badge } from "@/components/ui/Badge";
 import { Tooltip } from "@/components/ui/Tooltip";
 import { BlockingStrip } from "./BlockingStrip";
 import { EvidenceDrawer } from "./EvidenceDrawer";
+import { DecisionStatusStrip } from "./DecisionStatusStrip";
+import { DECISION_CONFIGS } from "../../utils/decisionStyles";
 import type { CandidateReviewItem } from "../../../types";
 import type { ReviewDecision } from "@/entities/review";
 import { formatDegreeName, getPlatformIcon } from "../../utils/formatters";
@@ -35,6 +36,10 @@ export interface CandidateCardProps {
   isLayer2Expanded?: boolean;
   onToggleLayer2?: () => void;
   expandedFullHeight?: boolean;
+  isCommitting?: boolean;
+  onClearDecision?: () => void;
+  onRetrySync?: () => void;
+  onChangeFocus?: () => void;
 }
 
 export function CandidateCard({
@@ -47,9 +52,14 @@ export function CandidateCard({
   isLayer2Expanded: controlledLayer2Expanded,
   onToggleLayer2,
   expandedFullHeight = false,
+  isCommitting = false,
+  onClearDecision,
+  onRetrySync,
+  onChangeFocus,
 }: CandidateCardProps) {
   const [internalLayer2Expanded, setInternalLayer2Expanded] = useState(false);
   const [isEducationExpanded, setIsEducationExpanded] = useState(false);
+  const actionButtonsRef = React.useRef<HTMLDivElement>(null);
 
   const isLayer2Expanded =
     controlledLayer2Expanded !== undefined ? controlledLayer2Expanded : internalLayer2Expanded;
@@ -64,92 +74,114 @@ export function CandidateCard({
   const normalizedCity = candidate.identity.location.normalized?.city || "Unspecified";
   const rawLocation = candidate.identity.location.raw || "Not stated in resume";
 
-  const getDecisionBadge = () => {
-    switch (item.decision) {
-      case "keep":
-        return <Badge variant="success">Keep</Badge>;
-      case "flag":
-        return <Badge variant="warning">Flagged</Badge>;
-      case "pass":
-        return <Badge variant="dealbreaker">Passed</Badge>;
-      default:
-        return null;
-    }
-  };
+  const decisionConfig = DECISION_CONFIGS[item.decision];
+  const isDecided = item.decision !== "pending";
+
+  const railClass = isDecided
+    ? `${decisionConfig.railColor} border-l-4`
+    : isActive
+    ? "border-l-2 border-l-primary/80"
+    : "";
+
+  const surfaceWashClass = isDecided ? decisionConfig.surfaceWash : "";
+
+  // Move keyboard focus to action buttons in queue view
+  const handleChangeFocus =
+    onChangeFocus ||
+    (() => {
+      const firstButton = actionButtonsRef.current?.querySelector<HTMLButtonElement>("button");
+      firstButton?.focus();
+    });
 
   return (
     <Card
-      className={`p-6 transition-all duration-200 ${
+      className={`group/card overflow-hidden transition-all duration-200 ${surfaceWashClass} ${
         expandedFullHeight
-          ? "h-full rounded-none border-0 border-x border-outline-variant/50 dark:border-outline-variant/30 overflow-y-auto custom-scrollbar bg-surface shadow-2xl"
-          : `rounded-2xl border border-outline-variant/50 dark:border-outline-variant/30 shadow-sm ${
-              isActive
-                ? "border-l-2 border-l-primary/80 bg-surface"
-                : "bg-surface/90 hover:bg-surface"
+          ? `h-full rounded-none border-0 border-x border-outline-variant/50 dark:border-outline-variant/30 overflow-y-auto custom-scrollbar bg-surface shadow-2xl ${railClass}`
+          : `rounded-2xl border border-outline-variant/50 dark:border-outline-variant/30 shadow-sm ${railClass} ${
+              isActive ? "bg-surface" : "bg-surface/90 hover:bg-surface"
             }`
       }`}
     >
-      {/* Top Header */}
-      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
-        <div className="space-y-2.5 flex-1">
-          <div className="flex flex-wrap items-center gap-2.5">
-            <h3 className="text-xl font-bold tracking-tight text-on-surface">
-              {candidate.identity.name}
-            </h3>
+      {/* Top Decision Status Strip */}
+      <DecisionStatusStrip
+        decision={item.decision}
+        decidedAt={item.decidedAt}
+        previousDecision={item.previousDecision}
+        syncStatus={item.syncStatus}
+        onClearDecision={onClearDecision}
+        onRetrySync={onRetrySync}
+        onChangeFocus={handleChangeFocus}
+        isCommitting={isCommitting}
+      />
 
-            {/* Normalized City Pill (Tonal Island) */}
-            <Tooltip
-              content={
-                <div className="text-xs space-y-1 max-w-xs">
-                  <div className="font-semibold text-on-surface">Location Evidence</div>
-                  <div className="text-on-surface-variant">
-                    Normalized: <strong className="text-on-surface">{normalizedCity}</strong>
-                    {candidate.identity.location.normalized?.province && `, ${candidate.identity.location.normalized.province}`}
-                  </div>
-                  <div className="text-on-surface-variant text-[11px] italic mt-1 pt-1 border-t border-outline-variant/60">
-                    Raw document text: &ldquo;{rawLocation}&rdquo;
-                  </div>
-                </div>
-              }
-            >
-              <span className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-xs font-semibold bg-surface-container text-on-surface border-0 cursor-help">
-                <MapPin className="h-3.5 w-3.5 text-on-surface-variant shrink-0" />
-                <span>{normalizedCity}</span>
-              </span>
-            </Tooltip>
+      {/* Main Card Body */}
+      <div className="p-6 transition-all duration-200">
+        {/* Top Header */}
+        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+          <div
+            className={`space-y-2.5 flex-1 transition-all duration-200 ${
+              item.decision === "pass" && !isLayer2Expanded
+                ? "opacity-70 grayscale-[50%] group-hover/card:opacity-100 group-hover/card:grayscale-0 group-focus-within/card:opacity-100 group-focus-within/card:grayscale-0"
+                : ""
+            }`}
+          >
+            <div className="flex flex-wrap items-center gap-2.5">
+              <h3 className="text-xl font-bold tracking-tight text-on-surface">
+                {candidate.identity.name}
+              </h3>
 
-            {/* Links row (Tonal Icon Pills) */}
-            {candidate.identity.links.length > 0 && (
-              <div className="flex items-center gap-1">
-                {candidate.identity.links.map((link, idx) => {
-                  const platformName = link.platform.normalized || link.platform.raw || "Link";
-                  return (
-                    <Tooltip
-                      key={idx}
-                      content={
-                        <div className="text-xs">
-                          <span className="font-semibold capitalize">{platformName}</span>: {link.address}
-                        </div>
-                      }
-                    >
-                      <a
-                        href={link.address}
-                        target="_blank"
-                        rel="noreferrer"
-                        onClick={(e) => e.stopPropagation()}
-                        className="h-7 w-7 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors cursor-pointer border-0"
-                        aria-label={`Open ${platformName} profile`}
+              {/* Normalized City Pill (Tonal Island) */}
+              <Tooltip
+                content={
+                  <div className="text-xs space-y-1 max-w-xs">
+                    <div className="font-semibold text-on-surface">Location Evidence</div>
+                    <div className="text-on-surface-variant">
+                      Normalized: <strong className="text-on-surface">{normalizedCity}</strong>
+                      {candidate.identity.location.normalized?.province && `, ${candidate.identity.location.normalized.province}`}
+                    </div>
+                    <div className="text-on-surface-variant text-[11px] italic mt-1 pt-1 border-t border-outline-variant/60">
+                      Raw document text: &ldquo;{rawLocation}&rdquo;
+                    </div>
+                  </div>
+                }
+              >
+                <span className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-xs font-semibold bg-surface-container text-on-surface border-0 cursor-help">
+                  <MapPin className="h-3.5 w-3.5 text-on-surface-variant shrink-0" />
+                  <span>{normalizedCity}</span>
+                </span>
+              </Tooltip>
+
+              {/* Links row (Tonal Icon Pills) */}
+              {candidate.identity.links.length > 0 && (
+                <div className="flex items-center gap-1">
+                  {candidate.identity.links.map((link, idx) => {
+                    const platformName = link.platform.normalized || link.platform.raw || "Link";
+                    return (
+                      <Tooltip
+                        key={idx}
+                        content={
+                          <div className="text-xs">
+                            <span className="font-semibold capitalize">{platformName}</span>: {link.address}
+                          </div>
+                        }
                       >
-                        {getPlatformIcon(link.platform.normalized)}
-                      </a>
-                    </Tooltip>
-                  );
-                })}
-              </div>
-            )}
-
-            {getDecisionBadge()}
-          </div>
+                        <a
+                          href={link.address}
+                          target="_blank"
+                          rel="noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                          className="h-7 w-7 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors cursor-pointer border-0"
+                          aria-label={`Open ${platformName} profile`}
+                        >
+                          {getPlatformIcon(link.platform.normalized)}
+                        </a>
+                      </Tooltip>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
 
           {/* Subtitle / Role & Experience */}
           <div className="flex flex-wrap items-center gap-y-1 gap-x-3.5 text-xs text-on-surface-variant">
@@ -288,69 +320,146 @@ export function CandidateCard({
             {headerActionSlot}
           </div>
         ) : !hideActionButtons ? (
-          <div className="flex items-center gap-2 self-end sm:self-start shrink-0">
-            <Button
-              variant={item.decision === "keep" ? "primary" : "secondary"}
-              size="sm"
-              onClick={(e) => {
-                e.stopPropagation();
-                onDecision("keep");
-              }}
-              className={`h-8 px-3.5 gap-1.5 text-xs font-bold rounded-xl border-0 shadow-2xs ${
-                item.decision === "keep"
-                  ? "bg-emerald-600 text-white hover:bg-emerald-700"
-                  : "bg-surface-container text-on-surface hover:bg-emerald-500/15 hover:text-emerald-700 dark:hover:text-emerald-300"
-              }`}
-              aria-label="Keep candidate"
+          <div ref={actionButtonsRef} className="flex items-center gap-2 self-end sm:self-start shrink-0">
+            {/* Keep Action Button */}
+            <Tooltip
+              content={
+                isDecided
+                  ? item.decision === "keep"
+                    ? "Candidate kept (A)"
+                    : "Change to Keep (A)"
+                  : "Keep candidate (A)"
+              }
             >
-              <Check className="h-3.5 w-3.5 shrink-0" />
-              <span>Keep</span>
-            </Button>
+              <Button
+                variant={
+                  isDecided
+                    ? item.decision === "keep"
+                      ? "primary"
+                      : "outline"
+                    : "secondary"
+                }
+                size="sm"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onDecision("keep");
+                }}
+                className={`h-8 px-3.5 gap-1.5 text-xs font-bold rounded-xl border transition-all ${
+                  isDecided
+                    ? item.decision === "keep"
+                      ? DECISION_CONFIGS.keep.activeButtonClass
+                      : DECISION_CONFIGS.keep.inactiveButtonClass
+                    : "bg-surface-container text-on-surface hover:bg-emerald-500/15 hover:text-emerald-700 dark:hover:text-emerald-300 border-outline-variant/30"
+                }`}
+                aria-label={
+                  isDecided
+                    ? item.decision === "keep"
+                      ? "Candidate kept (A)"
+                      : "Change to Keep (A)"
+                    : "Keep candidate (A)"
+                }
+              >
+                <Check className="h-3.5 w-3.5 shrink-0" />
+                <span>{item.decision === "keep" ? "Kept" : "Keep"}</span>
+              </Button>
+            </Tooltip>
 
-            <Button
-              variant={item.decision === "flag" ? "primary" : "secondary"}
-              size="sm"
-              onClick={(e) => {
-                e.stopPropagation();
-                onDecision("flag");
-              }}
-              className={`h-8 px-3.5 gap-1.5 text-xs font-bold rounded-xl border-0 shadow-2xs ${
-                item.decision === "flag"
-                  ? "bg-amber-500 text-white hover:bg-amber-600"
-                  : "bg-surface-container text-on-surface hover:bg-amber-500/15 hover:text-amber-700 dark:hover:text-amber-300"
-              }`}
-              aria-label="Flag candidate for follow-up"
+            {/* Flag Action Button */}
+            <Tooltip
+              content={
+                isDecided
+                  ? item.decision === "flag"
+                    ? "Candidate flagged (F)"
+                    : "Change to Flag (F)"
+                  : "Flag candidate (F)"
+              }
             >
-              <Bookmark className="h-3.5 w-3.5 shrink-0" />
-              <span>Flag</span>
-            </Button>
+              <Button
+                variant={
+                  isDecided
+                    ? item.decision === "flag"
+                      ? "primary"
+                      : "outline"
+                    : "secondary"
+                }
+                size="sm"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onDecision("flag");
+                }}
+                className={`h-8 px-3.5 gap-1.5 text-xs font-bold rounded-xl border transition-all ${
+                  isDecided
+                    ? item.decision === "flag"
+                      ? DECISION_CONFIGS.flag.activeButtonClass
+                      : DECISION_CONFIGS.flag.inactiveButtonClass
+                    : "bg-surface-container text-on-surface hover:bg-amber-500/15 hover:text-amber-700 dark:hover:text-amber-300 border-outline-variant/30"
+                }`}
+                aria-label={
+                  isDecided
+                    ? item.decision === "flag"
+                      ? "Candidate flagged (F)"
+                      : "Change to Flag (F)"
+                    : "Flag candidate for follow-up (F)"
+                }
+              >
+                <Bookmark className="h-3.5 w-3.5 shrink-0" />
+                <span>{item.decision === "flag" ? "Flagged" : "Flag"}</span>
+              </Button>
+            </Tooltip>
 
-            <Button
-              variant={item.decision === "pass" ? "secondary" : "ghost"}
-              size="sm"
-              onClick={(e) => {
-                e.stopPropagation();
-                onDecision("pass");
-              }}
-              className={`h-8 px-3.5 gap-1.5 text-xs font-bold rounded-xl border-0 shadow-2xs ${
-                item.decision === "pass"
-                  ? "bg-rose-600 text-white hover:bg-rose-700"
-                  : "bg-surface-container text-on-surface-variant hover:bg-rose-500/15 hover:text-rose-700 dark:hover:text-rose-300"
-              }`}
-              aria-label="Pass candidate"
+            {/* Pass Action Button */}
+            <Tooltip
+              content={
+                isDecided
+                  ? item.decision === "pass"
+                    ? "Candidate passed (R)"
+                    : "Change to Pass (R)"
+                  : "Pass candidate (R)"
+              }
             >
-              <X className="h-3.5 w-3.5 shrink-0" />
-              <span>Pass</span>
-            </Button>
+              <Button
+                variant={
+                  isDecided
+                    ? item.decision === "pass"
+                      ? "primary"
+                      : "outline"
+                    : "secondary"
+                }
+                size="sm"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onDecision("pass");
+                }}
+                className={`h-8 px-3.5 gap-1.5 text-xs font-bold rounded-xl border transition-all ${
+                  isDecided
+                    ? item.decision === "pass"
+                      ? DECISION_CONFIGS.pass.activeButtonClass
+                      : DECISION_CONFIGS.pass.inactiveButtonClass
+                    : "bg-surface-container text-on-surface-variant hover:bg-rose-500/15 hover:text-rose-700 dark:hover:text-rose-300 border-outline-variant/30"
+                }`}
+                aria-label={
+                  isDecided
+                    ? item.decision === "pass"
+                      ? "Candidate passed (R)"
+                      : "Change to Pass (R)"
+                    : "Pass candidate (R)"
+                }
+              >
+                <X className="h-3.5 w-3.5 shrink-0" />
+                <span>{item.decision === "pass" ? "Passed" : "Pass"}</span>
+              </Button>
+            </Tooltip>
           </div>
         ) : null}
       </div>
 
       {/* LAYER 1: Category-Grouped Evidence Display with Exception Collapse */}
-      <motion.div
-        layout
-        transition={{ type: "spring", stiffness: 350, damping: 30 }}
-        className="mt-5 p-4 rounded-2xl bg-surface-container space-y-3 border-0"
+      <div
+        className={`mt-5 p-4 rounded-2xl bg-surface-container space-y-3 border-0 transition-all duration-200 ${
+          item.decision === "pass" && !isLayer2Expanded
+            ? "opacity-70 grayscale-[50%] group-hover/card:opacity-100 group-hover/card:grayscale-0 group-focus-within/card:opacity-100 group-focus-within/card:grayscale-0"
+            : ""
+        }`}
       >
         <div className="flex flex-col md:flex-row md:items-start justify-between gap-3">
           {/* Category Rows (Experience, Skills, Education, Logistics) */}
@@ -381,14 +490,13 @@ export function CandidateCard({
             </Button>
           </div>
         </div>
-      </motion.div>
+      </div>
 
-      {/* LAYER 2: On-Demand Categorical Evidence Drawer with spring layout physics */}
+      {/* LAYER 2: On-Demand Categorical Evidence Drawer */}
       <AnimatePresence initial={false}>
         {isLayer2Expanded && (
           <motion.div
             key="evidence-drawer"
-            layout
             initial={{ opacity: 0, scale: 0.98, y: -6 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.98, y: -6 }}
@@ -407,16 +515,13 @@ export function CandidateCard({
         )}
       </AnimatePresence>
 
-      {/* Footer Action Slot with spring layout transition */}
+      {/* Footer Action Slot */}
       {footerActionSlot && (
-        <motion.div
-          layout
-          transition={{ type: "spring", stiffness: 350, damping: 30 }}
-          className="mt-4 pt-3 border-t border-outline-variant/30"
-        >
+        <div className="mt-4 pt-3 border-t border-outline-variant/30">
           {footerActionSlot}
-        </motion.div>
+        </div>
       )}
+      </div>
     </Card>
   );
 }

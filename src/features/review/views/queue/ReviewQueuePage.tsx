@@ -5,6 +5,7 @@ import { Briefcase, MapPin, CheckCircle2, AlertCircle, X, Network } from "lucide
 import { Typography } from "@/components/ui/Typography";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
+import { motion, AnimatePresence } from "motion/react";
 import type { Job } from "@/entities/job";
 import type { QueueFilterTab } from "@/entities/review";
 import type { CandidateReviewItem } from "../../types";
@@ -15,6 +16,8 @@ import { CandidateCard } from "../../core/components/card/CandidateCard";
 import { ReviewDeckControls } from "./components/ReviewDeckControls";
 import { EvidentiaryLegend } from "./components/EvidentiaryLegend";
 import { KeyboardShortcutBar } from "./components/KeyboardShortcutBar";
+import { DecisionSnackbar } from "../../core/components/feedback/DecisionSnackbar";
+import { DecisionProgressStrip } from "../../core/components/feedback/DecisionProgressStrip";
 import {
   useResumeDropUpload,
   ResumeDropOverlay,
@@ -24,6 +27,23 @@ import {
 import { type PersistedGroupWithMembers, ActiveGroupCanvasModal } from "@/features/groups";
 import { FEATURES } from "@/config/features";
 import { ReviewFilterPane } from "../focus/components/ReviewFilterPane";
+
+const queueCardVariants = {
+  initial: { opacity: 0, y: 10, scale: 0.99 },
+  animate: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.18, ease: "easeOut" as const } },
+  exit: (decision: string | null) => {
+    if (decision === "keep") {
+      return { opacity: 0, y: -20, scale: 0.98, transition: { duration: 0.22, ease: "easeIn" as const } };
+    }
+    if (decision === "flag") {
+      return { opacity: 0, x: 24, scale: 0.98, transition: { duration: 0.22, ease: "easeIn" as const } };
+    }
+    if (decision === "pass") {
+      return { opacity: 0, y: 20, scale: 0.96, transition: { duration: 0.22, ease: "easeIn" as const } };
+    }
+    return { opacity: 0, transition: { duration: 0.15 } };
+  },
+};
 
 export interface ReviewQueuePageProps {
   initialJob: Job;
@@ -49,6 +69,7 @@ export function ReviewQueuePage({
     queue,
     setQueue,
     handleDecision: updateDecision,
+    retryDecision,
     stats,
     queryGroups,
     cityDistribution,
@@ -88,6 +109,16 @@ export function ReviewQueuePage({
     handleDecision,
     handleEnterFocusMode,
     resetFilters,
+    committingCandidateId,
+    commitDecision,
+    isCommitting,
+    snackbarState,
+    canUndo,
+    dismissSnackbar,
+    handleUndo,
+    handleClearCurrent,
+    handleNextUndecided,
+    flushCommitBeat,
   } = useQueueView({
     queue,
     queryGroups,
@@ -229,17 +260,25 @@ export function ReviewQueuePage({
               <div className="flex flex-col gap-0.5 w-28 text-xs text-on-surface-variant font-medium">
                 <div className="flex items-center justify-between">
                   <span>Keep:</span>
-                  <span className="font-mono font-medium text-emerald-700 dark:text-emerald-400">{stats.keptCount}</span>
+                  <span className={`font-mono font-medium transition-colors duration-200 text-emerald-700 dark:text-emerald-400 ${commitDecision === "keep" ? "font-bold scale-110" : ""}`}>{stats.keptCount}</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span>Flagged:</span>
-                  <span className="font-mono font-medium text-amber-700 dark:text-amber-400">{stats.flaggedCount}</span>
+                  <span className={`font-mono font-medium transition-colors duration-200 text-amber-700 dark:text-amber-400 ${commitDecision === "flag" ? "font-bold scale-110" : ""}`}>{stats.flaggedCount}</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span>Passed:</span>
-                  <span className="font-mono font-medium text-rose-700 dark:text-rose-400">{stats.passedCount}</span>
+                  <span className={`font-mono font-medium transition-colors duration-200 text-rose-700 dark:text-rose-400 ${commitDecision === "pass" ? "font-bold scale-110" : ""}`}>{stats.passedCount}</span>
                 </div>
               </div>
+              {filteredQueue.length > 0 && (
+                <DecisionProgressStrip
+                  items={filteredQueue}
+                  activeIndex={activeIndex}
+                  onSelectIndex={setActiveIndex}
+                  className="w-28 sm:w-36 mt-1"
+                />
+              )}
             </div>
           </div>
         </div>
@@ -278,6 +317,30 @@ export function ReviewQueuePage({
 
 
 
+        {/* All Decided Completion Banner */}
+        {filteredQueue.length > 0 && filteredQueue.every((item) => item.decision !== "pending") && (
+          <div className="flex items-center justify-between p-3.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-xs text-on-surface">
+            <div className="flex items-center gap-2">
+              <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+              <span className="font-semibold text-emerald-800 dark:text-emerald-300">
+                All {filteredQueue.length} candidates in this view are decided
+              </span>
+              <span className="text-on-surface-variant font-mono">
+                • {stats.keptCount} kept, {stats.flaggedCount} flagged, {stats.passedCount} passed
+              </span>
+            </div>
+            {hasActiveFilters && (
+              <button
+                type="button"
+                onClick={resetFilters}
+                className="text-primary hover:underline font-bold cursor-pointer border-0 bg-transparent"
+              >
+                Reset filters
+              </button>
+            )}
+          </div>
+        )}
+
         {/* Top Bar: Queue Segmented Tabs + Focus Trigger + Resume Drop Trigger */}
         <ReviewDeckControls
           activeTab={activeTab}
@@ -302,49 +365,65 @@ export function ReviewQueuePage({
         {/* Evidentiary Status Legend */}
         <EvidentiaryLegend className="px-1" />
 
-        {/* Active Candidate Focused Card */}
-        {activeItem ? (
-          <div
-            key={activeItem.candidate.id}
-            className="transition-all duration-200 animate-in fade-in-50"
-          >
-            <CandidateCard
-              item={activeItem}
-              isActive={true}
-              onDecision={handleDecision}
-            />
-          </div>
-        ) : (
-          <Card className="p-12 text-center border border-dashed border-outline-variant">
-            <Typography variant="body-large" className="text-on-surface font-semibold">
-              No candidates match the selected queue tab.
-            </Typography>
-            <Typography variant="body-medium" className="text-on-surface-variant mt-1 text-xs">
-              Try switching to &quot;All Candidates&quot;, resetting the queue filters, or dropping new candidate resumes.
-            </Typography>
-            <div className="flex justify-center gap-2 mt-4">
-              <Button variant="primary" size="sm" onClick={resetFilters}>
-                Reset All Filters
-              </Button>
-              <ResumeDropTrigger
-                onFilesSelected={uploadFiles}
-                uploadCount={uploads.length}
-                isUploading={isUploading}
-                statusLabel={statusLabel}
+        {/* Active Candidate Focused Card with Directional Decision Exit Transitions */}
+        <AnimatePresence mode="wait" custom={commitDecision}>
+          {activeItem ? (
+            <motion.div
+              key={activeItem.candidate.id}
+              custom={commitDecision}
+              variants={queueCardVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              className="will-change-transform"
+            >
+              <CandidateCard
+                item={activeItem}
+                isActive={true}
+                onDecision={handleDecision}
+                isCommitting={committingCandidateId === activeItem.candidate.id}
+                onClearDecision={handleClearCurrent}
+                onRetrySync={() => retryDecision(activeItem.candidate.id)}
               />
-            </div>
-          </Card>
-        )}
+            </motion.div>
+          ) : (
+            <Card className="p-12 text-center border border-dashed border-outline-variant">
+              <Typography variant="body-large" className="text-on-surface font-semibold">
+                No candidates match the selected queue tab.
+              </Typography>
+              <Typography variant="body-medium" className="text-on-surface-variant mt-1 text-xs">
+                Try switching to &quot;All Candidates&quot;, resetting the queue filters, or dropping new candidate resumes.
+              </Typography>
+              <div className="flex justify-center gap-2 mt-4">
+                <Button variant="primary" size="sm" onClick={resetFilters}>
+                  Reset All Filters
+                </Button>
+                <ResumeDropTrigger
+                  onFilesSelected={uploadFiles}
+                  uploadCount={uploads.length}
+                  isUploading={isUploading}
+                  statusLabel={statusLabel}
+                />
+              </div>
+            </Card>
+          )}
+        </AnimatePresence>
 
-        {/* Fixed Hotkey Dock */}
+        {/* Fixed Hotkey Dock & Decision Feedback Snackbar */}
         <div
-          className="fixed bottom-4 z-30 pointer-events-none flex justify-center px-4 transition-[left,width] duration-150"
+          className="fixed bottom-4 z-30 pointer-events-none flex flex-col items-center gap-2 px-4 transition-[left,width] duration-150"
           style={
             mainBounds
               ? { left: `${mainBounds.left}px`, width: `${mainBounds.width}px` }
               : { left: 0, right: 0 }
           }
         >
+          <DecisionSnackbar
+            state={snackbarState}
+            onUndo={handleUndo}
+            onRetry={(candidateId) => retryDecision(candidateId)}
+            onDismiss={dismissSnackbar}
+          />
           <div className="pointer-events-auto">
             <KeyboardShortcutBar />
           </div>

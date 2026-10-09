@@ -1,13 +1,13 @@
 "use client";
 
 import React from "react";
-import { Keyboard, Bookmark, Check, X, Eye } from "lucide-react";
+import { Keyboard, Bookmark, Check, X, Eye, RotateCcw } from "lucide-react";
 
 export function KeyboardShortcutBar() {
   return (
     <div className="flex justify-center w-full">
       {/* Floating Island Dock (Libadwaita / Tonal Surface Paradigm) */}
-      <div className="bg-surface-container-highest/95 dark:bg-surface-container-high/95 backdrop-blur-md rounded-full px-5 py-2 shadow-lg flex flex-wrap items-center justify-between gap-4 text-xs text-on-surface border-0">
+      <div className="bg-surface-container-highest/95 dark:bg-surface-container-high/95 backdrop-blur-md rounded-full px-5 py-2 shadow-lg flex flex-wrap items-center justify-between gap-3 sm:gap-4 text-xs text-on-surface border-0">
         <div className="flex items-center gap-2 font-medium text-on-surface pl-1">
           <div className="h-6 w-6 rounded-full bg-surface/50 flex items-center justify-center">
             <Keyboard className="h-3.5 w-3.5 text-on-surface" />
@@ -17,7 +17,7 @@ export function KeyboardShortcutBar() {
           </span>
         </div>
 
-        <div className="flex flex-wrap items-center gap-4 text-xs">
+        <div className="flex flex-wrap items-center gap-3 text-xs">
           {/* Keep */}
           <div className="flex items-center gap-1.5 bg-surface/40 hover:bg-surface/70 px-2.5 py-1 rounded-full transition-colors">
             <kbd className="px-2 py-0.5 bg-surface rounded-full font-mono text-[11px] font-bold text-on-surface shadow-2xs">
@@ -50,6 +50,24 @@ export function KeyboardShortcutBar() {
             <span className="font-semibold text-rose-700 dark:text-rose-400 flex items-center gap-1 ml-0.5">
               <X className="h-3 w-3 shrink-0" /> Pass
             </span>
+          </div>
+
+          {/* Undo */}
+          <div className="flex items-center gap-1.5 bg-surface/40 hover:bg-surface/70 px-2.5 py-1 rounded-full transition-colors">
+            <kbd className="px-2 py-0.5 bg-surface rounded-full font-mono text-[11px] font-bold text-on-surface shadow-2xs">
+              Z
+            </kbd>
+            <span className="font-semibold text-on-surface flex items-center gap-1 ml-0.5">
+              <RotateCcw className="h-3 w-3 shrink-0 text-on-surface-variant" /> Undo
+            </span>
+          </div>
+
+          {/* Clear */}
+          <div className="flex items-center gap-1.5 bg-surface/40 hover:bg-surface/70 px-2.5 py-1 rounded-full transition-colors">
+            <kbd className="px-2 py-0.5 bg-surface rounded-full font-mono text-[11px] font-bold text-on-surface shadow-2xs">
+              U
+            </kbd>
+            <span className="font-semibold text-on-surface ml-0.5">Clear</span>
           </div>
 
           {/* Evidence */}

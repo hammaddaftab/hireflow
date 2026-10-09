@@ -13,6 +13,8 @@ import {
   isDefaultGroup,
 } from "../../../core/utils/reviewQueryParams";
 import { FEATURES } from "@/config/features";
+import { useDecisionFeedback } from "../../../core/hooks/useDecisionFeedback";
+import type { SnackbarState } from "../../../core/components/feedback/DecisionSnackbar";
 
 export interface UseFocusCarouselProps {
   queue: CandidateReviewItem[];
@@ -21,7 +23,7 @@ export interface UseFocusCarouselProps {
   initialTab?: QueueFilterTab;
   initialCity?: string | null;
   initialGroupId?: string | null;
-  onDecision: (candidateId: string, decision: ReviewDecision) => void;
+  onDecision: (candidateId: string, decision: ReviewDecision) => Promise<boolean>;
   onExitFocus?: () => void;
   onToggleEvidence?: () => void;
 }
@@ -63,6 +65,17 @@ export interface UseFocusCarouselReturn {
   handlePrev: () => void;
   handleDecision: (decision: ReviewDecision) => void;
   resetFilters: () => void;
+  // Decision Feedback additions
+  committingCandidateId: string | null;
+  commitDecision: ReviewDecision | null;
+  isCommitting: boolean;
+  snackbarState: SnackbarState | null;
+  canUndo: boolean;
+  dismissSnackbar: () => void;
+  handleUndo: () => void;
+  handleClearCurrent: () => void;
+  handleNextUndecided: () => void;
+  flushCommitBeat: () => void;
 }
 
 // Tier 2 Focus Viewport Controller Hook:
@@ -170,56 +183,76 @@ export function useFocusCarousel({
     isExpFiltered ||
     isSalaryFiltered;
 
-  // Sync URL search params with active candidate index and active group
+  // Integrated decision feedback engine with spatial slide coordination
+  const {
+    committingCandidateId,
+    commitDecision,
+    isCommitting,
+    snackbarState,
+    canUndo,
+    dismissSnackbar,
+    applyDecision,
+    handleUndo,
+    handleClearCurrent: clearCandidate,
+    handleNextUndecided: jumpNextUndecided,
+    flushCommitBeat,
+  } = useDecisionFeedback({
+    onDomainDecision: onDecision,
+    setActiveIndex,
+    queue: filteredQueue,
+    commitBeatDurationMs: 400,
+  });
+
+  // Sync URL search params with active candidate index and active group (debounced to avoid blocking rapid keystrokes)
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    params.set("candidateIndex", String(activeIndex));
-    if (FEATURES.CANDIDATE_GROUPS && !isDefaultGroup(selectedGroupId)) {
-      params.set("group", selectedGroupId);
-    } else {
-      params.delete("group");
-    }
-    const newUrl = `${window.location.pathname}?${params.toString()}`;
-    window.history.replaceState(null, "", newUrl);
+    const timer = setTimeout(() => {
+      const params = new URLSearchParams(window.location.search);
+      params.set("candidateIndex", String(activeIndex));
+      if (FEATURES.CANDIDATE_GROUPS && !isDefaultGroup(selectedGroupId)) {
+        params.set("group", selectedGroupId);
+      } else {
+        params.delete("group");
+      }
+      const newUrl = `${window.location.pathname}?${params.toString()}`;
+      window.history.replaceState(null, "", newUrl);
+    }, 200);
+
+    return () => clearTimeout(timer);
   }, [activeIndex, selectedGroupId]);
 
   const handleNext = useCallback(() => {
+    flushCommitBeat();
     if (hasNext) {
-      setDirection("next");
-      setAnimKey((k) => k + 1);
-      setPulsingHint("right");
       setActiveIndex((prev) => prev + 1);
-      setTimeout(() => setPulsingHint(null), 400);
     }
-  }, [hasNext]);
+  }, [hasNext, flushCommitBeat]);
 
   const handlePrev = useCallback(() => {
+    flushCommitBeat();
     if (hasPrev) {
-      setDirection("prev");
-      setAnimKey((k) => k + 1);
-      setPulsingHint("left");
       setActiveIndex((prev) => prev - 1);
-      setTimeout(() => setPulsingHint(null), 400);
     }
-  }, [hasPrev]);
+  }, [hasPrev, flushCommitBeat]);
 
   const handleDecision = useCallback(
     (decision: ReviewDecision) => {
       if (!scopedActiveItem) return;
-      onDecision(scopedActiveItem.candidate.id, decision);
-
-      if (hasNext) {
-        setDirection("next");
-        setAnimKey((k) => k + 1);
-        setPulsingHint("right");
-        setActiveIndex((prev) => prev + 1);
-        setTimeout(() => setPulsingHint(null), 400);
-      }
+      applyDecision(scopedActiveItem, decision, activeIndex);
     },
-    [scopedActiveItem, hasNext, onDecision]
+    [scopedActiveItem, activeIndex, applyDecision]
   );
 
+  const handleClearCurrent = useCallback(() => {
+    if (!scopedActiveItem) return;
+    clearCandidate(scopedActiveItem, activeIndex);
+  }, [scopedActiveItem, activeIndex, clearCandidate]);
+
+  const handleNextUndecided = useCallback(() => {
+    jumpNextUndecided(activeIndex);
+  }, [activeIndex, jumpNextUndecided]);
+
   const resetFilters = useCallback(() => {
+    flushCommitBeat();
     setSelectedGroupId(DEFAULT_GROUP_ID);
     setSelectedCity(null);
     setActiveTab("all");
@@ -227,9 +260,9 @@ export function useFocusCarousel({
     setSalaryRangeState([salaryBounds.min, salaryBounds.max]);
     setIncludeUnstatedSalary(true);
     setActiveIndex(0);
-  }, [setSelectedGroupId, experienceBounds, salaryBounds]);
+  }, [setSelectedGroupId, experienceBounds, salaryBounds, flushCommitBeat]);
 
-  // Focus View Keyboard Shortcuts: [A] Keep, [F] Flag, [R] Pass, [E] Evidence, [Q] Filters, [Esc] Exit
+  // Focus View Keyboard Shortcuts: [A] Keep, [F] Flag, [R] Pass, [Z] Undo, [U] Clear, [N] Next, [E] Evidence, [Q] Filters, [Esc] Exit
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (["INPUT", "TEXTAREA", "SELECT"].includes((e.target as HTMLElement)?.tagName)) {
@@ -238,6 +271,27 @@ export function useFocusCarousel({
 
       // Allow GroupsCanvas to exclusively capture keyboard navigation when modal is open
       if (isGroupModalOpen) {
+        return;
+      }
+
+      // Check undo key (Z or Ctrl/Cmd+Z)
+      if (e.key.toLowerCase() === "z") {
+        e.preventDefault();
+        handleUndo();
+        return;
+      }
+
+      // Check clear key (U)
+      if (e.key.toLowerCase() === "u") {
+        e.preventDefault();
+        handleClearCurrent();
+        return;
+      }
+
+      // Check jump to next undecided key (N)
+      if (e.key.toLowerCase() === "n") {
+        e.preventDefault();
+        handleNextUndecided();
         return;
       }
 
@@ -296,6 +350,9 @@ export function useFocusCarousel({
     handleDecision,
     handleNext,
     handlePrev,
+    handleUndo,
+    handleClearCurrent,
+    handleNextUndecided,
     onToggleEvidence,
     onExitFocus,
     isFilterPaneOpen,
@@ -339,6 +396,15 @@ export function useFocusCarousel({
     handlePrev,
     handleDecision,
     resetFilters,
+    committingCandidateId,
+    commitDecision,
+    isCommitting,
+    snackbarState,
+    canUndo,
+    dismissSnackbar,
+    handleUndo,
+    handleClearCurrent,
+    handleNextUndecided,
+    flushCommitBeat,
   };
 }
-

@@ -14,7 +14,7 @@ export { getCityDistribution };
 export function buildReviewQueue(
   candidates: ParsedCandidateProfile[],
   rawJob: Job,
-  priorDecisions: Map<string, ReviewDecision> = new Map()
+  priorDecisions: Map<string, ReviewDecision | { decision: ReviewDecision; updatedAt?: Date | string | null }> = new Map()
 ): CandidateReviewItem[] {
   const job: Job = {
     ...rawJob,
@@ -153,6 +153,14 @@ export function buildReviewQueue(
 
     const verifiedYears = experience?.verifiedYears ?? 0;
 
+    const prior = priorDecisions.get(candidate.id);
+    const decision: ReviewDecision =
+      typeof prior === "string" ? prior : prior?.decision ?? "pending";
+    const decidedAt =
+      typeof prior === "object" && prior?.updatedAt
+        ? new Date(prior.updatedAt).toISOString()
+        : null;
+
     return {
       candidate,
       jobId: job.id,
@@ -161,7 +169,9 @@ export function buildReviewQueue(
       skills,
       education,
       logistics,
-      decision: priorDecisions.get(candidate.id) ?? "pending",
+      decision,
+      decidedAt,
+      syncStatus: decision !== "pending" ? ("saved" as const) : undefined,
 
       // Queue metrics and sort metadata
       blockingItems,

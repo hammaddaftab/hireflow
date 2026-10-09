@@ -2,8 +2,8 @@
 
 import React, { memo } from "react";
 import { Building2, MapPin, Briefcase, FileText, GraduationCap } from "lucide-react";
-import { Badge } from "@/components/ui/Badge";
 import type { CandidateReviewItem } from "../../../types";
+import { DECISION_CONFIGS, useRelativeTime } from "../../../core/utils/decisionStyles";
 
 export interface CandidateSideCardProps {
   item: CandidateReviewItem;
@@ -18,23 +18,30 @@ export const CandidateSideCard = memo(function CandidateSideCard({
   const primaryEducation = candidate.education.entries[0];
   const normalizedCity = candidate.identity.location.normalized?.city || "Unspecified";
 
-  const getDecisionBadge = () => {
-    switch (item.decision) {
-      case "keep":
-        return <Badge variant="success">Keep</Badge>;
-      case "flag":
-        return <Badge variant="warning">Flagged</Badge>;
-      case "pass":
-        return <Badge variant="dealbreaker">Passed</Badge>;
-      default:
-        return null;
-    }
-  };
+  const isDecided = item.decision !== "pending";
+  const decisionConfig = DECISION_CONFIGS[item.decision];
+  const DecisionIcon = decisionConfig.icon;
+  const relativeTime = useRelativeTime(item.decidedAt);
 
   return (
-    <div className="h-[440px] sm:h-[460px] p-6 rounded-2xl border border-outline-variant/50 dark:border-outline-variant/30 shadow-md bg-surface/90 dark:bg-surface/90 flex flex-col justify-between select-none">
+    <div
+      className={`relative h-[440px] sm:h-[460px] p-6 rounded-2xl border border-outline-variant/50 dark:border-outline-variant/30 shadow-md bg-surface/90 dark:bg-surface/90 flex flex-col justify-between select-none overflow-hidden transition-all duration-200 ${
+        isDecided ? decisionConfig.surfaceWash : ""
+      } ${
+        item.decision === "pass"
+          ? "opacity-70 grayscale-[60%] group-hover:opacity-100 group-hover:grayscale-0"
+          : ""
+      }`}
+    >
+      {/* 3px Top Decision Color Band */}
+      {isDecided && (
+        <div
+          className={`absolute top-0 left-0 right-0 h-[3px] ${decisionConfig.indicatorColor}`}
+        />
+      )}
+
       {/* Header Info */}
-      <div className="space-y-3">
+      <div className="space-y-3 pt-1">
         <div className="space-y-1.5 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
             <h3 className="text-lg font-bold tracking-tight text-on-surface truncate">
@@ -44,7 +51,6 @@ export const CandidateSideCard = memo(function CandidateSideCard({
               <MapPin className="h-3 w-3 text-on-surface-variant shrink-0" />
               <span>{normalizedCity}</span>
             </span>
-            {getDecisionBadge()}
           </div>
 
           <div className="flex items-center gap-3 text-xs text-on-surface-variant flex-wrap pt-0.5">
@@ -89,9 +95,19 @@ export const CandidateSideCard = memo(function CandidateSideCard({
         </div>
       </div>
 
-      {/* Subtle bottom footer bar */}
-      <div className="pt-3 border-t border-outline-variant/20 flex items-center justify-between text-[11px] text-on-surface-variant/60 font-mono">
-        <span>Preview</span>
+      {/* Decision Status Bottom Footer Bar */}
+      <div className="pt-3 border-t border-outline-variant/20 flex items-center justify-between text-[11px] text-on-surface-variant/70 font-mono">
+        {isDecided ? (
+          <span className={`font-semibold flex items-center gap-1.5 ${decisionConfig.textColor}`}>
+            <DecisionIcon className="h-3 w-3 shrink-0" />
+            <span>{decisionConfig.pastLabel}</span>
+            {relativeTime && (
+              <span className="text-on-surface-variant/60 font-normal">· {relativeTime}</span>
+            )}
+          </span>
+        ) : (
+          <span>Preview</span>
+        )}
         <span>Click to focus</span>
       </div>
     </div>

@@ -16,6 +16,8 @@ import {
   DEFAULT_GROUP_ID,
   isDefaultGroup,
 } from "../../../core/utils/reviewQueryParams";
+import { useDecisionFeedback } from "../../../core/hooks/useDecisionFeedback";
+import type { SnackbarState } from "../../../core/components/feedback/DecisionSnackbar";
 
 export interface UseQueueViewProps {
   queue: CandidateReviewItem[];
@@ -24,7 +26,7 @@ export interface UseQueueViewProps {
   initialTab?: QueueFilterTab;
   initialCity?: string | null;
   initialGroupId?: string | null;
-  onDecision: (candidateId: string, decision: ReviewDecision) => void;
+  onDecision: (candidateId: string, decision: ReviewDecision) => Promise<boolean>;
 }
 
 export interface UseQueueViewReturn {
@@ -55,6 +57,17 @@ export interface UseQueueViewReturn {
   handleDecision: (decision: ReviewDecision) => void;
   handleEnterFocusMode: () => void;
   resetFilters: () => void;
+  // Decision Feedback additions
+  committingCandidateId: string | null;
+  commitDecision: ReviewDecision | null;
+  isCommitting: boolean;
+  snackbarState: SnackbarState | null;
+  canUndo: boolean;
+  dismissSnackbar: () => void;
+  handleUndo: () => void;
+  handleClearCurrent: () => void;
+  handleNextUndecided: () => void;
+  flushCommitBeat: () => void;
 }
 
 export function useQueueView({
@@ -154,31 +167,59 @@ export function useQueueView({
     isExpFiltered ||
     isSalaryFiltered;
 
+  // Integrated decision feedback engine with commit beat, undo, and next-undecided jump
+  const {
+    committingCandidateId,
+    commitDecision,
+    isCommitting,
+    snackbarState,
+    canUndo,
+    dismissSnackbar,
+    applyDecision,
+    handleUndo,
+    handleClearCurrent: clearCandidate,
+    handleNextUndecided: jumpNextUndecided,
+    flushCommitBeat,
+  } = useDecisionFeedback({
+    onDomainDecision: onDecision,
+    setActiveIndex,
+    queue: filteredQueue,
+    commitBeatDurationMs: 420,
+  });
+
   const handleNext = useCallback(() => {
+    flushCommitBeat();
     if (activeIndex < filteredQueue.length - 1) {
       setActiveIndex((prev) => prev + 1);
     }
-  }, [activeIndex, filteredQueue.length]);
+  }, [activeIndex, filteredQueue.length, flushCommitBeat]);
 
   const handlePrev = useCallback(() => {
+    flushCommitBeat();
     if (activeIndex > 0) {
       setActiveIndex((prev) => prev - 1);
     }
-  }, [activeIndex]);
+  }, [activeIndex, flushCommitBeat]);
 
   const handleDecision = useCallback(
     (decision: ReviewDecision) => {
       if (!activeItem) return;
-      onDecision(activeItem.candidate.id, decision);
-
-      if (activeIndex < filteredQueue.length - 1) {
-        setActiveIndex((prev) => prev + 1);
-      }
+      applyDecision(activeItem, decision, activeIndex);
     },
-    [activeItem, activeIndex, filteredQueue.length, onDecision]
+    [activeItem, activeIndex, applyDecision]
   );
 
+  const handleClearCurrent = useCallback(() => {
+    if (!activeItem) return;
+    clearCandidate(activeItem, activeIndex);
+  }, [activeItem, activeIndex, clearCandidate]);
+
+  const handleNextUndecided = useCallback(() => {
+    jumpNextUndecided(activeIndex);
+  }, [activeIndex, jumpNextUndecided]);
+
   const handleEnterFocusMode = useCallback(() => {
+    flushCommitBeat();
     const q = buildReviewQueryString({
       candidateIndex: activeIndex,
       tab: activeTab,
@@ -186,9 +227,10 @@ export function useQueueView({
       group: selectedGroupId,
     });
     router.push(q ? `/review/focus?${q}` : "/review/focus");
-  }, [activeIndex, activeTab, selectedCity, selectedGroupId, router]);
+  }, [activeIndex, activeTab, selectedCity, selectedGroupId, router, flushCommitBeat]);
 
   const resetFilters = useCallback(() => {
+    flushCommitBeat();
     setSelectedGroupIdState(DEFAULT_GROUP_ID);
     setSelectedCity(null);
     setActiveTab("all");
@@ -196,12 +238,33 @@ export function useQueueView({
     setSalaryRangeState([salaryBounds.min, salaryBounds.max]);
     setIncludeUnstatedSalary(true);
     setActiveIndex(0);
-  }, [experienceBounds, salaryBounds]);
+  }, [experienceBounds, salaryBounds, flushCommitBeat]);
 
-  // Keyboard navigation for triage queue
+  // Keyboard navigation for triage queue: [A]/[Space] Keep, [F] Flag, [R] Pass, [Z] Undo, [U] Clear, [N] Next undecided
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (["INPUT", "TEXTAREA", "SELECT"].includes((e.target as HTMLElement)?.tagName)) {
+        return;
+      }
+
+      // Check undo key (Z or Ctrl/Cmd+Z)
+      if (e.key.toLowerCase() === "z") {
+        e.preventDefault();
+        handleUndo();
+        return;
+      }
+
+      // Check clear key (U)
+      if (e.key.toLowerCase() === "u") {
+        e.preventDefault();
+        handleClearCurrent();
+        return;
+      }
+
+      // Check jump to next undecided key (N)
+      if (e.key.toLowerCase() === "n") {
+        e.preventDefault();
+        handleNextUndecided();
         return;
       }
 
@@ -234,7 +297,14 @@ export function useQueueView({
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [handleDecision, handleNext, handlePrev]);
+  }, [
+    handleDecision,
+    handleNext,
+    handlePrev,
+    handleUndo,
+    handleClearCurrent,
+    handleNextUndecided,
+  ]);
 
   return {
     activeIndex,
@@ -264,5 +334,15 @@ export function useQueueView({
     handleDecision,
     handleEnterFocusMode,
     resetFilters,
+    committingCandidateId,
+    commitDecision,
+    isCommitting,
+    snackbarState,
+    canUndo,
+    dismissSnackbar,
+    handleUndo,
+    handleClearCurrent,
+    handleNextUndecided,
+    flushCommitBeat,
   };
 }

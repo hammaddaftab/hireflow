@@ -28,6 +28,9 @@ export interface CandidateReviewItem {
   jobId?: string;
   evaluations: EvaluatedRequirement[];
   decision: ReviewDecision;
+  decidedAt?: string | null;
+  previousDecision?: ReviewDecision | null;
+  syncStatus?: "saved" | "saving" | "failed";
 
   // Direct Concept Evaluator Outputs (null if criterion was disabled/inactive)
   experience: EvaluatedExperienceRequirement | null;

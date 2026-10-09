@@ -30,20 +30,29 @@ export async function upsertDecision(
     });
 }
 
+export interface PersistedDecisionRecord {
+  decision: ReviewDecision;
+  updatedAt?: Date | string | null;
+}
+
 export async function getDecisionsForJob(
   jobId: string
-): Promise<Map<string, ReviewDecision>> {
+): Promise<Map<string, PersistedDecisionRecord>> {
   const rows = await db
     .select({
       candidateId: candidateReviews.candidateId,
       decision: candidateReviews.decision,
+      updatedAt: candidateReviews.updatedAt,
     })
     .from(candidateReviews)
     .where(eq(candidateReviews.jobId, jobId));
 
-  const decisions = new Map<string, ReviewDecision>();
+  const decisions = new Map<string, PersistedDecisionRecord>();
   for (const row of rows) {
-    decisions.set(row.candidateId, row.decision as ReviewDecision);
+    decisions.set(row.candidateId, {
+      decision: row.decision as ReviewDecision,
+      updatedAt: row.updatedAt,
+    });
   }
   return decisions;
 }

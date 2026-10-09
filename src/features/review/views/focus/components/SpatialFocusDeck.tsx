@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useRef, useState, useEffect, useMemo, useCallback } from "react";
-import { motion, AnimatePresence, type PanInfo } from "motion/react";
+import React, { useRef, useState, useEffect, useMemo } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { CandidateCard } from "../../../core/components/card/CandidateCard";
 import { CandidateSideCard } from "./CandidateSideCard";
@@ -18,14 +18,18 @@ export interface SpatialFocusDeckProps {
   isEvidenceOpen: boolean;
   onToggleEvidence: () => void;
   resetFilters: () => void;
+  committingCandidateId?: string | null;
+  onClearDecision?: () => void;
+  onRetrySync?: () => void;
+  onChangeFocus?: () => void;
 }
 
-// Ground-up calibrated Fedora/GNOME spring physics: silky cushioned glide
-const FEDORA_SPRING = {
+// Fast, responsive spring physics: quick acceleration, zero bounce, settles in 220ms
+const FOCUS_SPRING = {
   type: "spring",
-  stiffness: 260,
-  damping: 26,
-  mass: 0.85,
+  stiffness: 380,
+  damping: 34,
+  mass: 0.5,
 } as const;
 
 interface VariantParams {
@@ -89,6 +93,10 @@ export function SpatialFocusDeck({
   isEvidenceOpen,
   onToggleEvidence,
   resetFilters,
+  committingCandidateId,
+  onClearDecision,
+  onRetrySync,
+  onChangeFocus,
 }: SpatialFocusDeckProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -154,25 +162,6 @@ export function SpatialFocusDeck({
     return list;
   }, [items, activeIndex, totalItems]);
 
-  // Handle tactile horizontal flick / swipe gesture on center card
-  const handleDragEnd = useCallback(
-    (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-      const swipeThreshold = 80;
-      const velocityThreshold = 300;
-
-      if (info.offset.x < -swipeThreshold || info.velocity.x < -velocityThreshold) {
-        if (activeIndex < totalItems - 1) {
-          onNext();
-        }
-      } else if (info.offset.x > swipeThreshold || info.velocity.x > velocityThreshold) {
-        if (activeIndex > 0) {
-          onPrev();
-        }
-      }
-    },
-    [activeIndex, totalItems, onNext, onPrev]
-  );
-
   if (totalItems === 0) {
     return (
       <div className="p-12 text-center border border-dashed border-outline-variant rounded-2xl bg-surface-container-low max-w-md">
@@ -198,12 +187,12 @@ export function SpatialFocusDeck({
       ref={containerRef}
       className="relative w-full h-full flex items-center justify-center overflow-hidden select-none"
     >
-      {/* Ambient background depth radial glow */}
+      {/* Ambient background depth subtle radial tint */}
       <div className="absolute inset-0 pointer-events-none flex items-center justify-center -z-10">
-        <div className="w-[840px] h-[520px] rounded-full bg-primary/[0.03] dark:bg-primary/[0.06] blur-3xl" />
+        <div className="w-[840px] h-[520px] rounded-full bg-primary/[0.02] dark:bg-primary/[0.04]" />
       </div>
 
-      {/* Spatial 3D Card Deck with Hardware-Accelerated Fedora Spring Physics */}
+      {/* Spatial 3D Card Deck with Hardware-Accelerated Responsive Spring Physics */}
       <AnimatePresence initial={false}>
         {visibleCards.map(({ item, offset }) => {
           const variants = getCardVariants({ offset, offsetDistance, isEvidenceOpen });
@@ -220,16 +209,7 @@ export function SpatialFocusDeck({
               initial={variants.initial}
               animate={variants.animate}
               exit={variants.exit}
-              whileHover={
-                !isCenter
-                  ? {
-                      scale: 0.87,
-                      opacity: 0.88,
-                      transition: FEDORA_SPRING,
-                    }
-                  : undefined
-              }
-              transition={FEDORA_SPRING}
+              transition={FOCUS_SPRING}
             >
               <div
                 className={`pointer-events-auto ${
@@ -240,13 +220,7 @@ export function SpatialFocusDeck({
               >
                 {isCenter ? (
                   // Center Apex Card: full interaction, evidence drawer expansion support
-                  <motion.div
-                    className="w-full relative shadow-2xl rounded-2xl"
-                    drag={!isEvidenceOpen ? "x" : false}
-                    dragConstraints={{ left: 0, right: 0 }}
-                    dragElastic={0.2}
-                    onDragEnd={!isEvidenceOpen ? handleDragEnd : undefined}
-                  >
+                  <div className="w-full relative shadow-2xl rounded-2xl">
                     <CandidateCard
                       item={item}
                       isActive={true}
@@ -255,8 +229,12 @@ export function SpatialFocusDeck({
                       isLayer2Expanded={isEvidenceOpen}
                       onToggleLayer2={onToggleEvidence}
                       expandedFullHeight={isEvidenceOpen}
+                      isCommitting={committingCandidateId === item.candidate.id}
+                      onClearDecision={onClearDecision}
+                      onRetrySync={onRetrySync}
+                      onChangeFocus={onChangeFocus}
                     />
-                  </motion.div>
+                  </div>
                 ) : (
                   // Side Preview Card: lightweight, vertically centered on common baseline, negative z-depth
                   <div
@@ -284,7 +262,7 @@ export function SpatialFocusDeck({
                   >
                     {/* Directional navigation action pill at visible inner edge */}
                     <div
-                      className={`absolute top-1/2 -translate-y-1/2 z-30 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container-highest/95 dark:bg-surface-container-highest/95 backdrop-blur-md border border-outline-variant/60 text-xs font-bold text-on-surface shadow-lg group-hover:border-primary/60 group-hover:text-primary transition-all duration-200 ${
+                      className={`absolute top-1/2 -translate-y-1/2 z-30 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container-highest/95 dark:bg-surface-container-highest/95 border border-outline-variant/60 text-xs font-bold text-on-surface shadow-lg group-hover:border-primary/60 group-hover:text-primary transition-all duration-200 ${
                         isLeft ? "right-7" : "left-7"
                       }`}
                     >
