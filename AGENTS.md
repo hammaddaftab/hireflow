@@ -28,7 +28,7 @@
 - **Ask Before Overwriting/Reverting**: Always explicitly ask the user whether to preserve their manual changes or undo/update them before modifying the affected file sections.
 
 ## Path & Linking Policy
-- **Repo Root as Path Root**: Always format markdown file links considering the repository root as the path root (e.g., `/src/...`, `/docs/...`). Do not use machine-specific absolute filesystem paths or `file:///` URIs.
+- **Repo Root as Path Root**: ONLY FOR PERSISTENT FILES, not for terminal output: always format markdown file links considering the repository root as the path root (e.g., `/src/...`, `/docs/...`). Do not use machine-specific absolute filesystem paths or `file:///` URIs.
 
 ## Commenting Policy
 - **Direct Comments Only**: Use direct single-line comments (`//` in TypeScript/JavaScript, `#` in Python/Bash) rather than multiline or JSDoc block comments (`/** ... */`, `/* ... */`). Keep explanations concise and adjacent to the relevant code.

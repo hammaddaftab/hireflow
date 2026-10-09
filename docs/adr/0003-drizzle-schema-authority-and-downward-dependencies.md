@@ -90,7 +90,7 @@ export type NewJob = typeof jobs.$inferInsert;
    * `src/entities/candidate.ts`: `candidates` table + `ParsedCandidateProfileSchema`.
    * `src/entities/review.ts`: `candidateReviews` table + `ReviewDecision` & `QueueFilterTab`.
    * `src/entities/matching.ts`: `queryEvaluations` table.
-4. **Cross-Cutting Data in `src/lib/`**: Shared fixtures and mock datasets (e.g., `mockCandidates.ts`) live in `src/lib/` rather than inside any single feature directory.
+4. **Seed Fixtures in `src/db/seeds/`**: Seed fixtures and mock datasets (e.g., `candidates.ts`, `jobs.ts`) live consolidated in `src/db/seeds/` rather than inside feature directories.
 
 ---
 

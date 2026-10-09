@@ -64,7 +64,7 @@ export function useResumeDropUpload({
             size: file.size,
             contentType: file.type || "application/octet-stream",
             status: "error",
-            error: "Unsupported format. Allowed: PDF, DOCX, TXT",
+            error: "Unsupported format. Allowed: PDF, TXT",
             jobId: jobId || null,
           });
         }
@@ -72,7 +72,7 @@ export function useResumeDropUpload({
 
       if (invalidEntries.length > 0) {
         setUploads((prev) => [...invalidEntries, ...prev]);
-        onError?.(`Unsupported file format. Allowed: PDF, DOCX, TXT`);
+        onError?.(`Unsupported file format. Allowed: PDF, TXT`);
       }
 
       if (validFiles.length === 0) return;

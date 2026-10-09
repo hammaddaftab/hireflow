@@ -123,8 +123,9 @@ export async function POST(request: NextRequest) {
     // Persist to PostgreSQL database
     await candidatesService.createCandidate(candidateProfile);
 
-    // Update upload record with target job ID
+    // Update upload record with target job ID and candidate ID
     await uploadsService.updateJobId(uploadId, jobId);
+    await uploadsService.updateCandidateId(uploadId, candidateProfile.id);
 
     return createSuccessResponse(
       {

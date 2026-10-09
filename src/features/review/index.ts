@@ -1,10 +1,4 @@
-// Single feature facade for Next.js app routes
-
-// Composed whole-page views
-export { ReviewQueuePage } from "./views/queue/ReviewQueuePage";
-export { FocusReviewPage } from "./views/focus/FocusReviewPage";
-
-// Review queue construction and review persistence services
+// Review queue construction and review persistence services (UI pages exported from ./views)
 export { buildReviewQueue } from "./core/services/reviewQueueService";
 export * from "./core/services/reviewsService";
 

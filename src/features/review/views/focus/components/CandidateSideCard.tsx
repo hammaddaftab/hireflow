@@ -58,10 +58,24 @@ export const CandidateSideCard = memo(function CandidateSideCard({
               <Building2 className="h-3 w-3 text-on-surface-variant shrink-0" />
               <span>{item.verifiedYearsExperience} yrs exp</span>
             </span>
-            <span className="flex items-center gap-1 text-[11px] font-mono text-on-surface-variant/70">
-              <FileText className="h-3 w-3 shrink-0" />
-              <span className="truncate max-w-[140px]">{candidate.source_document.filename}</span>
-            </span>
+            {candidate.source_document.url ? (
+              <a
+                href={candidate.source_document.url}
+                target="_blank"
+                rel="noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                className="flex items-center gap-1 text-[11px] font-mono text-on-surface-variant/70 hover:text-on-surface hover:underline cursor-pointer"
+                title="View original resume document"
+              >
+                <FileText className="h-3 w-3 shrink-0" />
+                <span className="truncate max-w-[140px]">{candidate.source_document.filename}</span>
+              </a>
+            ) : (
+              <span className="flex items-center gap-1 text-[11px] font-mono text-on-surface-variant/70">
+                <FileText className="h-3 w-3 shrink-0" />
+                <span className="truncate max-w-[140px]">{candidate.source_document.filename}</span>
+              </span>
+            )}
           </div>
 
           {primaryEducation && (

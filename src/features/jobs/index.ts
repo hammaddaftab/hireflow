@@ -1,8 +1,4 @@
-// Public Pages for Route Mounting
-export { DashboardPage } from "./Dashboard/DashboardPage";
-export { NewJobPage } from "./NewJob/NewJobPage";
-
-// Public Domain Models, Schemas, and Services
+// Public Domain Models, Schemas, and Services (UI pages exported from ./views)
 export * from "./types";
 export * from "./jobsSchema";
 export * from "./jobsService";

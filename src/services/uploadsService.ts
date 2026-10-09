@@ -1,4 +1,6 @@
 // Service for candidate resume uploads persisted directly in PostgreSQL via Drizzle ORM
+// Cross-cutting ingress service intentionally located in /src/services/ rather than /src/features/uploads/
+// to allow consumption across /uploads, /review, and API routes without violating ADR 0003 sibling import rules
 
 import { db, resumeUploads } from "@/db";
 import { desc, eq } from "drizzle-orm";
@@ -17,6 +19,7 @@ function toDomainRecord(row: ResumeUploadRecord): UploadedResumeRecord {
     pathname: row.pathname,
     hash: row.hash || "",
     jobId: row.jobId,
+    candidateId: row.candidateId || null,
     uploadedAt: row.createdAt.toISOString(),
   };
 }
@@ -56,6 +59,7 @@ export class UploadsService {
       pathname: record.pathname,
       hash: record.hash || null,
       jobId: record.jobId || null,
+      candidateId: record.candidateId || null,
       status: record.status || "stored",
       createdAt: record.uploadedAt ? new Date(record.uploadedAt) : now,
       updatedAt: now,
@@ -76,6 +80,7 @@ export class UploadsService {
       pathname: record.pathname,
       hash: record.hash || null,
       jobId: record.jobId || null,
+      candidateId: record.candidateId || null,
       status: record.status || "stored",
       createdAt: record.uploadedAt ? new Date(record.uploadedAt) : now,
       updatedAt: now,
@@ -104,6 +109,17 @@ export class UploadsService {
     const result = await db
       .update(resumeUploads)
       .set({ jobId, updatedAt: new Date() })
+      .where(eq(resumeUploads.id, id))
+      .returning({ id: resumeUploads.id });
+
+    return result.length > 0;
+  }
+
+  // Associate a resume upload with a candidate ID
+  async updateCandidateId(id: string, candidateId: string): Promise<boolean> {
+    const result = await db
+      .update(resumeUploads)
+      .set({ candidateId, updatedAt: new Date() })
       .where(eq(resumeUploads.id, id))
       .returning({ id: resumeUploads.id });
 

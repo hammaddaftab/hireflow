@@ -388,7 +388,7 @@ export function UploadsPage({ initialUploads, isBlobConfigured: _isBlobConfigure
         ref={fileInputRef}
         type="file"
         multiple
-        accept=".pdf,.txt,.docx,.doc,.md"
+        accept=".pdf,.txt,.md"
         className="hidden"
         onChange={(e) => {
           if (e.target.files && e.target.files.length > 0) {
@@ -523,7 +523,7 @@ export function UploadsPage({ initialUploads, isBlobConfigured: _isBlobConfigure
             {isUploading ? "Uploading Documents to Vercel Blob..." : "Drag and Drop Resumes Here"}
           </Typography>
           <Typography variant="body-medium" className="text-on-surface-variant text-xs max-w-md mx-auto">
-            Drop PDF, DOCX, or TXT candidate resumes to persist them into Vercel Blob Storage with SHA-256 provenance hashes.
+            Drop PDF or TXT candidate resumes to persist them into Vercel Blob Storage with SHA-256 provenance hashes.
           </Typography>
         </div>
 

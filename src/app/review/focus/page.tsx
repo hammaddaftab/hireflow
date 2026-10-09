@@ -3,7 +3,8 @@ export const dynamic = "force-dynamic";
 import React from "react";
 import { jobsService } from "@/features/jobs";
 import { candidatesService } from "@/features/candidates";
-import { buildReviewQueue, FocusReviewPage, reviewsService } from "@/features/review";
+import { buildReviewQueue, reviewsService } from "@/features/review";
+import { FocusReviewPage } from "@/features/review/views";
 import { groupsService } from "@/features/groups/groupsService";
 import type { QueueFilterTab } from "@/entities/review";
 
@@ -29,9 +30,12 @@ export default async function FocusRoutePage({
     );
   }
 
-  const allCandidates = await candidatesService.getAllCandidates();
-  const priorDecisions = await reviewsService.getDecisionsForJob(activeJob.id);
-  const persistedGroups = await groupsService.getGroupsForJob(activeJob.id);
+  // Parallelize independent database queries to eliminate waterfalls
+  const [allCandidates, priorDecisions, persistedGroups] = await Promise.all([
+    candidatesService.getAllCandidates(),
+    reviewsService.getDecisionsForJob(activeJob.id),
+    groupsService.getGroupsForJob(activeJob.id),
+  ]);
   const queue = buildReviewQueue(allCandidates, activeJob, priorDecisions);
 
   const initialIndex = params.candidateIndex ? parseInt(params.candidateIndex, 10) : 0;

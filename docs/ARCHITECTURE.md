@@ -20,7 +20,7 @@ HireFlow takes a fundamentally different approach:
 The diagram below traces the end-to-end lifecycle of candidate data through the system, from raw resume ingress to candidate decision persistence:
 
 ```
-[Candidate Documents: PDF, DOCX, TXT]
+[Candidate Documents: PDF, TXT]
                     │
                     ▼
 ┌────────────────────────────────────────────────────────────────────────┐

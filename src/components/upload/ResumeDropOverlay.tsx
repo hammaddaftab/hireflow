@@ -32,7 +32,7 @@ export function ResumeDropOverlay({ isVisible }: ResumeDropOverlayProps) {
 
         <div className="flex items-center gap-2 pt-2 text-xs font-medium text-on-surface-variant">
           <span className="px-3 py-1 rounded-full bg-surface-container border border-outline-variant font-mono">
-            PDF, DOCX, TXT
+            PDF, TXT
           </span>
           <span className="text-on-surface-variant/70">• Max 25 MB</span>
         </div>

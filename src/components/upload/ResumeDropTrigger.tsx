@@ -41,7 +41,7 @@ export function ResumeDropTrigger({
         ref={fileInputRef}
         type="file"
         multiple
-        accept=".pdf,.txt,.docx,.doc,.md"
+        accept=".pdf,.txt,.md"
         className="hidden"
         onChange={handleInputChange}
         aria-label="Upload candidate resumes"

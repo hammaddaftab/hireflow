@@ -44,13 +44,13 @@ export async function seedGroups() {
     description: "Salary expectation above standard band or notice duration > 30 days.",
   };
 
-  // Group 3: Core Full Stack Match (Root group)
+  // Group 3: Core Backend Match (Root group)
   const groupFullStack = {
     id: "grp_full_stack_core",
     jobId,
     parentId: null,
-    name: "Full Stack Core (TS & React)",
-    description: "Candidates with proven demonstrated TypeScript, React, and Node.js production experience.",
+    name: "Backend Core (Go & Cloud)",
+    description: "Candidates with proven demonstrated Go, microservices, and cloud/distributed systems production experience.",
   };
 
   const allGroups = [

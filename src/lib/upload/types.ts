@@ -15,6 +15,7 @@ export interface DroppedResumeItem {
   error?: string;
   uploadedAt?: string;
   jobId?: string | null;
+  candidateId?: string | null;
 }
 
 export interface UploadedResumeRecord {
@@ -27,6 +28,7 @@ export interface UploadedResumeRecord {
   pathname: string;
   hash: string;
   jobId: string | null;
+  candidateId?: string | null;
   uploadedAt: string;
 }
 

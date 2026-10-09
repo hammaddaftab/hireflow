@@ -11,7 +11,7 @@
 Candidate documents enter HireFlow either through the bulk `/uploads` hub (for multi-file assignment with feedback decks) or via fast-drop directly in `/review` (auto-scoped to the active job).
 
 Handling document uploads and subsequent LLM candidate extraction introduces two key architectural requirements:
-* **Decoupled Binary Storage**: Raw document files (`.pdf`, `.docx`, `.txt`) must be stored durably without bloating the PostgreSQL database with binary payloads.
+* **Decoupled Binary Storage**: Raw document files (`.pdf`, `.txt`, `.md`) must be stored durably without bloating the PostgreSQL database with binary payloads.
 * **LLM Rate-Limit and Token Control**: Ingesting multiple resumes concurrently triggers multi-aspect profile extraction across 7 schemas. Firing extraction requests in parallel risks saturating provider LLM rate limits and token quotas (e.g., OpenAI RPM/TPM and Google Gemini rate limits).
 
 ---
@@ -45,7 +45,7 @@ Upload files to blob storage first, then sequentially invoke LLM extraction per 
 **Chosen Option**: **Option C (Two-Stage Storage with Sequential Client Extraction)**.
 
 ```
-[Candidate Documents: PDF, DOCX, TXT]
+[Candidate Documents: PDF, TXT]
                     │
                     ▼
 [Step 1: Storage Layer - POST /api/resumes/upload]

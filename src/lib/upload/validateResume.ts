@@ -2,7 +2,7 @@
 
 export const MAX_RESUME_SIZE_BYTES = 25 * 1024 * 1024; // 25 MB
 
-export const ALLOWED_RESUME_EXTENSIONS = [".pdf", ".txt", ".docx", ".doc", ".md"] as const;
+export const ALLOWED_RESUME_EXTENSIONS = [".pdf", ".txt", ".md"] as const;
 
 // Check if a file has an allowed resume extension
 export function isValidResumeExtension(filename: string): boolean {
@@ -31,7 +31,7 @@ export function validateResumeFile(file: { name: string; size: number }): { vali
   if (!isValidResumeExtension(file.name)) {
     return {
       valid: false,
-      error: `Unsupported file format for '${file.name}'. Allowed formats: PDF, DOCX, TXT, MD`,
+      error: `Unsupported file format for '${file.name}'. Allowed formats: PDF, TXT, MD`,
     };
   }
 
