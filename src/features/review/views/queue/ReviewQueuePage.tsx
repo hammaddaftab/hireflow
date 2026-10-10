@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Briefcase, MapPin, CheckCircle2, AlertCircle, X, Network } from "lucide-react";
 import { Typography } from "@/components/ui/Typography";
 import { Button } from "@/components/ui/Button";
@@ -15,7 +15,7 @@ import { useQueueView } from "./hooks/useQueueView";
 import { CandidateCard } from "../../core/components/card/CandidateCard";
 import { ReviewDeckControls } from "./components/ReviewDeckControls";
 import { EvidentiaryLegend } from "./components/EvidentiaryLegend";
-import { KeyboardShortcutBar } from "./components/KeyboardShortcutBar";
+import { KeyboardShortcutModal } from "./components/KeyboardShortcutBar";
 import { DecisionSnackbar } from "../../core/components/feedback/DecisionSnackbar";
 import { DecisionProgressStrip } from "../../core/components/feedback/DecisionProgressStrip";
 import {
@@ -64,7 +64,7 @@ export function ReviewQueuePage({
   initialCity = null,
   initialGroupId = null,
 }: ReviewQueuePageProps) {
-  // Tier 1: Domain State Engine
+  // Domain state engine
   const {
     queue,
     setQueue,
@@ -78,11 +78,13 @@ export function ReviewQueuePage({
 
   const candidates = useMemo(() => queue.map((item) => item.candidate), [queue]);
   const [isGroupModalOpen, setIsGroupModalOpen] = useState(false);
+  const [isShortcutsOpen, setIsShortcutsOpen] = useState(false);
+  const [isLayer2Expanded, setIsLayer2Expanded] = useState(false);
 
   // Real-time feedback alert banner
   const [feedback, setFeedback] = useState<{ type: "success" | "error"; message: string } | null>(null);
 
-  // Tier 2: Viewport State Controller
+  // Viewport state controller
   const {
     activeIndex,
     setActiveIndex,
@@ -111,14 +113,10 @@ export function ReviewQueuePage({
     resetFilters,
     committingCandidateId,
     commitDecision,
-    isCommitting,
     snackbarState,
-    canUndo,
     dismissSnackbar,
     handleUndo,
     handleClearCurrent,
-    handleNextUndecided,
-    flushCommitBeat,
   } = useQueueView({
     queue,
     queryGroups,
@@ -132,7 +130,7 @@ export function ReviewQueuePage({
   const activeGroupName = queryGroups.find((g) => g.id === selectedGroupId)?.name || "All Applicants (Default)";
   const activeGroupCount = queryGroups.find((g) => g.id === selectedGroupId)?.candidateIds.length ?? queue.length;
 
-  // Tier 2.5: Drag and Drop Resume Ingestion Engine (Vercel Blob Storage + Sequential LLM Extraction)
+  // Drag and drop resume ingestion
   const {
     isDraggingOver,
     uploads,
@@ -142,7 +140,6 @@ export function ReviewQueuePage({
   } = useResumeDropUpload({
     jobId: initialJob.id,
     onCandidateIngested: (candidate) => {
-      // Evaluate candidate profile against active job requirements and append to triage queue
       const evaluatedItems = buildReviewQueue([candidate], initialJob);
       if (evaluatedItems.length > 0) {
         setQueue((prev) => {
@@ -169,123 +166,152 @@ export function ReviewQueuePage({
     },
   });
 
-  // Track main pane width and left offset for floating hotkeys dock
-  const mainPaneRef = useRef<HTMLElement>(null);
-  const [mainBounds, setMainBounds] = useState<{ left: number; width: number } | null>(null);
-
+  // Collapse Layer 2 details when active candidate changes
   useEffect(() => {
-    const updateBounds = () => {
-      if (mainPaneRef.current) {
-        const rect = mainPaneRef.current.getBoundingClientRect();
-        setMainBounds({ left: rect.left, width: rect.width });
+    setIsLayer2Expanded(false);
+  }, [activeItem?.candidate.id]);
+
+  // Keyboard shortcut listener for shortcuts modal (?) and evidence toggle (E)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (["INPUT", "TEXTAREA", "SELECT"].includes((e.target as HTMLElement)?.tagName)) {
+        return;
+      }
+
+      if (e.key === "?" || (e.shiftKey && e.key === "/")) {
+        e.preventDefault();
+        setIsShortcutsOpen((prev) => !prev);
+        return;
+      }
+
+      if (e.key.toLowerCase() === "e") {
+        e.preventDefault();
+        setIsLayer2Expanded((prev) => !prev);
+        return;
       }
     };
 
-    updateBounds();
-
-    const resizeObserver = new ResizeObserver(() => {
-      updateBounds();
-    });
-
-    if (mainPaneRef.current) {
-      resizeObserver.observe(mainPaneRef.current);
-    }
-
-    window.addEventListener("resize", updateBounds);
-    return () => {
-      resizeObserver.disconnect();
-      window.removeEventListener("resize", updateBounds);
-    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
   return (
-    <div className="max-w-[1600px] mx-auto pb-16 relative">
+    <div className="w-full max-w-7xl mx-auto -mt-8 pb-16 relative">
       {/* Visual Drag and Drop Overlay for Candidate Resumes */}
       <ResumeDropOverlay isVisible={isDraggingOver} />
 
-      {/* Top Application Header */}
-      <header className="mb-6 space-y-2">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="text-xs uppercase tracking-wider font-semibold text-primary">
-                HireFlow Triage
-              </span>
-              <span className="text-xs text-on-surface-variant font-mono">• Sequential Review</span>
-            </div>
-            <Typography variant="headline-medium" className="text-on-surface font-bold">
-              {initialJob.title}
-            </Typography>
-            <div className="flex items-center gap-4 text-xs text-on-surface-variant mt-1">
-              <span className="flex items-center gap-1">
-                <Briefcase className="h-3.5 w-3.5" />
-                {initialJob.department || "Engineering"}
-              </span>
-              <span className="flex items-center gap-1">
-                <MapPin className="h-3.5 w-3.5" />
-                {initialJob.location || "Pakistan"}
-              </span>
-              <span className="font-mono text-xs">
-                {stats.decisionsMade} / {stats.totalCount} Decided
-              </span>
+      {/* 1. Sticky Job and Progress Header directly below App Header */}
+      <header className="sticky top-16 z-20 bg-surface/95 backdrop-blur-md border-b border-outline-variant/30 py-2.5 px-1 mb-2.5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          {/* Left Side: Job Title & Metadata */}
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+              <Typography variant="title-large" className="text-lg sm:text-xl font-bold tracking-tight text-on-surface">
+                {initialJob.title}
+              </Typography>
+              <div className="flex flex-wrap items-center gap-3 text-xs text-on-surface-variant font-medium">
+                <span className="flex items-center gap-1">
+                  <Briefcase className="h-3.5 w-3.5 shrink-0" />
+                  <span>{initialJob.department || "Engineering"}</span>
+                </span>
+                <span className="flex items-center gap-1">
+                  <MapPin className="h-3.5 w-3.5 shrink-0" />
+                  <span>{initialJob.location || "Pakistan"}</span>
+                </span>
+                {FEATURES.CANDIDATE_GROUPS && (
+                  <button
+                    type="button"
+                    onClick={() => setIsGroupModalOpen(true)}
+                    className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg border border-outline-variant/40 bg-surface-container hover:bg-surface-container-high transition-colors cursor-pointer text-xs font-semibold text-on-surface shadow-2xs"
+                    title="Change Active Group (Canvas Topology)"
+                    aria-label="Change Active Group"
+                  >
+                    <Network className="h-3.5 w-3.5 text-primary shrink-0" />
+                    <span className="truncate max-w-[140px]">{activeGroupName}</span>
+                    <span className="text-[10px] font-mono px-1.5 py-0.2 rounded-full bg-surface-container-high font-bold text-on-surface-variant">
+                      {activeGroupCount}
+                    </span>
+                  </button>
+                )}
+              </div>
             </div>
           </div>
 
-          {/* Candidate Position, Decision Counts, and Active Group Selector */}
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 self-start sm:self-center">
-            {/* Active Group Button (Opens Canvas Modal) */}
-            {FEATURES.CANDIDATE_GROUPS && (
-              <button
-                type="button"
-                onClick={() => setIsGroupModalOpen(true)}
-                className="flex items-center gap-2.5 px-3.5 py-2 rounded-xl border border-outline-variant/40 bg-surface-container hover:bg-surface-container-high transition-colors cursor-pointer text-xs font-semibold text-on-surface shadow-2xs"
-                title="Change Active Group (Canvas Topology)"
-                aria-label="Change Active Group"
-              >
-                <Network className="h-4 w-4 text-primary shrink-0" />
-                <div className="flex flex-col text-left">
-                  <span className="text-[10px] font-mono text-on-surface-variant uppercase tracking-wider">Active Group</span>
-                  <span className="text-xs font-bold text-on-surface truncate max-w-[160px]">{activeGroupName}</span>
-                </div>
-                <span className="text-[11px] font-mono px-2 py-0.5 rounded-full bg-surface-container-high font-bold text-on-surface-variant ml-0.5">
-                  {activeGroupCount}
-                </span>
-              </button>
-            )}
-
-            <div className="flex flex-col items-start sm:items-end gap-1">
-              <Typography variant="title-large" className="text-on-surface text-3xl sm:text-4xl leading-none">
+          {/* Right Side: Candidate Position, Totals & Progress Indicator */}
+          <div className="flex flex-col sm:items-end items-start gap-1 shrink-0">
+            <div className="flex items-center gap-3">
+              <span className="text-base sm:text-lg font-bold font-mono text-on-surface">
                 {filteredQueue.length > 0 ? `${activeIndex + 1} / ${filteredQueue.length}` : "0 / 0"}
-              </Typography>
-              <div className="flex flex-col gap-0.5 w-28 text-xs text-on-surface-variant font-medium">
-                <div className="flex items-center justify-between">
+              </span>
+
+              <span className="text-outline-variant/60">•</span>
+
+              <div className="flex items-center gap-2.5 text-xs text-on-surface-variant font-medium">
+                <span className="flex items-center gap-1">
                   <span>Keep:</span>
-                  <span className={`font-mono font-medium transition-colors duration-200 text-emerald-700 dark:text-emerald-400 ${commitDecision === "keep" ? "font-bold scale-110" : ""}`}>{stats.keptCount}</span>
-                </div>
-                <div className="flex items-center justify-between">
+                  <span className={`font-mono transition-colors duration-200 text-emerald-700 dark:text-emerald-400 ${commitDecision === "keep" ? "font-bold scale-110" : ""}`}>
+                    {stats.keptCount}
+                  </span>
+                </span>
+                <span className="flex items-center gap-1">
                   <span>Flagged:</span>
-                  <span className={`font-mono font-medium transition-colors duration-200 text-amber-700 dark:text-amber-400 ${commitDecision === "flag" ? "font-bold scale-110" : ""}`}>{stats.flaggedCount}</span>
-                </div>
-                <div className="flex items-center justify-between">
+                  <span className={`font-mono transition-colors duration-200 text-amber-700 dark:text-amber-400 ${commitDecision === "flag" ? "font-bold scale-110" : ""}`}>
+                    {stats.flaggedCount}
+                  </span>
+                </span>
+                <span className="flex items-center gap-1">
                   <span>Passed:</span>
-                  <span className={`font-mono font-medium transition-colors duration-200 text-rose-700 dark:text-rose-400 ${commitDecision === "pass" ? "font-bold scale-110" : ""}`}>{stats.passedCount}</span>
-                </div>
+                  <span className={`font-mono transition-colors duration-200 text-rose-700 dark:text-rose-400 ${commitDecision === "pass" ? "font-bold scale-110" : ""}`}>
+                    {stats.passedCount}
+                  </span>
+                </span>
               </div>
-              {filteredQueue.length > 0 && (
-                <DecisionProgressStrip
-                  items={filteredQueue}
-                  activeIndex={activeIndex}
-                  onSelectIndex={setActiveIndex}
-                  className="w-28 sm:w-36 mt-1"
-                />
-              )}
             </div>
+
+            {filteredQueue.length > 0 && (
+              <DecisionProgressStrip
+                items={filteredQueue}
+                activeIndex={activeIndex}
+                onSelectIndex={setActiveIndex}
+                className="w-full sm:w-48 mt-0.5"
+              />
+            )}
           </div>
         </div>
       </header>
 
-      {/* Main Candidate Review Queue Area */}
-      <main ref={mainPaneRef} className="max-w-4xl mx-auto w-full space-y-4 pb-20">
+      {/* 2. Candidate Tabs and Review Controls Toolbar */}
+      <div className="mb-2">
+        <ReviewDeckControls
+          activeTab={activeTab}
+          onSelectTab={(tab) => {
+            setActiveTab(tab);
+            setActiveIndex(0);
+          }}
+          tabCounts={tabCounts}
+          onEnterFocusMode={handleEnterFocusMode}
+          onToggleFilters={() => setIsFilterPaneOpen((prev: boolean) => !prev)}
+          hasActiveFilters={hasActiveFilters}
+          onToggleShortcuts={() => setIsShortcutsOpen((prev) => !prev)}
+          isShortcutsOpen={isShortcutsOpen}
+          rightSlot={
+            <ResumeDropTrigger
+              onFilesSelected={uploadFiles}
+              uploadCount={uploads.length}
+              isUploading={isUploading}
+              statusLabel={statusLabel}
+            />
+          }
+        />
+      </div>
+
+      {/* 3. Compact Evidence Key */}
+      <div className="mb-2.5 px-1">
+        <EvidentiaryLegend />
+      </div>
+
+      {/* 4. Full-Width Candidate Card Area */}
+      <main className="w-full space-y-3 pb-16">
         {/* Real-time Ingestion Feedback Notification */}
         {feedback && (
           <div
@@ -315,8 +341,6 @@ export function ReviewQueuePage({
           </div>
         )}
 
-
-
         {/* All Decided Completion Banner */}
         {filteredQueue.length > 0 && filteredQueue.every((item) => item.decision !== "pending") && (
           <div className="flex items-center justify-between p-3.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-xs text-on-surface">
@@ -341,30 +365,6 @@ export function ReviewQueuePage({
           </div>
         )}
 
-        {/* Top Bar: Queue Segmented Tabs + Focus Trigger + Resume Drop Trigger */}
-        <ReviewDeckControls
-          activeTab={activeTab}
-          onSelectTab={(tab) => {
-            setActiveTab(tab);
-            setActiveIndex(0);
-          }}
-          tabCounts={tabCounts}
-          onEnterFocusMode={handleEnterFocusMode}
-          onToggleFilters={() => setIsFilterPaneOpen((prev: boolean) => !prev)}
-          hasActiveFilters={hasActiveFilters}
-          rightSlot={
-            <ResumeDropTrigger
-              onFilesSelected={uploadFiles}
-              uploadCount={uploads.length}
-              isUploading={isUploading}
-              statusLabel={statusLabel}
-            />
-          }
-        />
-
-        {/* Evidentiary Status Legend */}
-        <EvidentiaryLegend className="px-1" />
-
         {/* Active Candidate Focused Card with Directional Decision Exit Transitions */}
         <AnimatePresence mode="wait" custom={commitDecision}>
           {activeItem ? (
@@ -384,6 +384,8 @@ export function ReviewQueuePage({
                 isCommitting={committingCandidateId === activeItem.candidate.id}
                 onClearDecision={handleClearCurrent}
                 onRetrySync={() => retryDecision(activeItem.candidate.id)}
+                isLayer2Expanded={isLayer2Expanded}
+                onToggleLayer2={() => setIsLayer2Expanded((prev) => !prev)}
               />
             </motion.div>
           ) : (
@@ -408,27 +410,23 @@ export function ReviewQueuePage({
             </Card>
           )}
         </AnimatePresence>
-
-        {/* Fixed Hotkey Dock & Decision Feedback Snackbar */}
-        <div
-          className="fixed bottom-4 z-30 pointer-events-none flex flex-col items-center gap-2 px-4 transition-[left,width] duration-150"
-          style={
-            mainBounds
-              ? { left: `${mainBounds.left}px`, width: `${mainBounds.width}px` }
-              : { left: 0, right: 0 }
-          }
-        >
-          <DecisionSnackbar
-            state={snackbarState}
-            onUndo={handleUndo}
-            onRetry={(candidateId) => retryDecision(candidateId)}
-            onDismiss={dismissSnackbar}
-          />
-          <div className="pointer-events-auto">
-            <KeyboardShortcutBar />
-          </div>
-        </div>
       </main>
+
+      {/* 5. Shortcuts Modal (On-Demand Help Dialog) */}
+      <KeyboardShortcutModal
+        isOpen={isShortcutsOpen}
+        onClose={() => setIsShortcutsOpen(false)}
+      />
+
+      {/* Decision Feedback Toast Snackbar */}
+      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-30 pointer-events-none flex flex-col items-center">
+        <DecisionSnackbar
+          state={snackbarState}
+          onUndo={handleUndo}
+          onRetry={(candidateId) => retryDecision(candidateId)}
+          onDismiss={dismissSnackbar}
+        />
+      </div>
 
       {/* Integrated Queue Filters HUD Drawer */}
       <ReviewFilterPane

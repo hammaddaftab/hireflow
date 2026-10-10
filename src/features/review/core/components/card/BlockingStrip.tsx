@@ -425,19 +425,23 @@ export function BlockingStrip({
   education,
   logistics,
 }: BlockingStripProps) {
+  const hasCol2 = Boolean((education && education.hasEducation) || logistics);
+
   return (
-    <div className="w-full space-y-3.5 text-xs">
-      {/* Category 1: Experience */}
-      {experience && <ExperienceRow experience={experience} />}
+    <div className={`w-full grid grid-cols-1 ${hasCol2 ? "lg:grid-cols-2" : ""} gap-4 lg:gap-6 text-xs`}>
+      {/* Column 1: Experience & Skills */}
+      <div className="space-y-3.5 min-w-0">
+        {experience && <ExperienceRow experience={experience} />}
+        {skills && <SkillsRow skills={skills} />}
+      </div>
 
-      {/* Category 2: Skills */}
-      {skills && <SkillsRow skills={skills} />}
-
-      {/* Category 3: Education */}
-      {education && education.hasEducation && <EducationRow education={education} />}
-
-      {/* Category 4: Logistics */}
-      {logistics && <LogisticsRow logistics={logistics} />}
+      {/* Column 2: Education & Logistics */}
+      {hasCol2 && (
+        <div className="space-y-3.5 min-w-0">
+          {education && education.hasEducation && <EducationRow education={education} />}
+          {logistics && <LogisticsRow logistics={logistics} />}
+        </div>
+      )}
     </div>
   );
 }

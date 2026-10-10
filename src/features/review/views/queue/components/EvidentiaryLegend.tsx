@@ -9,7 +9,7 @@ export interface EvidentiaryLegendProps {
 
 export function EvidentiaryLegend({ className = "" }: EvidentiaryLegendProps) {
   return (
-    <div className={`flex flex-wrap items-center gap-4 text-xs text-on-surface-variant font-medium ${className}`}>
+    <div className={`flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-on-surface-variant font-medium py-0.5 ${className}`}>
       <span className="inline-flex items-center gap-1.5">
         <EvidentiaryDot type="confirmed" />
         <span>confirmed</span>

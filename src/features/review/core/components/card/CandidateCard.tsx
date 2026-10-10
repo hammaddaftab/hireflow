@@ -455,41 +455,45 @@ export function CandidateCard({
 
       {/* LAYER 1: Category-Grouped Evidence Display with Exception Collapse */}
       <div
-        className={`mt-5 p-4 rounded-2xl bg-surface-container space-y-3 border-0 transition-all duration-200 ${
+        className={`mt-4 p-4 rounded-2xl bg-surface-container space-y-3 border-0 transition-all duration-200 ${
           item.decision === "pass" && !isLayer2Expanded
             ? "opacity-70 grayscale-[50%] group-hover/card:opacity-100 group-hover/card:grayscale-0 group-focus-within/card:opacity-100 group-focus-within/card:grayscale-0"
             : ""
         }`}
       >
-        <div className="flex flex-col md:flex-row md:items-start justify-between gap-3">
-          {/* Category Rows (Experience, Skills, Education, Logistics) */}
-          <div className="flex-1">
-            <BlockingStrip
-              experience={item.experience}
-              skills={item.skills}
-              education={item.education}
-              logistics={item.logistics}
-            />
-          </div>
+        <div className="flex items-center justify-between gap-2 pb-2 border-b border-outline-variant/30">
+          <span className="text-[11px] font-bold uppercase tracking-wider text-on-surface-variant">
+            Screening Evidence
+          </span>
 
-          {/* Action & Disclosure Controls */}
-          <div className="shrink-0 self-end md:self-start pt-0.5">
-            {/* Toggle Layer 2 Details */}
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={(e) => {
-                e.stopPropagation();
-                toggleLayer2();
-              }}
-              className="h-8 px-3 gap-1.5 text-xs font-bold rounded-xl bg-surface-container-high hover:bg-surface-container-highest text-on-surface border-0 transition-colors"
-            >
-              <Eye className="h-3.5 w-3.5 shrink-0 text-on-surface-variant" />
-              <span>{isLayer2Expanded ? "Hide" : "Evidence"}</span>
-              {isLayer2Expanded ? <ChevronUp className="h-3 w-3 shrink-0" /> : <ChevronDown className="h-3 w-3 shrink-0 text-on-surface-variant" />}
-            </Button>
-          </div>
+          {/* Toggle Layer 2 Details */}
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleLayer2();
+            }}
+            className="h-7 px-2.5 gap-1.5 text-xs font-bold rounded-xl bg-surface-container-high hover:bg-surface-container-highest text-on-surface border-0 transition-colors cursor-pointer"
+            title={isLayer2Expanded ? "Hide detailed evidence drawer" : "Show detailed evidence drawer"}
+          >
+            <Eye className="h-3.5 w-3.5 shrink-0 text-on-surface-variant" />
+            <span>{isLayer2Expanded ? "Hide" : "Evidence"}</span>
+            {isLayer2Expanded ? (
+              <ChevronUp className="h-3 w-3 shrink-0" />
+            ) : (
+              <ChevronDown className="h-3 w-3 shrink-0 text-on-surface-variant" />
+            )}
+          </Button>
         </div>
+
+        {/* Category Rows (Experience, Skills, Education, Logistics) */}
+        <BlockingStrip
+          experience={item.experience}
+          skills={item.skills}
+          education={item.education}
+          logistics={item.logistics}
+        />
       </div>
 
       {/* LAYER 2: On-Demand Categorical Evidence Drawer */}
