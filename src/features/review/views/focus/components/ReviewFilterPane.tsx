@@ -6,6 +6,7 @@ import { X, ChevronUp, ChevronDown, GripVertical, ArrowLeftRight } from "lucide-
 import type { QueueFilterTab } from "@/entities/review";
 import { DualRangeSlider } from "@/components/ui/DualRangeSlider";
 import { formatSalaryNumber } from "@/features/review/core/utils/queueCalculations";
+import { useActiveReviewChips } from "@/features/review/core/hooks/useActiveReviewChips";
 
 export type FilterGroupId = "status" | "location" | "university" | "experience" | "salary";
 
@@ -216,81 +217,23 @@ export function ReviewFilterPane({
   const statusOpen = onToggleStatus ? isStatusOpen : internalStatusOpen;
   const toggleStatus = onToggleStatus || (() => setInternalStatusOpen((prev: boolean) => !prev));
 
-  // Build active filter chips for Zone 1
-  interface ActiveChip {
-    id: string;
-    label: string;
-    onRemove: () => void;
-  }
-
-  const activeChips: ActiveChip[] = [];
-
-  if (activeTab && activeTab !== "all") {
-    const tabLabels: Record<string, string> = {
-      fast_clear: "Confirmed",
-      needs_attention: "2nd Look",
-      contradicted: "Contradicted",
-    };
-    activeChips.push({
-      id: `tab-${activeTab}`,
-      label: tabLabels[activeTab] || activeTab,
-      onRemove: () => onSelectTab?.("all"),
-    });
-  }
-
-  if (selectedCity !== null) {
-    activeChips.push({
-      id: `city-${selectedCity}`,
-      label: selectedCity,
-      onRemove: () => onSelectCity(null),
-    });
-  }
-
-  if (selectedUniversity !== null && selectedUniversity !== undefined) {
-    activeChips.push({
-      id: `university-${selectedUniversity}`,
-      label: selectedUniversity,
-      onRemove: () => onSelectUniversity?.(null),
-    });
-  }
-
-  // Active chip for experience filter
-  if (
-    experienceRange &&
-    (experienceRange[0] > experienceBounds.min || experienceRange[1] < experienceBounds.max)
-  ) {
-    const maxExpLabel =
-      experienceRange[1] >= experienceBounds.max
-        ? `${experienceRange[1]}+`
-        : `${experienceRange[1]}`;
-    activeChips.push({
-      id: "filter-exp",
-      label: `Exp: ${experienceRange[0]}–${maxExpLabel} yrs`,
-      onRemove: () => onExperienceChange?.([experienceBounds.min, experienceBounds.max]),
-    });
-  }
-
-  // Active chip for salary filter
-  if (
-    salaryRange &&
-    (salaryRange[0] > salaryBounds.min ||
-      salaryRange[1] < salaryBounds.max ||
-      includeUnstatedSalary === false)
-  ) {
-    const minSalLabel = formatSalaryNumber(salaryRange[0]);
-    const maxSalLabel = formatSalaryNumber(salaryRange[1]);
-    const unstatedSuffix = includeUnstatedSalary === false ? " (stated only)" : "";
-    activeChips.push({
-      id: "filter-salary",
-      label: `Salary: ${minSalLabel}–${maxSalLabel} ${salaryBounds.currency}${unstatedSuffix}`,
-      onRemove: () => {
-        onSalaryChange?.([salaryBounds.min, salaryBounds.max]);
-        if (includeUnstatedSalary === false) {
-          onToggleIncludeUnstatedSalary?.();
-        }
-      },
-    });
-  }
+  // Active filters list and count
+  const activeChips = useActiveReviewChips({
+    activeTab,
+    onSelectTab,
+    selectedCity,
+    onSelectCity,
+    selectedUniversity,
+    onSelectUniversity,
+    experienceRange,
+    onExperienceChange,
+    experienceBounds,
+    salaryRange,
+    onSalaryChange,
+    salaryBounds,
+    includeUnstatedSalary,
+    onToggleIncludeUnstatedSalary,
+  });
 
   // Status options for category picker
   const statusOptions: Array<{ id: QueueFilterTab; label: string; count: number }> = useMemo(
@@ -559,6 +502,8 @@ export function ReviewFilterPane({
               x: initialPos.x,
               y: initialPos.y,
             });
+            // Automatically close filter menu on tear-off detachment
+            onClose();
           }
         } else {
           const currentPos = clampPosition(ev.clientX - dx, ev.clientY - dy);
@@ -583,7 +528,7 @@ export function ReviewFilterPane({
       window.addEventListener("pointerup", onWindowPointerUp);
       window.addEventListener("pointercancel", onWindowPointerUp);
     },
-    [groups]
+    [groups, onClose]
   );
 
   // Subsequent drags handled on the floating card header using pointer capture
@@ -669,9 +614,21 @@ export function ReviewFilterPane({
     >
       {/* Pane Top Header */}
       <div className="flex items-center justify-between pb-2 border-b border-outline-variant/40">
-        <span className="text-xs font-bold uppercase tracking-wider text-on-surface">
-          Queue Filters
-        </span>
+        <div className="flex items-center gap-2">
+          <span className="text-xs font-bold uppercase tracking-wider text-on-surface">
+            Queue Filters
+          </span>
+          {activeChips.length > 0 && (
+            <button
+              type="button"
+              onClick={onResetFilters}
+              className="text-[11px] font-semibold text-primary hover:underline cursor-pointer border-0 bg-transparent p-0"
+              title="Reset all applied filters"
+            >
+              Reset all
+            </button>
+          )}
+        </div>
         <button
           type="button"
           onClick={onClose}
@@ -682,48 +639,6 @@ export function ReviewFilterPane({
           <X className="h-3.5 w-3.5" />
         </button>
       </div>
-
-      {/* Zone 1: Active Filter Chip Bar (Fixed at top, single source of truth) */}
-      <div className="bg-surface-container rounded-xl p-3 space-y-2 border border-outline-variant/30">
-        <div className="flex items-center justify-between">
-          <span className="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant">
-            Active Filters
-          </span>
-          {activeChips.length >= 1 && (
-            <button
-              type="button"
-              onClick={onResetFilters}
-              className="text-[11px] font-semibold text-primary hover:underline cursor-pointer border-0 bg-transparent p-0"
-            >
-              Reset filters
-            </button>
-          )}
-        </div>
-
-        {activeChips.length > 0 && (
-          <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
-            {activeChips.map((chip) => (
-              <span
-                key={chip.id}
-                className="inline-flex items-center gap-1 pl-2.5 pr-1.5 py-1 rounded-full text-xs font-medium bg-amber-100/90 dark:bg-amber-950/70 text-amber-950 dark:text-amber-200 border border-amber-300/50 dark:border-amber-800/50 shadow-2xs"
-              >
-                <span>{chip.label}</span>
-                <button
-                  type="button"
-                  onClick={chip.onRemove}
-                  className="h-4 w-4 rounded-full flex items-center justify-center text-amber-900/70 dark:text-amber-300/70 hover:text-amber-950 dark:hover:text-amber-100 hover:bg-amber-200/60 dark:hover:bg-amber-900/60 transition-colors cursor-pointer border-0 p-0 ml-0.5"
-                  aria-label={`Remove ${chip.label} filter`}
-                  title={`Remove ${chip.label} filter`}
-                >
-                  <X className="h-3 w-3" />
-                </button>
-              </span>
-            ))}
-          </div>
-        )}
-      </div>
-
-      <div className="h-px bg-outline-variant/30" />
 
       {/* Zone 2: Category Pickers with tear-off draggable group headings */}
       <div className="space-y-4">

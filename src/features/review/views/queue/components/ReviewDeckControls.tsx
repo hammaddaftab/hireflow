@@ -4,6 +4,8 @@ import React from "react";
 import { Maximize2, Filter, Keyboard } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import type { QueueFilterTab } from "@/entities/review";
+import { ActiveFilterChipBar } from "@/features/review/core/components/feedback/ActiveFilterChipBar";
+import type { ActiveReviewChip } from "@/features/review/core/hooks/useActiveReviewChips";
 
 export interface ReviewDeckControlsProps {
   activeTab: QueueFilterTab;
@@ -17,6 +19,9 @@ export interface ReviewDeckControlsProps {
   onEnterFocusMode: () => void;
   onToggleFilters?: () => void;
   hasActiveFilters?: boolean;
+  activeFilterCount?: number;
+  activeChips?: ActiveReviewChip[];
+  onClearAllFilters?: () => void;
   onToggleShortcuts?: () => void;
   isShortcutsOpen?: boolean;
   rightSlot?: React.ReactNode;
@@ -29,6 +34,9 @@ export function ReviewDeckControls({
   onEnterFocusMode,
   onToggleFilters,
   hasActiveFilters = false,
+  activeFilterCount = 0,
+  activeChips = [],
+  onClearAllFilters,
   onToggleShortcuts,
   isShortcutsOpen = false,
   rightSlot,
@@ -90,23 +98,32 @@ export function ReviewDeckControls({
       <div className="flex flex-wrap items-center gap-2">
         {rightSlot}
         {onToggleFilters && (
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={onToggleFilters}
-            className={`h-8 px-3.5 gap-1.5 text-xs font-bold rounded-xl border-0 cursor-pointer transition-colors ${
-              hasActiveFilters
-                ? "bg-amber-100 dark:bg-amber-950/80 text-amber-950 dark:text-amber-200 font-bold"
-                : "bg-surface-container hover:bg-surface-container-high text-on-surface"
-            }`}
-            title="Toggle Queue Filters (Experience, Salary, Location, University)"
-          >
-            <Filter className="h-3.5 w-3.5 shrink-0" />
-            <span>Filters</span>
-            {hasActiveFilters && (
-              <span className="h-1.5 w-1.5 rounded-full bg-amber-600 dark:bg-amber-400" />
+          <div className="flex items-center gap-2 min-w-0">
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={onToggleFilters}
+              className={`h-8 px-3.5 gap-1.5 text-xs font-bold rounded-xl border-0 cursor-pointer transition-colors shrink-0 ${
+                hasActiveFilters
+                  ? "bg-amber-100 dark:bg-amber-950/80 text-amber-950 dark:text-amber-200 font-bold"
+                  : "bg-surface-container hover:bg-surface-container-high text-on-surface"
+              }`}
+              title="Toggle Queue Filters (Experience, Salary, Location, University)"
+            >
+              <Filter className="h-3.5 w-3.5 shrink-0" />
+              <span>
+                {activeFilterCount > 0 ? `Filters · ${activeFilterCount}` : "Filters"}
+              </span>
+            </Button>
+
+            {/* Inline active chips right after the Filters button in Wide mode */}
+            {activeChips && activeChips.length > 0 && onClearAllFilters && (
+              <ActiveFilterChipBar
+                chips={activeChips}
+                onClearAll={onClearAllFilters}
+              />
             )}
-          </Button>
+          </div>
         )}
         {onToggleShortcuts && (
           <Button

@@ -10,6 +10,7 @@ import type { Job } from "@/entities/job";
 import type { QueueFilterTab } from "@/entities/review";
 import type { CandidateReviewItem } from "../../types";
 import { useReviewData } from "../../core/hooks/useReviewData";
+import { useActiveReviewChips } from "../../core/hooks/useActiveReviewChips";
 import { buildReviewQueue } from "../../core/services/reviewQueueService";
 import { useQueueView } from "./hooks/useQueueView";
 import { CandidateCard } from "../../core/components/card/CandidateCard";
@@ -133,6 +134,32 @@ export function ReviewQueuePage({
     onDecision: updateDecision,
   });
 
+  const activeChips = useActiveReviewChips({
+    activeTab,
+    onSelectTab: (tab) => {
+      setActiveTab(tab);
+      setActiveIndex(0);
+    },
+    selectedCity,
+    onSelectCity: (city) => {
+      setSelectedCity(city);
+      setActiveIndex(0);
+    },
+    selectedUniversity,
+    onSelectUniversity: (uni) => {
+      setSelectedUniversity(uni);
+      setActiveIndex(0);
+    },
+    experienceRange,
+    onExperienceChange: setExperienceRange,
+    experienceBounds,
+    salaryRange,
+    onSalaryChange: setSalaryRange,
+    salaryBounds,
+    includeUnstatedSalary,
+    onToggleIncludeUnstatedSalary: toggleIncludeUnstatedSalary,
+  });
+
   const activeGroupName = queryGroups.find((g) => g.id === selectedGroupId)?.name || "All Applicants (Default)";
   const activeGroupCount = queryGroups.find((g) => g.id === selectedGroupId)?.candidateIds.length ?? queue.length;
 
@@ -246,9 +273,16 @@ export function ReviewQueuePage({
           {/* Right Side: Candidate Position, Totals & Progress Indicator */}
           <div className="flex flex-col sm:items-end items-start gap-1 shrink-0">
             <div className="flex items-center gap-3">
-              <span className="text-base sm:text-lg font-bold font-mono text-on-surface">
-                {filteredQueue.length > 0 ? `${activeIndex + 1} / ${filteredQueue.length}` : "0 / 0"}
-              </span>
+              <div className="flex items-baseline gap-1.5">
+                <span className="text-base sm:text-lg font-bold font-mono text-on-surface">
+                  {filteredQueue.length > 0 ? `${activeIndex + 1} / ${filteredQueue.length}` : "0 / 0"}
+                </span>
+                {hasActiveFilters && queue.length > 0 && (
+                  <span className="text-xs text-on-surface-variant font-medium whitespace-nowrap">
+                    of {queue.length}
+                  </span>
+                )}
+              </div>
 
               <span className="text-outline-variant/60">•</span>
 
@@ -298,6 +332,9 @@ export function ReviewQueuePage({
           onEnterFocusMode={handleEnterFocusMode}
           onToggleFilters={() => setIsFilterPaneOpen((prev: boolean) => !prev)}
           hasActiveFilters={hasActiveFilters}
+          activeFilterCount={activeChips.length}
+          activeChips={activeChips}
+          onClearAllFilters={resetFilters}
           onToggleShortcuts={() => setIsShortcutsOpen((prev) => !prev)}
           isShortcutsOpen={isShortcutsOpen}
           rightSlot={

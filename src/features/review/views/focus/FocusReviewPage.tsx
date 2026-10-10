@@ -14,6 +14,8 @@ import { FocusCommandBar } from "./components/FocusCommandBar";
 import { ReviewFilterPane } from "./components/ReviewFilterPane";
 import { DecisionSnackbar } from "../../core/components/feedback/DecisionSnackbar";
 import { DecisionProgressStrip } from "../../core/components/feedback/DecisionProgressStrip";
+import { ActiveFilterChipBar } from "../../core/components/feedback/ActiveFilterChipBar";
+import { useActiveReviewChips } from "../../core/hooks/useActiveReviewChips";
 import { buildReviewQueryString } from "../../core/utils/reviewQueryParams";
 import { type PersistedGroupWithMembers, ActiveGroupCanvasModal } from "@/features/groups";
 import { FEATURES } from "@/config/features";
@@ -132,6 +134,32 @@ export function FocusReviewPage({
     firstButton?.focus();
   }, []);
 
+  const activeChips = useActiveReviewChips({
+    activeTab,
+    onSelectTab: (tab) => {
+      setActiveTab(tab);
+      setActiveIndex(0);
+    },
+    selectedCity,
+    onSelectCity: (city) => {
+      setSelectedCity(city);
+      setActiveIndex(0);
+    },
+    selectedUniversity,
+    onSelectUniversity: (uni) => {
+      setSelectedUniversity(uni);
+      setActiveIndex(0);
+    },
+    experienceRange,
+    onExperienceChange: setExperienceRange,
+    experienceBounds,
+    salaryRange,
+    onSalaryChange: setSalaryRange,
+    salaryBounds,
+    includeUnstatedSalary,
+    onToggleIncludeUnstatedSalary: toggleIncludeUnstatedSalary,
+  });
+
   const totalCandidates = filteredQueue.length;
   const activeGroupName = queryGroups.find((g) => g.id === selectedGroupId)?.name || "All Applicants (Default)";
   const activeGroupCount = queryGroups.find((g) => g.id === selectedGroupId)?.candidateIds.length ?? queue.length;
@@ -140,13 +168,13 @@ export function FocusReviewPage({
     <div className="fixed inset-0 z-50 flex flex-col bg-surface overflow-hidden">
       {/* Top Header HUD: Job Title, Filters, Active Group, Position Indicator, and Exit */}
       <header className="w-full shrink-0 h-14 sm:h-16 px-6 flex items-center justify-between border-b border-outline-variant/20 bg-surface z-40 select-none">
-        {/* Left Side: Job Title & Filters Trigger */}
-        <div className="flex items-center gap-3">
-          <div className="hidden sm:flex flex-col">
+        {/* Left Side: Job Title, Filters Trigger & Active Filter Chip Bar */}
+        <div className="flex items-center gap-3 flex-1 min-w-0 mr-4">
+          <div className="hidden sm:flex flex-col shrink-0">
             <span className="text-[10px] uppercase font-bold tracking-wider text-primary">
               HireFlow Focus
             </span>
-            <span className="text-xs font-bold text-on-surface truncate max-w-[200px]">
+            <span className="text-xs font-bold text-on-surface truncate max-w-[180px]">
               {initialJob.title}
             </span>
           </div>
@@ -154,7 +182,7 @@ export function FocusReviewPage({
           <button
             type="button"
             onClick={() => setIsFilterPaneOpen(!isFilterPaneOpen)}
-            className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer border ${
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer border shrink-0 ${
               isFilterPaneOpen
                 ? "bg-primary text-on-primary border-primary shadow-xs"
                 : hasActiveFilters
@@ -165,18 +193,23 @@ export function FocusReviewPage({
             aria-label="Toggle Queue Filters"
           >
             <Filter className="h-3.5 w-3.5" />
-            <span>Filters</span>
-            {hasActiveFilters && (
-              <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-            )}
+            <span>
+              {activeChips.length > 0 ? `Filters · ${activeChips.length}` : "Filters"}
+            </span>
             <kbd className="hidden md:inline-block px-1 py-0.2 rounded bg-surface/40 font-mono text-[10px] opacity-75">
               Q
             </kbd>
           </button>
+
+          {/* Three-Tier Dynamic Overflow Filter Chip Bar */}
+          <ActiveFilterChipBar
+            chips={activeChips}
+            onClearAll={resetFilters}
+          />
         </div>
 
         {/* Right Side: Active Group Selector, Position Indicator (n/m), Decision Counts, and Exit */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 shrink-0">
           {FEATURES.CANDIDATE_GROUPS && (
             <button
               type="button"
@@ -199,9 +232,16 @@ export function FocusReviewPage({
           )}
 
           <div className="flex items-center gap-3">
-            <Typography variant="title-large" className="text-on-surface text-xl sm:text-2xl leading-none">
-              {totalCandidates > 0 ? `${activeIndex + 1} / ${totalCandidates}` : "0 / 0"}
-            </Typography>
+            <div className="flex items-baseline gap-1.5">
+              <Typography variant="title-large" className="text-on-surface text-xl sm:text-2xl leading-none">
+                {totalCandidates > 0 ? `${activeIndex + 1} / ${totalCandidates}` : "0 / 0"}
+              </Typography>
+              {hasActiveFilters && queue.length > 0 && (
+                <span className="text-xs text-on-surface-variant font-medium whitespace-nowrap">
+                  of {queue.length}
+                </span>
+              )}
+            </div>
             <div className="hidden md:flex flex-col gap-0.5 w-20 text-[10px] text-on-surface-variant font-medium">
               <div className="flex items-center justify-between">
                 <span>Keep:</span>
