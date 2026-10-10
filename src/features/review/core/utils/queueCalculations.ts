@@ -21,6 +21,7 @@ export interface TabCounts {
 export interface QueueFilterOptions {
   selectedGroupId?: string | null;
   selectedCity?: string | null;
+  selectedUniversity?: string | null;
   activeTab?: QueueFilterTab;
   queryGroups?: QueryGroup[];
   experienceRange?: [number, number] | null;
@@ -144,6 +145,37 @@ export function getCityDistribution(
     .sort((a, b) => b.count - a.count);
 }
 
+// Calculates distinct normalized universities present in candidate pool, sorted descending by count
+export function getUniversityDistribution(
+  items: CandidateReviewItem[]
+): Array<{ university: string; count: number }> {
+  const counts: Record<string, number> = {};
+
+  items.forEach((item) => {
+    const entries = item.candidate.education?.entries || [];
+    const candidateUnis = new Set<string>();
+
+    entries.forEach((entry) => {
+      const uni = entry.institution?.normalized || entry.institution?.raw;
+      if (uni && uni.trim()) {
+        candidateUnis.add(uni.trim());
+      }
+    });
+
+    if (candidateUnis.size === 0) {
+      candidateUnis.add("Unspecified");
+    }
+
+    candidateUnis.forEach((uni) => {
+      counts[uni] = (counts[uni] || 0) + 1;
+    });
+  });
+
+  return Object.entries(counts)
+    .map(([university, count]) => ({ university, count }))
+    .sort((a, b) => b.count - a.count);
+}
+
 /**
  * Contiguous all-blocking-confirmed cards first for fast clearance,
  * followed by cards without contradictions, then contradicted cards.
@@ -204,6 +236,7 @@ export function filterReviewQueue(
   const {
     selectedGroupId = null,
     selectedCity = null,
+    selectedUniversity = null,
     activeTab = "all",
     queryGroups = [],
     experienceRange = null,
@@ -231,7 +264,26 @@ export function filterReviewQueue(
       }
     }
 
-    // 3. Status Tab filter
+    // 3. University filter
+    if (selectedUniversity !== null) {
+      const entries = item.candidate.education?.entries || [];
+      const candidateUnis = entries
+        .map((entry) => (entry.institution?.normalized || entry.institution?.raw)?.trim())
+        .filter((u): u is string => Boolean(u));
+
+      if (selectedUniversity === "Unspecified") {
+        if (candidateUnis.length > 0) return false;
+      } else {
+        const matchesUni = entries.some((entry) => {
+          const norm = entry.institution?.normalized?.trim();
+          const raw = entry.institution?.raw?.trim();
+          return norm === selectedUniversity || raw === selectedUniversity;
+        });
+        if (!matchesUni) return false;
+      }
+    }
+
+    // 4. Status Tab filter
     switch (activeTab) {
       case "fast_clear":
         if (!item.isAllBlockingConfirmed) return false;
@@ -247,7 +299,7 @@ export function filterReviewQueue(
         break;
     }
 
-    // 4. Experience Range filter
+    // 5. Experience Range filter
     if (experienceRange) {
       const [filterMinExp, filterMaxExp] = experienceRange;
       const candExp = getCandidateExperienceYears(item);
@@ -256,7 +308,7 @@ export function filterReviewQueue(
       if (filterMaxExp < 15 && candExp > filterMaxExp) return false;
     }
 
-    // 5. Salary Range filter
+    // 6. Salary Range filter
     if (salaryRange) {
       const [filterMinSal, filterMaxSal] = salaryRange;
       const { min: candMinSal, max: candMaxSal, isStated } = getCandidateNormalizedSalary(

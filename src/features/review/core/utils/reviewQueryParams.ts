@@ -12,6 +12,7 @@ export interface ReviewFilterQueryParams {
   candidateIndex?: number;
   tab?: QueueFilterTab;
   city?: string | null;
+  university?: string | null;
   group?: string | null;
 }
 
@@ -29,6 +30,10 @@ export function buildReviewQueryString(params: ReviewFilterQueryParams): string 
 
   if (params.city) {
     searchParams.set("city", params.city);
+  }
+
+  if (params.university) {
+    searchParams.set("university", params.university);
   }
 
   if (params.group && !isDefaultGroup(params.group)) {
@@ -57,6 +62,7 @@ export function parseReviewQueryParams(
     candidateIndex: isNaN(parsedIndex) ? 0 : parsedIndex,
     tab: (getParam("tab") as QueueFilterTab) || "all",
     city: getParam("city") || null,
+    university: getParam("university") || null,
     group: isDefaultGroup(rawGroup) ? DEFAULT_GROUP_ID : rawGroup!,
   };
 }

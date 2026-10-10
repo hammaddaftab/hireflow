@@ -52,6 +52,7 @@ export interface ReviewQueuePageProps {
   initialIndex?: number;
   initialTab?: QueueFilterTab;
   initialCity?: string | null;
+  initialUniversity?: string | null;
   initialGroupId?: string | null;
 }
 
@@ -62,6 +63,7 @@ export function ReviewQueuePage({
   initialIndex = 0,
   initialTab = "all",
   initialCity = null,
+  initialUniversity = null,
   initialGroupId = null,
 }: ReviewQueuePageProps) {
   // Domain state engine
@@ -73,6 +75,7 @@ export function ReviewQueuePage({
     stats,
     queryGroups,
     cityDistribution,
+    universityDistribution,
     persistedGroups,
   } = useReviewData(initialQueue, initialPersistedGroups);
 
@@ -92,6 +95,8 @@ export function ReviewQueuePage({
     setActiveTab,
     selectedCity,
     setSelectedCity,
+    selectedUniversity,
+    setSelectedUniversity,
     selectedGroupId,
     setSelectedGroupId,
     isFilterPaneOpen,
@@ -123,6 +128,7 @@ export function ReviewQueuePage({
     initialIndex,
     initialTab,
     initialCity,
+    initialUniversity,
     initialGroupId,
     onDecision: updateDecision,
   });
@@ -438,7 +444,13 @@ export function ReviewQueuePage({
           setSelectedCity(city);
           setActiveIndex(0);
         }}
+        selectedUniversity={selectedUniversity}
+        onSelectUniversity={(uni) => {
+          setSelectedUniversity(uni);
+          setActiveIndex(0);
+        }}
         cityDistribution={cityDistribution}
+        universityDistribution={universityDistribution}
         totalCandidates={queue.length}
         onResetFilters={resetFilters}
         activeTab={activeTab}

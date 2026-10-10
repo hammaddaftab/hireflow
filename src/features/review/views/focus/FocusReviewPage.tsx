@@ -25,6 +25,7 @@ export interface FocusReviewPageProps {
   initialIndex?: number;
   initialTab?: QueueFilterTab;
   initialCity?: string | null;
+  initialUniversity?: string | null;
   initialGroupId?: string | null;
 }
 
@@ -35,6 +36,7 @@ export function FocusReviewPage({
   initialIndex = 0,
   initialTab = "all",
   initialCity = null,
+  initialUniversity = null,
   initialGroupId = null,
 }: FocusReviewPageProps) {
   const router = useRouter();
@@ -47,6 +49,7 @@ export function FocusReviewPage({
     retryDecision,
     queryGroups,
     cityDistribution,
+    universityDistribution,
     stats,
     persistedGroups,
   } = useReviewData(initialQueue, initialPersistedGroups);
@@ -62,6 +65,8 @@ export function FocusReviewPage({
     setActiveTab,
     selectedCity,
     setSelectedCity,
+    selectedUniversity,
+    setSelectedUniversity,
     selectedGroupId,
     setSelectedGroupId,
     isFilterPaneOpen,
@@ -70,6 +75,8 @@ export function FocusReviewPage({
     setIsGroupModalOpen,
     isLocationOpen,
     setIsLocationOpen,
+    isUniversityOpen,
+    setIsUniversityOpen,
     filteredQueue,
     scopedActiveItem,
     hasActiveFilters,
@@ -98,6 +105,7 @@ export function FocusReviewPage({
     initialIndex,
     initialTab,
     initialCity,
+    initialUniversity,
     initialGroupId,
     onDecision: updateDecision,
     onExitFocus: () => exitFocusRef.current(),
@@ -109,10 +117,11 @@ export function FocusReviewPage({
       candidateIndex: activeIndex,
       tab: activeTab,
       city: selectedCity,
+      university: selectedUniversity,
       group: selectedGroupId,
     });
     router.push(q ? `/review?${q}` : "/review");
-  }, [router, activeIndex, activeTab, selectedCity, selectedGroupId]);
+  }, [router, activeIndex, activeTab, selectedCity, selectedUniversity, selectedGroupId]);
 
   exitFocusRef.current = handleExitFocus;
 
@@ -280,7 +289,15 @@ export function FocusReviewPage({
         }}
         isLocationOpen={isLocationOpen}
         onToggleLocation={() => setIsLocationOpen(!isLocationOpen)}
+        selectedUniversity={selectedUniversity}
+        onSelectUniversity={(uni) => {
+          setSelectedUniversity(uni);
+          setActiveIndex(0);
+        }}
+        isUniversityOpen={isUniversityOpen}
+        onToggleUniversity={() => setIsUniversityOpen(!isUniversityOpen)}
         cityDistribution={cityDistribution}
+        universityDistribution={universityDistribution}
         totalCandidates={queue.length}
         onResetFilters={resetFilters}
         activeTab={activeTab}

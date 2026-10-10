@@ -25,6 +25,7 @@ export interface UseQueueViewProps {
   initialIndex?: number;
   initialTab?: QueueFilterTab;
   initialCity?: string | null;
+  initialUniversity?: string | null;
   initialGroupId?: string | null;
   onDecision: (candidateId: string, decision: ReviewDecision) => Promise<boolean>;
 }
@@ -36,6 +37,8 @@ export interface UseQueueViewReturn {
   setActiveTab: (tab: QueueFilterTab) => void;
   selectedCity: string | null;
   setSelectedCity: (city: string | null) => void;
+  selectedUniversity: string | null;
+  setSelectedUniversity: (uni: string | null) => void;
   selectedGroupId: string;
   setSelectedGroupId: (groupId: string) => void;
   isFilterPaneOpen: boolean;
@@ -76,6 +79,7 @@ export function useQueueView({
   initialIndex = 0,
   initialTab = "all",
   initialCity = null,
+  initialUniversity = null,
   initialGroupId = null,
   onDecision,
 }: UseQueueViewProps): UseQueueViewReturn {
@@ -83,6 +87,7 @@ export function useQueueView({
   const [activeIndex, setActiveIndex] = useState(initialIndex);
   const [activeTab, setActiveTab] = useState<QueueFilterTab>(initialTab);
   const [selectedCity, setSelectedCity] = useState<string | null>(initialCity);
+  const [selectedUniversity, setSelectedUniversity] = useState<string | null>(initialUniversity);
   const [selectedGroupId, setSelectedGroupIdState] = useState<string>(
     !isDefaultGroup(initialGroupId) ? initialGroupId! : DEFAULT_GROUP_ID
   );
@@ -128,6 +133,7 @@ export function useQueueView({
       selectedGroupId,
       queryGroups,
       selectedCity,
+      selectedUniversity,
       experienceRange,
       salaryRange,
       includeUnstatedSalary,
@@ -139,6 +145,7 @@ export function useQueueView({
     selectedGroupId,
     queryGroups,
     selectedCity,
+    selectedUniversity,
     experienceRange,
     salaryRange,
     includeUnstatedSalary,
@@ -163,6 +170,7 @@ export function useQueueView({
   const hasActiveFilters =
     !isDefaultGroup(selectedGroupId) ||
     selectedCity !== null ||
+    selectedUniversity !== null ||
     activeTab !== "all" ||
     isExpFiltered ||
     isSalaryFiltered;
@@ -224,15 +232,17 @@ export function useQueueView({
       candidateIndex: activeIndex,
       tab: activeTab,
       city: selectedCity,
+      university: selectedUniversity,
       group: selectedGroupId,
     });
     router.push(q ? `/review/focus?${q}` : "/review/focus");
-  }, [activeIndex, activeTab, selectedCity, selectedGroupId, router, flushCommitBeat]);
+  }, [activeIndex, activeTab, selectedCity, selectedUniversity, selectedGroupId, router, flushCommitBeat]);
 
   const resetFilters = useCallback(() => {
     flushCommitBeat();
     setSelectedGroupIdState(DEFAULT_GROUP_ID);
     setSelectedCity(null);
+    setSelectedUniversity(null);
     setActiveTab("all");
     setExperienceRangeState([experienceBounds.min, experienceBounds.max]);
     setSalaryRangeState([salaryBounds.min, salaryBounds.max]);
@@ -313,6 +323,8 @@ export function useQueueView({
     setActiveTab,
     selectedCity,
     setSelectedCity,
+    selectedUniversity,
+    setSelectedUniversity,
     selectedGroupId,
     setSelectedGroupId,
     isFilterPaneOpen,

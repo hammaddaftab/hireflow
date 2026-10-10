@@ -16,6 +16,7 @@ export default async function ReviewPage({
     candidateIndex?: string;
     tab?: string;
     city?: string;
+    university?: string;
     group?: string;
   }>;
 }) {
@@ -49,6 +50,7 @@ export default async function ReviewPage({
       initialIndex={isNaN(initialIndex) ? 0 : initialIndex}
       initialTab={(params.tab as QueueFilterTab) || "all"}
       initialCity={params.city || null}
+      initialUniversity={params.university || null}
       initialGroupId={params.group || null}
     />
   );

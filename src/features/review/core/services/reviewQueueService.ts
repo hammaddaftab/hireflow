@@ -6,9 +6,9 @@ import { evaluateExperience } from "../evaluators/experienceEvaluator";
 import { evaluateSkills } from "../evaluators/skillEvaluator";
 import { evaluateEducation } from "../evaluators/educationEvaluator";
 import { evaluateLogistics } from "../evaluators/logisticsEvaluator";
-import { sortReviewQueue, getCityDistribution } from "../utils/queueCalculations";
+import { sortReviewQueue, getCityDistribution, getUniversityDistribution } from "../utils/queueCalculations";
 
-export { getCityDistribution };
+export { getCityDistribution, getUniversityDistribution };
 
 // Builds review queue items from candidate profiles and job requirements
 export function buildReviewQueue(

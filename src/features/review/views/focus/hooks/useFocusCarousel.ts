@@ -22,6 +22,7 @@ export interface UseFocusCarouselProps {
   initialIndex?: number;
   initialTab?: QueueFilterTab;
   initialCity?: string | null;
+  initialUniversity?: string | null;
   initialGroupId?: string | null;
   onDecision: (candidateId: string, decision: ReviewDecision) => Promise<boolean>;
   onExitFocus?: () => void;
@@ -35,6 +36,8 @@ export interface UseFocusCarouselReturn {
   setActiveTab: (tab: QueueFilterTab) => void;
   selectedCity: string | null;
   setSelectedCity: (city: string | null) => void;
+  selectedUniversity: string | null;
+  setSelectedUniversity: (uni: string | null) => void;
   selectedGroupId: string;
   setSelectedGroupId: (id: string | null) => void;
   isFilterPaneOpen: boolean;
@@ -45,6 +48,8 @@ export interface UseFocusCarouselReturn {
   setIsGroupsOpen: (open: boolean) => void;
   isLocationOpen: boolean;
   setIsLocationOpen: (open: boolean) => void;
+  isUniversityOpen: boolean;
+  setIsUniversityOpen: (open: boolean) => void;
   experienceRange: [number, number];
   setExperienceRange: (range: [number, number]) => void;
   experienceBounds: { min: number; max: number; step: number };
@@ -86,6 +91,7 @@ export function useFocusCarousel({
   initialIndex = 0,
   initialTab = "all",
   initialCity = null,
+  initialUniversity = null,
   initialGroupId = null,
   onDecision,
   onExitFocus,
@@ -94,6 +100,7 @@ export function useFocusCarousel({
   const [activeIndex, setActiveIndex] = useState(initialIndex);
   const [activeTab, setActiveTab] = useState<QueueFilterTab>(initialTab);
   const [selectedCity, setSelectedCity] = useState<string | null>(initialCity);
+  const [selectedUniversity, setSelectedUniversity] = useState<string | null>(initialUniversity);
   const [selectedGroupId, setSelectedGroupIdState] = useState<string>(
     !isDefaultGroup(initialGroupId) ? initialGroupId! : DEFAULT_GROUP_ID
   );
@@ -101,6 +108,7 @@ export function useFocusCarousel({
   const [isGroupModalOpen, setIsGroupModalOpen] = useState(false);
   const [isGroupsOpen, setIsGroupsOpen] = useState(true);
   const [isLocationOpen, setIsLocationOpen] = useState(true);
+  const [isUniversityOpen, setIsUniversityOpen] = useState(true);
 
   // Dynamic bounds calculated from queue candidates
   const experienceBounds = useMemo(() => calculateExperienceBounds(queue), [queue]);
@@ -144,6 +152,7 @@ export function useFocusCarousel({
     return filterReviewQueue(queue, {
       selectedGroupId,
       selectedCity,
+      selectedUniversity,
       activeTab,
       queryGroups,
       experienceRange,
@@ -155,6 +164,7 @@ export function useFocusCarousel({
     queue,
     selectedGroupId,
     selectedCity,
+    selectedUniversity,
     activeTab,
     queryGroups,
     experienceRange,
@@ -179,6 +189,7 @@ export function useFocusCarousel({
   const hasActiveFilters =
     (FEATURES.CANDIDATE_GROUPS && !isDefaultGroup(selectedGroupId)) ||
     selectedCity !== null ||
+    selectedUniversity !== null ||
     activeTab !== "all" ||
     isExpFiltered ||
     isSalaryFiltered;
@@ -203,7 +214,7 @@ export function useFocusCarousel({
     commitBeatDurationMs: 400,
   });
 
-  // Sync URL search params with active candidate index and active group (debounced to avoid blocking rapid keystrokes)
+  // Sync URL search params with active candidate index, group, and university (debounced to avoid blocking rapid keystrokes)
   useEffect(() => {
     const timer = setTimeout(() => {
       const params = new URLSearchParams(window.location.search);
@@ -213,12 +224,17 @@ export function useFocusCarousel({
       } else {
         params.delete("group");
       }
+      if (selectedUniversity) {
+        params.set("university", selectedUniversity);
+      } else {
+        params.delete("university");
+      }
       const newUrl = `${window.location.pathname}?${params.toString()}`;
       window.history.replaceState(null, "", newUrl);
     }, 200);
 
     return () => clearTimeout(timer);
-  }, [activeIndex, selectedGroupId]);
+  }, [activeIndex, selectedGroupId, selectedUniversity]);
 
   const handleNext = useCallback(() => {
     flushCommitBeat();
@@ -255,6 +271,7 @@ export function useFocusCarousel({
     flushCommitBeat();
     setSelectedGroupId(DEFAULT_GROUP_ID);
     setSelectedCity(null);
+    setSelectedUniversity(null);
     setActiveTab("all");
     setExperienceRangeState([experienceBounds.min, experienceBounds.max]);
     setSalaryRangeState([salaryBounds.min, salaryBounds.max]);
@@ -366,6 +383,8 @@ export function useFocusCarousel({
     setActiveTab,
     selectedCity,
     setSelectedCity,
+    selectedUniversity,
+    setSelectedUniversity,
     selectedGroupId,
     setSelectedGroupId,
     isFilterPaneOpen,
@@ -376,6 +395,8 @@ export function useFocusCarousel({
     setIsGroupsOpen,
     isLocationOpen,
     setIsLocationOpen,
+    isUniversityOpen,
+    setIsUniversityOpen,
     experienceRange,
     setExperienceRange,
     experienceBounds,

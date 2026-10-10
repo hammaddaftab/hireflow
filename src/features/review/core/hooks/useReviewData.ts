@@ -5,6 +5,7 @@ import type { PersistedGroupWithMembers } from "@/features/groups";
 import {
   calculateReviewStats,
   getCityDistribution,
+  getUniversityDistribution,
   type ReviewStats,
 } from "../utils/queueCalculations";
 import { DEFAULT_GROUP_ID } from "../utils/reviewQueryParams";
@@ -17,6 +18,7 @@ export interface UseReviewDataReturn {
   stats: ReviewStats;
   queryGroups: QueryGroup[];
   cityDistribution: Array<{ city: string; count: number }>;
+  universityDistribution: Array<{ university: string; count: number }>;
   persistedGroups: PersistedGroupWithMembers[];
   createGroup: (name: string, candidateIds: string[], parentId?: string | null) => Promise<PersistedGroupWithMembers>;
 }
@@ -216,6 +218,10 @@ export function useReviewData(
     return getCityDistribution(queue);
   }, [queue]);
 
+  const universityDistribution = useMemo(() => {
+    return getUniversityDistribution(queue);
+  }, [queue]);
+
   const stats = useMemo(() => {
     return calculateReviewStats(queue);
   }, [queue]);
@@ -228,6 +234,7 @@ export function useReviewData(
     stats,
     queryGroups,
     cityDistribution,
+    universityDistribution,
     persistedGroups,
     createGroup,
   };

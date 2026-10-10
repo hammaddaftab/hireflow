@@ -99,7 +99,7 @@ export function ReviewDeckControls({
                 ? "bg-amber-100 dark:bg-amber-950/80 text-amber-950 dark:text-amber-200 font-bold"
                 : "bg-surface-container hover:bg-surface-container-high text-on-surface"
             }`}
-            title="Toggle Queue Filters (Experience, Salary, Location)"
+            title="Toggle Queue Filters (Experience, Salary, Location, University)"
           >
             <Filter className="h-3.5 w-3.5 shrink-0" />
             <span>Filters</span>
