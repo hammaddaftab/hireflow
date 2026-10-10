@@ -95,9 +95,9 @@ export function CandidateCard({
 
   return (
     <Card
-      className={`group/card overflow-hidden transition-all duration-200 ${surfaceWashClass} ${
+      className={`group/card overflow-hidden transition-all duration-200 ${surfaceWashClass} p-0 ${
         expandedFullHeight
-          ? `h-full rounded-none border-0 border-x border-outline-variant/50 dark:border-outline-variant/30 overflow-y-auto custom-scrollbar bg-surface shadow-2xl ${railClass}`
+          ? `h-full max-h-full rounded-2xl border border-outline-variant/50 dark:border-outline-variant/30 flex flex-col bg-surface shadow-2xl ${railClass}`
           : `rounded-2xl border border-outline-variant/50 dark:border-outline-variant/30 shadow-sm ${railClass} ${
               isActive ? "bg-surface" : "bg-surface/90 hover:bg-surface"
             }`
@@ -116,7 +116,11 @@ export function CandidateCard({
       />
 
       {/* Main Card Body */}
-      <div className="p-6 transition-all duration-200">
+      <div
+        className={`p-6 transition-all duration-200 ${
+          expandedFullHeight ? "flex-1 min-h-0 overflow-y-auto custom-scrollbar" : ""
+        }`}
+      >
         {/* Top Header */}
         <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
           <div

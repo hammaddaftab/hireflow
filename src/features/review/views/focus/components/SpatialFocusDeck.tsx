@@ -118,15 +118,12 @@ export function SpatialFocusDeck({
     return () => window.removeEventListener("resize", updateDimensions);
   }, []);
 
-  // Calculate distance from center to side cards
+  // Calculate distance from center to side cards (stable spacing for fixed max-w-5xl center card)
   const offsetDistance = useMemo(() => {
-    if (isEvidenceOpen) {
-      return Math.max(820, stageWidth * 0.58);
-    }
-    const minCenterGap = 660;
-    const responsiveOffscreen = stageWidth * 0.45;
+    const minCenterGap = 780;
+    const responsiveOffscreen = stageWidth * 0.54;
     return Math.max(minCenterGap, responsiveOffscreen);
-  }, [stageWidth, isEvidenceOpen]);
+  }, [stageWidth]);
 
   const totalItems = items.length;
 
@@ -212,15 +209,15 @@ export function SpatialFocusDeck({
               transition={FOCUS_SPRING}
             >
               <div
-                className={`pointer-events-auto ${
-                  isCenter && isEvidenceOpen
-                    ? "w-full max-w-5xl h-full px-4"
-                    : "w-full max-w-2xl px-4"
+                className={`pointer-events-auto w-full ${
+                  isCenter
+                    ? "max-w-5xl h-[560px] sm:h-[600px] max-h-[calc(100vh-148px)] flex flex-col px-4"
+                    : "max-w-2xl px-4"
                 }`}
               >
                 {isCenter ? (
-                  // Center Apex Card: full interaction, evidence drawer expansion support
-                  <div className="w-full relative shadow-2xl rounded-2xl">
+                  // Center Apex Card: full interaction, stable max-w-5xl width, constrained height, evidence drawer expansion & scroll support
+                  <div className="w-full h-full max-h-full flex flex-col relative shadow-2xl rounded-2xl overflow-hidden">
                     <CandidateCard
                       item={item}
                       isActive={true}
@@ -228,7 +225,7 @@ export function SpatialFocusDeck({
                       hideActionButtons={true}
                       isLayer2Expanded={isEvidenceOpen}
                       onToggleLayer2={onToggleEvidence}
-                      expandedFullHeight={isEvidenceOpen}
+                      expandedFullHeight={true}
                       isCommitting={committingCandidateId === item.candidate.id}
                       onClearDecision={onClearDecision}
                       onRetrySync={onRetrySync}

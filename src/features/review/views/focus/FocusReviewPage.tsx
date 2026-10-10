@@ -87,14 +87,11 @@ export function FocusReviewPage({
     resetFilters,
     committingCandidateId,
     commitDecision,
-    isCommitting,
     snackbarState,
     canUndo,
     dismissSnackbar,
     handleUndo,
     handleClearCurrent,
-    handleNextUndecided,
-    flushCommitBeat,
   } = useFocusCarousel({
     queue,
     queryGroups,
@@ -132,109 +129,107 @@ export function FocusReviewPage({
 
   return (
     <div className="fixed inset-0 z-50 flex flex-col bg-surface overflow-hidden">
-      {/* Top-Left Job Title and Filter Trigger */}
-      <div className="absolute top-5 left-6 z-40 flex items-center gap-3 select-none">
-        <div className="hidden sm:flex flex-col">
-          <span className="text-[10px] uppercase font-bold tracking-wider text-primary">
-            HireFlow Focus
-          </span>
-          <span className="text-xs font-bold text-on-surface truncate max-w-[200px]">
-            {initialJob.title}
-          </span>
-        </div>
+      {/* Top Header HUD: Job Title, Filters, Active Group, Position Indicator, and Exit */}
+      <header className="w-full shrink-0 h-14 sm:h-16 px-6 flex items-center justify-between border-b border-outline-variant/20 bg-surface z-40 select-none">
+        {/* Left Side: Job Title & Filters Trigger */}
+        <div className="flex items-center gap-3">
+          <div className="hidden sm:flex flex-col">
+            <span className="text-[10px] uppercase font-bold tracking-wider text-primary">
+              HireFlow Focus
+            </span>
+            <span className="text-xs font-bold text-on-surface truncate max-w-[200px]">
+              {initialJob.title}
+            </span>
+          </div>
 
-        <button
-          type="button"
-          onClick={() => setIsFilterPaneOpen(!isFilterPaneOpen)}
-          className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer border ${
-            isFilterPaneOpen
-              ? "bg-primary text-on-primary border-primary shadow-xs"
-              : hasActiveFilters
-              ? "bg-primary/15 text-primary border-primary/40 hover:bg-primary/20"
-              : "bg-surface-container-high/70 hover:bg-surface-container-high text-on-surface border-outline-variant/30"
-          }`}
-          title="Toggle Queue Filters (Q)"
-          aria-label="Toggle Queue Filters"
-        >
-          <Filter className="h-3.5 w-3.5" />
-          <span>Filters</span>
-          {hasActiveFilters && (
-            <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-          )}
-          <kbd className="hidden md:inline-block px-1 py-0.2 rounded bg-surface/40 font-mono text-[10px] opacity-75">
-            Q
-          </kbd>
-        </button>
-      </div>
-
-      {/* Top-Right Active Group Selector, Position Indicator (n/m), Decision Counts, and Discreet Exit */}
-      <div className="absolute top-5 right-6 z-40 flex items-center gap-3 select-none">
-        {/* Active Group Button (Opens Canvas Modal) */}
-        {FEATURES.CANDIDATE_GROUPS && (
           <button
             type="button"
-            onClick={() => setIsGroupModalOpen(true)}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-outline-variant/40 bg-surface-container/80 hover:bg-surface-container text-on-surface transition-colors cursor-pointer text-xs font-semibold shadow-2xs"
-            title="Change Active Group (G)"
-            aria-label="Change Active Group"
+            onClick={() => setIsFilterPaneOpen(!isFilterPaneOpen)}
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer border ${
+              isFilterPaneOpen
+                ? "bg-primary text-on-primary border-primary shadow-xs"
+                : hasActiveFilters
+                ? "bg-primary/15 text-primary border-primary/40 hover:bg-primary/20"
+                : "bg-surface-container-high/70 hover:bg-surface-container-high text-on-surface border-outline-variant/30"
+            }`}
+            title="Toggle Queue Filters (Q)"
+            aria-label="Toggle Queue Filters"
           >
-            <Network className="h-3.5 w-3.5 text-primary shrink-0" />
-            <div className="flex flex-col text-left">
-              <span className="text-[9px] font-mono text-on-surface-variant uppercase tracking-wider">Active Group</span>
-              <span className="text-xs font-bold text-on-surface truncate max-w-[130px]">
-                {activeGroupName}
-              </span>
-            </div>
-            <span className="text-[10px] font-mono px-1.5 py-0.2 rounded-full bg-surface-container-high font-bold text-on-surface-variant ml-0.5">
-              {activeGroupCount}
-            </span>
+            <Filter className="h-3.5 w-3.5" />
+            <span>Filters</span>
+            {hasActiveFilters && (
+              <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+            )}
+            <kbd className="hidden md:inline-block px-1 py-0.2 rounded bg-surface/40 font-mono text-[10px] opacity-75">
+              Q
+            </kbd>
           </button>
-        )}
-
-        <div className="flex flex-col items-end gap-1">
-          <Typography variant="title-large" className="text-on-surface text-2xl sm:text-3xl leading-none">
-            {totalCandidates > 0 ? `${activeIndex + 1} / ${totalCandidates}` : "0 / 0"}
-          </Typography>
-          <div className="flex flex-col gap-0.5 w-24 text-[11px] text-on-surface-variant font-medium">
-            <div className="flex items-center justify-between">
-              <span>Keep:</span>
-              <span className={`font-mono font-medium transition-colors duration-200 text-emerald-700 dark:text-emerald-400 ${commitDecision === "keep" ? "font-bold scale-110" : ""}`}>{stats.keptCount}</span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span>Flagged:</span>
-              <span className={`font-mono font-medium transition-colors duration-200 text-amber-700 dark:text-amber-400 ${commitDecision === "flag" ? "font-bold scale-110" : ""}`}>{stats.flaggedCount}</span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span>Passed:</span>
-              <span className={`font-mono font-medium transition-colors duration-200 text-rose-700 dark:text-rose-400 ${commitDecision === "pass" ? "font-bold scale-110" : ""}`}>{stats.passedCount}</span>
-            </div>
-          </div>
-          {totalCandidates > 0 && (
-            <DecisionProgressStrip
-              items={filteredQueue}
-              activeIndex={activeIndex}
-              onSelectIndex={setActiveIndex}
-              className="w-24 sm:w-28 mt-0.5"
-            />
-          )}
         </div>
-        <button
-          type="button"
-          onClick={handleExitFocus}
-          className="p-1.5 rounded-lg text-on-surface-variant/60 hover:text-on-surface hover:bg-surface-container transition-colors cursor-pointer mt-0.5"
-          title="Exit focus mode (Esc)"
-          aria-label="Exit focus mode"
-        >
-          <Minimize2 className="h-4 w-4" />
-        </button>
-      </div>
 
-      {/* Center Field: Spatial 3D Card Deck (Apex Center Card + Side Depth Cards on Common Baseline) */}
-      <main
-        className={`relative flex-1 min-h-0 w-full flex justify-center overflow-hidden transition-all duration-300 ${
-          isEvidenceOpen ? "py-0 items-stretch" : "py-4 items-center"
-        }`}
-      >
+        {/* Right Side: Active Group Selector, Position Indicator (n/m), Decision Counts, and Exit */}
+        <div className="flex items-center gap-3">
+          {FEATURES.CANDIDATE_GROUPS && (
+            <button
+              type="button"
+              onClick={() => setIsGroupModalOpen(true)}
+              className="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-outline-variant/40 bg-surface-container/80 hover:bg-surface-container text-on-surface transition-colors cursor-pointer text-xs font-semibold shadow-2xs"
+              title="Change Active Group (G)"
+              aria-label="Change Active Group"
+            >
+              <Network className="h-3.5 w-3.5 text-primary shrink-0" />
+              <div className="flex flex-col text-left">
+                <span className="text-[9px] font-mono text-on-surface-variant uppercase tracking-wider">Active Group</span>
+                <span className="text-xs font-bold text-on-surface truncate max-w-[130px]">
+                  {activeGroupName}
+                </span>
+              </div>
+              <span className="text-[10px] font-mono px-1.5 py-0.2 rounded-full bg-surface-container-high font-bold text-on-surface-variant ml-0.5">
+                {activeGroupCount}
+              </span>
+            </button>
+          )}
+
+          <div className="flex items-center gap-3">
+            <Typography variant="title-large" className="text-on-surface text-xl sm:text-2xl leading-none">
+              {totalCandidates > 0 ? `${activeIndex + 1} / ${totalCandidates}` : "0 / 0"}
+            </Typography>
+            <div className="hidden md:flex flex-col gap-0.5 w-20 text-[10px] text-on-surface-variant font-medium">
+              <div className="flex items-center justify-between">
+                <span>Keep:</span>
+                <span className={`font-mono font-medium transition-colors duration-200 text-emerald-700 dark:text-emerald-400 ${commitDecision === "keep" ? "font-bold scale-110" : ""}`}>{stats.keptCount}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span>Flagged:</span>
+                <span className={`font-mono font-medium transition-colors duration-200 text-amber-700 dark:text-amber-400 ${commitDecision === "flag" ? "font-bold scale-110" : ""}`}>{stats.flaggedCount}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span>Passed:</span>
+                <span className={`font-mono font-medium transition-colors duration-200 text-rose-700 dark:text-rose-400 ${commitDecision === "pass" ? "font-bold scale-110" : ""}`}>{stats.passedCount}</span>
+              </div>
+            </div>
+            {totalCandidates > 0 && (
+              <DecisionProgressStrip
+                items={filteredQueue}
+                activeIndex={activeIndex}
+                onSelectIndex={setActiveIndex}
+                className="w-20 sm:w-24"
+              />
+            )}
+          </div>
+          <button
+            type="button"
+            onClick={handleExitFocus}
+            className="p-1.5 rounded-lg text-on-surface-variant/60 hover:text-on-surface hover:bg-surface-container transition-colors cursor-pointer"
+            title="Exit focus mode (Esc)"
+            aria-label="Exit focus mode"
+          >
+            <Minimize2 className="h-4 w-4" />
+          </button>
+        </div>
+      </header>
+
+      {/* Center Field: Spatial Card Deck within dedicated scroll stage */}
+      <main className="relative flex-1 min-h-0 w-full flex items-center justify-center p-3 sm:p-4 overflow-hidden">
         <SpatialFocusDeck
           items={filteredQueue}
           activeIndex={activeIndex}
