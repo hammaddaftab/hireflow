@@ -1,0 +1,180 @@
+[
+  {
+    "name": "Rao Jawad",
+    "description": "Extracted from PDF (Rao Jawad ur Rehman — CV-final.pdf, 143 lines)",
+    "resumeText": "Rao Jawad ur Rehman — CV\n\n\n\n\nRao Jawad ur Rehman\nBS Computer Science, NUST SEECS · Islamabad, Pakistan · jawadrao149@gmail.com · 0319-\n6480989 · GitHub · LinkedIn\n\n\n\nEducation\nNational University of Sciences and Technology (NUST), SEECS — B.S. Computer\nScience, 2025 – 2029\n\nCoursework: Data Structures & Algorithms (C++), Artificial Intelligence, Computer\nNetworks, Information Security, Probability & Statistics, Object-Oriented Programming\n(Java), Database Systems, Linear Algebra, Discrete Mathematics\n\nGovernment College University (GCU), Lahore — Intermediate, Pre-Engineering, 2023 –\n2025 · 84%\n\nPunjab School, Lahore — Matriculation, 2023 · 93.5%\n\n\nExperience\nTech Team Lead, Project Shamma (volunteering web platform) · mid Jul – 12 Sep 2026\n\nNext.js, JavaScript, Tailwind CSS, Supabase, Postman, GitHub, Vercel\n\n     Founded and led a five-person team to replace a single developer's AI-generated\n     workflow; fixed the vibe-coded codebase, migrated the site from vanilla JavaScript to\n     Next.js, and set up CI/CD on GitHub and Vercel.\n     Interviewed and skill-tested about 10 applicants for technical roles and assigned each\n     to the role that fit.\n     Found a critical (P0) access-control flaw: a misnamed middleware file was ignored by\n     Next.js, leaving every /admin/* route public.\n\nIntern, Punjab Food Authority, Lahore · 16 Jun – 15 Jul 2026\n\n     Observed day-to-day server administration and operations at the authority; completed\n     with an official internship certificate.\n\nWeb Development Intern, Punjab Information Technology Board (PITB) · 8 Jul – 31 Aug\n2026\n\n     Built a full e-commerce web app from scratch in PHP/MySQL: product catalogue with\n     image upload, session cart, checkout and orders, admin panel, hashed-password auth.\n\n\n\n\n                                                                                      Page 1 of 3\n\fRao Jawad ur Rehman — CV\n\n\n\n\n     Hardened it through QA under supervisor review and deployed it on a self-hosted\n     server on my own initiative.\n\nDirector General, Freelancers Guild (FLG) · 2024 – Present (volunteer)\n\n     Run operations of a freelancer community platform, coordinating creators, HR and\n     management; set publishing standards and supervised HR onboarding.\n\n\nProjects\nPickkaru — Van Tracking and Transport Management App for NUST Commuters · 2025 –\nPresent (in development, with Hammad Aftab)\n\nFlutter, Dart, Riverpod, Firebase (Auth, Firestore, FCM), OpenStreetMap\n\n     Initiated the project and built the core architecture: phone-OTP auth, Firestore data\n     layer with security rules, FCM real-time tracking, flutter_map and Haversine\n     geofencing (500 m).\n     Designed a trip resolver with three leg strategies and driver/student role flows; mid-\n     refactor toward an 8-state student status machine.\n\nrPPG Heart-Rate Estimation Pipeline · mid Jun – mid Jul 2026\n\nPython, MediaPipe, NumPy/SciPy, pytest\n\n     Recovers blood-volume pulse from facial video with 4-ROI MediaPipe extraction, POS\n     projection and Butterworth filtering, fused by a reliability-weighted algorithm.\n     Reached 0.84 BPM MAE on a UBFC-rPPG recording versus 12.21 BPM for pyVHR on the\n     same recording; 51 unit tests and a benchmark CLI.\n\nPrivate Cloud and Home Server · 25 Aug – 8 Sep 2026\n\nOpenMediaVault, Docker, Tailscale, Nextcloud on a 2008 MacBook (Core 2 Duo, 4 GB\nRAM)\n\n     Runs Nextcloud in Docker with a Tailscale mesh VPN for remote access and a data\n     drive bound by UUID in /etc/fstab ; profiled RAM, swap and CPU to fit the hardware.\n\nOther builds — Namaz alarm app for Android TV (Kotlin, ADB); ESP32-controlled drone;\nArduino Bluetooth RC car.\n\n\n\n\n                                                                                        Page 2 of 3\n\fRao Jawad ur Rehman — CV\n\n\n\n\nTechnical Skills\n\n  Area                          Stack\n\n  Web                           JavaScript, Next.js, Tailwind CSS, HTML/CSS, PHP,\n                                REST APIs, Postman\n\n  Mobile                        Flutter, Dart, Riverpod, Provider, GoRouter,\n                                Widgetbook, Kotlin\n\n  Backend and data              Supabase, Firebase (Auth, Firestore, FCM, security\n                                rules, emulator), SQL (MySQL, PostgreSQL,\n                                SQLite)\n\n  AI / ML                       Python (NumPy, pandas, SciPy), MediaPipe, signal\n                                processing, local LLM inference (Ollama, LM\n                                Studio)\n\n  Languages                     JavaScript, Dart, Python, Java, C++, PHP\n\n  DevOps and infrastructure     Git/GitHub, CI/CD (GitHub, Vercel), Linux server\n                                administration, Docker, Tailscale, Nextcloud\n\n\n\n\nCertifications and Additional\n     Certificates: Rescue 1122 First Aid (Punjab Emergency Service); Arduino Workshop.\n     Languages: Urdu and Punjabi (native), English (fluent), Arabic (reading). Interests:\n     machine learning, AI deployment in low-resource settings, information security.\n\n\n\n\n                                                                                        Page 3 of 3",
+    "id": "input-1791685901077",
+    "createdAt": "2026-10-11T02:31:41.077Z",
+    "updatedAt": "2026-10-11T02:31:41.077Z"
+  },
+  {
+    "id": "fixture-user-reported-kaggle",
+    "name": "User Issue: Kaggle Mentor + Crypto-Express + Freelance Center",
+    "description": "Exact reproduction of user scenario. 3 distinct sequential roles spanning Dec 2022 to Nov 2024 (24 mos), Jan 2022 to Dec 2022 (12 mos), and Jan 2021 to Dec 2021 (12 mos). Total career duration is ~4.0 years.",
+    "resumeText": "EXPERIENCE\n\nAI Data Scientist Kaggle Master Mentor at GOOGLE-KAGGLE\n2022-12 - 2024-11\nChampioned mentorship initiatives through the Kaggle-X BIPOC Mentorship Program, dedicating 20 hours weekly to guiding aspiring data scientists in technical skill development. Led a team of four mentees, enhancing their skills in data science, machine learning, and real-world problem-solving.\n\nData Scientist at Crypto-Express\n2022-01 - 2022-12\nDeveloped an Anti-spoofing Face-App, enhancing digital identity security and reducing identity fraud by 70%. Applied AI and ML techniques to solve industry-critical issues, improving efficiency by 25% and reducing operational costs by 15%. Engineered predictive models leading to a 20% revenue increase through data-driven decision-making.\n\nArtificial Intelligence Engineer at Pakistan Freelancing Training Center\n2021-01 - 2021-12\nLed AI and Data Science training sessions, preparing students to tackle real-world challenges. Designed and deployed models using TensorFlow and Keras, improving system efficiency and accuracy. Automated repetitive data tasks using Python, significantly reducing manual labor and error rates.",
+    "createdAt": "2026-09-07T12:00:00Z",
+    "updatedAt": "2026-09-07T12:00:00Z",
+    "isDefault": true,
+    "category": "user_reported_bug",
+    "expected": {
+      "experience": {
+        "totalYears": 4,
+        "fullTimeYears": 4,
+        "rolesCount": 3,
+        "targetMinYears": 5,
+        "blocking": true,
+        "toleranceYears": 0.2
+      }
+    }
+  },
+  {
+    "id": "fixture-standard-enterprise-progression",
+    "name": "Standard Enterprise Career Progression (5.5 Years Full-Time)",
+    "description": "Two back-to-back full-time software engineering roles without gaps. Tests standard corporate tenure summation.",
+    "resumeText": "WORK EXPERIENCE\n\nSenior Software Engineer | Apex Cloud Systems\n2021-06 - 2024-12 (Full-time)\n- Architected resilient event-driven microservices processing 12M daily transactions with 99.99% uptime.\n- Directed an agile squad of 6 engineers, spearheading cloud migration initiatives to Kubernetes.\n\nSoftware Engineer | Nexus Digital Solutions\n2019-06 - 2021-05 (Full-time)\n- Developed and maintained critical REST and GraphQL payment gateway endpoints using Node.js and TypeScript.\n- Optimized PostgreSQL database indexes, decreasing query latency by 45%.",
+    "createdAt": "2026-09-07T12:00:00Z",
+    "updatedAt": "2026-09-07T12:00:00Z",
+    "isDefault": true,
+    "category": "standard_progression",
+    "expected": {
+      "experience": {
+        "totalYears": 5.5,
+        "fullTimeYears": 5.5,
+        "rolesCount": 2,
+        "targetMinYears": 5,
+        "blocking": true,
+        "toleranceYears": 0.2
+      }
+    }
+  },
+  {
+    "id": "fixture-concurrent-overlapping-roles",
+    "name": "Concurrent Overlapping Roles (Calendar Tenure vs Naive Sum)",
+    "description": "Tests handling of concurrent roles where candidate held a full-time position while consulting part-time during the same calendar year. Stressed against double-counting overlap.",
+    "resumeText": "PROFESSIONAL HISTORY\n\nLead Platform Engineer - FinCorp Technologies\n2021-01 - 2023-12 (Full-Time)\n- Led platform infrastructure modernization, migrating legacy monolithic services to containerized AWS ECS clusters.\n- Enforced zero-downtime blue/green deployment automations.\n\nCloud Infrastructure Consultant - Venture Labs\n2022-01 - 2022-12 (Contract / Part-Time)\n- Provided 15 hours weekly advisory on Terraform IaC configurations and IAM least-privilege policies.\n- Audited cloud architecture and trimmed cloud hosting costs by 22%.",
+    "createdAt": "2026-09-07T12:00:00Z",
+    "updatedAt": "2026-09-07T12:00:00Z",
+    "isDefault": true,
+    "category": "concurrency_overlap",
+    "expected": {
+      "experience": {
+        "totalYears": 3,
+        "fullTimeYears": 3,
+        "rolesCount": 2,
+        "targetMinYears": 3,
+        "blocking": true,
+        "toleranceYears": 0.2
+      }
+    }
+  },
+  {
+    "id": "fixture-contract-and-freelance-heavy",
+    "name": "Freelance & Independent Contractor Dominant Profile",
+    "description": "Candidate with extensive freelance and contract projects. Stresses the evaluator distinction between total career experience and full-time requirements.",
+    "resumeText": "EXPERIENCE\n\nSenior React Developer (Contract)\nFinTech Advisory Group | 2023-01 - 2024-06\n- Spearheaded development of institutional trader dashboard in Next.js.\n- Implemented real-time WebSocket orderbook feeds.\n\nIndependent Frontend Consultant (Freelance)\nSelf-Employed / Various Clients | 2021-01 - 2022-12\n- Designed and built responsive web applications for 8 high-growth startups.\n- Established design systems and reusable Tailwind UI component libraries.\n\nJunior Web Developer (Full-time)\nByteCraft Labs | 2020-01 - 2020-12\n- Developed core user registration workflows and email verification systems.",
+    "createdAt": "2026-09-07T12:00:00Z",
+    "updatedAt": "2026-09-07T12:00:00Z",
+    "isDefault": true,
+    "category": "contract_freelance",
+    "expected": {
+      "experience": {
+        "totalYears": 4.5,
+        "fullTimeYears": 1,
+        "rolesCount": 3,
+        "targetMinYears": 3,
+        "blocking": false,
+        "toleranceYears": 0.3
+      }
+    }
+  },
+  {
+    "id": "fixture-year-only-date-intervals",
+    "name": "Year-Only Ambiguous Date Formatting (e.g. 2020 - 2023)",
+    "description": "Resumes that omit specific months and only provide calendar years (e.g. '2020 - 2022'). Tests fallback date heuristics.",
+    "resumeText": "WORK HISTORY\n\nFull Stack Engineer at Orbit Software\n2022 - 2024\nBuilt data visualization tools and automated ETL ingestion pipelines using Python and React.\n\nJunior Web Developer at CyberTech Systems\n2020 - 2022\nMaintained internal CRM tooling and customer support portals.",
+    "createdAt": "2026-09-07T12:00:00Z",
+    "updatedAt": "2026-09-07T12:00:00Z",
+    "isDefault": true,
+    "category": "date_formats",
+    "expected": {
+      "experience": {
+        "totalYears": 4,
+        "fullTimeYears": 4,
+        "rolesCount": 2,
+        "targetMinYears": 3,
+        "blocking": true,
+        "toleranceYears": 0.5
+      }
+    }
+  },
+  {
+    "id": "fixture-ongoing-current-role",
+    "name": "Active Ongoing Role (Start Date to Present)",
+    "description": "Tests live tenure calculation where current role has no end date ('Present' / 'Current').",
+    "resumeText": "WORK EXPERIENCE\n\nStaff Data Engineer\nStarlight Analytics\n2023-01 - Present\n- Architecting Lakehouse storage solutions on Databricks and Apache Spark.\n- Managing a petabyte-scale data warehouse queried by 200+ internal analysts.\n\nSenior BI Developer\nPinnacle Intelligence\n2020-06 - 2022-12\n- Modeled enterprise dimension schemas in dbt and Snowflake.",
+    "createdAt": "2026-09-07T12:00:00Z",
+    "updatedAt": "2026-09-07T12:00:00Z",
+    "isDefault": true,
+    "category": "standard_progression",
+    "expected": {
+      "experience": {
+        "totalYears": 5,
+        "fullTimeYears": 5,
+        "rolesCount": 2,
+        "targetMinYears": 4,
+        "blocking": true,
+        "toleranceYears": 0.5
+      }
+    }
+  },
+  {
+    "id": "fixture-internship-conversion",
+    "name": "Internship to Full-Time Staff Conversion",
+    "description": "Tests whether 6-month internship is categorized as 'internship' and differentiated from full-time staff tenure.",
+    "resumeText": "PROFESSIONAL BACKGROUND\n\nSoftware Development Engineer\nCloudMatrix Technologies\n2022-07 - 2024-06 (Full-time)\n- Developed resilient distributed background task workers using BullMQ and Redis.\n- Implemented automated observability dashboards with Grafana and Prometheus.\n\nSoftware Engineering Intern\nCloudMatrix Technologies\n2022-01 - 2022-06 (Internship)\n- Assisted backend team in writing unit tests and integrating third-party SMS webhook notifications.",
+    "createdAt": "2026-09-07T12:00:00Z",
+    "updatedAt": "2026-09-07T12:00:00Z",
+    "isDefault": true,
+    "category": "contract_freelance",
+    "expected": {
+      "experience": {
+        "totalYears": 2.5,
+        "fullTimeYears": 2,
+        "rolesCount": 2,
+        "targetMinYears": 2,
+        "blocking": true,
+        "toleranceYears": 0.2
+      }
+    }
+  },
+  {
+    "id": "input-fast-nuces-campus",
+    "name": "FAST-NUCES Campus Sample",
+    "description": "BS Computer Science from FAST CFD Campus with FSc Pre-Engineering",
+    "resumeText": "MUHAMMAD BILAL\nFull Stack Software Engineer\nEmail: bilal@example.com | Phone: +92 300 1234567\n\nEDUCATION\nNational University of Computer and Emerging Sciences (FAST-NUCES CFD Campus)\nBS Computer Science (BSCS)\n2020 - 2024\nGPA: 3.65 / 4.0\n\nGovt College of Science\nFSc Pre-Engineering\n2018 - 2020",
+    "createdAt": "2026-10-11T02:15:34.727Z",
+    "updatedAt": "2026-10-11T02:15:34.727Z",
+    "isDefault": true,
+    "category": "education_preset"
+  },
+  {
+    "id": "input-nust-ms-pucit-bs",
+    "name": "NUST MS + PUCIT BS Sample",
+    "description": "Ongoing MS Software Engineering at NUST and completed BS IT from PUCIT",
+    "resumeText": "AYESHA KHAN\nSenior Data Scientist\nEmail: ayesha@example.com\n\nEDUCATION\nNational University of Sciences & Technology (NUST SEECS)\nMS Software Engineering (MSSE)\n2022 - Present\n\nPunjab University College of Information Technology (PUCIT)\nBS Information Technology (BSIT)\n2018 - 2022\nCGPA: 3.8 / 4.0",
+    "createdAt": "2026-10-11T02:15:34.727Z",
+    "updatedAt": "2026-10-11T02:15:34.727Z",
+    "isDefault": true,
+    "category": "education_preset"
+  },
+  {
+    "id": "input-bootcamp-intermediate",
+    "name": "Bootcamp & Intermediate Sample",
+    "description": "12-week coding bootcamp and ICS diploma, stresses non-degree tier classification",
+    "resumeText": "HAMZA TARIQ\nJunior Frontend Developer\n\nEDUCATION\n12-Week Intensive Full Stack Web Development Bootcamp\nDevsInc Coding Academy\n2023 - 2023\nTrained in React, Next.js, and TypeScript\n\nPunjab Group of Colleges\nIntermediate (ICS)\n2021 - 2023",
+    "createdAt": "2026-10-11T02:15:34.727Z",
+    "updatedAt": "2026-10-11T02:15:34.727Z",
+    "isDefault": true,
+    "category": "education_preset"
+  }
+]

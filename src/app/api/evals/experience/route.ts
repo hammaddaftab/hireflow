@@ -1,5 +1,6 @@
 export const dynamic = "force-dynamic";
 
+
 import { NextRequest } from "next/server";
 import { z } from "zod";
 import { DEFAULT_EXPERIENCE_FIXTURES } from "@/features/evals/data/defaultFixtures";
@@ -7,8 +8,9 @@ import {
   runExperienceEvaluation,
   runBatchExperienceEvaluation,
 } from "@/features/evals/services/experienceStressTestService";
-import type { ExperienceTestFixture } from "@/features/evals/types";
 import { ApiError, createErrorResponse, createSuccessResponse } from "@/lib/errors/api-error";
+import { saveRun, saveInput } from "@/features/evals/storage/evalStore";
+import type { ExperienceTestFixture } from "@/features/evals/types";
 
 const CustomTestSchema = z.object({
   resumeText: z.string().min(10, "Resume text must be at least 10 characters"),
@@ -104,6 +106,28 @@ export async function POST(request: NextRequest) {
           : DEFAULT_EXPERIENCE_FIXTURES;
 
       const summary = await runBatchExperienceEvaluation(suiteToRun);
+
+      // Permanently persist each fixture run output
+      for (const res of summary.results) {
+        try {
+          await saveRun({
+            inputId: res.fixtureId,
+            aspect: "experience",
+            status: res.status,
+            durationMs: res.durationMs,
+            model: res.model,
+            provider: res.provider,
+            summary: res.summary,
+            diagnostics: res.diagnostics,
+            rawExtraction: res.rawExtraction,
+            evaluatorOutput: res.evaluatorOutput,
+            entries: res.entries,
+          });
+        } catch {
+          // Ignore persistence errors during batch
+        }
+      }
+
       return createSuccessResponse(summary);
     }
 
@@ -129,13 +153,66 @@ export async function POST(request: NextRequest) {
         isCustom: true,
       };
 
+      // Save custom input permanently
+      try {
+        await saveInput({
+          id: adHocFixture.id,
+          name: adHocFixture.title,
+          description: adHocFixture.description,
+          resumeText: adHocFixture.resumeText,
+          category: "custom",
+        });
+      } catch {
+        // Ignore input save errors
+      }
+
       const result = await runExperienceEvaluation(adHocFixture);
+
+      // Permanently save run output
+      try {
+        await saveRun({
+          inputId: adHocFixture.id,
+          aspect: "experience",
+          status: result.status,
+          durationMs: result.durationMs,
+          model: result.model,
+          provider: result.provider,
+          summary: result.summary,
+          diagnostics: result.diagnostics,
+          rawExtraction: result.rawExtraction,
+          evaluatorOutput: result.evaluatorOutput,
+          entries: result.entries,
+        });
+      } catch {
+        // Ignore run save errors
+      }
+
       return createSuccessResponse(result);
     }
 
     // Mode 3: Single fixture execution
     if (fixture) {
       const result = await runExperienceEvaluation(fixture as ExperienceTestFixture);
+
+      // Permanently save run output
+      try {
+        await saveRun({
+          inputId: fixture.id,
+          aspect: "experience",
+          status: result.status,
+          durationMs: result.durationMs,
+          model: result.model,
+          provider: result.provider,
+          summary: result.summary,
+          diagnostics: result.diagnostics,
+          rawExtraction: result.rawExtraction,
+          evaluatorOutput: result.evaluatorOutput,
+          entries: result.entries,
+        });
+      } catch {
+        // Ignore run save errors
+      }
+
       return createSuccessResponse(result);
     }
 

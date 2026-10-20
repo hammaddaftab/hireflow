@@ -12,7 +12,9 @@ import type {
   ExperienceTestFixture,
   ExperienceEvalResult,
   BatchEvalSummary,
+  FixtureCategory,
 } from "../../types";
+import type { EvalRunOutput } from "../../storage/evalStore";
 import { StressTestSummaryBanner } from "./components/StressTestSummaryBanner";
 import { FixtureList } from "./components/FixtureList";
 import { ComparisonHero } from "./components/ComparisonHero";
@@ -38,19 +40,93 @@ export function StressTestWorkbench() {
   const [fixtureToEdit, setFixtureToEdit] = useState<ExperienceTestFixture | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  // Load custom fixtures from localStorage on mount
+  // Load shared inputs and saved runs permanently from server disk store on mount
   useEffect(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY_CUSTOM_FIXTURES);
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          setFixtures([...DEFAULT_EXPERIENCE_FIXTURES, ...parsed]);
+    let mounted = true;
+    async function loadData() {
+      try {
+        const res = await fetch("/api/evals/inputs");
+        const json = await res.json();
+        if (!mounted || !json.data) return;
+
+        const { inputs, latestRuns } = json.data;
+
+        // If shared inputs are loaded, map to ExperienceTestFixture
+        if (Array.isArray(inputs) && inputs.length > 0) {
+          const mappedFixtures: ExperienceTestFixture[] = inputs.map((inp: {
+            id: string;
+            name: string;
+            description?: string;
+            category?: string;
+            resumeText: string;
+            expected?: {
+              experience?: {
+                totalYears?: number;
+                fullTimeYears?: number;
+                rolesCount?: number;
+                targetMinYears?: number;
+                blocking?: boolean;
+                toleranceYears?: number;
+              };
+            };
+            createdAt?: string;
+            isDefault?: boolean;
+          }) => ({
+            id: inp.id,
+            title: inp.name,
+            description: inp.description || "",
+            category: (inp.category as FixtureCategory) || (inp.isDefault ? "standard_progression" : "custom"),
+            resumeText: inp.resumeText,
+            expected: {
+              totalYears: inp.expected?.experience?.totalYears ?? 4.0,
+              fullTimeYears: inp.expected?.experience?.fullTimeYears ?? 4.0,
+              rolesCount: inp.expected?.experience?.rolesCount ?? 2,
+            },
+            targetJobRequirement: {
+              minYears: inp.expected?.experience?.targetMinYears ?? 3,
+              blocking: inp.expected?.experience?.blocking ?? true,
+            },
+            toleranceYears: inp.expected?.experience?.toleranceYears ?? 0.2,
+            createdAt: inp.createdAt || new Date().toISOString(),
+            isCustom: !inp.isDefault,
+          }));
+          setFixtures(mappedFixtures);
         }
+
+        // Restore latest runs if available
+        if (latestRuns && typeof latestRuns === "object") {
+          const restored: Record<string, ExperienceEvalResult> = {};
+          for (const [inpId, aspects] of Object.entries(latestRuns)) {
+            const expRun = (aspects as Record<string, EvalRunOutput>)?.experience;
+            if (expRun) {
+              const matchedInput = inputs?.find((i: { id: string; name: string }) => i.id === inpId);
+              restored[inpId] = {
+                fixtureId: expRun.inputId,
+                fixtureTitle: (expRun.summary as Record<string, string>)?.fixtureTitle || matchedInput?.name || expRun.inputId,
+                timestamp: expRun.createdAt,
+                durationMs: expRun.durationMs,
+                model: expRun.model,
+                provider: expRun.provider,
+                status: expRun.status,
+                rawExtraction: expRun.rawExtraction,
+                evaluatorOutput: expRun.evaluatorOutput,
+                summary: expRun.summary,
+                entries: expRun.entries || [],
+                diagnostics: expRun.diagnostics || [],
+              } as ExperienceEvalResult;
+            }
+          }
+          setResultsMap(restored);
+        }
+      } catch {
+        // Fallback to defaults
       }
-    } catch {
-      // Ignore parse error
     }
+
+    loadData();
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   const selectedFixture =
@@ -122,7 +198,7 @@ export function StressTestWorkbench() {
   };
 
   // Save new or edited fixture
-  const handleSaveFixture = (savedFixture: ExperienceTestFixture) => {
+  const handleSaveFixture = async (savedFixture: ExperienceTestFixture) => {
     let updated: ExperienceTestFixture[];
     const exists = fixtures.some((f) => f.id === savedFixture.id);
 
@@ -135,17 +211,36 @@ export function StressTestWorkbench() {
     setFixtures(updated);
     setSelectedFixtureId(savedFixture.id);
 
-    // Save custom fixtures in localStorage
-    const customList = updated.filter((f) => f.isCustom);
+    // Save permanently to server disk store
     try {
-      localStorage.setItem(STORAGE_KEY_CUSTOM_FIXTURES, JSON.stringify(customList));
+      await fetch("/api/evals/inputs", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: savedFixture.id,
+          name: savedFixture.title,
+          description: savedFixture.description,
+          resumeText: savedFixture.resumeText,
+          category: savedFixture.category,
+          expected: {
+            experience: {
+              totalYears: savedFixture.expected.totalYears,
+              fullTimeYears: savedFixture.expected.fullTimeYears,
+              rolesCount: savedFixture.expected.rolesCount,
+              targetMinYears: savedFixture.targetJobRequirement.minYears,
+              blocking: savedFixture.targetJobRequirement.blocking,
+              toleranceYears: savedFixture.toleranceYears,
+            },
+          },
+        }),
+      });
     } catch {
       // Ignore
     }
   };
 
   // Delete custom fixture
-  const handleDeleteFixture = (fixtureId: string) => {
+  const handleDeleteFixture = async (fixtureId: string) => {
     const updated = fixtures.filter((f) => f.id !== fixtureId);
     setFixtures(updated);
 
@@ -153,9 +248,11 @@ export function StressTestWorkbench() {
       setSelectedFixtureId(updated[0]?.id || "");
     }
 
-    const customList = updated.filter((f) => f.isCustom);
+    // Delete permanently from server disk store
     try {
-      localStorage.setItem(STORAGE_KEY_CUSTOM_FIXTURES, JSON.stringify(customList));
+      await fetch(`/api/evals/inputs?id=${encodeURIComponent(fixtureId)}`, {
+        method: "DELETE",
+      });
     } catch {
       // Ignore
     }
