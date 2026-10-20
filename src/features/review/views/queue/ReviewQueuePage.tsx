@@ -9,6 +9,7 @@ import { motion, AnimatePresence } from "motion/react";
 import type { Job } from "@/entities/job";
 import type { QueueFilterTab } from "@/entities/review";
 import type { CandidateReviewItem } from "../../types";
+import type { QueueSortOption } from "../../core/utils/queueCalculations";
 import { useReviewData } from "../../core/hooks/useReviewData";
 import { useActiveReviewChips } from "../../core/hooks/useActiveReviewChips";
 import { buildReviewQueue } from "../../core/services/reviewQueueService";
@@ -55,6 +56,7 @@ export interface ReviewQueuePageProps {
   initialCity?: string | null;
   initialUniversity?: string | null;
   initialGroupId?: string | null;
+  initialSort?: QueueSortOption;
 }
 
 export function ReviewQueuePage({
@@ -66,7 +68,11 @@ export function ReviewQueuePage({
   initialCity = null,
   initialUniversity = null,
   initialGroupId = null,
+  initialSort = "latest",
 }: ReviewQueuePageProps) {
+  const targetDegreeLevel: string =
+    (initialJob.education_min as { degree_level?: string | null })?.degree_level || "bachelors";
+
   // Domain state engine
   const {
     queue,
@@ -78,7 +84,7 @@ export function ReviewQueuePage({
     cityDistribution,
     universityDistribution,
     persistedGroups,
-  } = useReviewData(initialQueue, initialPersistedGroups);
+  } = useReviewData(initialQueue, initialPersistedGroups, targetDegreeLevel);
 
   const candidates = useMemo(() => queue.map((item) => item.candidate), [queue]);
   const [isGroupModalOpen, setIsGroupModalOpen] = useState(false);
@@ -100,6 +106,8 @@ export function ReviewQueuePage({
     setSelectedUniversity,
     selectedGroupId,
     setSelectedGroupId,
+    sortBy,
+    setSortBy,
     isFilterPaneOpen,
     setIsFilterPaneOpen,
     experienceRange,
@@ -131,6 +139,8 @@ export function ReviewQueuePage({
     initialCity,
     initialUniversity,
     initialGroupId,
+    initialSort,
+    targetDegreeLevel,
     onDecision: updateDecision,
   });
 
@@ -337,6 +347,8 @@ export function ReviewQueuePage({
           onClearAllFilters={resetFilters}
           onToggleShortcuts={() => setIsShortcutsOpen((prev) => !prev)}
           isShortcutsOpen={isShortcutsOpen}
+          sortBy={sortBy}
+          onSelectSort={setSortBy}
           rightSlot={
             <ResumeDropTrigger
               onFilesSelected={uploadFiles}

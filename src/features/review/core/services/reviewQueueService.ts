@@ -62,13 +62,13 @@ export function buildReviewQueue(
     // 1. Experience Evaluation
     const experience = evaluateExperience({
       requirement: job.min_experience,
-      candidate: candidate.work_history.entries,
+      candidate: candidate.work_history?.entries ?? [],
     });
 
     // 2. Skills Evaluation
     const candidateSkillsContext = {
-      demonstrated: candidate.skills_demonstrated.skills,
-      declared: candidate.skills_declared.skills_declared,
+      demonstrated: candidate.skills_demonstrated?.skills ?? [],
+      declared: candidate.skills_declared?.skills_declared ?? [],
     };
 
     const hasActiveRequired = (job.skills_required || []).some((s) => s.active !== false);
@@ -101,7 +101,7 @@ export function buildReviewQueue(
     const education = evaluateEducation(
       {
         requirement: job.education_min,
-        candidate: candidate.education.entries,
+        candidate: candidate.education?.entries ?? [],
       },
       "req_edu"
     );
@@ -110,24 +110,24 @@ export function buildReviewQueue(
     const logistics = evaluateLogistics({
       compensation: {
         requirement: job.compensation_band,
-        candidate: candidate.logistics.salary_expectation,
+        candidate: candidate.logistics?.salary_expectation,
       },
       noticePeriod: {
         requirement: job.max_notice_period,
-        candidate: candidate.logistics.notice_period,
+        candidate: candidate.logistics?.notice_period,
       },
       location: {
         requirement: job.location_requirement,
         candidate: {
-          normalized_location: candidate.identity.location,
-          stated_relocation_willingness: candidate.logistics.stated_relocation_willingness,
+          normalized_location: candidate.identity?.location,
+          stated_relocation_willingness: candidate.logistics?.stated_relocation_willingness,
         },
       },
       workMode: {
         requirement: job.work_mode,
         candidate: {
-          normalized_location: candidate.identity.location,
-          stated_relocation_willingness: candidate.logistics.stated_relocation_willingness,
+          normalized_location: candidate.identity?.location,
+          stated_relocation_willingness: candidate.logistics?.stated_relocation_willingness,
           target_location: job.location_requirement,
         },
       },
@@ -180,6 +180,10 @@ export function buildReviewQueue(
       hasAmbiguous,
       verifiedYearsExperience: verifiedYears,
       compensationBand: job.compensation_band || null,
+      targetDegreeLevel:
+        "degree_level" in job.education_min && typeof job.education_min.degree_level === "string"
+          ? job.education_min.degree_level
+          : "bachelors",
     };
   });
 

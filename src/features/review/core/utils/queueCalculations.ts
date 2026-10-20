@@ -18,6 +18,8 @@ export interface TabCounts {
   contradicted: number;
 }
 
+export type QueueSortOption = "latest" | "oldest";
+
 export interface QueueFilterOptions {
   selectedGroupId?: string | null;
   selectedCity?: string | null;
@@ -28,6 +30,8 @@ export interface QueueFilterOptions {
   salaryRange?: [number, number] | null;
   includeUnstatedSalary?: boolean;
   targetCurrency?: string;
+  sortBy?: QueueSortOption;
+  targetDegreeLevel?: string | null;
 }
 
 // Formats compact monetary values (e.g. 50k, 500k, 1M)
@@ -126,39 +130,68 @@ export function calculateSalaryBounds(
 }
 
 
-/**
- * Calculates distinct normalized cities present in candidate pool,
- * sorted descending by count, with nulls grouped into "Unspecified".
- */
+// Calculates distinct normalized cities present in candidate pool, sorted descending by count.
+// Failed normalizations (raw present but normalization failed) are grouped into "Need Attention".
+// Missing/omitted locations are grouped into "Unspecified".
 export function getCityDistribution(
   items: CandidateReviewItem[]
 ): Array<{ city: string; count: number }> {
   const counts: Record<string, number> = {};
 
   items.forEach((item) => {
-    const city = item.candidate.identity.location.normalized?.city || "Unspecified";
-    counts[city] = (counts[city] || 0) + 1;
+    const raw = item.candidate.identity.location?.raw?.trim();
+    const normalizedCity = item.candidate.identity.location?.normalized?.city?.trim();
+
+    let cityKey: string;
+    if (normalizedCity) {
+      cityKey = normalizedCity;
+    } else if (raw) {
+      cityKey = "Need Attention";
+    } else {
+      cityKey = "Unspecified";
+    }
+
+    counts[cityKey] = (counts[cityKey] || 0) + 1;
   });
 
   return Object.entries(counts)
     .map(([city, count]) => ({ city, count }))
-    .sort((a, b) => b.count - a.count);
+    .sort((a, b) => {
+      if (b.count !== a.count) return b.count - a.count;
+      const isSpecialA = a.city === "Need Attention" || a.city === "Unspecified";
+      const isSpecialB = b.city === "Need Attention" || b.city === "Unspecified";
+      if (!isSpecialA && isSpecialB) return -1;
+      if (isSpecialA && !isSpecialB) return 1;
+      return a.city.localeCompare(b.city);
+    });
 }
 
-// Calculates distinct normalized universities present in candidate pool, sorted descending by count
+// Calculates distinct normalized universities present in candidate pool for the required degree level, sorted descending by count.
+// Only education entries matching the required degree level (e.g. "bachelors") are evaluated.
+// Failed normalizations are grouped into "Need Attention", while omitted education/universities are grouped into "Unspecified".
 export function getUniversityDistribution(
-  items: CandidateReviewItem[]
+  items: CandidateReviewItem[],
+  targetDegreeLevel?: string | null
 ): Array<{ university: string; count: number }> {
   const counts: Record<string, number> = {};
+  const degreeLevel = targetDegreeLevel ?? items[0]?.targetDegreeLevel ?? "bachelors";
 
   items.forEach((item) => {
     const entries = item.candidate.education?.entries || [];
     const candidateUnis = new Set<string>();
 
-    entries.forEach((entry) => {
-      const uni = entry.institution?.normalized || entry.institution?.raw;
-      if (uni && uni.trim()) {
-        candidateUnis.add(uni.trim());
+    const matchingEntries = entries.filter(
+      (entry) => entry.degree_level?.normalized === degreeLevel
+    );
+
+    matchingEntries.forEach((entry) => {
+      const norm = entry.institution?.normalized?.trim();
+      const raw = entry.institution?.raw?.trim();
+
+      if (norm) {
+        candidateUnis.add(norm);
+      } else if (raw) {
+        candidateUnis.add("Need Attention");
       }
     });
 
@@ -173,26 +206,51 @@ export function getUniversityDistribution(
 
   return Object.entries(counts)
     .map(([university, count]) => ({ university, count }))
-    .sort((a, b) => b.count - a.count);
+    .sort((a, b) => {
+      if (b.count !== a.count) return b.count - a.count;
+      const isSpecialA = a.university === "Need Attention" || a.university === "Unspecified";
+      const isSpecialB = b.university === "Need Attention" || b.university === "Unspecified";
+      if (!isSpecialA && isSpecialB) return -1;
+      if (isSpecialA && !isSpecialB) return 1;
+      return a.university.localeCompare(b.university);
+    });
 }
 
-/**
- * Contiguous all-blocking-confirmed cards first for fast clearance,
- * followed by cards without contradictions, then contradicted cards.
- */
-export function sortReviewQueue(items: CandidateReviewItem[]): CandidateReviewItem[] {
+// Sorts review queue items by latest (default) or oldest application date
+export function sortCandidateReviewQueue(
+  items: CandidateReviewItem[],
+  sortOption: QueueSortOption = "latest"
+): CandidateReviewItem[] {
   return [...items].sort((a, b) => {
-    if (a.isAllBlockingConfirmed && !b.isAllBlockingConfirmed) return -1;
-    if (!a.isAllBlockingConfirmed && b.isAllBlockingConfirmed) return 1;
-    if (!a.hasContradicted && b.hasContradicted) return -1;
-    if (a.hasContradicted && !b.hasContradicted) return 1;
-    return 0;
+    const timeA = a.candidate.created_at ? new Date(a.candidate.created_at).getTime() : 0;
+    const timeB = b.candidate.created_at ? new Date(b.candidate.created_at).getTime() : 0;
+    const validTimeA = isNaN(timeA) ? 0 : timeA;
+    const validTimeB = isNaN(timeB) ? 0 : timeB;
+
+    if (sortOption === "oldest") {
+      if (validTimeA !== validTimeB) {
+        return validTimeA - validTimeB;
+      }
+      return a.candidate.id.localeCompare(b.candidate.id);
+    }
+
+    // Default: latest (newest application date first)
+    if (validTimeB !== validTimeA) {
+      return validTimeB - validTimeA;
+    }
+    return a.candidate.id.localeCompare(b.candidate.id);
   });
 }
 
-/**
- * Calculates aggregate review decision metrics across the entire queue.
- */
+// Sorts candidates in review queue by selected sort option (defaults to latest)
+export function sortReviewQueue(
+  items: CandidateReviewItem[],
+  sortOption: QueueSortOption = "latest"
+): CandidateReviewItem[] {
+  return sortCandidateReviewQueue(items, sortOption);
+}
+
+// Calculates aggregate review decision metrics across the entire queue.
 export function calculateReviewStats(queue: CandidateReviewItem[]): ReviewStats {
   const totalCount = queue.length;
   const decisionsMade = queue.filter((i) => i.decision !== "pending").length;
@@ -211,9 +269,7 @@ export function calculateReviewStats(queue: CandidateReviewItem[]): ReviewStats 
   };
 }
 
-/**
- * Calculates item counts for each queue filter tab.
- */
+// Calculates item counts for each queue filter tab.
 export function calculateTabCounts(
   queue: CandidateReviewItem[],
   filteredCount?: number
@@ -243,9 +299,13 @@ export function filterReviewQueue(
     salaryRange = null,
     includeUnstatedSalary = true,
     targetCurrency = "PKR",
+    sortBy = "latest",
+    targetDegreeLevel = null,
   } = options;
 
-  return queue.filter((item) => {
+  const effectiveDegreeLevel = targetDegreeLevel ?? queue[0]?.targetDegreeLevel ?? "bachelors";
+
+  const filtered = queue.filter((item) => {
     // 1. Group filter (active group always enforced; default group encompasses all candidates)
     if (!isDefaultGroup(selectedGroupId)) {
       const group = queryGroups.find((g) => g.id === selectedGroupId);
@@ -256,29 +316,42 @@ export function filterReviewQueue(
 
     // 2. Location filter
     if (selectedCity !== null) {
-      const candidateCity = item.candidate.identity.location.normalized?.city;
+      const candidateCity = item.candidate.identity.location?.normalized?.city?.trim();
+      const rawLocation = item.candidate.identity.location?.raw?.trim();
+
       if (selectedCity === "Unspecified") {
-        if (candidateCity !== null && candidateCity !== undefined) return false;
+        if (candidateCity || rawLocation) return false;
+      } else if (selectedCity === "Need Attention") {
+        if (candidateCity || !rawLocation) return false;
       } else {
         if (candidateCity !== selectedCity) return false;
       }
     }
 
-    // 3. University filter
+    // 3. University filter (scoped strictly to target degree level, e.g. bachelors)
     if (selectedUniversity !== null) {
-      const entries = item.candidate.education?.entries || [];
-      const candidateUnis = entries
-        .map((entry) => (entry.institution?.normalized || entry.institution?.raw)?.trim())
-        .filter((u): u is string => Boolean(u));
+      const entries = (item.candidate.education?.entries || []).filter(
+        (entry) => entry.degree_level?.normalized === effectiveDegreeLevel
+      );
 
       if (selectedUniversity === "Unspecified") {
-        if (candidateUnis.length > 0) return false;
+        const hasAnyUniversity = entries.some(
+          (entry) =>
+            Boolean(entry.institution?.normalized?.trim()) ||
+            Boolean(entry.institution?.raw?.trim())
+        );
+        if (hasAnyUniversity) return false;
+      } else if (selectedUniversity === "Need Attention") {
+        const hasUnnormalized = entries.some(
+          (entry) =>
+            Boolean(entry.institution?.raw?.trim()) &&
+            !entry.institution?.normalized?.trim()
+        );
+        if (!hasUnnormalized) return false;
       } else {
-        const matchesUni = entries.some((entry) => {
-          const norm = entry.institution?.normalized?.trim();
-          const raw = entry.institution?.raw?.trim();
-          return norm === selectedUniversity || raw === selectedUniversity;
-        });
+        const matchesUni = entries.some(
+          (entry) => entry.institution?.normalized?.trim() === selectedUniversity
+        );
         if (!matchesUni) return false;
       }
     }
@@ -330,5 +403,7 @@ export function filterReviewQueue(
 
     return true;
   });
+
+  return sortCandidateReviewQueue(filtered, sortBy);
 }
 

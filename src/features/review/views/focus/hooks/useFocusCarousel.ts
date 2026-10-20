@@ -7,6 +7,7 @@ import {
   filterReviewQueue,
   calculateExperienceBounds,
   calculateSalaryBounds,
+  type QueueSortOption,
 } from "../../../core/utils/queueCalculations";
 import {
   DEFAULT_GROUP_ID,
@@ -24,6 +25,8 @@ export interface UseFocusCarouselProps {
   initialCity?: string | null;
   initialUniversity?: string | null;
   initialGroupId?: string | null;
+  initialSort?: QueueSortOption;
+  targetDegreeLevel?: string | null;
   onDecision: (candidateId: string, decision: ReviewDecision) => Promise<boolean>;
   onExitFocus?: () => void;
   onToggleEvidence?: () => void;
@@ -40,6 +43,8 @@ export interface UseFocusCarouselReturn {
   setSelectedUniversity: (uni: string | null) => void;
   selectedGroupId: string;
   setSelectedGroupId: (id: string | null) => void;
+  sortBy: QueueSortOption;
+  setSortBy: (sort: QueueSortOption) => void;
   isFilterPaneOpen: boolean;
   setIsFilterPaneOpen: (open: boolean) => void;
   isGroupModalOpen: boolean;
@@ -93,6 +98,8 @@ export function useFocusCarousel({
   initialCity = null,
   initialUniversity = null,
   initialGroupId = null,
+  initialSort = "latest",
+  targetDegreeLevel = null,
   onDecision,
   onExitFocus,
   onToggleEvidence,
@@ -104,11 +111,17 @@ export function useFocusCarousel({
   const [selectedGroupId, setSelectedGroupIdState] = useState<string>(
     !isDefaultGroup(initialGroupId) ? initialGroupId! : DEFAULT_GROUP_ID
   );
+  const [sortBy, setSortByState] = useState<QueueSortOption>(initialSort || "latest");
   const [isFilterPaneOpen, setIsFilterPaneOpen] = useState(false);
   const [isGroupModalOpen, setIsGroupModalOpen] = useState(false);
   const [isGroupsOpen, setIsGroupsOpen] = useState(true);
   const [isLocationOpen, setIsLocationOpen] = useState(true);
   const [isUniversityOpen, setIsUniversityOpen] = useState(true);
+
+  const setSortBy = useCallback((sort: QueueSortOption) => {
+    setSortByState(sort);
+    setActiveIndex(0);
+  }, []);
 
   // Dynamic bounds calculated from queue candidates
   const experienceBounds = useMemo(() => calculateExperienceBounds(queue), [queue]);
@@ -159,6 +172,8 @@ export function useFocusCarousel({
       salaryRange,
       includeUnstatedSalary,
       targetCurrency: salaryBounds.currency,
+      sortBy,
+      targetDegreeLevel,
     });
   }, [
     queue,
@@ -171,6 +186,8 @@ export function useFocusCarousel({
     salaryRange,
     includeUnstatedSalary,
     salaryBounds.currency,
+    sortBy,
+    targetDegreeLevel,
   ]);
 
   const scopedActiveItem = filteredQueue[activeIndex] || filteredQueue[0] || null;
@@ -229,12 +246,17 @@ export function useFocusCarousel({
       } else {
         params.delete("university");
       }
+      if (sortBy === "oldest") {
+        params.set("sort", sortBy);
+      } else {
+        params.delete("sort");
+      }
       const newUrl = `${window.location.pathname}?${params.toString()}`;
       window.history.replaceState(null, "", newUrl);
     }, 200);
 
     return () => clearTimeout(timer);
-  }, [activeIndex, selectedGroupId, selectedUniversity]);
+  }, [activeIndex, selectedGroupId, selectedUniversity, sortBy]);
 
   const handleNext = useCallback(() => {
     flushCommitBeat();
@@ -387,6 +409,8 @@ export function useFocusCarousel({
     setSelectedUniversity,
     selectedGroupId,
     setSelectedGroupId,
+    sortBy,
+    setSortBy,
     isFilterPaneOpen,
     setIsFilterPaneOpen,
     isGroupModalOpen,

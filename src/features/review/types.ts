@@ -23,6 +23,8 @@ export type {
   LogisticsEvaluatorOutput,
 };
 
+export type { QueueSortOption } from "./core/utils/queueCalculations";
+
 export interface CandidateReviewItem {
   candidate: ParsedCandidateProfile;
   jobId?: string;
@@ -45,6 +47,7 @@ export interface CandidateReviewItem {
   hasAmbiguous: boolean;
   verifiedYearsExperience: number;
   compensationBand?: CompensationBandRequirement | null;
+  targetDegreeLevel?: string | null;
 }
 
 export interface QueryGroup {

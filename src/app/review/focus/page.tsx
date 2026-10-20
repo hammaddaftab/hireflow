@@ -7,6 +7,7 @@ import { buildReviewQueue, reviewsService } from "@/features/review";
 import { FocusReviewPage } from "@/features/review/views";
 import { groupsService } from "@/features/groups/groupsService";
 import type { QueueFilterTab } from "@/entities/review";
+import type { QueueSortOption } from "@/features/review/core/utils/queueCalculations";
 
 export default async function FocusRoutePage({
   searchParams,
@@ -17,6 +18,7 @@ export default async function FocusRoutePage({
     city?: string;
     university?: string;
     group?: string;
+    sort?: string;
   }>;
 }) {
   const params = await searchParams;
@@ -51,6 +53,7 @@ export default async function FocusRoutePage({
       initialCity={params.city || null}
       initialUniversity={params.university || null}
       initialGroupId={params.group || null}
+      initialSort={params.sort === "oldest" ? "oldest" : "latest"}
     />
   );
 }

@@ -1,6 +1,7 @@
 // Review filter query parameter parsing and serialization utilities
 
 import type { QueueFilterTab } from "@/entities/review";
+import type { QueueSortOption } from "./queueCalculations";
 
 export const DEFAULT_GROUP_ID = "grp_all";
 
@@ -14,6 +15,7 @@ export interface ReviewFilterQueryParams {
   city?: string | null;
   university?: string | null;
   group?: string | null;
+  sort?: QueueSortOption;
 }
 
 // Builds a query string for review navigation preserving active filter and candidate state
@@ -40,6 +42,10 @@ export function buildReviewQueryString(params: ReviewFilterQueryParams): string 
     searchParams.set("group", params.group);
   }
 
+  if (params.sort === "oldest") {
+    searchParams.set("sort", params.sort);
+  }
+
   return searchParams.toString();
 }
 
@@ -57,6 +63,7 @@ export function parseReviewQueryParams(
   const candidateIndexRaw = getParam("candidateIndex");
   const parsedIndex = candidateIndexRaw ? parseInt(candidateIndexRaw, 10) : 0;
   const rawGroup = getParam("group");
+  const rawSort = getParam("sort");
 
   return {
     candidateIndex: isNaN(parsedIndex) ? 0 : parsedIndex,
@@ -64,6 +71,7 @@ export function parseReviewQueryParams(
     city: getParam("city") || null,
     university: getParam("university") || null,
     group: isDefaultGroup(rawGroup) ? DEFAULT_GROUP_ID : rawGroup!,
+    sort: rawSort === "oldest" ? "oldest" : "latest",
   };
 }
 

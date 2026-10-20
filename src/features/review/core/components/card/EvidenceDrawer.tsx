@@ -16,6 +16,7 @@ import {
 import {
   groupSkillsByEvidenceQuote,
 } from "../../utils/evidenceGrouping";
+import { formatDegreeTier } from "../../utils/formatters";
 
 export interface EvidenceDrawerProps {
   item: CandidateReviewItem;
@@ -297,7 +298,9 @@ export function EvidenceDrawer({ item, onClose }: EvidenceDrawerProps) {
               <span className="inline-flex items-center gap-2">
                 <EvidentiaryDot type={getEvidentiaryDotType(eduItem.status)} />
                 <span className={getStatusTextColor(eduItem.status)}>
-                  {candidate.education.entries[0]?.degree_level.normalized || eduItem.label}
+                  {(candidate.education.entries[0]?.degree_level.normalized
+                    ? formatDegreeTier(candidate.education.entries[0].degree_level.normalized)
+                    : null) || eduItem.label}
                 </span>
               </span>
             </div>

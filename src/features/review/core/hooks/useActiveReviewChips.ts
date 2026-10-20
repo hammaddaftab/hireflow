@@ -67,7 +67,10 @@ export function useActiveReviewChips({
     if (selectedCity && onSelectCity) {
       chips.push({
         id: `city-${selectedCity}`,
-        label: selectedCity,
+        label:
+          selectedCity === "Need Attention" || selectedCity === "Unspecified"
+            ? `Location: ${selectedCity}`
+            : selectedCity,
         category: "city",
         onRemove: () => onSelectCity(null),
       });
@@ -77,7 +80,10 @@ export function useActiveReviewChips({
     if (selectedUniversity && onSelectUniversity) {
       chips.push({
         id: `university-${selectedUniversity}`,
-        label: selectedUniversity,
+        label:
+          selectedUniversity === "Need Attention" || selectedUniversity === "Unspecified"
+            ? `University: ${selectedUniversity}`
+            : selectedUniversity,
         category: "university",
         onRemove: () => onSelectUniversity(null),
       });

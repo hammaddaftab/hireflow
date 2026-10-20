@@ -1,9 +1,11 @@
 "use client";
 
-import React, { memo } from "react";
+import React, { memo, useState } from "react";
 import { Building2, MapPin, Briefcase, FileText, GraduationCap } from "lucide-react";
 import type { CandidateReviewItem } from "../../../types";
-import { DECISION_CONFIGS, useRelativeTime } from "../../../core/utils/decisionStyles";
+import { DECISION_CONFIGS, useRelativeTime, formatRelativeTime } from "../../../core/utils/decisionStyles";
+import { formatEducationTitle, formatInstitutionName } from "../../../core/utils/formatters";
+import { CandidateContactLinks } from "../../../core/components/card/CandidateContactLinks";
 
 export interface CandidateSideCardProps {
   item: CandidateReviewItem;
@@ -13,6 +15,7 @@ export interface CandidateSideCardProps {
 export const CandidateSideCard = memo(function CandidateSideCard({
   item,
 }: CandidateSideCardProps) {
+  const [isContactExpanded, setIsContactExpanded] = useState(false);
   const { candidate } = item;
   const currentRole = candidate.work_history.entries[0];
   const primaryEducation = candidate.education.entries[0];
@@ -44,21 +47,47 @@ export const CandidateSideCard = memo(function CandidateSideCard({
       <div className="space-y-3 pt-1">
         <div className="space-y-1.5 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
-            <h3 className="text-lg font-bold tracking-tight text-on-surface truncate">
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsContactExpanded((prev) => !prev);
+              }}
+              className="text-left text-lg font-bold tracking-tight text-on-surface truncate hover:text-primary transition-colors cursor-pointer focus:outline-none"
+              title="Click to toggle email and WhatsApp"
+            >
               {candidate.identity.name}
-            </h3>
+            </button>
             <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-surface-container text-on-surface">
               <MapPin className="h-3 w-3 text-on-surface-variant shrink-0" />
               <span>{normalizedCity}</span>
             </span>
           </div>
 
+          {/* Conditionally rendered contact actions revealed on clicking title */}
+          {isContactExpanded && (
+            <CandidateContactLinks
+              email={candidate.identity.email}
+              phone={candidate.identity.phone}
+              size="sm"
+              className="pt-0.5 animate-in fade-in duration-150"
+            />
+          )}
+
           <div className="flex items-center gap-3 text-xs text-on-surface-variant flex-wrap pt-0.5">
             {currentRole && (
-              <span className="flex items-center gap-1 font-semibold text-on-surface">
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsContactExpanded((prev) => !prev);
+                }}
+                className="flex items-center gap-1 font-semibold text-on-surface hover:text-primary transition-colors cursor-pointer text-left focus:outline-none"
+                title="Click to toggle email and WhatsApp"
+              >
                 <Briefcase className="h-3 w-3 text-on-surface-variant shrink-0" />
                 <span className="truncate max-w-[200px]">{currentRole.title}</span>
-              </span>
+              </button>
             )}
             <span className="flex items-center gap-1 font-medium">
               <Building2 className="h-3 w-3 text-on-surface-variant shrink-0" />
@@ -82,13 +111,21 @@ export const CandidateSideCard = memo(function CandidateSideCard({
                 <span className="truncate max-w-[140px]">{candidate.source_document.filename}</span>
               </span>
             )}
+            {candidate.created_at && formatRelativeTime(candidate.created_at) && (
+              <span className="text-[11px] font-medium text-on-surface-variant/80">
+                Applied {formatRelativeTime(candidate.created_at)}
+              </span>
+            )}
           </div>
 
           {primaryEducation && (
             <div className="pt-1.5 text-xs text-on-surface-variant flex items-center gap-1.5">
               <GraduationCap className="h-3.5 w-3.5 text-on-surface-variant shrink-0" />
               <span className="truncate max-w-[240px]">
-                {primaryEducation.degree_level.normalized || primaryEducation.degree_level.raw} • {primaryEducation.institution.normalized || primaryEducation.institution.raw}
+                {formatEducationTitle(primaryEducation)}
+                {formatInstitutionName(primaryEducation.institution)
+                  ? ` • ${formatInstitutionName(primaryEducation.institution)}`
+                  : ""}
               </span>
             </div>
           )}

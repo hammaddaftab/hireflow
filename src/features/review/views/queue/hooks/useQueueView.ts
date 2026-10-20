@@ -10,6 +10,7 @@ import {
   calculateExperienceBounds,
   calculateSalaryBounds,
   type TabCounts,
+  type QueueSortOption,
 } from "../../../core/utils/queueCalculations";
 import {
   buildReviewQueryString,
@@ -27,6 +28,8 @@ export interface UseQueueViewProps {
   initialCity?: string | null;
   initialUniversity?: string | null;
   initialGroupId?: string | null;
+  initialSort?: QueueSortOption;
+  targetDegreeLevel?: string | null;
   onDecision: (candidateId: string, decision: ReviewDecision) => Promise<boolean>;
 }
 
@@ -41,6 +44,8 @@ export interface UseQueueViewReturn {
   setSelectedUniversity: (uni: string | null) => void;
   selectedGroupId: string;
   setSelectedGroupId: (groupId: string) => void;
+  sortBy: QueueSortOption;
+  setSortBy: (sort: QueueSortOption) => void;
   isFilterPaneOpen: boolean;
   setIsFilterPaneOpen: (open: boolean | ((prev: boolean) => boolean)) => void;
   experienceRange: [number, number];
@@ -81,6 +86,8 @@ export function useQueueView({
   initialCity = null,
   initialUniversity = null,
   initialGroupId = null,
+  initialSort = "latest",
+  targetDegreeLevel = null,
   onDecision,
 }: UseQueueViewProps): UseQueueViewReturn {
   const router = useRouter();
@@ -91,7 +98,13 @@ export function useQueueView({
   const [selectedGroupId, setSelectedGroupIdState] = useState<string>(
     !isDefaultGroup(initialGroupId) ? initialGroupId! : DEFAULT_GROUP_ID
   );
+  const [sortBy, setSortByState] = useState<QueueSortOption>(initialSort || "latest");
   const [isFilterPaneOpen, setIsFilterPaneOpen] = useState(false);
+
+  const setSortBy = useCallback((sort: QueueSortOption) => {
+    setSortByState(sort);
+    setActiveIndex(0);
+  }, []);
 
   // Dynamic bounds calculated from queue candidates
   const experienceBounds = useMemo(() => calculateExperienceBounds(queue), [queue]);
@@ -138,6 +151,8 @@ export function useQueueView({
       salaryRange,
       includeUnstatedSalary,
       targetCurrency: salaryBounds.currency,
+      sortBy,
+      targetDegreeLevel,
     });
   }, [
     queue,
@@ -150,6 +165,8 @@ export function useQueueView({
     salaryRange,
     includeUnstatedSalary,
     salaryBounds.currency,
+    sortBy,
+    targetDegreeLevel,
   ]);
 
   const activeItem = filteredQueue[activeIndex] || filteredQueue[0] || null;
@@ -234,9 +251,10 @@ export function useQueueView({
       city: selectedCity,
       university: selectedUniversity,
       group: selectedGroupId,
+      sort: sortBy,
     });
     router.push(q ? `/review/focus?${q}` : "/review/focus");
-  }, [activeIndex, activeTab, selectedCity, selectedUniversity, selectedGroupId, router, flushCommitBeat]);
+  }, [activeIndex, activeTab, selectedCity, selectedUniversity, selectedGroupId, sortBy, router, flushCommitBeat]);
 
   const resetFilters = useCallback(() => {
     flushCommitBeat();
@@ -327,6 +345,8 @@ export function useQueueView({
     setSelectedUniversity,
     selectedGroupId,
     setSelectedGroupId,
+    sortBy,
+    setSortBy,
     isFilterPaneOpen,
     setIsFilterPaneOpen,
     experienceRange,

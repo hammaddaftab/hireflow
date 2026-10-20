@@ -7,6 +7,7 @@ import { Typography } from "@/components/ui/Typography";
 import type { Job } from "@/entities/job";
 import type { QueueFilterTab } from "@/entities/review";
 import type { CandidateReviewItem } from "../../types";
+import type { QueueSortOption } from "../../core/utils/queueCalculations";
 import { useReviewData } from "../../core/hooks/useReviewData";
 import { useFocusCarousel } from "./hooks/useFocusCarousel";
 import { SpatialFocusDeck } from "./components/SpatialFocusDeck";
@@ -29,6 +30,7 @@ export interface FocusReviewPageProps {
   initialCity?: string | null;
   initialUniversity?: string | null;
   initialGroupId?: string | null;
+  initialSort?: QueueSortOption;
 }
 
 export function FocusReviewPage({
@@ -40,9 +42,12 @@ export function FocusReviewPage({
   initialCity = null,
   initialUniversity = null,
   initialGroupId = null,
+  initialSort = "latest",
 }: FocusReviewPageProps) {
   const router = useRouter();
   const [isEvidenceOpen, setIsEvidenceOpen] = useState(false);
+  const targetDegreeLevel: string =
+    (initialJob.education_min as { degree_level?: string | null })?.degree_level || "bachelors";
 
   // Tier 1: Domain State Engine
   const {
@@ -54,7 +59,7 @@ export function FocusReviewPage({
     universityDistribution,
     stats,
     persistedGroups,
-  } = useReviewData(initialQueue, initialPersistedGroups);
+  } = useReviewData(initialQueue, initialPersistedGroups, targetDegreeLevel);
 
   const candidates = useMemo(() => queue.map((item) => item.candidate), [queue]);
   const exitFocusRef = useRef<() => void>(() => {});
@@ -71,6 +76,8 @@ export function FocusReviewPage({
     setSelectedUniversity,
     selectedGroupId,
     setSelectedGroupId,
+    sortBy,
+    setSortBy,
     isFilterPaneOpen,
     setIsFilterPaneOpen,
     isGroupModalOpen,
@@ -109,6 +116,8 @@ export function FocusReviewPage({
     initialCity,
     initialUniversity,
     initialGroupId,
+    initialSort,
+    targetDegreeLevel,
     onDecision: updateDecision,
     onExitFocus: () => exitFocusRef.current(),
     onToggleEvidence: () => setIsEvidenceOpen((prev) => !prev),
@@ -121,9 +130,10 @@ export function FocusReviewPage({
       city: selectedCity,
       university: selectedUniversity,
       group: selectedGroupId,
+      sort: sortBy,
     });
     router.push(q ? `/review?${q}` : "/review");
-  }, [router, activeIndex, activeTab, selectedCity, selectedUniversity, selectedGroupId]);
+  }, [router, activeIndex, activeTab, selectedCity, selectedUniversity, selectedGroupId, sortBy]);
 
   exitFocusRef.current = handleExitFocus;
 

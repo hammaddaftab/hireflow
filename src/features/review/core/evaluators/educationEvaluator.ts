@@ -6,6 +6,7 @@ import type {
   EvaluationPair,
 } from "./evaluationStatuses";
 import { isFieldEquivalent, normalizeFieldOfStudy } from "@/lib/extraction";
+import { formatDegreeTier, formatEducationTitle } from "../utils/formatters";
 
 const DEGREE_LEVEL_RANKS: Record<string, number> = {
   high_school: 1,
@@ -58,16 +59,18 @@ export function evaluateEducation(
 
   if (matchingDegree) {
     status = "confirmed";
-    const degText = matchingDegree.degree_level.raw || matchingDegree.degree_level.normalized || "Degree";
-    const fieldText = matchingDegree.field.normalized || matchingDegree.field.raw || "";
-    const detail = fieldText ? `${degText} in ${fieldText}` : degText;
+    const degTierLabel = matchingDegree.degree_level.normalized
+      ? formatDegreeTier(matchingDegree.degree_level.normalized)
+      : matchingDegree.degree_level.raw || "Degree";
+    const requiredDegreeLabel = requiredDegree ? formatDegreeTier(requiredDegree) : "degree";
+    const detail = formatEducationTitle(matchingDegree);
     reasoning = requiredField
       ? `Completed degree (${detail}) meets required education criteria.`
-      : `Highest completed degree tier (${degText}) meets or exceeds required ${requiredDegree || "degree"}.`;
+      : `Highest completed degree tier (${degTierLabel}) meets or exceeds required ${requiredDegreeLabel}.`;
   } else if (tierSatisfyingDegrees.length > 0 && requiredField) {
     // Degree tier was met, but field of study mismatched
     const candidateDegree = tierSatisfyingDegrees[0];
-    const degText = candidateDegree.degree_level.raw || candidateDegree.degree_level.normalized || "Degree";
+    const degText = candidateDegree.degree_level.raw || formatDegreeTier(candidateDegree.degree_level.normalized) || "Degree";
     const candField = candidateDegree.field.normalized || candidateDegree.field.raw;
 
     if (candField) {
@@ -85,9 +88,12 @@ export function evaluateEducation(
       const bestRank = best.degree_level.normalized ? DEGREE_LEVEL_RANKS[best.degree_level.normalized] || 0 : 0;
       return curRank >= bestRank ? cur : best;
     }, completedDegrees[0]);
-    const degText = highestDegree.degree_level.raw || highestDegree.degree_level.normalized || "Degree";
+    const highestTierLabel = highestDegree.degree_level.normalized
+      ? formatDegreeTier(highestDegree.degree_level.normalized)
+      : highestDegree.degree_level.raw || "Degree";
+    const requiredDegreeLabel = requiredDegree ? formatDegreeTier(requiredDegree) : "degree";
     status = "contradicted";
-    reasoning = `Highest completed degree tier (${degText}) does not meet required ${requiredDegree}.`;
+    reasoning = `Highest completed degree tier (${highestTierLabel}) does not meet required ${requiredDegreeLabel}.`;
   } else if (education_entries.some((e) => e.is_current)) {
     status = "ambiguous";
     reasoning = "Candidate is currently enrolled in degree program (in-progress).";
@@ -106,14 +112,18 @@ export function evaluateEducation(
       : "not_stated";
 
   const labelParts = [
-    requiredDegree ? `Degree: ${requiredDegree}` : null,
+    requiredDegree ? `Degree: ${formatDegreeTier(requiredDegree)}` : null,
     requiredField ? `Field: ${requiredField}` : null,
   ].filter(Boolean);
   const label = labelParts.length > 0 ? labelParts.join(" · ") : "Education";
 
   const primaryEvidence = matchingDegree
-    ? [matchingDegree.degree_level.raw, matchingDegree.field.raw].filter(Boolean).join(" in ")
-    : completedDegrees[0]?.degree_level.raw || education_entries[0]?.degree_level.raw || null;
+    ? formatEducationTitle(matchingDegree)
+    : completedDegrees[0]
+    ? formatEducationTitle(completedDegrees[0])
+    : education_entries[0]
+    ? formatEducationTitle(education_entries[0])
+    : null;
 
   const pillText = primaryEvidence || label;
   const badgeText =

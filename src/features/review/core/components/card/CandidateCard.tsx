@@ -21,10 +21,11 @@ import { Tooltip } from "@/components/ui/Tooltip";
 import { BlockingStrip } from "./BlockingStrip";
 import { EvidenceDrawer } from "./EvidenceDrawer";
 import { DecisionStatusStrip } from "./DecisionStatusStrip";
-import { DECISION_CONFIGS } from "../../utils/decisionStyles";
+import { CandidateContactLinks } from "./CandidateContactLinks";
+import { DECISION_CONFIGS, formatRelativeTime } from "../../utils/decisionStyles";
 import type { CandidateReviewItem } from "../../../types";
 import type { ReviewDecision } from "@/entities/review";
-import { formatDegreeName, getPlatformIcon } from "../../utils/formatters";
+import { formatEducationTitle, formatInstitutionName, getPlatformIcon } from "../../utils/formatters";
 
 export interface CandidateCardProps {
   item: CandidateReviewItem;
@@ -59,6 +60,7 @@ export function CandidateCard({
 }: CandidateCardProps) {
   const [internalLayer2Expanded, setInternalLayer2Expanded] = useState(false);
   const [isEducationExpanded, setIsEducationExpanded] = useState(false);
+  const [isContactExpanded, setIsContactExpanded] = useState(false);
   const actionButtonsRef = React.useRef<HTMLDivElement>(null);
 
   const isLayer2Expanded =
@@ -67,12 +69,12 @@ export function CandidateCard({
   const toggleLayer2 = onToggleLayer2 || (() => setInternalLayer2Expanded(!internalLayer2Expanded));
 
   const { candidate } = item;
-  const currentRole = candidate.work_history.entries[0];
-  const primaryEducation = candidate.education.entries[0];
-  const otherEducationCount = candidate.education.entries.length - 1;
+  const currentRole = candidate.work_history?.entries?.[0];
+  const primaryEducation = candidate.education?.entries?.[0];
+  const otherEducationCount = Math.max(0, (candidate.education?.entries?.length ?? 0) - 1);
 
-  const normalizedCity = candidate.identity.location.normalized?.city || "Unspecified";
-  const rawLocation = candidate.identity.location.raw || "Not stated in resume";
+  const normalizedCity = candidate.identity?.location?.normalized?.city || "Unspecified";
+  const rawLocation = candidate.identity?.location?.raw || "Not stated in resume";
 
   const decisionConfig = DECISION_CONFIGS[item.decision];
   const isDecided = item.decision !== "pending";
@@ -131,9 +133,17 @@ export function CandidateCard({
             }`}
           >
             <div className="flex flex-wrap items-center gap-2.5">
-              <h3 className="text-xl font-bold tracking-tight text-on-surface">
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsContactExpanded((prev) => !prev);
+                }}
+                className="text-left text-xl font-bold tracking-tight text-on-surface hover:text-primary transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
+                title="Click to toggle email and WhatsApp"
+              >
                 {candidate.identity.name}
-              </h3>
+              </button>
 
               {/* Normalized City Pill (Tonal Island) */}
               <Tooltip
@@ -142,7 +152,7 @@ export function CandidateCard({
                     <div className="font-semibold text-on-surface">Location Evidence</div>
                     <div className="text-on-surface-variant">
                       Normalized: <strong className="text-on-surface">{normalizedCity}</strong>
-                      {candidate.identity.location.normalized?.province && `, ${candidate.identity.location.normalized.province}`}
+                      {candidate.identity?.location?.normalized?.province && `, ${candidate.identity.location.normalized.province}`}
                     </div>
                     <div className="text-on-surface-variant text-[11px] italic mt-1 pt-1 border-t border-outline-variant/60">
                       Raw document text: &ldquo;{rawLocation}&rdquo;
@@ -157,10 +167,10 @@ export function CandidateCard({
               </Tooltip>
 
               {/* Links row (Tonal Icon Pills) */}
-              {candidate.identity.links.length > 0 && (
+              {(candidate.identity?.links?.length ?? 0) > 0 && (
                 <div className="flex items-center gap-1">
                   {candidate.identity.links.map((link, idx) => {
-                    const platformName = link.platform.normalized || link.platform.raw || "Link";
+                    const platformName = link.platform?.normalized || link.platform?.raw || "Link";
                     return (
                       <Tooltip
                         key={idx}
@@ -178,7 +188,7 @@ export function CandidateCard({
                           className="h-7 w-7 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors cursor-pointer border-0"
                           aria-label={`Open ${platformName} profile`}
                         >
-                          {getPlatformIcon(link.platform.normalized)}
+                          {getPlatformIcon(link.platform?.normalized)}
                         </a>
                       </Tooltip>
                     );
@@ -187,13 +197,30 @@ export function CandidateCard({
               )}
             </div>
 
+            {/* Conditionally rendered contact actions revealed on clicking title */}
+            {isContactExpanded && (
+              <CandidateContactLinks
+                email={candidate.identity.email}
+                phone={candidate.identity.phone}
+                className="pt-0.5 animate-in fade-in duration-150"
+              />
+            )}
+
           {/* Subtitle / Role & Experience */}
           <div className="flex flex-wrap items-center gap-y-1 gap-x-3.5 text-xs text-on-surface-variant">
             {currentRole && (
-              <span className="flex items-center gap-1.5 font-semibold text-on-surface">
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsContactExpanded((prev) => !prev);
+                }}
+                className="flex items-center gap-1.5 font-semibold text-on-surface hover:text-primary transition-colors cursor-pointer text-left focus:outline-none"
+                title="Click to toggle email and WhatsApp"
+              >
                 <Briefcase className="h-3.5 w-3.5 text-on-surface-variant shrink-0" />
-                {currentRole.title} • {currentRole.employer}
-              </span>
+                <span>{currentRole.title} • {currentRole.employer}</span>
+              </button>
             )}
 
             <span className="flex items-center gap-1.5 font-medium">
@@ -219,6 +246,20 @@ export function CandidateCard({
                 <span>{candidate.source_document.filename}</span>
               </span>
             )}
+
+            {candidate.created_at && formatRelativeTime(candidate.created_at) && (
+              <Tooltip
+                content={
+                  <div className="text-xs">
+                    Application received: {new Date(candidate.created_at).toLocaleString()}
+                  </div>
+                }
+              >
+                <span className="flex items-center gap-1 text-[11px] font-medium text-on-surface-variant/80 cursor-help">
+                  <span>Applied {formatRelativeTime(candidate.created_at)}</span>
+                </span>
+              </Tooltip>
+            )}
           </div>
 
           {/* Secondary Detail Area: Compact Education Line (Tonal Pill Capsule) */}
@@ -236,12 +277,16 @@ export function CandidateCard({
                 >
                   <GraduationCap className="h-3.5 w-3.5 text-on-surface-variant shrink-0" />
                   <span className="font-semibold text-on-surface group-hover:underline">
-                    {formatDegreeName(primaryEducation.degree_level.normalized || primaryEducation.degree_level.raw)}, {primaryEducation.field.normalized || primaryEducation.field.raw}
+                    {formatEducationTitle(primaryEducation)}
                   </span>
-                  <span>•</span>
-                  <span className="truncate max-w-[200px] sm:max-w-xs text-on-surface-variant">
-                    {primaryEducation.institution.normalized || primaryEducation.institution.raw}
-                  </span>
+                  {formatInstitutionName(primaryEducation.institution) && (
+                    <>
+                      <span>•</span>
+                      <span className="truncate max-w-[200px] sm:max-w-xs text-on-surface-variant">
+                        {formatInstitutionName(primaryEducation.institution)}
+                      </span>
+                    </>
+                  )}
                 </button>
 
                 {/* In Progress Tag */}
@@ -290,7 +335,7 @@ export function CandidateCard({
                   <div key={idx} className="p-3 bg-surface rounded-xl shadow-2xs space-y-1.5 border-0">
                     <div className="flex items-center justify-between flex-wrap gap-1">
                       <div className="font-bold text-on-surface">
-                        &ldquo;{entry.degree_level.raw}&rdquo; in &ldquo;{entry.field.raw}&rdquo;
+                        {formatEducationTitle(entry)}
                       </div>
                       <div className="flex items-center gap-1.5 text-[11px] text-on-surface-variant">
                         <span>{entry.start_date} – {entry.is_current ? "Present" : entry.end_date || "N/A"}</span>
@@ -302,8 +347,26 @@ export function CandidateCard({
                       </div>
                     </div>
 
-                    <div className="text-[11px] text-on-surface-variant">
-                      Institution: <span className="font-semibold text-on-surface">&ldquo;{entry.institution.raw}&rdquo;</span>
+                    {entry.degree_level.raw && (
+                      <div className="text-[11px] text-on-surface-variant">
+                        Raw document text: <span className="italic font-medium text-on-surface">&ldquo;{entry.degree_level.raw}&rdquo;</span>
+                      </div>
+                    )}
+
+                    <div className="text-[11px] text-on-surface-variant space-y-0.5">
+                      <div>
+                        Institution:{" "}
+                        <span className="font-semibold text-on-surface">
+                          {entry.institution.normalized || entry.institution.raw || "Unspecified"}
+                        </span>
+                      </div>
+                      {entry.institution.normalized &&
+                        entry.institution.raw &&
+                        entry.institution.normalized.toLowerCase() !== entry.institution.raw.toLowerCase() && (
+                          <div className="text-[10px] text-on-surface-variant/80 italic pl-2 border-l border-outline-variant/40">
+                            Raw document text: &ldquo;{entry.institution.raw}&rdquo;
+                          </div>
+                        )}
                     </div>
 
                     {entry.grade && (

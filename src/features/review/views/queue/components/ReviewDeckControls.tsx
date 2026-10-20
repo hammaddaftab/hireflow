@@ -1,9 +1,10 @@
 "use client";
 
 import React from "react";
-import { Maximize2, Filter, Keyboard } from "lucide-react";
+import { Maximize2, Filter, Keyboard, ArrowUpDown } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import type { QueueFilterTab } from "@/entities/review";
+import type { QueueSortOption } from "@/features/review/core/utils/queueCalculations";
 import { ActiveFilterChipBar } from "@/features/review/core/components/feedback/ActiveFilterChipBar";
 import type { ActiveReviewChip } from "@/features/review/core/hooks/useActiveReviewChips";
 
@@ -25,6 +26,8 @@ export interface ReviewDeckControlsProps {
   onToggleShortcuts?: () => void;
   isShortcutsOpen?: boolean;
   rightSlot?: React.ReactNode;
+  sortBy?: QueueSortOption;
+  onSelectSort?: (sort: QueueSortOption) => void;
 }
 
 export function ReviewDeckControls({
@@ -40,6 +43,8 @@ export function ReviewDeckControls({
   onToggleShortcuts,
   isShortcutsOpen = false,
   rightSlot,
+  sortBy = "latest",
+  onSelectSort,
 }: ReviewDeckControlsProps) {
   return (
     <div className="flex flex-wrap items-center justify-between gap-2.5 bg-surface-container-low p-2 rounded-2xl border-0 shadow-xs">
@@ -94,9 +99,31 @@ export function ReviewDeckControls({
         </button>
       </div>
 
-      {/* Right Action Controls: Drop Resumes, Filters, Shortcuts, Focus Mode */}
+      {/* Right Action Controls: Drop Resumes, Sort, Filters, Shortcuts, Focus Mode */}
       <div className="flex flex-wrap items-center gap-2">
         {rightSlot}
+        {onSelectSort && (
+          <div
+            className="flex items-center gap-1.5 px-2.5 h-8 rounded-xl transition-colors text-xs font-semibold shrink-0 bg-surface-container hover:bg-surface-container-high text-on-surface"
+            title="Sort candidate review queue cards by latest or oldest application"
+          >
+            <ArrowUpDown className="h-3.5 w-3.5 shrink-0 text-on-surface-variant" />
+            <span className="text-[11px] text-on-surface-variant font-medium">Sort:</span>
+            <select
+              value={sortBy}
+              onChange={(e) => onSelectSort(e.target.value as QueueSortOption)}
+              className="bg-transparent text-on-surface font-bold text-xs cursor-pointer focus:outline-hidden border-0 pr-1 py-0.5"
+              aria-label="Sort queue candidates"
+            >
+              <option value="latest" className="bg-surface-container text-on-surface">
+                Latest
+              </option>
+              <option value="oldest" className="bg-surface-container text-on-surface">
+                Oldest
+              </option>
+            </select>
+          </div>
+        )}
         {onToggleFilters && (
           <div className="flex items-center gap-2 min-w-0">
             <Button

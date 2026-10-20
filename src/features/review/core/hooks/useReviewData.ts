@@ -26,7 +26,8 @@ export interface UseReviewDataReturn {
 // Headless domain hook managing candidate records, evaluation mutations, query groups, and review stats
 export function useReviewData(
   initialQueue: CandidateReviewItem[],
-  initialPersistedGroups: PersistedGroupWithMembers[] = []
+  initialPersistedGroups: PersistedGroupWithMembers[] = [],
+  targetDegreeLevel?: string | null
 ): UseReviewDataReturn {
   const [queue, setQueue] = useState<CandidateReviewItem[]>(initialQueue);
   const [persistedGroups, setPersistedGroups] = useState<PersistedGroupWithMembers[]>(initialPersistedGroups);
@@ -218,9 +219,11 @@ export function useReviewData(
     return getCityDistribution(queue);
   }, [queue]);
 
+  const resolvedDegreeLevel = targetDegreeLevel ?? initialQueue[0]?.targetDegreeLevel ?? "bachelors";
+
   const universityDistribution = useMemo(() => {
-    return getUniversityDistribution(queue);
-  }, [queue]);
+    return getUniversityDistribution(queue, resolvedDegreeLevel);
+  }, [queue, resolvedDegreeLevel]);
 
   const stats = useMemo(() => {
     return calculateReviewStats(queue);

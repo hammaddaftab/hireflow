@@ -39,8 +39,8 @@ export function evaluateExperience(
   // Convert full-time entries to [startMonth, endMonth] numeric intervals
   // where the unit is absolute calendar months (year * 12 + month)
   const now = new Date();
-  const intervals: Array<[number, number]> = work_history_entries
-    .filter((e) => e.employment_type?.value === "full_time")
+  const intervals: Array<[number, number]> = (work_history_entries ?? [])
+    .filter((e) => e?.employment_type?.value === "full_time")
     .reduce<Array<[number, number]>>((acc, entry) => {
       const start = parseDate(entry.start_date, 1);
       if (!start) return acc;
