@@ -794,16 +794,16 @@
   },
   {
     "id": "national-university-of-science-and-technology",
-    "canonicalName": "National University of Science and Technology",
+    "canonicalName": "National University of Sciences and Technology",
     "domains": [
       "nust.edu.pk"
     ],
     "country": "PK",
     "aliases": [
-      "NUST",
-      "NUST Islamabad",
-      "SEECS",
-      "NUST SEECS"
+      "NUST"
+    ],
+    "units": [
+      "SEECS"
     ]
   },
   {

@@ -1,8 +1,10 @@
 import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import type { UniversityEntry } from "../catalogs/fetchUniversities";
+import universityAliases from "../catalogs/university_aliases.json";
 import {
   sanitizeText,
+  sanitizeTokens,
   rawSimilarityRatio,
   isLengthRatioSafe,
 } from "@/lib/matching/stringSimilarity";
@@ -30,19 +32,21 @@ const STOPWORDS = new Set([
   "of",
   "technology",
   "sciences",
+  "science",
   "the",
   "and",
   "college",
 ]);
 
-// Strips campus or sub-campus clauses (e.g. ", Chiniot-Faisalabad Campus")
+// Strips campus or sub-campus clauses and parenthetical qualifiers (e.g. "(SEECS)", ", Chiniot-Faisalabad Campus")
 export function stripCampusSuffix(text: string): string {
   return text
-    .replace(/\s*\([^)]*campus[^)]*\)/gi, "")
+    .replace(/\s*\([^)]*\)/g, "")
     .replace(/\s*,\s*[^,]*campus.*$/gi, "")
     .replace(/\s+campus\b.*$/gi, "")
     .trim();
 }
+
 // Prunes stopwords and returns alphabetically sorted tokens joined by a single space
 export function pruneAndSortTokens(sanitized: string): string {
   const tokens = sanitized
@@ -59,6 +63,7 @@ export function tokenSortRatio(s1: string, s2: string): number {
 // In-memory catalog state initialized once at module load
 let isInitialized = false;
 const aliasMap = new Map<string, UniversityEntry>();
+const unitMap = new Map<string, UniversityEntry>();
 const preprocessedTargets: PreprocessedTarget[] = [];
 
 // Resolves path to static catalog file
@@ -67,8 +72,8 @@ function getCatalogPath(): string {
 }
 
 // Loads static catalog and builds Tier 1 hash map and Tier 2 targets
-export function initializeUniversityCatalog(): void {
-  if (isInitialized) return;
+export function initializeUniversityCatalog(forceReload = false): void {
+  if (isInitialized && !forceReload) return;
 
   const catalogPath = getCatalogPath();
   if (!existsSync(catalogPath)) {
@@ -77,6 +82,10 @@ export function initializeUniversityCatalog(): void {
   }
 
   try {
+    aliasMap.clear();
+    unitMap.clear();
+    preprocessedTargets.length = 0;
+
     const raw = readFileSync(catalogPath, "utf-8");
     const universities = JSON.parse(raw) as UniversityEntry[];
 
@@ -111,6 +120,17 @@ export function initializeUniversityCatalog(): void {
         }
       }
 
+      // Index all sub-units (Rule 1: bare unit resolves directly to parent)
+      if (Array.isArray(uni.units)) {
+        for (const unit of uni.units) {
+          const sanitizedUnit = sanitizeText(unit);
+          if (sanitizedUnit) {
+            aliasMap.set(sanitizedUnit, uni);
+            unitMap.set(sanitizedUnit, uni);
+          }
+        }
+      }
+
       // Pre-compute Tier 2 token-sorted string
       const prunedSorted = pruneAndSortTokens(sanitizedCanonical);
       if (prunedSorted.length > 0) {
@@ -119,6 +139,19 @@ export function initializeUniversityCatalog(): void {
           prunedSortedTokens: prunedSorted,
           tokenLength: prunedSorted.length,
         });
+      }
+    }
+
+    // Merge curated aliases from university_aliases.json
+    for (const [id, aliases] of Object.entries(universityAliases as Record<string, string[]>)) {
+      const uni = universities.find((u) => u.id === id);
+      if (uni && Array.isArray(aliases)) {
+        for (const alias of aliases) {
+          const sanitized = sanitizeText(alias);
+          if (sanitized) {
+            aliasMap.set(sanitized, uni);
+          }
+        }
       }
     }
   } catch {
@@ -164,7 +197,18 @@ export function normalizeUniversity(rawInput: string): NormalizedInstitutionResu
   if (!exactMatch) {
     const strippedCampus = sanitizeText(stripCampusSuffix(trimmed));
     if (strippedCampus && strippedCampus !== sanitizedInput) {
-      exactMatch = aliasMap.get(strippedCampus);
+      const candidate = aliasMap.get(strippedCampus);
+      if (candidate) {
+        // Guard: ensure stripped campus match does not contradict a known sub-unit in the query
+        const inputTokens = sanitizeTokens(trimmed);
+        const conflictingUnit = inputTokens.some((t) => {
+          const parent = unitMap.get(t);
+          return parent && parent.id !== candidate.id;
+        });
+        if (!conflictingUnit) {
+          exactMatch = candidate;
+        }
+      }
     }
   }
 
@@ -179,8 +223,116 @@ export function normalizeUniversity(rawInput: string): NormalizedInstitutionResu
     };
   }
 
-  // Step 2: Stopword Pruning
-  const inputPrunedSorted = pruneAndSortTokens(sanitizedInput);
+  // Rule 2: Sub-Unit Stripping with Consistency Guard
+  const inputTokens = sanitizeTokens(trimmed);
+  for (const token of inputTokens) {
+    const unitParent = unitMap.get(token);
+    if (!unitParent) continue;
+
+    const remainingTokens = inputTokens.filter((t) => t !== token);
+    if (remainingTokens.length === 0) continue;
+    const remainderQuery = remainingTokens.join(" ");
+
+    // Preserve parenthetical clauses (e.g. acronyms like (NUST)) by stripping unit from raw input
+    const unitRegex = new RegExp(`\\b${token}\\b`, "gi");
+    const rawRemainder = trimmed
+      .replace(unitRegex, "")
+      .replace(/\(\s*\)/g, "")
+      .trim();
+
+    // Check Tier 1 exact on remainder
+    const sanitizedRemainder = sanitizeText(remainderQuery);
+    const sanitizedRawRemainder = sanitizeText(rawRemainder);
+    const strippedCampusRemainder = sanitizeText(stripCampusSuffix(rawRemainder));
+
+    let remainderMatch =
+      aliasMap.get(sanitizedRemainder) ||
+      (sanitizedRawRemainder ? aliasMap.get(sanitizedRawRemainder) : undefined) ||
+      (strippedCampusRemainder ? aliasMap.get(strippedCampusRemainder) : undefined);
+
+    if (remainderMatch) {
+      if (remainderMatch.id === unitParent.id) {
+        return {
+          institution_raw: trimmed,
+          canonical_id: unitParent.id,
+          canonical_name: unitParent.canonicalName,
+          match_method: "EXACT_ALIAS",
+          confidence: 1.0,
+          is_unverified: false,
+        };
+      }
+      // Remainder resolved to a different institution (e.g. LUMS SEECS) -> consistency failure
+      return {
+        institution_raw: trimmed,
+        canonical_id: null,
+        canonical_name: null,
+        match_method: "UNRESOLVED",
+        confidence: 0.0,
+        is_unverified: true,
+      };
+    }
+
+    // Check Tier 2 fuzzy on remainder (prefer campus-stripped query if available)
+    const queryToPrune =
+      strippedCampusRemainder && strippedCampusRemainder !== sanitizedRemainder
+        ? strippedCampusRemainder
+        : sanitizedRemainder;
+    const prunedRemainder =
+      pruneAndSortTokens(queryToPrune) || pruneAndSortTokens(sanitizedRemainder);
+    if (prunedRemainder) {
+      const remLen = prunedRemainder.length;
+      let bestRemScore = 0.0;
+      let bestRemMatch: UniversityEntry | null = null;
+
+      for (const target of preprocessedTargets) {
+        if (!isLengthRatioSafe(remLen, target.tokenLength, 0.6)) {
+          continue;
+        }
+        const score = tokenSortRatio(prunedRemainder, target.prunedSortedTokens);
+        if (score > bestRemScore) {
+          bestRemScore = score;
+          bestRemMatch = target.entry;
+        }
+      }
+
+      if (bestRemMatch && bestRemScore >= 0.80) {
+        if (bestRemMatch.id === unitParent.id) {
+          return {
+            institution_raw: trimmed,
+            canonical_id: unitParent.id,
+            canonical_name: unitParent.canonicalName,
+            match_method: "TOKEN_SORT_FUZZY",
+            confidence: Number(bestRemScore.toFixed(2)),
+            is_unverified: false,
+          };
+        }
+        // Consistency check failed -> stay unresolved
+        return {
+          institution_raw: trimmed,
+          canonical_id: null,
+          canonical_name: null,
+          match_method: "UNRESOLVED",
+          confidence: 0.0,
+          is_unverified: true,
+        };
+      }
+    }
+
+    // Unit recognized but remainder failed to resolve -> stay unresolved
+    return {
+      institution_raw: trimmed,
+      canonical_id: null,
+      canonical_name: null,
+      match_method: "UNRESOLVED",
+      confidence: 0.0,
+      is_unverified: true,
+    };
+  }
+
+  // Step 2: Stopword Pruning (prefer campus/parenthesis-stripped query if available)
+  const strippedCampus = sanitizeText(stripCampusSuffix(trimmed));
+  const queryToPrune = strippedCampus && strippedCampus !== sanitizedInput ? strippedCampus : sanitizedInput;
+  const inputPrunedSorted = pruneAndSortTokens(queryToPrune) || pruneAndSortTokens(sanitizedInput);
   if (!inputPrunedSorted) {
     return {
       institution_raw: trimmed,
@@ -212,8 +364,8 @@ export function normalizeUniversity(rawInput: string): NormalizedInstitutionResu
     }
   }
 
-  // Cutoff threshold at 0.85
-  if (bestMatch && bestScore >= 0.85) {
+  // Cutoff threshold lowered to 0.80
+  if (bestMatch && bestScore >= 0.80) {
     return {
       institution_raw: trimmed,
       canonical_id: bestMatch.id,

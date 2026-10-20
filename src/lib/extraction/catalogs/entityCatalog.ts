@@ -7,6 +7,7 @@ export interface CatalogEntry {
   id: string;
   canonicalName: string;
   aliases: string[];
+  units?: string[];
   [key: string]: unknown;
 }
 

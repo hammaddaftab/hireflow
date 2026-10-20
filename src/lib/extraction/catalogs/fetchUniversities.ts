@@ -11,6 +11,7 @@ export interface ExternalUniversity {
 export interface UniversityEntry extends CatalogEntry {
   domains: string[];
   country: string;
+  units?: string[];
 }
 
 export async function fetchUniversities(): Promise<UniversityEntry[]> {

@@ -5,6 +5,8 @@ export interface PdfExtractionOptions {
   firstPage?: number;
   lastPage?: number;
   timeoutMs?: number;
+  // Controls whether link annotations are parsed and appended to extracted text
+  extractLinks?: boolean;
 }
 
 /**
@@ -54,6 +56,91 @@ function extractAsciiFallback(buffer: Buffer): string {
     .trim();
 }
 
+// Parses a PDF string token starting at startIdx, supporting literal parentheses or hex format
+function parsePdfString(str: string, startIdx: number): string | null {
+  if (str[startIdx] === "(") {
+    let depth = 1;
+    let idx = startIdx + 1;
+    let res = "";
+    while (idx < str.length && depth > 0) {
+      if (str[idx] === "\\") {
+        idx++;
+        if (idx < str.length) {
+          const c = str[idx];
+          if (c === "n") res += "\n";
+          else if (c === "r") res += "\r";
+          else if (c === "t") res += "\t";
+          else if (c === "b") res += "\b";
+          else if (c === "f") res += "\f";
+          else res += c;
+        }
+      } else if (str[idx] === "(") {
+        depth++;
+        res += "(";
+      } else if (str[idx] === ")") {
+        depth--;
+        if (depth > 0) res += ")";
+      } else {
+        res += str[idx];
+      }
+      idx++;
+    }
+    return res;
+  }
+  if (str[startIdx] === "<") {
+    let idx = startIdx + 1;
+    let hex = "";
+    while (idx < str.length && str[idx] !== ">") {
+      hex += str[idx];
+      idx++;
+    }
+    hex = hex.replace(/\s+/g, "");
+    if (hex.length % 2 !== 0) hex += "0";
+    try {
+      return Buffer.from(hex, "hex").toString("utf-8");
+    } catch {
+      return null;
+    }
+  }
+  return null;
+}
+
+// Scans binary PDF buffer for link action annotation URIs (/Subtype /Link /A << ... /URI ... >>)
+export function extractPdfHyperlinks(input: Buffer | Uint8Array | ArrayBuffer): string[] {
+  let buffer: Buffer;
+  if (Buffer.isBuffer(input)) {
+    buffer = input;
+  } else if (input instanceof Uint8Array) {
+    buffer = Buffer.from(input.buffer, input.byteOffset, input.byteLength);
+  } else if (input instanceof ArrayBuffer) {
+    buffer = Buffer.from(input);
+  } else {
+    return [];
+  }
+
+  const content = buffer.toString("latin1");
+  const links = new Set<string>();
+  const uriRegex = /\/URI\s*([(<])/g;
+  let match: RegExpExecArray | null;
+
+  while ((match = uriRegex.exec(content)) !== null) {
+    const rawVal = parsePdfString(content, match.index + match[0].length - 1);
+    if (!rawVal) continue;
+    const clean = rawVal.replace(/\0/g, "").trim();
+    if (/^(https?:\/\/|mailto:|tel:|wa\.me|www\.)/i.test(clean)) {
+      links.add(clean);
+    }
+  }
+
+  return Array.from(links);
+}
+
+// Appends detected PDF hyperlinks to the extracted text
+function appendHyperlinks(text: string, links: string[]): string {
+  if (links.length === 0) return text;
+  return `${text}\n\n--- Document Hyperlinks ---\n${links.map((l) => `- ${l}`).join("\n")}`;
+}
+
 /**
  * Modular PDF text extractor that feeds a binary buffer into pdftotext (poppler) via stdin/stdout.
  * Decoupled from HTTP / Next.js request objects for reuse with Gmail attachments, uploads, and local files.
@@ -92,6 +179,11 @@ export async function extractTextFromPdf(
     }
     args.push("-", "-");
 
+    const getDetectedLinks = () => {
+      if (options?.extractLinks === false) return [];
+      return extractPdfHyperlinks(buffer);
+    };
+
     let proc: ReturnType<typeof spawn>;
     try {
       proc = spawn("pdftotext", args, { stdio: ["pipe", "pipe", "pipe"] });
@@ -99,7 +191,7 @@ export async function extractTextFromPdf(
       try {
         const fallbackText = extractAsciiFallback(buffer);
         if (fallbackText) {
-          return resolve(fallbackText);
+          return resolve(appendHyperlinks(fallbackText, getDetectedLinks()));
         }
       } catch {
         // ignore fallback error
@@ -145,7 +237,7 @@ export async function extractTextFromPdf(
       try {
         const fallback = extractAsciiFallback(buffer);
         if (fallback.length > 50) {
-          return resolve(fallback);
+          return resolve(appendHyperlinks(fallback, getDetectedLinks()));
         }
       } catch {
         // ignore fallback error
@@ -160,12 +252,12 @@ export async function extractTextFromPdf(
       clearTimeout(timer);
 
       if (code === 0) {
-        resolve(stdout.trim());
+        resolve(appendHyperlinks(stdout.trim(), getDetectedLinks()));
       } else {
         try {
           const fallback = extractAsciiFallback(buffer);
           if (fallback.length > 50) {
-            return resolve(fallback);
+            return resolve(appendHyperlinks(fallback, getDetectedLinks()));
           }
         } catch {
           // ignore
