@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic";
 
 import { NextRequest } from "next/server";
-import { ingestResumeFiles } from "@/lib/upload";
+import { ingestResumeFiles } from "@/lib/upload/server/ingestResume";
 import { uploadsService } from "@/services/uploadsService";
 import { ApiError, createErrorResponse, createSuccessResponse } from "@/lib/errors/api-error";
 

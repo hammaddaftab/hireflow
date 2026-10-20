@@ -5,7 +5,7 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { GroupsExplorerView } from "@/features/groups/components/GroupsExplorerView";
 import { jobsService } from "@/features/jobs";
-import { candidatesService } from "@/features/candidates";
+import { candidatesService } from "@/services/candidatesService";
 import { groupsService } from "@/features/groups/groupsService";
 import { FEATURES } from "@/config/features";
 import { ROUTES } from "@/config/navigation";

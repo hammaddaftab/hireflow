@@ -19,8 +19,8 @@ import { EvidentiaryLegend } from "./components/EvidentiaryLegend";
 import { KeyboardShortcutModal } from "./components/KeyboardShortcutBar";
 import { DecisionSnackbar } from "../../core/components/feedback/DecisionSnackbar";
 import { DecisionProgressStrip } from "../../core/components/feedback/DecisionProgressStrip";
+import { useResumeDropUpload } from "@/lib/upload";
 import {
-  useResumeDropUpload,
   ResumeDropOverlay,
   ResumeDropTrigger,
 } from "@/components/upload";

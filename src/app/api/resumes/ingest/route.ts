@@ -6,8 +6,8 @@ import path from "node:path";
 import { promises as fs } from "node:fs";
 import { uploadsService } from "@/services/uploadsService";
 import { jobService } from "@/features/jobs";
-import { candidatesService } from "@/features/candidates";
-import { extractCandidateProfile } from "@/features/extraction";
+import { candidatesService } from "@/services/candidatesService";
+import { extractCandidateProfile } from "@/lib/extraction";
 import { extractTextFromPdf } from "@/lib/pdf";
 import { ApiError, createErrorResponse, createSuccessResponse } from "@/lib/errors/api-error";
 

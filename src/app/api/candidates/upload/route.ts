@@ -2,8 +2,8 @@ import { NextRequest } from "next/server";
 import { z } from "zod";
 import { extractTextFromPdf, isPdfBuffer } from "@/lib/pdf";
 import { uploadResumeToBlob } from "@/lib/storage";
-import { extractCandidateProfile } from "@/features/extraction";
-import { candidatesService } from "@/features/candidates";
+import { extractCandidateProfile } from "@/lib/extraction";
+import { candidatesService } from "@/services/candidatesService";
 import { ApiError, createErrorResponse, createSuccessResponse } from "@/lib/errors/api-error";
 import type { ParsedCandidateProfile } from "@/entities/candidate";
 

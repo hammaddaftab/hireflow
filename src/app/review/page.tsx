@@ -2,7 +2,7 @@ export const dynamic = "force-dynamic";
 
 import React from "react";
 import { jobsService } from "@/features/jobs";
-import { candidatesService } from "@/features/candidates";
+import { candidatesService } from "@/services/candidatesService";
 import { buildReviewQueue, reviewsService } from "@/features/review";
 import { ReviewQueuePage } from "@/features/review/views";
 import { groupsService } from "@/features/groups/groupsService";

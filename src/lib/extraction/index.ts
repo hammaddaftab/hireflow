@@ -1,3 +1,12 @@
-// Universal extraction utility facade
+// Universal extraction and normalization public API facade
 
-export * from "./extractCandidateFromDocument";
+export * from "./catalogs/canonicalSkills";
+export * from "./catalogs/entityCatalog";
+export * from "./catalogs/fetchUniversities";
+export * from "./normalizers/fieldOfStudyNormalizer";
+export * from "./normalizers/skillNormalizer";
+export * from "./normalizers/universityNormalizer";
+export * from "./normalizers/normalizeCandidateProfile";
+export * from "./pipeline/candidateExtractionService";
+export * from "./pipeline/heuristicExtraction";
+export * from "./pipeline/extractCandidateFromDocument";

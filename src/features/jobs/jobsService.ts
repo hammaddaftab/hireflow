@@ -13,8 +13,7 @@ import type {
   MaxNoticePeriodRequirement,
 } from "@/entities/job";
 import type { CreateJobInput, UpdateJobInput } from "./types";
-import { normalizeSkill } from "@/features/extraction/skillNormalizer";
-import { normalizeFieldOfStudy } from "@/features/extraction/fieldOfStudyNormalizer";
+import { normalizeSkill, normalizeFieldOfStudy } from "@/lib/extraction";
 
 export function normalizeJobActiveFlags(job: Job): Job {
   return produce(job, (draft) => {

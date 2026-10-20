@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import { candidatesService } from "@/features/candidates";
+import { candidatesService } from "@/services/candidatesService";
 import { createErrorResponse, createSuccessResponse } from "@/lib/errors/api-error";
 
 export async function GET(request: NextRequest) {

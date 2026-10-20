@@ -1,3 +1,3 @@
 // Public Pages for Route Mounting
-export { DashboardPage } from "./Dashboard/DashboardPage";
-export { NewJobPage } from "./NewJob/NewJobPage";
+export { DashboardPage } from "./views/dashboard/DashboardPage";
+export { NewJobPage } from "./views/new-job/NewJobPage";

@@ -3,8 +3,7 @@
 
 import { db, jobs, conn } from "@/db";
 import type { Job } from "@/entities/job";
-import { normalizeSkill } from "@/features/extraction/skillNormalizer";
-import { normalizeFieldOfStudy } from "@/features/extraction/fieldOfStudyNormalizer";
+import { normalizeSkill, normalizeFieldOfStudy } from "@/lib/extraction";
 
 export const INITIAL_JOBS: Job[] = [
   {

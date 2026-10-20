@@ -1,6 +1,6 @@
-// Single facade for resume upload primitives and Vercel Blob ingestion utilities
+// Single facade for client-safe resume upload primitives and hooks
 
 export * from "./types";
 export * from "./validateResume";
-export * from "./hashDocument";
-export * from "./ingestResume";
+export * from "./client/uploadOrchestrator";
+export * from "./client/useResumeDropUpload";

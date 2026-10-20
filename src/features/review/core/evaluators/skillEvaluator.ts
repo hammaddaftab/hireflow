@@ -1,7 +1,7 @@
 import type { SkillRequirementItem } from "@/entities/job";
 import type { SkillDemonstratedItem } from "@/entities/extraction/candidate/aspects/skillsDemonstrated";
 import type { EvaluatedSkillRequirement, EvaluationPair } from "./evaluationStatuses";
-import { matchSkill } from "@/features/extraction/skillNormalizer";
+import { matchSkill } from "@/lib/extraction";
 
 export type SkillGroupRequirement =
   | { active: false; blocking?: boolean }

@@ -1,7 +1,5 @@
-// Shared UI components and hooks for resume upload and Vercel Blob ingestion
+// Shared UI components for resume dropzone overlays and triggers
 
-export { useResumeDropUpload } from "./hooks/useResumeDropUpload";
-export type { UseResumeDropUploadProps, UseResumeDropUploadReturn } from "./hooks/useResumeDropUpload";
 export { ResumeDropOverlay } from "./ResumeDropOverlay";
 export type { ResumeDropOverlayProps } from "./ResumeDropOverlay";
 export { ResumeDropTrigger } from "./ResumeDropTrigger";

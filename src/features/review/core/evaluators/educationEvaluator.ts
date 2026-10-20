@@ -5,7 +5,7 @@ import type {
   EducationStatus,
   EvaluationPair,
 } from "./evaluationStatuses";
-import { isFieldEquivalent, normalizeFieldOfStudy } from "@/features/extraction/fieldOfStudyNormalizer";
+import { isFieldEquivalent, normalizeFieldOfStudy } from "@/lib/extraction";
 
 const DEGREE_LEVEL_RANKS: Record<string, number> = {
   high_school: 1,

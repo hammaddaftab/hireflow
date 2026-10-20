@@ -7,7 +7,7 @@ import type { Metadata } from "next";
 import { ArrowLeft, Layers } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { FEATURES } from "@/config/features";
-import { StressTestWorkbench } from "@/features/evals/components/StressTestWorkbench";
+import { StressTestWorkbench } from "@/features/evals/views/experience/StressTestWorkbench";
 
 export const metadata: Metadata = {
   title: "AI Experience Extraction Stress Test - HireFlow",
