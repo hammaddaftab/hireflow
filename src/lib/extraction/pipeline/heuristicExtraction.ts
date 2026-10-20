@@ -27,6 +27,7 @@ import {
 import { normalizeUniversity } from "../normalizers/universityNormalizer";
 import { normalizeFieldOfStudy } from "../normalizers/fieldOfStudyNormalizer";
 import { normalizeSkill } from "../normalizers/skillNormalizer";
+import { CITY_PROVINCE_MAP } from "../normalizers/locationNormalizer";
 import {
   type LogisticsExtraction,
 } from "@/entities/extraction/candidate/aspects/logistics";
@@ -41,11 +42,10 @@ export interface CandidateFallbackOptions {
   fileUrl?: string;
   appliedJobId?: string | null;
   fileHash?: string;
+  createdAt?: string;
 }
 
-/**
- * Helper to match resume text or filename against pre-seeded mock candidates.
- */
+// Helper to match resume text or filename against pre-seeded mock candidates.
 export function findMatchingMockCandidate(
   resumeText: string,
   filename?: string
@@ -68,9 +68,7 @@ export function findMatchingMockCandidate(
   return null;
 }
 
-/**
- * Heuristic/rule-based parser for candidate identity.
- */
+// Heuristic/rule-based parser for candidate identity.
 export function extractIdentityHeuristic(lines: string[]): IdentityExtraction {
   let name = "Candidate";
   let email: string | null = null;
@@ -84,19 +82,6 @@ export function extractIdentityHeuristic(lines: string[]): IdentityExtraction {
   const emailRegex = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/;
   const phoneRegex = /(?:\+?92[-\s]?|0)?3\d{2}[-\s]?\d{7}|\+?\d{1,3}[-\s]?(?:\(\d{2,4}\)|\d{2,4})[-\s]?\d{3,4}[-\s]?\d{3,4}/;
   const cnicRegex = /\b\d{5}-\d{7}-\d\b/;
-
-  const cityProvinceMap: Record<string, string> = {
-    lahore: "Punjab",
-    rawalpindi: "Punjab",
-    islamabad: "Islamabad Capital Territory",
-    karachi: "Sindh",
-    faisalabad: "Punjab",
-    multan: "Punjab",
-    peshawar: "Khyber Pakhtunkhwa",
-    quetta: "Balochistan",
-    sialkot: "Punjab",
-    gujranwala: "Punjab",
-  };
 
   let nameFound = false;
 
@@ -124,7 +109,7 @@ export function extractIdentityHeuristic(lines: string[]): IdentityExtraction {
 
     // Location detection
     const lowerLine = line.toLowerCase();
-    for (const [city, province] of Object.entries(cityProvinceMap)) {
+    for (const [city, province] of Object.entries(CITY_PROVINCE_MAP)) {
       if (!detectedCity && lowerLine.includes(city)) {
         detectedCity = city.charAt(0).toUpperCase() + city.slice(1);
         detectedProvince = province;
@@ -206,9 +191,7 @@ export function extractIdentityHeuristic(lines: string[]): IdentityExtraction {
   };
 }
 
-/**
- * Heuristic/rule-based parser for candidate work history.
- */
+// Heuristic/rule-based parser for candidate work history.
 export function extractWorkHistoryHeuristic(text: string): WorkHistoryExtraction {
   const entries: WorkHistoryEntry[] = [];
   const lines = text.split("\n").map((l) => l.trim()).filter(Boolean);
@@ -315,9 +298,7 @@ export function extractWorkHistoryHeuristic(text: string): WorkHistoryExtraction
   return { entries };
 }
 
-/**
- * Heuristic/rule-based parser for candidate education.
- */
+// Heuristic/rule-based parser for candidate education.
 export function extractEducationHeuristic(text: string): EducationExtraction {
   const entries: EducationEntry[] = [];
   const lines = text.split("\n").map((l) => l.trim()).filter(Boolean);
@@ -382,9 +363,7 @@ export function extractEducationHeuristic(text: string): EducationExtraction {
   return { entries };
 }
 
-/**
- * Heuristic/rule-based parser for declared skills.
- */
+// Heuristic/rule-based parser for declared skills.
 export function extractSkillsDeclaredHeuristic(text: string): SkillsDeclaredExtraction {
   const skillsSet = new Set<string>();
   const lines = text.split("\n").map((l) => l.trim()).filter(Boolean);
@@ -408,7 +387,8 @@ export function extractSkillsDeclaredHeuristic(text: string): SkillsDeclaredExtr
 
   for (const line of relevantLines) {
     if (/^[a-z\s]+:$/i.test(line)) continue;
-    const tokens = line
+    const strippedLine = line.replace(/^[A-Za-z\s&/]+:\s*/, "");
+    const tokens = strippedLine
       .split(/[,|•·;\t/]/)
       .map((t) => t.replace(/^[-*•]\s*/, "").trim())
       .filter(
@@ -426,9 +406,9 @@ export function extractSkillsDeclaredHeuristic(text: string): SkillsDeclaredExtr
   // Common technical keywords fallback if section parsing extracted few items
   const commonTech = [
     "Python", "TypeScript", "JavaScript", "React", "Next.js", "Node.js",
-    "Docker", "PostgreSQL", "MongoDB", "MySQL", "Git", "FastAPI",
-    "Tailwind CSS", "Linux", "REST APIs", "GraphQL", "AWS", "Machine Learning",
-    "PyTorch", "TensorFlow", "Pandas", "NumPy", "C++", "Java", "Redis", "Kafka"
+    "Go", "Golang", "Docker", "PostgreSQL", "Postgres", "MongoDB", "MySQL", "Git", "FastAPI",
+    "Tailwind CSS", "Linux", "REST API", "REST APIs", "RESTful APIs", "GraphQL", "AWS", "Amazon Web Services",
+    "Kubernetes", "gRPC", "Machine Learning", "PyTorch", "TensorFlow", "Pandas", "NumPy", "C++", "Java", "Redis", "Kafka"
   ];
 
   const searchScope = relevantLines.length > 0 ? relevantLines.join(" ") : "";
@@ -447,9 +427,7 @@ export function extractSkillsDeclaredHeuristic(text: string): SkillsDeclaredExtr
   };
 }
 
-/**
- * Heuristic/rule-based parser for skills demonstrated from work history.
- */
+// Heuristic/rule-based parser for skills demonstrated from work history.
 export function extractSkillsDemonstratedHeuristic(
   workHistory: WorkHistoryExtraction,
   skillsDeclared: SkillsDeclaredExtraction
@@ -458,9 +436,9 @@ export function extractSkillsDemonstratedHeuristic(
   const candidateSkillsSet = new Set<string>(skillsDeclared.skills_declared);
   const commonDemonstratedTech = [
     "Python", "TypeScript", "JavaScript", "React", "Next.js", "Node.js",
-    "Docker", "PostgreSQL", "MongoDB", "MySQL", "Git", "FastAPI",
-    "Tailwind CSS", "Linux", "REST APIs", "GraphQL", "AWS", "Machine Learning",
-    "PyTorch", "TensorFlow", "Pandas", "NumPy", "C++", "Java", "Redis", "Kafka"
+    "Go", "Golang", "Docker", "PostgreSQL", "Postgres", "MongoDB", "MySQL", "Git", "FastAPI",
+    "Tailwind CSS", "Linux", "REST API", "REST APIs", "RESTful APIs", "GraphQL", "AWS", "Amazon Web Services",
+    "Kubernetes", "gRPC", "Machine Learning", "PyTorch", "TensorFlow", "Pandas", "NumPy", "C++", "Java", "Redis", "Kafka"
   ];
   for (const tech of commonDemonstratedTech) {
     candidateSkillsSet.add(tech);
@@ -511,16 +489,15 @@ export function extractSkillsDemonstratedHeuristic(
   return { skills: demonstrated.slice(0, 20) };
 }
 
-/**
- * Heuristic/rule-based parser for candidate logistics.
- */
+// Heuristic/rule-based parser for candidate logistics.
 export function extractLogisticsHeuristic(text: string): LogisticsExtraction {
   let salaryRaw: string | null = null;
   let salaryMin: number | null = null;
   let salaryMax: number | null = null;
   let salaryCurrency: string | null = null;
 
-  const salaryMatch = text.match(/(?:salary|compensation|expected)?\s*(?:(?:PKR|USD|Rs\.?|\$)\s*([\d,]+)(?:\s*(?:-|to)\s*([\d,]+))?)/i);
+  const explicitSalaryMatch = text.match(/(?:expected\s+(?:salary|compensation)|salary\s+expectation|compensation|salary)[\s:]*(?:(?:PKR|USD|Rs\.?|\$)\s*([\d,]+)(?:\s*(?:-|to)\s*([\d,]+))?)/i);
+  const salaryMatch = explicitSalaryMatch || text.match(/(?:(?:PKR|USD|Rs\.?|\$)\s*([\d,]+)(?:\s*(?:-|to)\s*([\d,]+))?)(?!\s*[MBk]\b)/i);
   if (salaryMatch) {
     salaryRaw = salaryMatch[0].trim();
     const currMatch = salaryRaw.match(/PKR|USD|Rs|\$/i);
@@ -577,9 +554,7 @@ export function extractLogisticsHeuristic(text: string): LogisticsExtraction {
   };
 }
 
-/**
- * Deterministic fallback extractor combining heuristic parsing and mock resolution.
- */
+// Deterministic fallback extractor combining heuristic parsing and mock resolution.
 export function extractCandidateFallback(
   resumeText: string,
   options?: CandidateFallbackOptions,
@@ -597,7 +572,7 @@ export function extractCandidateFallback(
       ...mockMatch,
       id: `cand_${randomUUID().replace(/-/g, "").slice(0, 12)}`,
       applied_job_id: appliedJobId,
-      created_at: new Date().toISOString(),
+      created_at: options?.createdAt || mockMatch.created_at || new Date().toISOString(),
       updated_at: new Date().toISOString(),
       source_document: {
         filename,
@@ -635,7 +610,7 @@ export function extractCandidateFallback(
   const profile: ParsedCandidateProfile = {
     id: `cand_${randomUUID().replace(/-/g, "").slice(0, 12)}`,
     applied_job_id: appliedJobId,
-    created_at: new Date().toISOString(),
+    created_at: options?.createdAt || new Date().toISOString(),
     updated_at: new Date().toISOString(),
     source_document: {
       filename,

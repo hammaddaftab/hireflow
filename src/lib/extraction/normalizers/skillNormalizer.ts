@@ -82,6 +82,9 @@ export const SKILL_SYNONYMS: Record<string, string> = {
   rest: "rest api",
   "rest api": "rest api",
   restful: "rest api",
+  "restful api": "rest api",
+  "restful apis": "rest api",
+  "rest apis": "rest api",
   gql: "graphql",
   graphql: "graphql",
 };

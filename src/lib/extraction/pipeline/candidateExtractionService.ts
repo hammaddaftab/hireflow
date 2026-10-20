@@ -60,11 +60,11 @@ export interface CandidateExtractionOptions {
   appliedJobId?: string | null;
   fileHash?: string;
   timeoutMs?: number;
+  allowFallback?: boolean;
+  createdAt?: string;
 }
 
-/**
- * Combined schema for the prompt-driven aspects of candidate extraction.
- */
+// Combined schema for the prompt-driven aspects of candidate extraction.
 export const CandidatePromptAspectsSchema = z.object({
   identity: IdentityExtractionSchema,
   work_history: WorkHistoryExtractionSchema,
@@ -116,11 +116,9 @@ export {
   type CandidateFallbackOptions,
 };
 
-/**
- * Main candidate extraction service.
- * Takes resume text, extracts all 7 candidate aspects conforming to ParsedCandidateProfileSchema.
- * Executes via AI SDK model if available, and provides robust fallback / mock handling so parsing never crashes.
- */
+// Main candidate extraction service.
+// Takes resume text, extracts all 7 candidate aspects conforming to ParsedCandidateProfileSchema.
+// Executes via AI SDK model if available, and provides robust fallback / mock handling so parsing never crashes.
 export async function extractCandidateProfile(
   resumeText: string,
   options?: CandidateExtractionOptions
@@ -130,7 +128,7 @@ export async function extractCandidateProfile(
     options?.fileHash ?? createHash("sha256").update(resumeText).digest("hex");
   const filename = options?.filename || "resume.pdf";
   const appliedJobId = options?.appliedJobId ?? null;
-  const timeoutMs = options?.timeoutMs ?? 30000;
+  const timeoutMs = options?.timeoutMs ?? 60000;
 
   const effectiveProvider = options?.provider || (process.env.LLM_PROVIDER as AiProvider | undefined);
 

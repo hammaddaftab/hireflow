@@ -41,7 +41,11 @@ Normalize phone numbers to E.164 if a country context is clear from
 the document; otherwise return the raw string and flag it.
 For location: extract the raw stated location in `raw`, and structured
 canonical city and province in `normalized` if clear, else null.
-For links: for each link entry, return:
+For links:
+- ONLY extract the candidate's personal identity and profile links (e.g. personal GitHub profile page, LinkedIn profile, personal portfolio website, Twitter/X handle).
+- STRICT CONSTRAINT: Do NOT extract project links, project repositories (e.g. specific GitHub repos like 'github.com/user/project-name'), live demo URLs, app links, company websites, or articles.
+- ONLY include entries where an actual web URL or domain is stated in the document (e.g. 'https://github.com/...', 'linkedin.com/in/...'). Do NOT extract bare platform labels or words like 'GitHub' or 'LinkedIn' when no URL is present.
+For each valid link entry, return:
 - `address`: the raw URL or web address as stated in the document.
 - `platform`: an object with `raw` (stated provider/label, e.g. 'GitHub', 'Portfolio', or null)
   and `normalized` (canonical enum: 'github', 'linkedin', 'gitlab', 'portfolio', 'twitter', 'other', or null).

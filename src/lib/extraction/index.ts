@@ -4,6 +4,7 @@ export * from "./catalogs/canonicalSkills";
 export * from "./catalogs/entityCatalog";
 export * from "./catalogs/fetchUniversities";
 export * from "./normalizers/fieldOfStudyNormalizer";
+export * from "./normalizers/locationNormalizer";
 export * from "./normalizers/skillNormalizer";
 export * from "./normalizers/universityNormalizer";
 export * from "./normalizers/normalizeCandidateProfile";

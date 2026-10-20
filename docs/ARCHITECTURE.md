@@ -208,6 +208,7 @@ Free-form text in resumes contains extreme variance, particularly within regiona
   * **Candidate Ingress**: Defined in [`/src/entities/extraction/candidate/aspects/identity.ts`](/src/entities/extraction/candidate/aspects/identity.ts), the LLM extracts the verbatim string into `location.raw` and leverages its native world knowledge to populate canonical `city` and `province` in `location.normalized`.
   * **Job Requirements**: Job creation forms constrain location criteria to canonical Pakistani cities and administrative territories.
   * **Hierarchical Evaluation**: The evaluator in [`/src/features/review/core/evaluators/locationEvaluator.ts`](/src/features/review/core/evaluators/locationEvaluator.ts) validates locations through a three-tier cascade: exact city match $\to$ province match $\to$ relocation willingness triage.
+  * **Province vs. Federal Territory Distinction**: Islamabad is an autonomous federal territory rather than a province; it is strictly normalized to `"Islamabad Capital Territory"`. The UI reflects this with distinct territory status badges in testing and canonical city counts in the review queue.
 
 ### 5.3 Skill Normalization ([`/src/features/extraction/skillNormalizer.ts`](/src/features/extraction/skillNormalizer.ts))
 * Maps framework synonyms and common variants (`ReactJS`, `React.js`, `React Native` $\to$ `React`; `Postgres`, `PostgreSQL` $\to$ `PostgreSQL`) using curated synonym catalogs before comparison.

@@ -74,7 +74,7 @@ export type EducationExtraction = z.infer<typeof EducationExtractionSchema>;
 // Builds the extraction prompt or instructions for Education
 export function buildEducationPrompt(resumeText?: string): string {
   const instructions = `Extract each education entry in reverse chronological order:
-- institution: verbatim name in 'raw', canonical name in 'normalized' if standard, else null.
+- institution: verbatim name in 'raw', leave 'normalized' as null (resolved deterministically by downstream catalog).
 - degree_level: verbatim title in 'raw', normalized tier in 'normalized' strictly mapped to:
   * 'bachelors': 4-year BS, BE, BSc (Hons), BBA, etc.
   * 'masters': MS, MPhil, MSc, MBA.

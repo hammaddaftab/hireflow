@@ -127,6 +127,33 @@ Build a comprehensive in-code gazetteer of Pakistani sectors, neighborhoods, teh
   2. If `reqCity` is null/unspecified and `reqProvince` is present, tests `candProvince.toLowerCase() === reqProvince.toLowerCase()`.
   3. If candidate location differs from requirements, evaluates `stated_relocation_willingness` (`willing` $\to$ `confirmed`, `unwilling` $\to$ `contradicted`, `not_stated` $\to$ `ambiguous`).
 
+### 5. Province vs. Federal Capital Territory (Islamabad) & UI Presentation
+* **Administrative Distinction**: Under the Constitution of Pakistan, Islamabad is not a province; it is the **Islamabad Capital Territory (ICT)**, an autonomous federal district administered directly by the federal government, distinct from the four provinces (Punjab, Sindh, Khyber Pakhtunkhwa, Balochistan).
+* **Canonical Schema Rule**:
+  * In `NormalizedLocation.normalized`: `city` holds `"Islamabad"` and `province` holds `"Islamabad Capital Territory"`.
+  * The generic field name `province` is used in the database schema to represent administrative subdivisions without bloating table columns with separate `territory` or `federal_district` columns.
+  * Obsolete values such as `"Federal"` or erroneous classifications as `"Punjab"` are disallowed and canonicalized to `"Islamabad Capital Territory"`.
+* **Normalization Engine (`locationNormalizer.ts`)**:
+  * City aliases and postal sectors (`ISB`, `ICT`, `G-13/2`, `F-10/2`, `Islamabad, Pakistan`) deterministically resolve to `city: "Islamabad"` and `province: "Islamabad Capital Territory"`.
+  * Standard provincial cities (`Lahore`, `Rawalpindi`, `Multan`, `Faisalabad`) resolve to `province: "Punjab"`.
+  * Karachi and its enclaves (`Clifton`, `KHI`) resolve to `province: "Sindh"`.
+  * Remote and country-only specifications (`"Remote"`, `"Anywhere in Pakistan"`) resolve to `city: null`, `province: null`.
+* **UI Presentation Across the Application**:
+  1. **Review Queue Location Filter Menu** ([`queueCalculations.ts`](/src/features/review/core/utils/queueCalculations.ts)):
+     * Sorted descending by candidate count by canonical city (e.g., `Islamabad (4)`, `Lahore (2)`).
+     * Candidates with verbatim raw addresses that fail city normalization are bucketed under **`Need Attention`**.
+     * Candidates with no location specified are bucketed under **`Unspecified`**.
+  2. **Candidate Review Cards & Focus View** ([`CandidateCard.tsx`](/src/features/review/core/components/card/CandidateCard.tsx)):
+     * Rendered as `[City], [Province/Territory]`, e.g., `Islamabad, Islamabad Capital Territory`.
+  3. **AI Testing Workbench / Identity Trace Card** ([`IdentityTestingWorkbench.tsx`](/src/features/evals/components/identity/IdentityTestingWorkbench.tsx)):
+     * **Canonical City**: Displays the resolved canonical city name.
+     * **Province / State**: Displays the canonical province string.
+     * **Territory Jurisdiction Badge**: Visually flags the jurisdiction:
+       * Amber status tag for `"Federal Capital Territory (ICT)"` (identifying federal territory status).
+       * Primary status tag for standard provinces (e.g. `"Punjab Province"`, `"Sindh Province"`).
+       * Neutral container tag for `"Unspecified Location"`.
+     * **Queue Filter Bucket**: Confirms the destination bucket (`Islamabad`, `Need Attention`, or `Unspecified`).
+
 ---
 
 ## 6. Consequences
