@@ -1,5 +1,8 @@
 export const dynamic = "force-dynamic";
 
+// Vercel serverless function max duration in seconds (Hobby plan limit)
+export const maxDuration = 60;
+
 import { NextRequest } from "next/server";
 import { z } from "zod";
 import { getResumeFileBuffer } from "@/lib/storage";

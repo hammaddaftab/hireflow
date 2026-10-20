@@ -4,6 +4,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { reviewsService } from "@/features/review";
 
+// Vercel serverless function max duration in seconds (Hobby plan limit)
+export const maxDuration = 60;
+
 const patchDecisionSchema = z.object({
   jobId: z.string().min(1, "jobId is required"),
   decision: z.enum(["keep", "flag", "pass", "pending"]),

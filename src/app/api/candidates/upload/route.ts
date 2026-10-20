@@ -13,14 +13,15 @@ const JsonUploadPayloadSchema = z.object({
   appliedJobId: z.string().optional(),
 });
 
-/**
- * POST /api/candidates/upload
- * Supports:
- * 1. multipart/form-data with one or more files in 'file' or 'files' field, optional 'appliedJobId'
- * 2. application/json with { text, filename, appliedJobId }
- * Extracts text from PDF using modular poppler utility, uploads PDF to Vercel Blob Storage,
- * extracts all 7 candidate aspects, and persists the structured profile to Drizzle and in-memory cache.
- */
+// Vercel serverless function max duration in seconds (Hobby plan limit)
+export const maxDuration = 60;
+
+// POST /api/candidates/upload
+// Supports:
+// 1. multipart/form-data with one or more files in 'file' or 'files' field, optional 'appliedJobId'
+// 2. application/json with { text, filename, appliedJobId }
+// Extracts text from PDF using modular poppler utility, uploads PDF to Vercel Blob Storage,
+// extracts all 7 candidate aspects, and persists the structured profile to Drizzle and in-memory cache.
 export async function POST(request: NextRequest) {
   try {
     const contentType = request.headers.get("content-type") || "";

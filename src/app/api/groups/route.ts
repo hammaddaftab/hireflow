@@ -4,6 +4,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { groupsService } from "@/features/groups/groupsService";
 
+// Vercel serverless function max duration in seconds (Hobby plan limit)
+export const maxDuration = 60;
+
 const createGroupSchema = z.object({
   jobId: z.string().optional(),
   name: z.string().min(1, "Group name is required"),

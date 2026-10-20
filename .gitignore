@@ -18,3 +18,11 @@ tsconfig.tsbuildinfo
 .references/recruiter_backend/credentials.json
 .references/recruiter_backend/*.log
 .references/recruiter_backend/tests/.artifacts/
+.vercel
+.env*
+
+# Demo resumes: track only Markdown files
+docs/demo/resumes/*
+!docs/demo/resumes/*.md
+
+data/evals/runs.json

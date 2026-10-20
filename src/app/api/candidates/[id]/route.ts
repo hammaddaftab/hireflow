@@ -2,6 +2,9 @@ import { NextRequest } from "next/server";
 import { candidatesService } from "@/services/candidatesService";
 import { ApiError, createErrorResponse, createSuccessResponse } from "@/lib/errors/api-error";
 
+// Vercel serverless function max duration in seconds (Hobby plan limit)
+export const maxDuration = 60;
+
 export async function GET(
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> }

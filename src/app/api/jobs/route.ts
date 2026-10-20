@@ -3,6 +3,9 @@ import { z } from "zod";
 import { jobService, CreateJobSchema } from "@/features/jobs";
 import { ApiError, createErrorResponse, createSuccessResponse } from "@/lib/errors/api-error";
 
+// Vercel serverless function max duration in seconds (Hobby plan limit)
+export const maxDuration = 60;
+
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
