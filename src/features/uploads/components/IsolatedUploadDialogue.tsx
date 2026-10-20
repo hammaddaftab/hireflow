@@ -19,6 +19,7 @@ import {
   ArrowRight,
   Inbox,
   RotateCcw,
+  RotateCw,
   Sliders,
   Check,
   X,
@@ -35,6 +36,7 @@ import type { ParsedCandidateProfile } from "@/entities/candidate";
 import type { CandidateReviewItem } from "@/features/review/types";
 import { buildReviewQueue } from "@/features/review/core/services/reviewQueueService";
 import { MOCK_CANDIDATES } from "@/db/seeds/candidates";
+import { CandidateContactLinks } from "@/features/review/core/components/card/CandidateContactLinks";
 
 export interface IsolatedUploadDialogueProps {
   initialMode?: "modal" | "embedded";
@@ -314,6 +316,7 @@ export function IsolatedUploadDialogue({
     MOCK_CANDIDATES.slice(0, 4)
   );
   const [activeCardIndex, setActiveCardIndex] = useState<number>(0);
+  const [contactExpandedId, setContactExpandedId] = useState<string | null>(null);
 
   // Live extraction simulation state in main outer window
   const [isSimulating, setIsSimulating] = useState(false);
@@ -749,8 +752,8 @@ export function IsolatedUploadDialogue({
         <div className="relative flex items-center justify-center overflow-hidden py-4 min-h-[420px]">
           {candidateReviewItems.length === 0 && isSimulating && (
             <div className="text-center space-y-3 py-12">
-              <div className="h-12 w-12 rounded-2xl bg-primary/10 text-primary mx-auto flex items-center justify-center animate-spin">
-                <RotateCcw className="h-6 w-6" />
+              <div className="h-12 w-12 rounded-2xl bg-primary/10 text-primary mx-auto flex items-center justify-center">
+                <RotateCw className="h-6 w-6 animate-spin" />
               </div>
               <p className="text-xs font-semibold text-on-surface">
                 Parsing document text and extracting candidate aspects...
@@ -853,24 +856,52 @@ export function IsolatedUploadDialogue({
                           {/* Card Header (Clean: Name, City, Role, Exp) */}
                           <div className="flex items-start justify-between gap-3">
                             <div className="min-w-0">
-                              <div className="flex items-center gap-2 flex-wrap">
-                                <h3 className="text-lg font-bold text-on-surface tracking-tight truncate">
+                              <div className="flex items-center gap-2 flex-wrap pointer-events-auto">
+                                <button
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setContactExpandedId((prev) => (prev === candidate.id ? null : candidate.id));
+                                  }}
+                                  className="text-left text-lg font-bold text-on-surface tracking-tight truncate hover:text-primary transition-colors cursor-pointer focus:outline-none"
+                                  title="Click to toggle email and WhatsApp"
+                                >
                                   {candidate.identity.name}
-                                </h3>
+                                </button>
                                 <span className="inline-flex items-center gap-1 text-xs font-semibold py-0.5 px-2 rounded-full border border-outline-variant/60 bg-surface-container-low text-on-surface-variant shrink-0 whitespace-nowrap">
                                   <MapPin className="h-3 w-3 shrink-0 text-on-surface-variant" />
                                   <span>{locationCity}</span>
                                 </span>
                               </div>
 
-                              <div className="flex items-center gap-3 text-xs text-on-surface-variant flex-wrap pt-1.5">
+                              {/* Conditionally rendered contact actions revealed on clicking title */}
+                              {contactExpandedId === candidate.id && (
+                                <div className="pointer-events-auto pt-1">
+                                  <CandidateContactLinks
+                                    email={candidate.identity.email}
+                                    phone={candidate.identity.phone}
+                                    size="sm"
+                                    className="animate-in fade-in duration-150"
+                                  />
+                                </div>
+                              )}
+
+                              <div className="flex items-center gap-3 text-xs text-on-surface-variant flex-wrap pt-1.5 pointer-events-auto">
                                 {currentRole && (
-                                  <span className="flex items-center gap-1 font-semibold text-on-surface">
+                                  <button
+                                    type="button"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setContactExpandedId((prev) => (prev === candidate.id ? null : candidate.id));
+                                    }}
+                                    className="flex items-center gap-1 font-semibold text-on-surface hover:text-primary transition-colors cursor-pointer text-left focus:outline-none"
+                                    title="Click to toggle email and WhatsApp"
+                                  >
                                     <Briefcase className="h-3 w-3 text-on-surface-variant shrink-0" />
                                     <span className="truncate max-w-[220px]">
                                       {currentRole.title} • {currentRole.employer}
                                     </span>
-                                  </span>
+                                  </button>
                                 )}
 
                                 <span className="flex items-center gap-1 font-medium">

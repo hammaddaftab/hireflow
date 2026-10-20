@@ -2,11 +2,11 @@ export const dynamic = "force-dynamic";
 
 import { NextRequest } from "next/server";
 import { z } from "zod";
-import path from "node:path";
-import { promises as fs } from "node:fs";
+import { getResumeFileBuffer } from "@/lib/storage";
 import { uploadsService } from "@/services/uploadsService";
 import { jobService } from "@/features/jobs";
 import { candidatesService } from "@/services/candidatesService";
+import type { ParsedCandidateProfile } from "@/entities/candidate";
 import { extractCandidateProfile } from "@/lib/extraction";
 import { extractTextFromPdf } from "@/lib/pdf";
 import { ApiError, createErrorResponse, createSuccessResponse } from "@/lib/errors/api-error";
@@ -50,45 +50,14 @@ export async function POST(request: NextRequest) {
       throw ApiError.notFound(`Upload record '${uploadId}' not found`, "/api/resumes/ingest");
     }
 
-    // Load file buffer from Vercel Blob URL or local filesystem
-    let fileBuffer: Buffer | null = null;
-
-    if (uploadRecord.blobUrl && uploadRecord.blobUrl.startsWith("http")) {
-      try {
-        const response = await fetch(uploadRecord.blobUrl);
-        if (response.ok) {
-          const arrayBuffer = await response.arrayBuffer();
-          fileBuffer = Buffer.from(arrayBuffer);
-        }
-      } catch {
-        // Fallback to local disk lookup if network fetch fails
-      }
-    }
-
-    if (!fileBuffer) {
-      const cwd = process.cwd();
-      const candidatePaths = [
-        uploadRecord.pathname ? path.join(cwd, uploadRecord.pathname) : null,
-        path.join(cwd, ".uploads", "resumes", path.basename(uploadRecord.pathname)),
-        path.join(cwd, uploadRecord.filename),
-        uploadRecord.filename === "mock_resume_a.pdf" ? path.join(cwd, "mock_resume_a.pdf") : null,
-        uploadRecord.filename === "mock_resume_b.pdf" ? path.join(cwd, "mock_resume_b.pdf") : null,
-        path.join(cwd, "public", "resumes", uploadRecord.filename),
-      ].filter(Boolean) as string[];
-
-      for (const filePath of candidatePaths) {
-        try {
-          fileBuffer = await fs.readFile(filePath);
-          break;
-        } catch {
-          // Check next candidate path
-        }
-      }
-    }
-
-    if (!fileBuffer) {
+    // Explicit storage retrieval: Vercel Blob when configured, else local storage (.uploads/resumes)
+    let fileBuffer: Buffer;
+    try {
+      fileBuffer = await getResumeFileBuffer(uploadRecord);
+    } catch (storageErr) {
+      const reason = storageErr instanceof Error ? storageErr.message : String(storageErr);
       throw ApiError.badRequest(
-        `Unable to locate document content for '${uploadRecord.filename}'`,
+        `Unable to retrieve resume document '${uploadRecord.filename}': ${reason}`,
         undefined,
         "/api/resumes/ingest"
       );
@@ -111,14 +80,35 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Mark status as extracting
+    await uploadsService.updateStatus(uploadId, "extracting", null);
+
     // Extract structured candidate profile across all 7 aspects
-    const candidateProfile = await extractCandidateProfile(extractedText, {
-      filename: uploadRecord.filename,
-      fileSizeBytes: uploadRecord.size,
-      mimeType: uploadRecord.contentType || "application/pdf",
-      fileUrl: uploadRecord.blobUrl,
-      appliedJobId: jobId,
-    });
+    let candidateProfile: ParsedCandidateProfile;
+    try {
+      candidateProfile = await extractCandidateProfile(extractedText, {
+        filename: uploadRecord.filename,
+        fileSizeBytes: uploadRecord.size,
+        mimeType: uploadRecord.contentType || "application/pdf",
+        fileUrl: uploadRecord.blobUrl,
+        appliedJobId: jobId,
+        timeoutMs: 60000,
+        createdAt: uploadRecord.uploadedAt,
+      });
+    } catch (err) {
+      const reason = err instanceof Error ? err.message : String(err);
+      await uploadsService.updateStatus(uploadId, "failed", reason);
+      throw ApiError.badRequest(
+        `AI extraction failed for '${uploadRecord.filename}': ${reason}`,
+        undefined,
+        "/api/resumes/ingest"
+      );
+    }
+
+    // Preserve the original upload timestamp so queue ordering is identical across re-extractions
+    if (uploadRecord.uploadedAt) {
+      candidateProfile.created_at = uploadRecord.uploadedAt;
+    }
 
     // Persist to PostgreSQL database
     await candidatesService.createCandidate(candidateProfile);
@@ -126,6 +116,16 @@ export async function POST(request: NextRequest) {
     // Update upload record with target job ID and candidate ID
     await uploadsService.updateJobId(uploadId, jobId);
     await uploadsService.updateCandidateId(uploadId, candidateProfile.id);
+
+    // Clean up old candidate if re-ingesting an existing candidate record
+    // Only delete AFTER candidateId on upload record is updated to prevent cascade deletion of upload
+    if (uploadRecord.candidateId && uploadRecord.candidateId !== candidateProfile.id) {
+      try {
+        await candidatesService.deleteCandidate(uploadRecord.candidateId);
+      } catch {
+        // Continue if old record already absent
+      }
+    }
 
     return createSuccessResponse(
       {

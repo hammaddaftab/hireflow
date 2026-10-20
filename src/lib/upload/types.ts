@@ -23,7 +23,8 @@ export interface UploadedResumeRecord {
   filename: string;
   size: number;
   contentType: string;
-  status: "stored" | "uploading" | "error";
+  status: "stored" | "uploading" | "error" | "failed" | "extracted" | "extracting";
+  errorMessage?: string | null;
   blobUrl: string;
   pathname: string;
   hash: string;

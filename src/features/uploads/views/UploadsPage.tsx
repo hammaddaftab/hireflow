@@ -73,6 +73,7 @@ export function UploadsPage({ initialUploads, isBlobConfigured: _isBlobConfigure
   const [isIngestionOpen, setIsIngestionOpen] = useState(false);
   const [preselectedUploadId, setPreselectedUploadId] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [reingestingId, setReingestingId] = useState<string | null>(null);
   const [isClearingAll, setIsClearingAll] = useState(false);
 
   // Ingestion processing & feedback deck state in main outer window
@@ -264,7 +265,7 @@ export function UploadsPage({ initialUploads, isBlobConfigured: _isBlobConfigure
       });
       if (res.ok) {
         setUploads((prev) => prev.filter((item) => item.id !== id));
-        setFeedbackMessage(`Removed ${filename ? `"${filename}"` : "document"} from uploads.`);
+        setFeedbackMessage(`Removed ${filename ? `"${filename}"` : "document"} and associated candidate record.`);
         setTimeout(() => setFeedbackMessage(null), 4000);
       } else {
         setFeedbackMessage(`Failed to delete ${filename ? `"${filename}"` : "document"}.`);
@@ -278,6 +279,45 @@ export function UploadsPage({ initialUploads, isBlobConfigured: _isBlobConfigure
     }
   };
 
+  // Re-ingest a specific uploaded document with AI
+  const handleReingest = async (item: UploadedResumeRecord) => {
+    const targetJobId = item.jobId || jobs[0]?.id;
+    if (!targetJobId) {
+      setFeedbackMessage("Please select or create a job first before re-ingesting.");
+      setTimeout(() => setFeedbackMessage(null), 4000);
+      return;
+    }
+
+    setReingestingId(item.id);
+    setFeedbackMessage(`Re-extracting candidate profile for ${item.filename}...`);
+    try {
+      const res = await fetch("/api/resumes/ingest", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          uploadId: item.id,
+          jobId: targetJobId,
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error?.message || "Re-ingestion failed");
+      }
+
+      setFeedbackMessage(`Successfully re-ingested ${item.filename}`);
+      setTimeout(() => setFeedbackMessage(null), 4000);
+      await refreshUploads();
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      setFeedbackMessage(`Re-ingestion failed for ${item.filename}: ${msg}`);
+      setTimeout(() => setFeedbackMessage(null), 6000);
+      await refreshUploads();
+    } finally {
+      setReingestingId(null);
+    }
+  };
+
   // Clear all uploads
   const handleClearAll = async () => {
     if (!confirm("Are you sure you want to clear all uploaded resume records from the list?")) return;
@@ -286,7 +326,7 @@ export function UploadsPage({ initialUploads, isBlobConfigured: _isBlobConfigure
       const res = await fetch("/api/resumes/upload", { method: "DELETE" });
       if (res.ok) {
         setUploads([]);
-        setFeedbackMessage("All uploaded resume records have been removed.");
+        setFeedbackMessage("All uploaded resume records and associated candidates have been removed.");
         setTimeout(() => setFeedbackMessage(null), 4000);
       } else {
         setFeedbackMessage("Failed to clear uploaded resumes.");
@@ -644,9 +684,29 @@ export function UploadsPage({ initialUploads, isBlobConfigured: _isBlobConfigure
                         )}
                       </td>
 
-                      {/* Status (Only New or Processed with View in queue) */}
+                      {/* Status */}
                       <td className="py-3 px-4 whitespace-nowrap">
-                        {item.jobId ? (
+                        {item.status === "failed" ? (
+                          <div className="flex items-center gap-1.5 flex-wrap">
+                            <span className="inline-flex items-center gap-1 text-[10px] py-0.5 px-2 rounded-full font-mono uppercase font-semibold bg-rose-500/15 text-rose-700 dark:text-rose-300 border border-rose-500/30">
+                              <AlertCircle className="h-3 w-3" />
+                              <span>Failed</span>
+                            </span>
+                            {item.errorMessage && (
+                              <span
+                                className="text-[10px] text-rose-600 dark:text-rose-400 font-mono truncate max-w-[120px]"
+                                title={item.errorMessage}
+                              >
+                                {item.errorMessage}
+                              </span>
+                            )}
+                          </div>
+                        ) : item.status === "extracting" || reingestingId === item.id ? (
+                          <span className="inline-flex items-center gap-1 text-[10px] py-0.5 px-2 rounded-full font-mono uppercase font-semibold bg-amber-500/15 text-amber-700 dark:text-amber-300 border border-amber-500/30">
+                            <RefreshCw className="h-3 w-3 animate-spin" />
+                            <span>Extracting...</span>
+                          </span>
+                        ) : item.jobId ? (
                           <div className="flex items-center gap-2 flex-wrap">
                             <Badge variant="neutral" className="text-[10px] py-0.5 px-2 font-mono uppercase">
                               Processed
@@ -674,9 +734,23 @@ export function UploadsPage({ initialUploads, isBlobConfigured: _isBlobConfigure
                         </span>
                       </td>
 
-                      {/* Actions (No star icon) */}
+                      {/* Actions */}
                       <td className="py-3 px-4 text-right whitespace-nowrap">
                         <div className="inline-flex items-center gap-1 justify-end">
+                          {/* Re-ingest button */}
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleReingest(item)}
+                            isLoading={reingestingId === item.id}
+                            disabled={reingestingId !== null || deletingId !== null || isClearingAll}
+                            className="h-7 px-2 text-xs text-on-surface-variant hover:text-primary rounded-lg cursor-pointer gap-1"
+                            title="Re-extract candidate profile with AI"
+                          >
+                            <RefreshCw className={`h-3 w-3 ${reingestingId === item.id ? "animate-spin" : ""}`} />
+                            <span className="text-[11px] font-semibold">Re-ingest</span>
+                          </Button>
+
                           {/* Preview document (Eye icon) */}
                           <Button
                             variant="ghost"

@@ -1,6 +1,7 @@
 // Drizzle ORM table schema for persistent resume uploads in PostgreSQL
 
 import { pgTable, text, integer, timestamp, varchar } from "drizzle-orm/pg-core";
+import { candidates } from "./candidate";
 
 export const resumeUploads = pgTable("resume_uploads", {
   id: varchar("id", { length: 128 }).primaryKey(),
@@ -11,7 +12,7 @@ export const resumeUploads = pgTable("resume_uploads", {
   pathname: text("pathname").notNull(),
   hash: varchar("hash", { length: 128 }),
   jobId: varchar("job_id", { length: 128 }),
-  candidateId: varchar("candidate_id", { length: 128 }),
+  candidateId: varchar("candidate_id", { length: 128 }).references(() => candidates.id, { onDelete: "cascade" }),
   status: varchar("status", { length: 32 }).notNull().default("stored"),
   errorMessage: text("error_message"),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),

@@ -1,1 +1,7 @@
-export { uploadResumeToBlob, type UploadResumeResult } from "./blobStorage";
+export {
+  uploadResumeToBlob,
+  isBlobStorageConfigured,
+  getLocalResumePath,
+  getResumeFileBuffer,
+  type UploadResumeResult,
+} from "./blobStorage";

@@ -1,4 +1,6 @@
 import { put } from "@vercel/blob";
+import path from "node:path";
+import { promises as fs } from "node:fs";
 
 export interface UploadResumeResult {
   url: string;
@@ -7,11 +9,17 @@ export interface UploadResumeResult {
   size: number;
 }
 
-/**
- * Uploads a resume PDF to Vercel Blob Storage using @vercel/blob.
- * If BLOB_READ_WRITE_TOKEN is not configured (e.g. local offline development),
- * provides a structured local reference fallback without throwing.
- */
+// Determines if Vercel Blob storage is configured via environment token
+export function isBlobStorageConfigured(): boolean {
+  return Boolean(process.env.BLOB_READ_WRITE_TOKEN);
+}
+
+// Resolves deterministic local path for resume documents in .uploads/resumes/
+export function getLocalResumePath(pathnameOrFilename: string): string {
+  return path.join(process.cwd(), ".uploads", "resumes", path.basename(pathnameOrFilename));
+}
+
+// Uploads a resume document: uses Vercel Blob if configured, otherwise stores locally on disk
 export async function uploadResumeToBlob(
   filename: string,
   buffer: Buffer | Uint8Array,
@@ -23,21 +31,14 @@ export async function uploadResumeToBlob(
   const token = options?.token || process.env.BLOB_READ_WRITE_TOKEN;
   const contentType = options?.contentType || "application/pdf";
   const safeFilename = `resumes/${Date.now()}-${filename.replace(/[^a-zA-Z0-9._-]/g, "_")}`;
-
   const payload = Buffer.isBuffer(buffer) ? buffer : Buffer.from(buffer);
 
   if (!token) {
-    // Graceful fallback for local development without active Vercel token
+    // Explicit local filesystem storage when Vercel Blob is not configured
     const localRef = `storage://resumes/${filename}`;
-    try {
-      const { promises: fs } = await import("fs");
-      const path = await import("path");
-      const uploadsDir = path.join(process.cwd(), ".uploads", "resumes");
-      await fs.mkdir(uploadsDir, { recursive: true });
-      await fs.writeFile(path.join(uploadsDir, path.basename(safeFilename)), payload);
-    } catch {
-      // Ignore local disk write errors
-    }
+    const uploadsDir = path.join(process.cwd(), ".uploads", "resumes");
+    await fs.mkdir(uploadsDir, { recursive: true });
+    await fs.writeFile(path.join(uploadsDir, path.basename(safeFilename)), payload);
 
     return {
       url: localRef,
@@ -47,6 +48,7 @@ export async function uploadResumeToBlob(
     };
   }
 
+  // Explicit Vercel Blob storage when token is present
   const blob = await put(safeFilename, payload, {
     access: "public",
     token,
@@ -57,6 +59,29 @@ export async function uploadResumeToBlob(
     url: blob.url,
     pathname: blob.pathname,
     contentType,
-    size: buffer.length,
+    size: payload.length,
   };
+}
+
+// Retrieves resume file buffer: fetches from Vercel Blob if configured, otherwise reads from local storage
+export async function getResumeFileBuffer(record: {
+  blobUrl: string | null;
+  pathname?: string | null;
+  filename: string;
+}): Promise<Buffer> {
+  if (isBlobStorageConfigured()) {
+    if (!record.blobUrl || !record.blobUrl.startsWith("http")) {
+      throw new Error(`Blob URL not found for '${record.filename}'`);
+    }
+    const response = await fetch(record.blobUrl);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch blob document for '${record.filename}' (status ${response.status})`);
+    }
+    const arrayBuffer = await response.arrayBuffer();
+    return Buffer.from(arrayBuffer);
+  }
+
+  // Explicit local mode: read directly from .uploads/resumes
+  const localPath = getLocalResumePath(record.pathname || record.filename);
+  return await fs.readFile(localPath);
 }
