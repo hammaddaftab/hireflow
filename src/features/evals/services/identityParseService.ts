@@ -5,7 +5,7 @@ import {
   type IdentityExtraction,
   buildIdentityPrompt,
 } from "@/entities/extraction/candidate/aspects/identity";
-import { normalizeLocation } from "@/lib/extraction";
+import { normalizeLocation } from "@/lib/extraction/server";
 
 export interface IdentityDiagnostic {
   level: "info" | "warning" | "error";

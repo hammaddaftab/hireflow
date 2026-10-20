@@ -1,3 +1,5 @@
+import "server-only";
+
 // Candidate profile normalization across education fields and demonstrated/declared skills
 
 import type { ParsedCandidateProfile } from "@/entities/candidate";

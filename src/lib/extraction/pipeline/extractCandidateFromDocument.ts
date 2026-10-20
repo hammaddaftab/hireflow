@@ -1,3 +1,5 @@
+import "server-only";
+
 // Universal, source-agnostic document extraction utility
 // Decoupled from HTTP, Next.js requests, or UI views.
 // Accepts document buffers or raw text from manual uploads, triage drops, or Gmail attachments.

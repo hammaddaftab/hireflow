@@ -1,3 +1,4 @@
+import "server-only";
 import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import type { UniversityEntry } from "../catalogs/fetchUniversities";

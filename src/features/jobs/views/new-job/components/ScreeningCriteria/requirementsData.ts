@@ -1,6 +1,5 @@
 import type { FormFieldState } from "@/features/jobs/types";
-import { CANONICAL_SKILLS } from "@/lib/extraction";
-import { CANONICAL_FIELDS_OF_STUDY } from "@/lib/extraction";
+import { CANONICAL_SKILLS, CANONICAL_FIELDS_OF_STUDY } from "@/lib/extraction";
 
 export const initialRequirementsFields: Record<string, FormFieldState> = {
   minExperience: {

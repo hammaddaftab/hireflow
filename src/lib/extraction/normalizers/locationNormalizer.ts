@@ -1,3 +1,5 @@
+import "server-only";
+
 // Canonical city to province / territory mapping
 export const CITY_PROVINCE_MAP: Record<string, string> = {
   islamabad: "Islamabad Capital Territory",

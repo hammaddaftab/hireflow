@@ -139,3 +139,36 @@ Because both sides are normalized at ingress, the evaluation layer gains signifi
 ### Negative / Trade-offs
 * **Migration Dependency**: Legacy or pre-seeded candidate data must pass through `normalizeCandidateProfile(...)` upon loading to guarantee normalization invariants.
 * **Ingress Coupling**: Any new entity type requiring normalization (e.g. certifications) must implement ingress hooks on both candidate extraction and job creation sides.
+
+---
+
+## 7. Module Boundary Enforcement & Client/Server Packaging
+
+### 7.1 Separation of Shared Catalogs and Server-Only Modules
+* **Shared-Only Root Barrel ([`/src/lib/extraction/index.ts`](/src/lib/extraction/index.ts))**: Eliminates mixed barrels by exporting strictly shared canonical catalogs (`CANONICAL_SKILLS`, `CANONICAL_FIELDS_OF_STUDY`). These static data catalogs are safe for both browser client components and server environments.
+* **Server-Only Entry ([`/src/lib/extraction/server.ts`](/src/lib/extraction/server.ts))**: Serves as the sole public API facade for server-scoped extraction logic, including ingestion normalizers, document parsers, entity catalogs (`entityCatalog.ts`, `fetchUniversities.ts`), and pipeline services. Does not re-export shared catalogs from root.
+* **No Redundant Client Facade**: Because the canonical catalogs are pure static data, consumers on the client side import directly from the shared root barrel (`@/lib/extraction`), eliminating artificial client barrel wrappers.
+
+### 7.2 Compile-Time Enforcement via `server-only`
+* To prevent accidental deep imports from leaking server code (such as `node:fs` or extraction pipelines) into client browser chunks, every server-scoped file in `/src/lib/extraction/` explicitly declares `import 'server-only'` at the top.
+* This converts accidental client-side imports into immediate, deterministic build errors under Next.js and RSC bundlers.
+
+### 7.3 Evaluator Normalizer Purity
+* Evaluators in [`/src/features/review/core/evaluators/`](/src/features/review/core/evaluators/) (`educationEvaluator.ts`, `skillEvaluator.ts`) must never import normalizers or run normalization inline.
+* Evaluators operate as pure scoring functions on data already normalized at ingestion (`entry.field.normalized`, `education_requirement.field`, and pre-normalized skill maps).
+
+---
+
+## 8. Feature Refactoring Backlog & Pending Audits
+
+While `/src/lib/extraction` has been refactored to enforce this module boundary pattern, several other features contain mixed barrels or lack explicit `server-only` guards:
+
+1. **`/src/lib/upload`**:
+   * Contains a mixed root barrel ([`/src/lib/upload/index.ts`](/src/lib/upload/index.ts)) that re-exports client hooks and server ingestion utilities without explicit `server-only` guards on `/src/lib/upload/server/`.
+   * **Status**: Pending refactor to separate server ingestion from shared upload contracts.
+2. **`/src/features/jobs`**:
+   * [`/src/features/jobs/jobsService.ts`](/src/features/jobs/jobsService.ts) contains PostgreSQL database queries via Drizzle ORM alongside feature contracts.
+   * **Status**: Pending audit to ensure server-only services are strictly guarded from view/client imports.
+3. **`/src/features/evals`**:
+   * Evaluator testing services (e.g., `educationParseService.ts`, `identityParseService.ts`) run AI SDK models and must be verified to never leak into client workbench pages.
+   * **Status**: Pending audit for explicit `server-only` boundary enforcement.

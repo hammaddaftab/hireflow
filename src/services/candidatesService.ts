@@ -7,7 +7,7 @@ import {
   candidateRowToProfile,
   type ParsedCandidateProfile,
 } from "@/entities/candidate";
-import { normalizeCandidateProfile } from "@/lib/extraction";
+import { normalizeCandidateProfile } from "@/lib/extraction/server";
 
 export class CandidatesService {
   // Query all candidates from PostgreSQL ordered by newest first

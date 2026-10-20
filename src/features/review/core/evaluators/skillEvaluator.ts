@@ -1,7 +1,6 @@
 import type { SkillRequirementItem } from "@/entities/job";
 import type { SkillDemonstratedItem } from "@/entities/extraction/candidate/aspects/skillsDemonstrated";
 import type { EvaluatedSkillRequirement, EvaluationPair } from "./evaluationStatuses";
-import { matchSkill } from "@/lib/extraction";
 
 export type SkillGroupRequirement =
   | { active: false; blocking?: boolean }
@@ -56,41 +55,23 @@ export function evaluateSkills(input: SkillEvaluatorInput): EvaluatedSkillsRequi
   // Assumes normalized candidate skills from extraction pipeline and normalized requirements from job pipeline
   const demonstratedMap = new Map<string, SkillDemonstratedItem>();
   for (const s of demonstrated) {
-    demonstratedMap.set(s.skill, s);
+    demonstratedMap.set(s.skill.toLowerCase(), s);
   }
 
-  const declaredSet = new Set(declared);
+  const declaredSet = new Set(declared.map((d) => d.toLowerCase()));
 
   // Unverified candidate claims: declared in resume but not demonstrated in work history
-  const orphanSkillsList = declared.filter((item) => {
-    if (demonstratedMap.has(item)) return false;
-    return !demonstrated.some((d) => matchSkill(item, d.skill));
-  });
+  const orphanSkillsList = declared.filter((item) => !demonstratedMap.has(item.toLowerCase()));
   const orphanSkillsCount = orphanSkillsList.length;
 
   // Matches required skill against candidate's demonstrated list
   function findDemonstrated(skillName: string): SkillDemonstratedItem | undefined {
-    // Direct O(1) match on normalized values established at ingress
-    const direct = demonstratedMap.get(skillName);
-    if (direct) return direct;
-
-    for (const item of demonstrated) {
-      if (matchSkill(skillName, item.skill)) {
-        return item;
-      }
-    }
-    return undefined;
+    return demonstratedMap.get(skillName.toLowerCase());
   }
 
   // Checks if required skill was declared in candidate's profile
   function isSkillDeclared(skillName: string): boolean {
-    if (declaredSet.has(skillName)) return true;
-    for (const d of declared) {
-      if (matchSkill(skillName, d)) {
-        return true;
-      }
-    }
-    return false;
+    return declaredSet.has(skillName.toLowerCase());
   }
 
   const evaluations: EvaluatedSkillRequirement[] = [];

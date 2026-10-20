@@ -10,7 +10,7 @@ import { uploadsService } from "@/services/uploadsService";
 import { jobService } from "@/features/jobs";
 import { candidatesService } from "@/services/candidatesService";
 import type { ParsedCandidateProfile } from "@/entities/candidate";
-import { extractCandidateProfile } from "@/lib/extraction";
+import { extractCandidateProfile } from "@/lib/extraction/server";
 import { extractTextFromPdf } from "@/lib/pdf";
 import { ApiError, createErrorResponse, createSuccessResponse } from "@/lib/errors/api-error";
 

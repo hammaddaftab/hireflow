@@ -1,3 +1,4 @@
+import "server-only";
 import { tokenSortRatio, isLengthRatioSafe } from "@/lib/matching/stringSimilarity";
 
 // Explicit collision blocklist to prevent false positive matches between distinct technologies
@@ -20,9 +21,6 @@ export function isBlockedCollision(normA: string, normB: string): boolean {
   }
   return false;
 }
-
-// Curated closed set of ~500 canonical technical skills for job requirements
-export { CANONICAL_SKILLS } from "../catalogs/canonicalSkills";
 
 // Canonical static synonym and acronym dictionary (~35 entries)
 export const SKILL_SYNONYMS: Record<string, string> = {

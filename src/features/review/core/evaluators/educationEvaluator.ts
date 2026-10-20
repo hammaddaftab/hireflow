@@ -5,7 +5,6 @@ import type {
   EducationStatus,
   EvaluationPair,
 } from "./evaluationStatuses";
-import { isFieldEquivalent, normalizeFieldOfStudy } from "@/lib/extraction";
 import { formatDegreeTier, formatEducationTitle } from "../utils/formatters";
 
 const DEGREE_LEVEL_RANKS: Record<string, number> = {
@@ -46,12 +45,12 @@ export function evaluateEducation(
     return rank >= requiredRank;
   });
 
-  // Check if any tier-satisfying degree also satisfies field requirement
+  // Check if any tier-satisfying degree also satisfies field requirement (assumes pre-normalized inputs)
   const matchingDegree = tierSatisfyingDegrees.find((entry) => {
-    if (!requiredField) return true;
-    const candField = entry.field.normalized || normalizeFieldOfStudy(entry.field.raw);
+    if (!requiredField || requiredField.toLowerCase() === "any") return true;
+    const candField = entry.field.normalized;
     if (!candField) return false;
-    return isFieldEquivalent(requiredField, candField);
+    return candField.toLowerCase() === requiredField.toLowerCase();
   });
 
   let status: EducationStatus = "not_stated";

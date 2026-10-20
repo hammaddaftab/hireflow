@@ -1,4 +1,6 @@
+import "server-only";
 import { sanitizeText, tokenSortRatio } from "@/lib/matching/stringSimilarity";
+import { CANONICAL_FIELDS_OF_STUDY } from "../catalogs/canonicalFieldsOfStudy";
 
 // Canonical field synonym mapping for common Pakistani and international abbreviations
 export const FIELD_SYNONYMS: Record<string, string> = {
@@ -56,22 +58,6 @@ export const FIELD_SYNONYMS: Record<string, string> = {
   "accounting & finance": "Accounting & Finance",
 };
 
-// Curated closed set of canonical fields of study for job requirements
-export const CANONICAL_FIELDS_OF_STUDY: string[] = [
-  "Any",
-  "Computer Science",
-  "Software Engineering",
-  "Information Technology",
-  "Data Science",
-  "Artificial Intelligence",
-  "Computer Engineering",
-  "Electrical Engineering",
-  "Mechanical Engineering",
-  "Civil Engineering",
-  "Business Administration",
-  "Accounting & Finance",
-];
-
 // Discipline equivalence clusters for related fields of study
 export const FIELD_EQUIVALENCE_CLUSTERS: Record<string, string[]> = {
   "Computer Science": [
@@ -122,7 +108,12 @@ export function normalizeFieldOfStudy(field: string | null | undefined): string 
   }
 
   // Fuzzy matching against known canonical names
-  const canonicalNames = Array.from(new Set(Object.values(FIELD_SYNONYMS)));
+  const canonicalNames = Array.from(
+    new Set([
+      ...CANONICAL_FIELDS_OF_STUDY.filter((f) => f !== "Any"),
+      ...Object.values(FIELD_SYNONYMS),
+    ])
+  );
   for (const canonical of canonicalNames) {
     if (tokenSortRatio(cleaned, canonical) >= 0.85) {
       return canonical;

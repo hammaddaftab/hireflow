@@ -5,8 +5,7 @@ import {
   type EducationExtraction,
   buildEducationPrompt,
 } from "@/entities/extraction/candidate/aspects/education";
-import { normalizeUniversity } from "@/lib/extraction";
-import { normalizeFieldOfStudy } from "@/lib/extraction";
+import { normalizeUniversity, normalizeFieldOfStudy } from "@/lib/extraction/server";
 
 export interface EducationEntryComparison {
   index: number;

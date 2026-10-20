@@ -1,3 +1,4 @@
+import "server-only";
 import { createHash, randomUUID } from "node:crypto";
 import { generateObject } from "ai";
 import { getLanguageModel } from "@/lib/ai/providers";
