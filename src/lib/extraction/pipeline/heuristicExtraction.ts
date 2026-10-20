@@ -3,7 +3,7 @@ import {
   type ParsedCandidateProfile,
   ParsedCandidateProfileSchema,
 } from "@/entities/candidate";
-import { MOCK_CANDIDATES } from "@/db/seeds/candidates";
+import { MOCK_CANDIDATES } from "@/db/seeds/mockCandidates";
 import {
   type IdentityExtraction,
   type LinkPlatform,

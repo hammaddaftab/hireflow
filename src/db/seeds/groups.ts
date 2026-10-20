@@ -79,25 +79,30 @@ export async function seedGroups() {
   // Define candidate memberships
   const memberships = [
     // Fast-Clear
-    { groupId: "grp_fast_clear", candidateId: "cand_hamza" },
-    { groupId: "grp_fast_clear", candidateId: "cand_ayesha" },
+    { groupId: "grp_fast_clear", candidateId: "cand_tariq" },
+    { groupId: "grp_fast_clear", candidateId: "cand_hamza_gem" },
+    { groupId: "grp_fast_clear", candidateId: "cand_zainab_misses_pref" },
 
-    // Immediate Interview (Subgroup)
-    { groupId: "grp_sub_immediate", candidateId: "cand_hamza" },
+    // Immediate Interview (Subgroup of Fast-Clear)
+    { groupId: "grp_sub_immediate", candidateId: "cand_tariq" },
+    { groupId: "grp_sub_immediate", candidateId: "cand_hamza_gem" },
+    { groupId: "grp_sub_immediate", candidateId: "cand_zainab_misses_pref" },
 
-    // Under Review
-    { groupId: "grp_under_review", candidateId: "cand_abdullah" },
-    { groupId: "grp_under_review", candidateId: "cand_bilal" },
-    { groupId: "grp_under_review", candidateId: "cand_jillani" },
+    // Under Review / Second-Look
+    { groupId: "grp_under_review", candidateId: "cand_saad_stuffer" },
+    { groupId: "grp_under_review", candidateId: "cand_bilal_adjacent" },
+    { groupId: "grp_under_review", candidateId: "cand_ayesha_silent" },
+    { groupId: "grp_under_review", candidateId: "cand_omer_mixed" },
 
-    // Logistics Exceptions (Subgroup)
-    { groupId: "grp_sub_logistics", candidateId: "cand_abdullah" },
-    { groupId: "grp_sub_logistics", candidateId: "cand_bilal" },
+    // Logistics Exceptions (Subgroup of Under Review)
+    { groupId: "grp_sub_logistics", candidateId: "cand_farhan_out_of_band" },
+    { groupId: "grp_sub_logistics", candidateId: "cand_ayesha_silent" },
 
-    // Full Stack Core
-    { groupId: "grp_full_stack_core", candidateId: "cand_hamza" },
-    { groupId: "grp_full_stack_core", candidateId: "cand_jillani" },
-    { groupId: "grp_full_stack_core", candidateId: "cand_zainab" },
+    // Backend Core
+    { groupId: "grp_full_stack_core", candidateId: "cand_tariq" },
+    { groupId: "grp_full_stack_core", candidateId: "cand_hamza_gem" },
+    { groupId: "grp_full_stack_core", candidateId: "cand_farhan_out_of_band" },
+    { groupId: "grp_full_stack_core", candidateId: "cand_zainab_misses_pref" },
   ];
 
   for (const m of memberships) {

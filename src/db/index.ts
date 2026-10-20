@@ -16,8 +16,8 @@ export const conn =
   globalForDb.conn ??
   postgres(connectionString, {
     max: process.env.NODE_ENV === "production" ? 10 : 1,
-    idle_timeout: 20,
-    connect_timeout: 10,
+    idle_timeout: 0,
+    connect_timeout: 0, // 0 disables connect timeout (infinite)
     onnotice: () => {}, // Suppress notice logs
   });
 

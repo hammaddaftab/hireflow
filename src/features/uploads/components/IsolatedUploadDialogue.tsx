@@ -35,7 +35,7 @@ import type { Job } from "@/entities/job";
 import type { ParsedCandidateProfile } from "@/entities/candidate";
 import type { CandidateReviewItem } from "@/features/review/types";
 import { buildReviewQueue } from "@/features/review/core/services/reviewQueueService";
-import { MOCK_CANDIDATES } from "@/db/seeds/candidates";
+import { MOCK_CANDIDATES } from "@/db/seeds/mockCandidates";
 import { CandidateContactLinks } from "@/features/review/core/components/card/CandidateContactLinks";
 
 export interface IsolatedUploadDialogueProps {
