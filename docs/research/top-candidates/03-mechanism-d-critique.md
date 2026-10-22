@@ -42,35 +42,73 @@ Mechanism D introduced two architectural breakthroughs that remain foundational:
 
 ---
 
-## 3. Adversarial Critique: Why the Free-Text "Open-World Evidence Capsule" Fails
+## 3. Scope & Clarification: Disregarding Strawman Points
 
-While Mechanism D's query-time discovery funnel succeeded, its proposed ingestion representation—the **~100-token free-text prose capsule (1-line factual role distillations)**—breaks down under adversarial examination:
+Before evaluating the valid failure modes of the free-text capsule, two strawmen must be explicitly set aside:
+1. **"60 Tokens Was Just a Compression Bottleneck"**: The core failure of Mechanism C was not merely token count. Expanding a representation to 150 tokens while remaining restricted to the original 7 aspects still fails if the schema itself drops non-skill claims and outlier spikes.
+2. **"Confusing Canonical Normalization with Aspect Extraction"**: Our critique of Mechanism C was never about `canonicalSkills.ts` synonym mappings. The fundamental issue was the **aspect schema boundary**: in [`skillsDemonstrated.ts`](/src/entities/extraction/candidate/aspects/skillsDemonstrated.ts), an evidence span is extracted *only* when anchored to a technical tool keyword. High-impact engineering leadership, promotion velocity, and non-work spikes (OSS, hackathons, publications) have no schema representation and were dropped during one-time extraction.
 
-### 3.1 Failure Mode 1: Context-Blind Fact Dropping at Ingestion Time
-- **The Token Reality**: A typical 2-page engineering resume contains **400 to 700 tokens of substantive factual claims** across 3–4 roles, 15–25 bullet points, and education/projects.
-- **The Drop**: Forcing the ingestion LLM to summarize an entire candidate into a ~100-token natural-language capsule forces it to discard **70% to 80% of the candidate's factual claims**.
-- **Context-Blind Prior**: Because ingestion occurs in a vacuum (blind to future jobs and peer applicant pools), the ingestion LLM must use a generic, ungrounded salience heuristic. It will inevitably keep generic metrics (*"improved performance by 25%"*) and drop niche architectural or domain facts (*"implemented idempotency keys for JazzCash webhook processing"*). If a future job specifically needs fintech payment reconciliation, the decisive signal was discarded at ingestion.
-
-### 3.2 Failure Mode 2: Laundering `syntactic_tier` (Breaking Hireflow's Core Moat)
-Hireflow's primary competitive advantage (Section 2.2, Section 6.1) is syntactically verifying claims:
-- `action_attributed`: Candidate was the active subject of an ownership verb (*"Architected the settlement microservice"*).
-- `peripheral_action`: Candidate had passive or team-level exposure (*"Assisted team with settlement microservice updates"*).
-- `context_listed`: Bare tool name listed in a role summary without proof.
-
-When an LLM summarizes a resume into telegraphic 1-line prose, it naturally **paraphrases and compacts** text. In doing so, LLMs routinely **rewrite passive involvement into active-sounding phrasing** (*"Assisted with settlement microservice"* becomes *"Handled settlement microservices"*). Free-text prose capsules launder keyword-stuffer claims into top-tier summaries, directly undermining Hireflow's anti-inflation verification engine.
-
-### 3.3 Failure Mode 3: Prose Overhead & Redundant Ingestion Tokens
-- **Prose Inefficiency**: Natural language prose requires grammatical glue, pronouns, articles, and connective verbs, wasting 30% to 40% of its token budget on non-information tokens.
-- **Output Token Cost**: Generating a prose summary at ingestion adds LLM generation output tokens (the most expensive token category) to every single uploaded CV, increasing ingestion costs without improving structural queryability.
+What remains valid and decisive is the adversarial critique of **generating free-text natural-language summaries at ingestion time**.
 
 ---
 
-## 4. Architectural Conclusion
+## 4. Adversarial Critique: Why the Free-Text "Open-World Evidence Capsule" Fails
 
-The two-stage query funnel in Mechanism D (Emergent Axis Discovery $\rightarrow$ Comparative Tournament) is the correct query architecture. 
+At a 150-token budget, an ingestion-generated free-text capsule (~100 tokens of 1-line role summaries) fails to outperform properly serialized extracted aspects, and on several critical dimensions is strictly worse.
 
-However, the representation passed into Stage 1 must **not** be an LLM-generated free-text prose summary. It must be a representation that:
-1. Retains explicit `syntactic_tier` tags (`action_attributed` vs. `peripheral_action`).
-2. Eliminates context-blind fact dropping so all claims survive into Stage 1.
-3. Maximizes discrete fact density per token using compact structured notation.
-4. Serializes deterministically in code at $0 extra ingestion token cost.
+### 4.1 Failure Mode 1: Context-Blind Fact Dropping at Ingestion Time
+- **The Token Reality**: A typical 2-page engineering resume contains **400 to 700 tokens of substantive factual claims** across 3–5 roles, 15–25 bullet points, and projects—not "1,350 tokens of formatting noise and 100 tokens of facts."
+- **The 70–80% Drop**: Compressing 500 tokens of factual claims into a "1-line factual distillation per role (~100 tokens)" at **ingestion time** forces the ingestion LLM to drop **70% to 80% of the candidate's factual claims**.
+- **Context-Blind Prior**: Ingestion occurs on one CV in a complete vacuum, blind to future jobs and peer applicant pools. The isolated LLM must rely on a generic resume-salience prior (keeping headline team sizes or generic `%` metrics while dropping niche domain/architectural details like *"built ISO-8583 ATM switch parser"* or *"idempotent JazzCash webhook reconciliation"*). If that dropped detail is the emergent differentiator in a future fintech role, the capsule permanently lost it at upload time.
+
+### 4.2 Failure Mode 2: Laundering `syntactic_tier` (Breaking Hireflow's Core Moat)
+Hireflow's #1 competitive moat (Section 2.2, Section 6.1) is separating proven ownership from passive exposure:
+- `action_attributed`: Candidate was the grammatical subject of an ownership verb (*"Architected X"*).
+- `peripheral_action`: Candidate had passive or team-level exposure (*"Part of the department that worked on X"*).
+- `context_listed`: Bare tool listed without proof.
+
+When an LLM writes dense 1-line telegraphic prose, it naturally **paraphrases and compacts** text. In doing so, LLMs routinely **launder passive participation into active prose** to save words—turning a keyword-stuffer's peripheral exposure into a strong-sounding 1-line active claim. This directly undermines Hireflow's anti-inflation verification engine during Stage 1 shortlisting.
+
+### 4.3 Failure Mode 3: Lower Fact Density per Token + Redundant Ingestion Cost
+- **Prose Overhead**: Natural language prose wastes 30% to 40% of its token budget on grammatical glue, articles, and connective verbs.
+- **Output Token Cost**: Generating a separate prose capsule alongside the 7 JSONB aspects increases LLM generation output tokens (the most expensive tokens) on every resume upload.
+
+---
+
+## 5. Head-to-Head at 150 Tokens: Serialized Aspects vs. Free-Text Capsule
+
+Comparing what fits in 150 tokens of structured aspect serialization versus 150 tokens of free-text prose capsule:
+
+| Dimension | 150-Token Free-Text Capsule (Mechanism D) | 150-Token Serialized Aspects | Winner |
+|---|---|---|---|
+| **Information Density** | ~8–10 factual clauses (prose overhead) | ~14–18 discrete structured facts + micro-spans | **150-Token Aspects** |
+| **Anti-Inflation (`syntactic_tier`)** | Lost/blurred by LLM paraphrasing | Explicitly preserved (`[action]` vs `[peripheral]`) | **150-Token Aspects** |
+| **Career Trajectory & Tenure Math** | Inferred loosely from text | Deterministically pre-computed from `work_history` (`Jr->Sr in 2.5y FT`, internships excluded) | **150-Token Aspects** |
+| **Ingestion Cost** | Extra output tokens for prose summary | **0 extra ingestion tokens** (serialized in code from stored JSONB aspects) | **150-Token Aspects** |
+| **Un-normalized Niche Tech / Domain Terms** | Preserved *only if* the 1-line summary chose them | Preserved directly if raw extracted strings + `evidence_span`s are included before canonical filtering | **Aspects** |
+
+---
+
+## 6. The One Catch: How 150-Token Aspects Must Be Built to Avoid Mechanism A's Trap
+
+There is only one scenario where a free-text capsule would beat a 150-token aspect representation:
+- **If you grow aspects from 60 to 150 tokens by adding rigid feature columns** (e.g., adding `employer_tier`, `domain_enum`, `team_size_led`, `system_scale_rps`), you fall right back into **Mechanism A's pre-defined feature trap**.
+- Furthermore, under the original schema (Section 2.2), `skills_demonstrated` only extracts an `evidence_span` when anchored to a technical tool keyword. If a bullet says *"Promoted twice in 18 months; owned incident post-mortems for PKR 4B/mo ledger"*, `skills_demonstrated` drops it.
+
+To make a 150-token Extracted Aspect digest strictly dominate the free-text capsule without adding pre-defined feature taxonomies, two targeted adjustments are required:
+
+1. **Generalize `skills_demonstrated` $\rightarrow$ Proven Role Claims (Skill-Anchored + Scope/Impact-Anchored)**:
+   - Retain the exact aspect verification structure (`source_entry_ref`, `syntactic_tier`, `outcome_attached`, `evidence_span`), but allow the extractor to emit claims for **high-impact role scope, leadership, and domain achievements** even when no technical tool keyword is present.
+   - Add a lightweight `notable_signals` aspect for **non-work outlier spikes** (projects, open-source repositories, competition wins like ICPC/Kaggle, honors).
+2. **Serialize the Digest Deterministically in Code (Pre-Canonical Normalization)**:
+   - Build the 150-token candidate representation directly in TypeScript from stored aspects—combining deterministic trajectory math (`Careem: SWE -> Sr SWE, 2.8y FT`), education (`NUST BSCS 3.8`), and extracted claims formatted as compact pointer tuples before canonical filtering drops non-catalog terms.
+
+---
+
+## 7. Architectural Conclusion
+
+You do not need a separate LLM-generated "Open-World Evidence Capsule" at ingestion.
+
+The correct architecture combines:
+1. **Mechanism D's Query-Time Funnel**: The Two-Stage In-Context Discovery pipeline (Stage 1 Emergent Axis Discovery $\rightarrow$ Stage 2 Comparative Tournament).
+2. **Upgraded Aspect Representation (Mechanism E)**: Growing the aspect-based digest to ~150–200 tokens using compact pointer tuples (`[c1:action] raw_nouns -> compact_action | outcome`), retaining raw domain nouns, generalizing role claims, capturing non-work spikes, and preserving `syntactic_tier` with zero ingestion prose overhead.
