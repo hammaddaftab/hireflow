@@ -124,59 +124,68 @@ An initial idea was to have an LLM reason over the job requirements (without CVs
   4. **Domain & Product Adjacency**: When hiring for a fintech or logistics backend, a candidate who built settlement ledgers or fleet routing at a prior employer wins pairwise comparisons against someone who built e-commerce CMS backends, even when their tool stacks are identical.
   5. **Spiky Excellence & Signal Density**: High-selectivity university + high CGPA (e.g., NUST/FAST/LUMS 3.8+), strong GitHub/open-source/Kaggle presence, or deep adjacent systems mastery (e.g., Rust/C++ concurrency when hiring for Go).
 
-### 5.2 The Fundamental Trade-Off Matrix
-The research goal is to get **the same top-candidate set (or $\ge 90\%$ overlap/accuracy)** that a full-context / pairwise LLM comparison across all CVs produces, without paying $O(N \times \text{full CV tokens})$ on every query or turning Hireflow into a black box.
+---
 
-| Approach | How It Works | Query-Time Token Cost (200 CVs) | Captures Unstated Pedigree / Scale / Trajectory? | Captures Job-Specific Domain Adjacency? | Estimated Agreement with Full-Context Pairwise Oracle |
-|---|---|---|---|---|---|
-| **0. Baseline: Current `Confirmed` Tab** | Boolean filter: all `blocking` job requirements == `confirmed`. | **0 tokens ($0)** | No. Treats all passing candidates identically. | No. | Low ($\approx 40\text{--}50\%$ precision when many pass, or $0\%$ when unstated salary blocks everyone). |
-| **1. Enrich Ingestion Schema with Universal Calibre Primitives + Deterministic Ranker** | Extract job-agnostic calibre signals *once during ingestion* (employer tier/type, promotion velocity, scale metric magnitude, institution selectivity) + rank deterministically. | **0 tokens ($0)** | **Yes.** Microsoft, fast promotions, and quantified scale are captured at ingestion. | Partial (only if industry tags are extracted at ingestion). | **$\approx 80\text{--}88\%$** (misses subtle role-specific narrative fit). |
-| **2. Pool-Histogram-Informed LLM Rule Compiler** | Compute a deterministic summary of what exists in *this* pool (distinct employers, universities, skill combos, outcome counts) -> LLM sees `Job + Pool Summary` (1k tokens) -> emits a custom scoring/filter AST. | **~1,500 tokens ($<\$0.0005$)** | **Yes.** LLM sees `"Microsoft"` and `"Arbisoft"` in the pool's employer list and weights them in the emitted query. | Partial (based on employer/industry names in histogram). | **$\approx 85\text{--}90\%$** (bounded by granularity of the pool summary). |
-| **3. Two-Stage Funnel: Deterministic Pre-Filter + Single-Call "Micro-Digest" Tournament** | Compress each candidate's structured profile into a dense **60-token Micro-Digest** (`4.5y FT | Sr Eng @ Microsoft -> ...`). Send all passing/near-passing digests in **one single LLM call** to select and justify the Top $K$. | **~6,000–12,000 tokens ($\approx \$0.002$)** | **Yes (100%).** All candidates' employers, titles, schools, and top outcome quotes are in context simultaneously. | **Yes.** The LLM compares actual role summaries and outcomes across the pool in one context window. | **$\approx 92\text{--}97\%$** (near-identical to full-CV pairwise comparison at $<5\%$ of the token cost). |
-| **4. Ideal Oracle: Full-CV Pairwise / Full-Context LLM** | Feed all 200 raw CVs (300,000+ tokens) or run $O(N \log N)$ pairwise comparisons with raw text. | **300,000+ tokens ($\approx \$0.15\text{--}\$0.50+$ per run)** | Yes. | Yes. | **100% (Reference Baseline)** |
-
-### 5.3 Deep Dive Into the Three Promising Mechanisms to Test
+### 5.2 The Evolutionary Research Track (Proposals + Inline Summary Critiques)
 
 #### Mechanism A: Ingestion-Time "Calibre & Trajectory" Extraction (Zero Query-Time Cost)
-Since Hireflow already pays for an LLM call per CV at ingestion ([`candidateExtractionService.ts`](/src/lib/extraction/pipeline/candidateExtractionService.ts)), we can extract **job-agnostic excellence signals** at ingestion for near-zero additional tokens:
-1. **Employer Signal on `work_history.entries[]`**:
-   - Add `employer_archetype`: `"global_tech_leader" | "multinational_enterprise" | "high_growth_product_startup" | "established_local_tech" | "it_services_consultancy" | "non_tech_enterprise" | "freelance_or_self" | "unknown"`.
-   - Add `domain_tags: string[]` (e.g., `["fintech", "payments", "logistics", "e-commerce"]`).
-   - Why this works: The ingestion LLM already knows from pretraining what Microsoft, Careem, Stripe, Systems Ltd, or Arbisoft are, and can read company descriptions stated on the CV.
-2. **Deterministic Trajectory & Ownership Signals (Computed in Code from Existing Aspects)**:
-   - **Promotion Velocity**: Detect multiple `work_history` entries at the same `employer` with ascending seniority or expanding scope.
-   - **Tenure Stability**: Ratio of total full-time years to number of employers (penalizing chronic 4-month job hoppers).
-   - **Evidence Quality Density**: Count of `skills_demonstrated` entries where `syntactic_tier === "action_attributed"` AND `outcome_attached !== null` (rewarding candidates who back claims with hard numbers like `"18,000 req/sec"` or `"reduced latency 44%"`).
+- **What It Suggested**: Extract job-agnostic calibre signals once during ingestion ([`candidateExtractionService.ts`](/src/lib/extraction/pipeline/candidateExtractionService.ts)):
+  1. *Employer Signal on `work_history.entries[]`*: Add `employer_archetype` (`"global_tech_leader" | "multinational_enterprise" | "high_growth_product_startup" | "established_local_tech" | "it_services_consultancy" | "non_tech_enterprise" | "freelance_or_self" | "unknown"`) and `domain_tags: string[]` (`["fintech", "payments", "logistics", "e-commerce"]`).
+  2. *Deterministic Trajectory & Ownership Signals*: Promotion velocity (ascending seniority at same employer), tenure stability (years divided by stints), and evidence quality density (`syntactic_tier === "action_attributed"` with numeric outcomes).
+- **Inline Summary Critique**:
+  - *Unbounded Tag Horizon*: Attempting to categorize engineering excellence via fixed enums and tags creates an infinite taxonomy trap. Coarse buckets collapse real pedigree distinctions (Stripe vs. early local startup), while open-ended tags require endless schema expansion.
+  - *Context-Blind Isolated Ingestion*: Ingestion parses one CV in a complete vacuum, blind to future jobs and peer applicant pools. A detail like *"migrated Oracle DB to PostgreSQL with zero downtime"* only becomes a decisive differentiator when compared against a specific role and a pool of greenfield CRUD applicants.
+  - *Detailed Analysis*: [`01-mechanisms-a-and-b-critique.md`](/docs/research/top-candidates/01-mechanisms-a-and-b-critique.md).
 
 #### Mechanism B: Pool-Aware LLM Query Generation (Zero CVs in Context, Pool Metadata in Context)
-If the team wants the LLM to emit a deterministic query *without* putting individual candidates in context, the trick to overcoming the "Microsoft problem" is **feeding the LLM the Pool's Distinct Feature Vocabulary alongside the Job**:
-- Before calling the LLM, run a fast SQL/in-memory aggregation over the job's applicant pool to extract:
-  - `distinct_employers_in_pool`: e.g., `["Microsoft", "Retailo Technologies", "Arbisoft", "Systems Ltd", "Upwork", ...]`
-  - `distinct_universities_in_pool`: e.g., `["NUST", "FAST-NUCES", "LUMS", "Virtual University", ...]`
-  - `skill_outcome_distribution`: how many candidates have `action_attributed` + `outcome_attached` on each required/preferred skill.
-- Now prompt the LLM with `Job Spec + Pool Vocabulary Summary` ($\approx 800$ tokens total).
-- Even though no individual CV is in context, the LLM sees that someone in this pool worked at `Microsoft` and `Retailo Technologies`, and emits a deterministic query/tiering rule that boosts those specific employers, relevant universities, and high-outcome skill matches!
+- **What It Suggested**: Aggregate distinct pool values in memory before querying:
+  - Aggregate `distinct_employers_in_pool`, `distinct_universities_in_pool`, and `skill_outcome_distribution`.
+  - Prompt the LLM with `Job Spec + Pool Vocabulary Summary` (~800 tokens) to emit a deterministic scoring or filtering AST without putting individual CVs in context.
+- **Inline Summary Critique**:
+  - *Feature-Vocabulary Fixation*: You can only pass histograms for columns already anticipated and engineered in the schema. The LLM remains blind to system scale, team leadership, or open-source traction unless new aggregation pipelines and AST operators are manually added.
+  - *Collapse of Candidate-Level Joint Context*: Decoupling the pool into separate feature lists destroys candidate-level coherence (the LLM sees `"Microsoft"` in employers and `"Go"` in skills, unable to tell if the Microsoft engineer was a 6-week intern while another candidate built a 20k rps Go ledger).
+  - *Detailed Analysis*: [`01-mechanisms-a-and-b-critique.md`](/docs/research/top-candidates/01-mechanisms-a-and-b-critique.md).
 
 #### Mechanism C: The 60-Token "Candidate Micro-Digest" Single-Pass Ranker
-Why is full-context CV comparison expensive? Because raw resumes are 1,500 tokens of formatting noise, boilerplate, and redundant bullets.
-- Because Hireflow already extracts `ParsedCandidateProfile`, we can deterministically serialize each candidate into a **60-token Micro-Digest**:
+- **What It Suggested**: Compress each candidate's structured profile into a dense 60-token Micro-Digest:
   ```text
-  [cand_01] 4.6y FT | Sr Backend Eng @ Retailo (2023-Pres), Backend Eng @ Arbisoft (2021-22) | BSc CS @ NUST (3.65 CGPA) | Proven+Metrics: Go ("18k rps, -44% p99"), Postgres ("45M rows, -52% query time"), Docker, REST API ("PKR 120M/mo") | Logistics: PKR 380k, 30d notice, Islamabad
+  [cand_01] 4.6y FT | Sr Backend Eng @ Retailo (2022-Pres), Backend Eng @ Arbisoft (2020-22) | BSc CS @ NUST (3.65 CGPA) | Proven+Metrics: Go ("18k rps, -44% p99"), Postgres ("45M rows, -52% query time"), Docker, REST API ("PKR 120M/mo") | Logistics: PKR 380k, 30d notice, Islamabad
   ```
-- **The Math**:
-  - Filtering out obvious hard contradictions (e.g., 0.5 years experience when 4+ is required) leaves ~50–100 plausible candidates in a 250-CV pool.
-  - $80\text{ candidates} \times 60\text{ tokens} = 4,800\text{ input tokens}$.
-  - Sending all 80 micro-digests in **one single LLM call** costs **$\$0.001$** (less than the cost of ingesting a single resume!) and allows the LLM to perform true cross-pool comparison—spotting the Microsoft engineer, comparing scale metrics side-by-side, and returning the Top 10 candidates with **transparent, comparative evidence citations** (e.g., *"Selected in Top 5: Meets all 4 blocking Go/Postgres criteria + demonstrated highest throughput scale in the pool (18k req/s at Retailo)"*).
+  Prune hard contradictions, then send all ~80 viable candidate digests in one single LLM call (~4,800 tokens, <$0.002) to select and rank the Top 10.
+- **Inline Summary Critique**:
+  - *Trapped by the 7-Aspect Schema Boundary*: `skills_demonstrated` only extracts evidence spans anchored to technical skills, completely dropping non-skill engineering ownership (*"Promoted twice to Tech Lead; led 7 engineers and owned post-mortems for PKR 4B/mo ledger"*), while non-work spikes (OSS repositories, hackathon/ICPC wins, notable side projects) have no aspect representation and are discarded at ingestion.
+  - *Single-Pass Attention Degradation & Black Box*: Passing 80 dense candidates in a single prompt suffers from positional bias ("lost in the middle") and emits a single-shot ranking with hidden weights, violating Hireflow's anti-black-box thesis (Section 1.3).
+  - *Detailed Analysis*: [`02-mechanism-c-critique.md`](/docs/research/top-candidates/02-mechanism-c-critique.md).
 
-### 5.4 How to Run the Experiment to Falsify or Validate the 90% Target
-To know definitively whether Mechanism A, B, or C hits $\ge 90\%$ accuracy:
-1. **Assemble a 40–50 CV Benchmark Pool**: Combine the 9 golden demo profiles ([`mockCandidates.ts`](/src/db/seeds/mockCandidates.ts)) with 30–40 realistic Pakistani engineering resumes containing varied signals (Big Tech alumni, local product startups, service agencies, keyword stuffers, fast-promoted mid-levels, high-CGPA fresh grads).
-2. **Generate the "Infinite-Budget Oracle" Ranking ($T^*$)**: Run an unconstrained pairwise LLM tournament (with full resume texts in context) + human team review to agree on the ground-truth Top 10 set $T^*$.
-3. **Measure `Recall@10` and `Rank Correlation`**:
-   - Test **Mechanism A** (Ingestion Calibre Primitives + Deterministic Score).
-   - Test **Mechanism B** (Job + Pool Vocabulary Histogram $\rightarrow$ LLM-Generated Deterministic Query).
-   - Test **Mechanism C** (60-Token Micro-Digest Single-Prompt Comparative Ranker).
-   - Compare overlap $|T_{\text{method}} \cap T^*| / 10$ and token cost per run.
+#### Mechanism D: Open-World Evidence Capsules + Two-Stage Emergent Axis Discovery
+- **What It Suggested**:
+  1. *Ingestion*: Generate a ~100-token natural-language Open-World Evidence Capsule (dense 1-line factual role distillations + `notable_signals` for non-work spikes) alongside the 7 JSONB aspects.
+  2. *Query Time*: Run a Two-Stage Discovery Funnel: Stage 0 (deterministic knockout prune) $\rightarrow$ Stage 1 (Job Spec + all 40–80 capsules in context to explicitly discover 3–5 pool-relative Emergent Differentiating Axes + Top 20 shortlist) $\rightarrow$ Stage 2 (deep comparative ranking of the Top 20 finalists).
+- **Inline Summary Critique**:
+  - *Two-Stage Query Funnel Succeeds*: Discovering pool-relative emergent axes in Stage 1 and performing deep comparison in Stage 2 solves both the black-box problem and positional attention bias.
+  - *Free-Text Prose Capsule Fails*: Compressing 400–700 tokens of claims into a ~100-token prose summary at ingestion still drops 70–80% of facts blind to the future job/pool. Furthermore, free-text summarization **destroys `syntactic_tier`** by rewriting passive exposure (`peripheral_action`) into active-sounding prose, laundering keyword-stuffers into top-tier candidates while incurring redundant ingestion output tokens.
+  - *Detailed Analysis*: [`03-mechanism-d-critique.md`](/docs/research/top-candidates/03-mechanism-d-critique.md).
+
+#### Mechanism E (Current Synthesis): Pointer-Backed Structured Aspect Digests (~150–200 Tokens) + Two-Stage Discovery
+- **What It Suggests**:
+  1. *Generalized Ingestion Claims*: Generalize `skills_demonstrated` to capture both skill-anchored and scope/leadership-anchored claims with `syntactic_tier`, pre-normalized `raw_nouns`, `outcome_attached`, and verbatim `evidence_span`, plus a `notable_signals` aspect for non-work spikes (OSS, competitions, projects).
+  2. *Deterministic TypeScript Serialization*: Serialize every extracted claim as a compact ~10–12 token pointer tuple (`[c1:action] raw_nouns -> compact_action | outcome`). Because each claim is ~10 tokens instead of 30 tokens of prose, all 12–15 claims on a CV fit in ~150–200 tokens with **zero claim dropping**.
+  3. *Two-Stage In-Context Discovery + $O(1)$ Quote Hydration*: Stage 1 discovers the pool's emergent axes and shortlists Top 20 citing claim IDs. Stage 2 ranks the Top 10, and TypeScript hydrates verbatim `evidence_span` quotes directly from PostgreSQL JSONB by `claim_id` at zero LLM quote-generation cost and zero hallucination risk.
+- **Detailed Specification**: [`04-mechanism-e-pointer-aspect-spec.md`](/docs/research/top-candidates/04-mechanism-e-pointer-aspect-spec.md).
+
+---
+
+### 5.3 Experimental Protocol to Validate the 90% Target
+To empirically verify that **150–200 Token Structured Aspect Digests + 2-Stage Discovery** hits $\ge 90\%$ agreement with the full-CV oracle and measure the exact ablation gap:
+1. **Assemble a 40–50 CV Benchmark Pool**: Combine the 9 golden demo profiles ([`mockCandidates.ts`](/src/db/seeds/mockCandidates.ts)) with 30–40 realistic Pakistani engineering resumes containing diverse emergent signals (Big Tech/Careem alumni, high-scale fintech builders, non-canonical architectural achievements, ICPC/OSS spikes, passive keyword stuffers, fast-promoted mid-levels).
+2. **Generate the "Infinite-Budget Oracle" Ranking ($T^*$)**: Run an unconstrained pairwise LLM tournament with full raw resume texts in context + human team verification to establish the ground-truth Top 10 set $T^*$ and the ground-truth reasons why each candidate beat the runner-ups.
+3. **Run the 5-Way Ablation (`Recall@10`, `NDCG@10`, and Keyword-Stuffer False Positive Rate)**:
+   - **Ablation 1 (Mechanism A)**: Fixed ingestion tags + deterministic ranker.
+   - **Ablation 2 (Mechanism B)**: Pool vocabulary summary $\rightarrow$ LLM-emitted deterministic scoring rule.
+   - **Ablation 3 (Naive 60-Token Post-Normalized Digest)**: Built only from canonical `skills_demonstrated` names + `education` + `work_history` titles.
+   - **Ablation 4 (100–150 Token Free-Text Prose Capsule)**: LLM-summarized role prose (testing how often passive keyword stuffers sneak into Top 10 when `syntactic_tier` is lost and how often niche domain signals are dropped at ingestion).
+   - **Ablation 5 (Proposed 150–200 Token Pre-Normalized Structured Aspect Digest + 2-Stage Discovery)**: Generalized structured claims with `[claim_id:syntactic_tier]`, raw domain nouns, outcomes, deterministic trajectory math, and non-work spikes.
+4. **Analyze Error Cases**: For any candidate in $T^*$ missed by Ablation 5, inspect whether the miss was caused by **(a) aspect extraction miss** or **(b) query-time ranking variance**.
 
 ---
 
@@ -202,8 +211,9 @@ To know definitively whether Mechanism A, B, or C hits $\ge 90\%$ accuracy:
 
 ## 7. Prioritized Next Steps for the Team
 
-1. **Run the "Top Candidates" Experiment (Section 5.4)**:
-   - Prototype **Mechanism B** (Pool-Vocabulary-Informed Query Compiler) and **Mechanism C** (60-Token Micro-Digest Single-Call Ranker) alongside **Mechanism A** (adding `employer_archetype` and trajectory metrics at ingestion) to measure which achieves $\ge 90\%$ agreement with full-context pairwise ranking while preserving evidentiary transparency.
+1. **Prototype & Benchmark the 150–200 Token Structured Aspect Digest + 2-Stage Ranker (Mechanism E, Section 5.2 & 5.3)**:
+   - Generalize `skills_demonstrated` claim extraction to also capture non-skill role scope/leadership claims (retaining `syntactic_tier`, raw pre-normalized domain nouns, `outcome_attached`, and `evidence_span`) plus a `notable_signals` array for non-work-history spikes (OSS, projects, competitions, honors).
+   - Build the deterministic TypeScript serializer that formats each candidate's stored JSONB aspects into a ~150–200 token pointer-backed digest (`[c1:action] raw_nouns -> compact_action | outcome`) and benchmark the 2-stage comparative tournament against the full-CV pairwise oracle ($T^*$).
 2. **Fix Logistics Blocking Behavior for Real Resumes**:
    - Separate *Qualification Dealbreakers* (skills, experience, degree—where `not_stated` means missing) from *Logistics Dealbreakers* (salary, notice period—where `not_stated` is normal and only `contradicted` should block `Confirmed` status).
 3. **Wire Per-Skill Duration & Recency from `source_entry_ref`**:
