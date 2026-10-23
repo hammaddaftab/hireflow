@@ -120,6 +120,11 @@ export function numberResumeLines(resumeText: string): {
   };
 }
 
+// Determines if mock candidate extraction fallback is explicitly enabled via environment variable
+export function isMockExtractionEnabled(): boolean {
+  return process.env.ENABLE_MOCK_EXTRACTION === "true";
+}
+
 // Combined schema for the prompt-driven aspects of candidate extraction.
 export const CandidatePromptAspectsSchema = z.object({
   identity: IdentityExtractionSchema,
@@ -215,8 +220,13 @@ export async function extractCandidateProfileWithUsage(
 
   const effectiveProvider = options?.provider || (process.env.LLM_PROVIDER as AiProvider | undefined);
 
-  // If explicit mock provider or offline mode is requested, run deterministic fallback immediately
+  // If explicit mock provider or offline mode is requested
   if (effectiveProvider === "mock" || process.env.AI_OFFLINE === "true") {
+    if (!isMockExtractionEnabled()) {
+      throw new Error(
+        "Mock candidate extraction is disabled. Set ENABLE_MOCK_EXTRACTION=true in environment to explicitly enable fallback extraction."
+      );
+    }
     return {
       profile: extractCandidateFallback(resumeText, options, warnings),
       cleanupStats: { fillerDropped: 0, duplicatesDropped: 0 },
@@ -233,6 +243,13 @@ export async function extractCandidateProfileWithUsage(
       : true;
 
   if (!hasKeyForProvider && !options?.provider) {
+    if (!isMockExtractionEnabled()) {
+      throw new Error(
+        `No API key configured for provider '${resolvedProvider}'. Set ${
+          resolvedProvider === "google" ? "GOOGLE_GENERATIVE_AI_API_KEY" : "OPENAI_API_KEY"
+        } in environment. (Mock candidate extraction is disabled; set ENABLE_MOCK_EXTRACTION=true to explicitly enable fallback).`
+      );
+    }
     warnings.push(`No API key configured for provider '${resolvedProvider}'; executed deterministic fallback extraction engine.`);
     return {
       profile: extractCandidateFallback(resumeText, options, warnings),
@@ -502,6 +519,9 @@ export async function extractCandidateProfileWithUsage(
   } catch (err) {
     const reason = err instanceof Error ? err.message : String(err);
     console.error(`[CandidateExtractionService] AI extraction failed (${reason}):`, err);
+    if (!isMockExtractionEnabled()) {
+      throw err instanceof Error ? err : new Error(`AI candidate extraction failed: ${reason}`);
+    }
     warnings.push(`AI extraction unavailable (${reason}); executed deterministic fallback extraction engine.`);
     return {
       profile: extractCandidateFallback(resumeText, options, warnings),
