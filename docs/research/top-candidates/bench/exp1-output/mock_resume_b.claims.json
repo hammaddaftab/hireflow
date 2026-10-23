@@ -9,58 +9,76 @@
       "context_label": "Project",
       "syntactic_tier": "action_attributed",
       "raw_nouns": [
-        "Multifunction Electric Wheelchair",
-        "base frame",
-        "integrated mechanical systems",
-        "suspension",
-        "lifting mechanisms",
-        "reclining mechanisms"
+        "CNC",
+        "ARC welding",
+        "precision measurement"
       ],
-      "compact_action": "Designed and fabricated wheelchair frame and mechanisms",
+      "compact_action": "designed Multifunction Electric Wheelchair mobility system",
       "outcome_attached": null,
-      "evidence_span": "Role & Contribution: Designed and fabricated the wheelchair's base frame and integrated mechanical systems, ensuring structural strength, stability, safety, and durability. Utilized CNC and manual machining, ARC welding, drilling, and precision measurement tools to manufacture and assemble components, including the frame, suspension, lifting, and reclining mechanisms for reliable and comfortable operation."
+      "evidence_span": "Design & Fabrication of Multifunction Electric Wheelchair Role & Contribution: Designed and fabricated the wheelchair's base frame and integrated mechanical systems, ensuring structural strength, stability, safety, and durability. Utilized CNC and manual machining, ARC welding, drilling, and precision measurement tools to manufacture and assemble components, including the frame, suspension, lifting, and reclining mechanisms for reliable and comfortable",
+      "evidence_lines": [
+        "L38",
+        "L42",
+        "L43",
+        "L44"
+      ]
     },
     {
       "signal_id": "s2",
       "context_label": "Certification",
       "syntactic_tier": "action_attributed",
-      "raw_nouns": [
-        "Computerized Numerical Control",
-        "CNC Turning Machines",
-        "CTTI"
-      ],
-      "compact_action": "Completed CNC programming and turning machine operation course",
+      "raw_nouns": [],
+      "compact_action": "CNC Programming; Advanced IT Course",
       "outcome_attached": null,
-      "evidence_span": "Computerized Numerical Control, Programming & Operation of CNC Turning Machines — CTTI | Jan 2025 | Grade A"
-    },
-    {
-      "signal_id": "s3",
-      "context_label": "Certification",
-      "syntactic_tier": "action_attributed",
-      "raw_nouns": [
-        "Advanced IT Course",
-        "MS Office",
-        "MS Windows",
-        "Hardware Concepts",
-        "Institute of Skill Development"
-      ],
-      "compact_action": "Completed advanced information technology course with Grade A",
-      "outcome_attached": null,
-      "evidence_span": "Advanced IT Course (MS Office, Typing, Internet Browsing, Email, Printing, MS Windows & Software Installation, Hardware Concepts) | Institute of Skill Development | Mar 2023 – Aug 2023 | Grade A"
+      "evidence_span": "Computerized Numerical Control, Programming & Operation of CNC Turning Machines — CTTI | Jan 2025 | Grade A Advanced IT Course (MS Office, Typing, Internet Browsing, Email, Printing, MS Windows & Software Installation, Hardware Concepts) | Institute of Skill Development | Mar 2023 – Aug 2023 | Grade A",
+      "evidence_lines": [
+        "L50",
+        "L51",
+        "L52"
+      ]
     }
   ],
+  "cleanup_stats": {
+    "filler_dropped": 0,
+    "duplicates_dropped": 0
+  },
+  "digest_stats_uncapped": {
+    "approx_tokens": 66,
+    "total_items": 2,
+    "kept_items": 2,
+    "token_breakdown": {
+      "headers": 21,
+      "nouns": 11,
+      "actions": 35,
+      "outcomes": 0
+    }
+  },
+  "digest_stats_budgeted": {
+    "budget": 200,
+    "approx_tokens": 66,
+    "total_items": 2,
+    "kept_items": 2,
+    "dropped_item_ids": [],
+    "token_breakdown": {
+      "headers": 21,
+      "nouns": 11,
+      "actions": 35,
+      "outcomes": 0
+    }
+  },
   "warnings": [],
   "usage": {
-    "promptTokens": 5814,
-    "completionTokens": 2464,
-    "inputTokens": 5814,
-    "outputTokens": 2464,
-    "totalTokens": 8278
+    "promptTokens": 7190,
+    "completionTokens": 2099,
+    "inputTokens": 7190,
+    "outputTokens": 2099,
+    "totalTokens": 9289
   },
-  "latency_ms": 23775,
+  "latency_ms": 22824,
   "tokens_approx": {
     "raw_text": 935,
-    "evidence_spans": 179,
-    "digest": 163
+    "evidence_spans": 190,
+    "uncapped_digest": 66,
+    "budgeted_digest": 66
   }
 }

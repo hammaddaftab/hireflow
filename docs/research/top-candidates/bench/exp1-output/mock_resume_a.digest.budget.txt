@@ -1,0 +1,8 @@
+[mock_resume_a] 5.8y FT (5 roles, avg 1.2y) | BSc CS @ Institute of Management Sciences
+spikes:
+  [s3:action] Project: GPT-4o, LangChain, AWS Bedrock -> designed customer support chatbot | -40% query resolution time
+  [s5:action] Project: BART, DistilBERT, RAG -> built DocuWiz AI analyzer | -60% document processing time
+  [s6:action] Project: Azure (AI Studio, App Services) -> built Harvestify plant assistant | -70% detection time, +30% yield
+  [s7:action] Project: Pegasus, FastAPI, Streamlit -> built document summarization tool | -60% manual review time
+  [s8:action] Project: ZenML, MLflow -> built customer satisfaction predictor | 93% forecasting accuracy
+  [s10:action] Honor: LinkedIn Top Voice, Kaggle -> earned global AI community recognition | 24x Top Voice, Top 100

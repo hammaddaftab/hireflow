@@ -1,3 +1,3 @@
-cv_id,filename,raw_text_tokens_approx,evidence_tokens_approx,digest_tokens_approx,evidence_to_digest_ratio,claim_count,signal_count,llm_input_tokens,llm_output_tokens,latency_ms
-mock_resume_a,mock_resume_a.pdf,4061,1953,1939,1.01,30,14,8507,12561,87548
-mock_resume_b,mock_resume_b.pdf,935,179,163,1.1,0,3,5814,2464,23775
+cv_id,filename,raw_tokens_approx,evidence_tokens_approx,uncapped_digest_tokens_approx,budgeted_digest_tokens_approx,evidence_to_uncapped_ratio,raw_to_uncapped_ratio,claim_count,signal_count,kept_total_budgeted,dropped_ids_budgeted,filler_dropped,duplicates_dropped,token_split_uncapped_h_n_a_o,llm_input_tokens,llm_output_tokens,latency_ms
+mock_resume_a,mock_resume_a.pdf,4061,1832,738,196,2.48,5.5,12,10,"6/22","c1;c2;c3;c4;c5;c6;c7;c8;c9;c10;c11;c12;s1;s2;s4;s9",0,0,"118/169/363/103",10321,8547,68209
+mock_resume_b,mock_resume_b.pdf,935,190,66,66,2.88,14.17,0,2,"2/2","none",0,0,"21/11/35/0",7190,2099,22824

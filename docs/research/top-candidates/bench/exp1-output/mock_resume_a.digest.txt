@@ -1,52 +1,30 @@
-[mock_resume_a] 5.8y FT (4 roles, avg 1.5y) | BSc CS @ Institute of Management Sciences
-work_1: Senior Data Scientist & Machine Learning Software Engineer (Generative AI) @ PURELOGICS (2024-Pres, 1.9y FT)
-  [c1:action] Generative AI, RAG, Autonomous AI Agents, Enterprise-Grade RAG Pipeline for BI, Health Guard AI Pipeline for Remote Patient Monitoring, GPT-4o-Based Conversational AI Chatbot, Agentic AI System for Legal & Financial Advisory -> Spearheaded enterprise AI MVP and deployment projects
-  [c2:action] AI/ML pipelines, AWS, GCP, AWS SageMaker, AWS Bedrock, AWS Lambda, GCP Vertex AI, BigQuery, Cloud Run -> Designed and optimized end-to-end cloud AI pipelines
-  [c3:action] multi-agent systems, LangChain, LangGraph, PhiData, Pinecone, Graph DBs -> Engineered multi-agent architectures for autonomous workflows
-  [c4:action] LLMOps, MLOps, cross-functional teams, AI strategies, LLMOps pipelines, MLOps pipelines, model lifecycle management -> Led teams and optimized production model lifecycle pipelines
-  [c5:action] LLM fine-tuning, AI-powered automation, AI/ML teams, Retrieval-Augmented Generation (RAG), GenAI applications -> Mentored AI teams in LLM and RAG techniques
-work_2: Senior Data Scientist Machine Learning & Gen AI Engineer (Volunteer) @ NVIDIA (2024-Pres, 2.3y freelance)
-  [c6:peripheral] GPU-optimized applications, Generative AI, NVIDIA & Z by HP Developer Programs, NVIDIA AI Studio, Z by HP platforms -> Contributed to GPU-optimized enterprise AI applications
-  [c7:action] vLLMs, open-source LLMs, enterprise-level LLMs, Generative AI domains -> Developed and tested open-source enterprise LLMs
-  [c8:action] NVIDIA tools and SDKs, NVIDIA tools -> Leveraged NVIDIA SDKs to optimize AI solutions
-  [c9:peripheral] AI frameworks, NVIDIA teams, Z by HP teams -> Validated AI tools and frameworks with partner teams
-  [c10:peripheral] Generative AI, large-scale deployments -> Contributed to open-source LLM projects and deployments
-work_3: Senior Data Scientist & Machine Learning Engineer @ BLOCBELT (2022-2024, 2.1y FT)
-  [c11:action] AI Engineering, Big Data, Data Analysis, AI-driven SaaS solutions, PaaS solutions, team of three -> Led SaaS and PaaS AI development with three-person team | $2M in cost savings for clients
-  [c12:action] data analysis, sales forecasting, 120+ market entities, growth strategies, sales workflows -> Improved forecasting accuracy across 120-plus market entities | 80-90%
-  [c13:action] recommendation engine, personalized fashion e-commerce platform, advanced recommendation engine -> Launched personalized fashion e-commerce recommendation platform | 80% increase in sales; 200% surge in online orders; three months ahead of schedule
-  [c14:action] Streamlined data processing and optimized OpenCV workflows
-  [c15:action] Developed statistical models and predictive analytics | 18% increase in company revenue
-  [c16:action] cross-functional collaboration -> Enhanced data visibility through strategic dashboards | 45%
-  [c17:action] distributed systems, A/B testing, SaaS offerings, PaaS offerings, e-commerce experience -> Integrated AI into distributed SaaS and PaaS systems | over 25 A/B tests
-work_4: AI Data Scientist Kaggle Master Mentor (Part-Time, 20 hours/week) @ GOOGLE-KAGGLE (2022-2024, 2y freelance)
-  [c18:action] Kaggle-X BIPOC Mentorship Program, technical skill development -> Championed Kaggle-X mentorship for aspiring data scientists | 20 hours weekly
-  [c19:action] Top 100 Kaggle contributors, first Pakistani mentor -> Ranked among top global Kaggle contributors | Top 100 globally
-  [c20:action] machine learning, team of four mentees, real-world problem-solving -> Led four mentees in data science development
-  [c21:peripheral] high-impact AI projects, global data science community -> Collaborated on AI projects and community contributions
-work_5: Data Scientist @ Crypto-Express (2022-2022, 1y FT)
-  [c22:action] AI, ML techniques, Anti-spoofing Face-App, digital identity security, identity fraud -> Developed anti-spoofing face application for identity security | reducing identity fraud by 70%
-  [c23:action] industry-critical issues, operational costs -> Applied AI and ML techniques to industry problems | 25% efficiency improvement; 15% operational cost reduction
-  [c24:action] actionable insights, data-driven decision-making -> Engineered predictive models generating actionable business insights | 20% revenue increase
-  [c25:peripheral] Machine Learning, Deep Learning, manual analysis -> Applied EDA and learning methods to analysis | over 250+ hours saved annually
-  [c26:action] remote deployment -> Deployed AI/ML projects remotely in dynamic conditions
-work_6: Artificial Intelligence Engineer @ Pakistan Freelancing Training Center (2021-2021, 1y FT)
-  [c27:action] AI training sessions, students -> Led AI and data science training sessions
-  [c28:action] Designed and deployed TensorFlow and Keras models
-  [c29:action] manual labor, error rates -> Automated repetitive data tasks using Python
-  [c30:action] cutting-edge methodologies, projects -> Conducted AI research applying advanced project methodologies
+[mock_resume_a] 5.8y FT (5 roles, avg 1.2y) | BSc CS @ Institute of Management Sciences
+work_1: Sr DS & ML SWE (GenAI) @ PURELOGICS (2024-Pres, 1.9y FT)
+  [c1:action] RAG, GPT-4o, AWS (SageMaker, Bedrock), Google Vertex AI, BI, Remote Patient Monitoring, Legal & Financial Advisory -> architected enterprise AI pipelines
+  [c2:action] LangChain, LangGraph, PhiData, Pinecone, multi-agent systems -> engineered autonomous agent workflows
+work_2: Sr DS ML & Gen AI Eng @ NVIDIA (2024-Pres, 2.3y FT)
+  [c3:action] vLLM, NVIDIA AI Studio, Z by HP -> developed enterprise language models
+work_3: Sr DS & ML Eng @ BLOCBELT (2022-2024, 2.1y FT)
+  [c4:action] team of three -> led SaaS and PaaS development | $2M client savings
+  [c5:action] 120+ market entities -> modeled sales across markets | 80-90% forecasting accuracy
+  [c6:action] OpenCV -> launched personalized fashion platform | +80% sales, +200% orders, 3mo early
+  [c7:action] developed predictive revenue models | +18% revenue, +45% visibility
+  [c8:action] refined e-commerce experience | 25+ A/B tests
+work_4: AI DS Kaggle Master Mentor @ GOOGLE-KAGGLE (2022-2024, 2y freelance)
+  [c9:action] Kaggle-X BIPOC Mentorship Program, team of four mentees -> mentored Kaggle data scientists | 20 h/wk, Top 100 globally
+work_5: DS @ Crypto-Express (2022-2022, 1y FT)
+  [c10:action] Anti-spoofing Face-App -> developed digital identity application | -70% identity fraud
+  [c11:action] engineered predictive revenue models | +20% revenue, 250+ h/yr saved
+work_6: AI Eng @ Pakistan Freelancing Training Center (2021-2021, 1y FT)
+  [c12:action] TensorFlow, Keras, Python -> deployed training and automation models
 spikes:
-  [s1:peripheral] Open-Source: open-source LLM projects, vLLMs, Generative AI -> Contributed to open-source LLM projects and deployments
-  [s2:action] Competition / Community: Kaggle, Top 100 Kaggle contributors, Kaggle-X BIPOC Mentorship Program -> Ranked among top global Kaggle contributors and mentored | Top 100 globally; first Pakistani mentor in the program
-  [s3:action] Project: Health Assistance Application, Gemini 1.5 Pro, RAG, LangChain, doctors, patients -> Architected LLM health assistance application for consultations
-  [s4:action] Project: AI-Powered Blog Generator, Llama 3.1 8B, AWS Bedrock, RAG, Streamlit -> Developed enterprise AI blog generation and publishing system
-  [s5:action] Project: Conversational AI Chatbot for Customer Support, GPT-4o, LangChain, AWS Bedrock, intent recognition -> Designed enterprise chatbot with dynamic response generation | 40% reduction in customer query resolution times
-  [s6:action] Project: AutoML-Studio, MLflow, XAI (SHAP), data drift detection, FastAPI, Streamlit -> Built low-code platform for predictive model deployment
-  [s7:action] Project: DocuWiz AI, BART, DistilBERT, RAG, Streamlit, FastAPI, PDF, DOCX -> Engineered document intelligence and analysis tool | 60% reduction in document processing time
-  [s8:action] Project: Harvestify-AI-Powered-Plant-Health-Assistant, Azure AI Studio, Azure App Services, deep learning models, Microsoft Azure -> Built Azure plant disease diagnosis and recommendation system | 70% faster disease detection; 30% improved crop yield predictions
-  [s9:action] Project: Intelligent Document Summarization Tool, Pegasus, FastAPI, Streamlit, PDF, DOCX -> Developed transformer-based document summarization application | 60% reduction in manual document review time
-  [s10:action] Project: Customer Satisfaction Prediction System, ZenML, MLflow, MLOps, customer satisfaction -> Created MLOps system forecasting customer satisfaction | 93% accuracy
-  [s11:action] Certification: AWS Cloud Solutions Architect Professional Certificate, Amazon Web Services -> Earned AWS Cloud Solutions Architect certificate
-  [s12:action] Certification: Machine Learning Engineering for Production (MLOps), DeepLearning.ai -> Completed machine learning production engineering certification
-  [s13:action] Certification: Large Language Model Operations (LLMOps), Duke University -> Completed large language model operations certification
-  [s14:action] Education Depth: Bachelor in Computer Science, Artificial Intelligence and Computer Science, Institute of Management Sciences -> Studied artificial intelligence and computer science
+  [s1:action] Project: Gemini 1.5 Pro, LangChain -> built Health Assistance Application
+  [s2:action] Project: Llama 3.1 8B, AWS Bedrock, RAG -> built AI Blog Generator
+  [s3:action] Project: GPT-4o, LangChain, AWS Bedrock -> designed customer support chatbot | -40% query resolution time
+  [s4:action] Project: MLflow, SHAP, FastAPI -> built AutoML-Studio platform
+  [s5:action] Project: BART, DistilBERT, RAG -> built DocuWiz AI analyzer | -60% document processing time
+  [s6:action] Project: Azure (AI Studio, App Services) -> built Harvestify plant assistant | -70% detection time, +30% yield
+  [s7:action] Project: Pegasus, FastAPI, Streamlit -> built document summarization tool | -60% manual review time
+  [s8:action] Project: ZenML, MLflow -> built customer satisfaction predictor | 93% forecasting accuracy
+  [s10:action] Honor: LinkedIn Top Voice, Kaggle -> earned global AI community recognition | 24x Top Voice, Top 100
+  [s9:peripheral] Certs: IBM ML; Azure AI-900; MLOps; GANs; Google Cloud ML Engineer; AWS Cloud Solutions Architect; AWS Data Science; Duke MLOps; Google Cloud ML; Google Advanced Analytics; Deep Learning; ChatGPT Prompt Engineering; Duke AI Product Management; IBM GenAI Product Management; Google Project Management; Google ML; Google BI; Duke LLMOps

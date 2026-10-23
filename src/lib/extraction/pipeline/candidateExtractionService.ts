@@ -32,12 +32,15 @@ import {
   logisticsAspect,
 } from "@/entities/extraction/candidate/aspects/logistics";
 import {
-  RoleClaimsExtractionSchema,
+  RoleClaimsPromptSchema,
   roleClaimsAspect,
+  type ExtractedClaimSkill,
+  type ExtractedRoleClaim,
 } from "@/entities/extraction/candidate/aspects/roleClaims";
 import {
-  NotableSignalsExtractionSchema,
+  NotableSignalsPromptSchema,
   notableSignalsAspect,
+  type ExtractedNotableSignal,
 } from "@/entities/extraction/candidate/aspects/notableSignals";
 import {
   getCurrentAspectVersions,
@@ -73,6 +76,50 @@ export interface CandidateExtractionOptions {
   createdAt?: string;
 }
 
+// Strips any [L\d+] marker prefixes from an extracted string
+export function stripLineMarkers(s: string): string {
+  return s.replace(/\[L\d+\]\s*/g, "");
+}
+
+// Pure line splitter numbering resume lines with L1, L2, ...
+export function numberResumeLines(resumeText: string): {
+  numberedText: string;
+  lineMap: Map<string, string>;
+} {
+  const rawLines = resumeText.split(/\r?\n/);
+  const lineMap = new Map<string, string>();
+  const numberedLines: string[] = [];
+  let lineCounter = 1;
+
+  for (const rawLine of rawLines) {
+    const trimmed = rawLine.trim();
+    if (!trimmed) continue;
+
+    // If single line exceeds 280 characters and contains multiple sentences, split into sentence segments
+    let segments = [trimmed];
+    if (trimmed.length > 280) {
+      const splitSentences = trimmed
+        .split(/(?<=[.!?])\s+(?=[A-Z])/)
+        .map((s) => s.trim())
+        .filter(Boolean);
+      if (splitSentences.length > 1) {
+        segments = splitSentences;
+      }
+    }
+
+    for (const segment of segments) {
+      const id = `L${lineCounter++}`;
+      lineMap.set(id, segment);
+      numberedLines.push(`[${id}] ${segment}`);
+    }
+  }
+
+  return {
+    numberedText: numberedLines.join("\n"),
+    lineMap,
+  };
+}
+
 // Combined schema for the prompt-driven aspects of candidate extraction.
 export const CandidatePromptAspectsSchema = z.object({
   identity: IdentityExtractionSchema,
@@ -81,14 +128,14 @@ export const CandidatePromptAspectsSchema = z.object({
   skills_demonstrated: SkillsDemonstratedExtractionSchema,
   skills_declared: SkillsDeclaredExtractionSchema,
   logistics: LogisticsExtractionSchema,
-  role_claims: RoleClaimsExtractionSchema,
-  notable_signals: NotableSignalsExtractionSchema,
+  role_claims: RoleClaimsPromptSchema,
+  notable_signals: NotableSignalsPromptSchema,
 });
 
 export type CandidatePromptAspects = z.infer<typeof CandidatePromptAspectsSchema>;
 
-// Builds unified extraction prompt covering all 6 candidate aspect requirements
-export function buildUnifiedCandidateExtractionPrompt(resumeText: string): string {
+// Builds unified extraction prompt covering all candidate aspects with numbered line references
+export function buildUnifiedCandidateExtractionPrompt(numberedResumeText: string): string {
   return `Extract a standardized candidate profile from the resume text provided in <resume_text> below.
 Strictly adhere to each aspect schema:
 
@@ -116,8 +163,10 @@ ${roleClaimsAspect.prompt()}
 8. NOTABLE SIGNALS:
 ${notableSignalsAspect.prompt()}
 
+NOTE: Each line in <resume_text> starts with a line marker like [L1], [L2]. Use these IDs in evidence_lines for role_claims and notable_signals. Never include [L...] markers inside any extracted string field.
+
 <resume_text>
-${resumeText}
+${numberedResumeText}
 </resume_text>`;
 }
 
@@ -135,6 +184,10 @@ export {
 
 export interface CandidateExtractionResult {
   profile: ParsedCandidateProfile;
+  cleanupStats?: {
+    fillerDropped: number;
+    duplicatesDropped: number;
+  };
   usage?: {
     promptTokens?: number;
     completionTokens?: number;
@@ -144,7 +197,7 @@ export interface CandidateExtractionResult {
   };
 }
 
-// Main candidate extraction service returning profile alongside LLM token usage
+// Main candidate extraction service returning profile alongside LLM token usage and cleanup statistics
 export async function extractCandidateProfileWithUsage(
   resumeText: string,
   options?: CandidateExtractionOptions
@@ -164,7 +217,10 @@ export async function extractCandidateProfileWithUsage(
 
   // If explicit mock provider or offline mode is requested, run deterministic fallback immediately
   if (effectiveProvider === "mock" || process.env.AI_OFFLINE === "true") {
-    return { profile: extractCandidateFallback(resumeText, options, warnings) };
+    return {
+      profile: extractCandidateFallback(resumeText, options, warnings),
+      cleanupStats: { fillerDropped: 0, duplicatesDropped: 0 },
+    };
   }
 
   // Verify API key is configured for the active provider
@@ -178,7 +234,10 @@ export async function extractCandidateProfileWithUsage(
 
   if (!hasKeyForProvider && !options?.provider) {
     warnings.push(`No API key configured for provider '${resolvedProvider}'; executed deterministic fallback extraction engine.`);
-    return { profile: extractCandidateFallback(resumeText, options, warnings) };
+    return {
+      profile: extractCandidateFallback(resumeText, options, warnings),
+      cleanupStats: { fillerDropped: 0, duplicatesDropped: 0 },
+    };
   }
 
   // Attempt structured extraction via AI SDK
@@ -188,7 +247,8 @@ export async function extractCandidateProfileWithUsage(
       model: options?.model,
     });
 
-    const prompt = buildUnifiedCandidateExtractionPrompt(resumeText);
+    const { numberedText, lineMap } = numberResumeLines(resumeText);
+    const prompt = buildUnifiedCandidateExtractionPrompt(numberedText);
     const { object, usage } = await generateObject({
       model: languageModel,
       schema: CandidatePromptAspectsSchema,
@@ -198,12 +258,18 @@ export async function extractCandidateProfileWithUsage(
 
     const parsedAspects = object;
 
-    // Sanitize dates and ongoing flags in work history
+    // Sanitize dates and ongoing flags in work history, and strip accidental line markers
     if (parsedAspects.work_history?.entries) {
       for (const entry of parsedAspects.work_history.entries) {
         if (entry.end_date && /^(present|current|now|ongoing)$/i.test(entry.end_date.trim())) {
           entry.end_date = null;
           entry.is_current = true;
+        }
+        if (entry.raw_description) {
+          entry.raw_description = stripLineMarkers(entry.raw_description);
+        }
+        if (entry.title) {
+          entry.title = stripLineMarkers(entry.title);
         }
       }
     }
@@ -226,11 +292,14 @@ export async function extractCandidateProfileWithUsage(
       }
     }
 
-    // Normalize demonstrated skills at extraction
+    // Normalize demonstrated skills at extraction and strip line markers
     if (parsedAspects.skills_demonstrated?.skills) {
       for (const item of parsedAspects.skills_demonstrated.skills) {
         if (item.skill) {
           item.skill = normalizeSkill(item.skill);
+        }
+        if (item.evidence_span) {
+          item.evidence_span = stripLineMarkers(item.evidence_span);
         }
       }
     }
@@ -242,54 +311,146 @@ export async function extractCandidateProfileWithUsage(
       );
     }
 
-    // Whitespace normalizer for robust verbatim evidence substring comparison
-    const normalizeWs = (s: string) => s.replace(/\s+/g, " ").trim().toLowerCase();
-    const normalizedResumeText = normalizeWs(resumeText);
+    let fillerDroppedCount = 0;
+    let duplicatesDroppedCount = 0;
+
     const validWorkEntryIds = new Set(
       (parsedAspects.work_history?.entries || []).map((e) => e.entry_id)
     );
 
-    // Post-process role claims: assign sequential IDs, validate source refs and evidence, resolve canonical skills
-    if (parsedAspects.role_claims?.claims) {
-      parsedAspects.role_claims.claims.forEach((claim, idx) => {
-        // Enforce deterministic sequential ID
-        claim.claim_id = `c${idx + 1}`;
+    // Hydrate and filter role claims: assign sequential IDs, validate refs, filter nouns, apply filler safety net
+    const rawPromptClaims = parsedAspects.role_claims?.claims || [];
+    const keptRoleClaims: ExtractedRoleClaim[] = [];
 
-        // Validate source entry reference matches extracted work history
-        if (!validWorkEntryIds.has(claim.source_entry_ref)) {
-          warnings.push(
-            `Claim '${claim.claim_id}' references unknown work_history entry '${claim.source_entry_ref}'`
-          );
-        }
+    for (const promptClaim of rawPromptClaims) {
+      if (!validWorkEntryIds.has(promptClaim.source_entry_ref)) {
+        warnings.push(
+          `Claim references unknown work_history entry '${promptClaim.source_entry_ref}'`
+        );
+      }
 
-        // Validate evidence span substring fidelity
-        if (claim.evidence_span && !normalizedResumeText.includes(normalizeWs(claim.evidence_span))) {
-          warnings.push(
-            `Claim '${claim.claim_id}' evidence_span was not found verbatim in resume text`
-          );
+      // Resolve evidence_span by joining lineMap.get(id) for valid IDs in evidence_lines
+      const spanSegments: string[] = [];
+      for (const lineId of promptClaim.evidence_lines || []) {
+        const lineText = lineMap.get(lineId);
+        if (lineText) {
+          spanSegments.push(lineText.replace(/^[•\-*]\s*/, ""));
+        } else {
+          warnings.push(`Claim evidence_line '${lineId}' not found in numbered lineMap`);
         }
+      }
+      const evidenceSpan = spanSegments.join(" ") || promptClaim.compact_action;
 
-        // Fill canonical skill using catalog normalizer
-        if (claim.skills) {
-          for (const item of claim.skills) {
-            item.canonical_skill = resolveCanonicalSkill(item.skill);
-          }
-        }
+      // Deduplicate skills case-insensitively and resolve canonical skill
+      const seenSkillNames = new Set<string>();
+      const dedupedSkills: ExtractedClaimSkill[] = [];
+      for (const s of promptClaim.skills || []) {
+        const trimmed = s.skill.trim();
+        if (!trimmed) continue;
+        const lower = trimmed.toLowerCase();
+        if (seenSkillNames.has(lower)) continue;
+        seenSkillNames.add(lower);
+        dedupedSkills.push({
+          skill: trimmed,
+          syntactic_tier: s.syntactic_tier,
+          canonical_skill: resolveCanonicalSkill(trimmed),
+        });
+      }
+
+      // Filter raw_nouns: remove any noun matching a skill or already present inside compact_action
+      const actionLower = (promptClaim.compact_action || "").toLowerCase();
+      const filteredRawNouns = (promptClaim.raw_nouns || []).filter((noun) => {
+        const trimmed = noun.trim();
+        if (!trimmed) return false;
+        const lower = trimmed.toLowerCase();
+        if (seenSkillNames.has(lower)) return false;
+        if (actionLower.includes(lower)) return false;
+        return true;
+      });
+
+      // Filler safety net: drop claim if 0 skills, 0 raw_nouns, and no outcome_attached
+      if (dedupedSkills.length === 0 && filteredRawNouns.length === 0 && !promptClaim.outcome_attached) {
+        fillerDroppedCount++;
+        continue;
+      }
+
+      keptRoleClaims.push({
+        claim_id: `c${keptRoleClaims.length + 1}`,
+        source_entry_ref: promptClaim.source_entry_ref,
+        claim_tier: promptClaim.claim_tier,
+        skills: dedupedSkills,
+        raw_nouns: filteredRawNouns,
+        compact_action: promptClaim.compact_action,
+        outcome_attached: promptClaim.outcome_attached,
+        evidence_span: evidenceSpan,
+        evidence_lines: promptClaim.evidence_lines,
       });
     }
 
-    // Post-process notable signals: assign sequential IDs and validate evidence fidelity
-    if (parsedAspects.notable_signals?.signals) {
-      parsedAspects.notable_signals.signals.forEach((signal, idx) => {
-        // Enforce deterministic sequential ID
-        signal.signal_id = `s${idx + 1}`;
+    // Hydrate and deduplicate notable signals: disjointness from work_history and education restatements
+    const roleClaimEvidenceLines = new Set<string>();
+    for (const c of rawPromptClaims) {
+      for (const lineId of c.evidence_lines || []) {
+        roleClaimEvidenceLines.add(lineId);
+      }
+    }
 
-        // Validate evidence span substring fidelity
-        if (signal.evidence_span && !normalizedResumeText.includes(normalizeWs(signal.evidence_span))) {
-          warnings.push(
-            `Signal '${signal.signal_id}' evidence_span was not found verbatim in resume text`
-          );
+    const rawPromptSignals = parsedAspects.notable_signals?.signals || [];
+    const keptNotableSignals: ExtractedNotableSignal[] = [];
+
+    for (const signal of rawPromptSignals) {
+      // If all evidence_lines are already used by a role claim, drop as duplicate
+      const signalLines = signal.evidence_lines || [];
+      if (
+        signalLines.length > 0 &&
+        signalLines.every((lineId) => roleClaimEvidenceLines.has(lineId))
+      ) {
+        duplicatesDroppedCount++;
+        continue;
+      }
+
+      // Drop Education Depth if it merely restates degree/school without honor/medal/rank/scholarship/thesis keywords
+      const isEduDepth = /education/i.test(signal.context_label);
+      if (isEduDepth) {
+        const combinedCheckText = `${signal.compact_action || ""} ${(signal.raw_nouns || []).join(" ")}`;
+        const hasHonor = /medal|rank|top|cum laude|distinction|scholar|fellow|thesis|dissertation|dean|award|honor/i.test(
+          combinedCheckText
+        );
+        if (!hasHonor) {
+          duplicatesDroppedCount++;
+          continue;
         }
+      }
+
+      // Remove from raw_nouns any item whose lowercase string is already in compact_action
+      const signalActionLower = (signal.compact_action || "").toLowerCase();
+      const filteredRawNouns = (signal.raw_nouns || []).filter((noun) => {
+        const trimmed = noun.trim();
+        if (!trimmed) return false;
+        return !signalActionLower.includes(trimmed.toLowerCase());
+      });
+
+      // Hydrate evidence_span from lineMap
+      const spanSegments: string[] = [];
+      for (const lineId of signalLines) {
+        const lineText = lineMap.get(lineId);
+        if (lineText) {
+          spanSegments.push(lineText.replace(/^[•\-*]\s*/, ""));
+        } else {
+          warnings.push(`Signal evidence_line '${lineId}' not found in numbered lineMap`);
+        }
+      }
+      const evidenceSpan = spanSegments.join(" ") || signal.compact_action;
+
+      keptNotableSignals.push({
+        signal_id: `s${keptNotableSignals.length + 1}`,
+        context_label: signal.context_label,
+        syntactic_tier: signal.syntactic_tier,
+        raw_nouns: filteredRawNouns,
+        compact_action: signal.compact_action,
+        outcome_attached: signal.outcome_attached,
+        evidence_span: evidenceSpan,
+        evidence_lines: signal.evidence_lines,
       });
     }
 
@@ -310,8 +471,8 @@ export async function extractCandidateProfileWithUsage(
       skills_demonstrated: parsedAspects.skills_demonstrated,
       skills_declared: parsedAspects.skills_declared,
       logistics: parsedAspects.logistics,
-      role_claims: parsedAspects.role_claims ?? { claims: [] },
-      notable_signals: parsedAspects.notable_signals ?? { signals: [] },
+      role_claims: { claims: keptRoleClaims },
+      notable_signals: { signals: keptNotableSignals },
       extraction_metadata: {
         file_hash: fileHash,
         aspect_versions: getCurrentAspectVersions(),
@@ -324,6 +485,10 @@ export async function extractCandidateProfileWithUsage(
 
     return {
       profile: ParsedCandidateProfileSchema.parse(profile),
+      cleanupStats: {
+        fillerDropped: fillerDroppedCount,
+        duplicatesDropped: duplicatesDroppedCount,
+      },
       usage: usage
         ? {
             promptTokens: usage.inputTokens,
@@ -338,7 +503,10 @@ export async function extractCandidateProfileWithUsage(
     const reason = err instanceof Error ? err.message : String(err);
     console.error(`[CandidateExtractionService] AI extraction failed (${reason}):`, err);
     warnings.push(`AI extraction unavailable (${reason}); executed deterministic fallback extraction engine.`);
-    return { profile: extractCandidateFallback(resumeText, options, warnings) };
+    return {
+      profile: extractCandidateFallback(resumeText, options, warnings),
+      cleanupStats: { fillerDropped: 0, duplicatesDropped: 0 },
+    };
   }
 }
 

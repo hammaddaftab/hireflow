@@ -5,6 +5,27 @@ import type { SyntacticTier } from "@/entities/extraction/candidate/aspects/skil
 export interface SerializeDigestOptions {
   candidateLabel?: string;
   referenceDate?: Date;
+  tokenBudget?: number;
+}
+
+export interface DigestSerializationResult {
+  text: string;
+  approxTokens: number;
+  totalItems: number;
+  keptItems: number;
+  droppedItemIds: string[];
+  tokenBreakdown: {
+    headers: number;
+    nouns: number;
+    actions: number;
+    outcomes: number;
+  };
+}
+
+// Approximate token counter using standard characters/4 heuristic
+export function approxTokens(text: string): number {
+  if (!text) return 0;
+  return Math.ceil(text.length / 4);
 }
 
 // Maps syntactic tiers to compact digest tags
@@ -131,8 +152,14 @@ function formatDegreeSummary(profile: ParsedCandidateProfile): string | null {
 
   let gradeStr = "";
   if (entry.grade) {
-    const numMatch = entry.grade.match(/(\d+\.\d+|\d+)/);
-    gradeStr = numMatch ? ` (${numMatch[1]})` : ` (${entry.grade.trim()})`;
+    let cleanGrade = entry.grade.trim();
+    // Clean up noisy grade strings like "Result Awaited [Grade A expected]" -> "Grade A expected"
+    cleanGrade = cleanGrade.replace(/^Result Awaited\s*\[(.*)\]$/i, "$1").replace(/[\][]/g, "").trim();
+    // Avoid double parentheses
+    cleanGrade = cleanGrade.replace(/^\((.*)\)$/, "$1").trim();
+    if (cleanGrade) {
+      gradeStr = ` (${cleanGrade})`;
+    }
   }
 
   const instPart = institution ? ` @ ${institution}` : "";
@@ -184,11 +211,134 @@ function cleanEmployerName(name: string): string {
     .trim();
 }
 
-// Serializes a ParsedCandidateProfile into a compact Mechanism E structured digest
-export function serializeCandidateDigest(
+// Cleans and abbreviates role titles according to Spec 04 Section 5
+export function cleanRoleTitle(title: string): string {
+  if (!title) return "";
+  return title
+    .replace(
+      /\s*\((?:Volunteer|Part-Time[^)]*|Full-Time[^)]*|Contract[^)]*|Intern(?:ship)?[^)]*)\)/gi,
+      ""
+    )
+    .replace(/\bSenior\b/gi, "Sr")
+    .replace(/\bJunior\b/gi, "Jr")
+    .replace(/\bGenerative AI\b/gi, "GenAI")
+    .replace(/\bArtificial Intelligence\b/gi, "AI")
+    .replace(/\bMachine Learning\b/gi, "ML")
+    .replace(/\bData Scientist\b/gi, "DS")
+    .replace(/\bData Science\b/gi, "DS")
+    .replace(/\bSoftware Engineer(?:ing)?\b/gi, "SWE")
+    .replace(/\bEngineer(?:ing)?\b/gi, "Eng")
+    .replace(/\bDeveloper\b/gi, "Dev")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+// Formats compacted nouns: deduplicates, removes nouns present in compact_action, and groups cloud vendor prefixes
+function formatCompactedNouns(items: string[], compactAction: string): string {
+  const seen = new Set<string>();
+  const deduped: string[] = [];
+  const actionLower = (compactAction || "").toLowerCase();
+
+  for (const raw of items) {
+    const trimmed = raw.trim();
+    if (!trimmed) continue;
+    const lower = trimmed.toLowerCase();
+    if (seen.has(lower)) continue;
+    seen.add(lower);
+    if (actionLower.includes(lower)) continue;
+    deduped.push(trimmed);
+  }
+
+  const vendors = ["AWS", "GCP", "Azure"];
+  let workingList = [...deduped];
+
+  for (const vendor of vendors) {
+    const vendorLower = vendor.toLowerCase();
+    const prefixRegex = new RegExp(`^${vendor}\\s+(.+)$`, "i");
+
+    // Check if any specific service exists with this vendor prefix
+    const hasSpecificService = workingList.some((item) => prefixRegex.test(item));
+
+    if (hasSpecificService) {
+      // Omit bare vendor name
+      workingList = workingList.filter((item) => item.toLowerCase() !== vendorLower);
+
+      // Collect all services matching this prefix
+      const matchingIndices: number[] = [];
+      const subServices: string[] = [];
+
+      workingList.forEach((item, idx) => {
+        const match = item.match(prefixRegex);
+        if (match) {
+          matchingIndices.push(idx);
+          subServices.push(match[1].trim());
+        }
+      });
+
+      // Group if 2 or more services
+      if (matchingIndices.length >= 2) {
+        const firstIdx = matchingIndices[0];
+        const groupedStr = `${vendor} (${subServices.join(", ")})`;
+
+        const newList: string[] = [];
+        workingList.forEach((item, idx) => {
+          if (idx === firstIdx) {
+            newList.push(groupedStr);
+          } else if (!matchingIndices.includes(idx)) {
+            newList.push(item);
+          }
+        });
+        workingList = newList;
+      }
+    }
+  }
+
+  return workingList.join(", ");
+}
+
+interface InternalDigestItem {
+  id: string;
+  coveredIds: string[];
+  kind: "role_claim" | "notable_signal";
+  roleEntryId?: string;
+  hasOutcome: number;
+  tierScore: number;
+  recencyScore: number;
+  nounCount: number;
+  originalIndex: number;
+  renderedLine: string;
+  nounPart: string;
+  actionPart: string;
+  outcomePart: string;
+}
+
+// Compares candidate digest items for greedy budget selection
+function compareDigestItems(a: InternalDigestItem, b: InternalDigestItem): number {
+  // 1. Has outcome_attached (1 vs 0) descending
+  if (b.hasOutcome !== a.hasOutcome) {
+    return b.hasOutcome - a.hasOutcome;
+  }
+  // 2. Syntactic tier (3 vs 2 vs 1) descending
+  if (b.tierScore !== a.tierScore) {
+    return b.tierScore - a.tierScore;
+  }
+  // 3. Recency of work role descending
+  if (b.recencyScore !== a.recencyScore) {
+    return b.recencyScore - a.recencyScore;
+  }
+  // 4. Count of specific nouns/skills (capped at 4) descending
+  if (b.nounCount !== a.nounCount) {
+    return b.nounCount - a.nounCount;
+  }
+  // 5. Original order ascending
+  return a.originalIndex - b.originalIndex;
+}
+
+// Serializes a ParsedCandidateProfile into a compact Mechanism E structured digest with budget and stats
+export function serializeCandidateDigestWithStats(
   profile: ParsedCandidateProfile,
   opts?: SerializeDigestOptions
-): string {
+): DigestSerializationResult {
   const refDate = opts?.referenceDate || new Date();
   const nowYear = refDate.getFullYear();
   const nowMonth = refDate.getMonth() + 1;
@@ -213,88 +363,256 @@ export function serializeCandidateDigest(
   const headerSegments = [tenureSummary, eduSummary, logSummary].filter(Boolean);
   const headerLine = `[${label}] ${headerSegments.join(" | ")}`.trim();
 
-  const lines: string[] = [headerLine];
-
-  // Map role claims by source entry ref
-  const claimsByEntry = new Map<string, typeof profile.role_claims.claims>();
-  for (const claim of profile.role_claims?.claims || []) {
-    const list = claimsByEntry.get(claim.source_entry_ref) || [];
-    list.push(claim);
-    claimsByEntry.set(claim.source_entry_ref, list);
-  }
-
-  // 2. Work history entries with nested claims
+  // Pre-compute work history role headers
+  const roleHeadersByEntryId = new Map<string, string>();
   entries.forEach((entry, idx) => {
     const employerClean = cleanEmployerName(entry.employer);
+    const roleTitleClean = cleanRoleTitle(entry.title);
     const startYear = entry.start_date ? entry.start_date.slice(0, 4) : "";
     const endYear = entry.is_current || !entry.end_date ? "Pres" : entry.end_date.slice(0, 4);
     const roleYears = computeRoleYears(entry, nowYear, nowMonth);
-    const empTypeShort = entry.employment_type?.value === "full_time" ? "FT" : entry.employment_type?.value || "";
+    const empTypeShort =
+      entry.employment_type?.value === "full_time" ? "FT" : entry.employment_type?.value || "";
 
-    // Detect trivial consecutive promotion (same employer in subsequent entry)
     let promotionPrefix = "";
     const nextEntry = entries[idx + 1];
     if (nextEntry && cleanEmployerName(nextEntry.employer).toLowerCase() === employerClean.toLowerCase()) {
-      let prevTitleShort = nextEntry.title;
-      if (/Software Engineer/i.test(prevTitleShort)) prevTitleShort = "SWE";
+      const prevTitleShort = cleanRoleTitle(nextEntry.title);
       promotionPrefix = `promoted from ${prevTitleShort}, `;
     }
 
     const tenureToken = empTypeShort ? `${roleYears}y ${empTypeShort}` : `${roleYears}y`;
-    const workHeader = `${entry.entry_id}: ${entry.title} @ ${employerClean} (${promotionPrefix}${startYear}-${endYear}, ${tenureToken})`;
-    lines.push(workHeader);
-
-    // Render claims belonging to this entry
-    const entryClaims = claimsByEntry.get(entry.entry_id) || [];
-    for (const claim of entryClaims) {
-      const tierTag = formatTierShort(claim.claim_tier);
-
-      // Union of raw skills and raw_nouns deduped case-insensitively
-      const rawSkills = (claim.skills || []).map((s) => s.skill);
-      const rawNouns = claim.raw_nouns || [];
-      const combinedNouns = [...rawSkills, ...rawNouns];
-
-      const seen = new Set<string>();
-      const headerNounList: string[] = [];
-      const compactLower = (claim.compact_action || "").toLowerCase();
-
-      for (const n of combinedNouns) {
-        const trimmed = n.trim();
-        if (!trimmed) continue;
-        const lower = trimmed.toLowerCase();
-        if (seen.has(lower)) continue;
-        seen.add(lower);
-
-        // Omit raw_noun if already embedded in compact_action when skills are present
-        if (rawSkills.length > 0 && compactLower.includes(lower)) {
-          continue;
-        }
-        headerNounList.push(trimmed);
-      }
-
-      const headerNounsStr = headerNounList.join(", ");
-      const actionPart = headerNounsStr ? `${headerNounsStr} -> ${claim.compact_action}` : claim.compact_action;
-      const outcomePart = claim.outcome_attached ? ` | ${claim.outcome_attached}` : "";
-
-      lines.push(`  [${claim.claim_id}:${tierTag}] ${actionPart}${outcomePart}`);
-    }
+    const workHeader = `${entry.entry_id}: ${roleTitleClean} @ ${employerClean} (${promotionPrefix}${startYear}-${endYear}, ${tenureToken})`;
+    roleHeadersByEntryId.set(entry.entry_id, workHeader);
   });
 
-  // 3. Spikes (notable non-work signals)
-  const signals = profile.notable_signals?.signals || [];
-  if (signals.length > 0) {
-    lines.push("spikes:");
-    for (const signal of signals) {
-      const tierTag = formatTierShort(signal.syntactic_tier);
-      const prefix = signal.context_label ? `${signal.context_label}: ` : "";
-      const nouns = (signal.raw_nouns || []).filter(Boolean).join(", ");
-      const action = signal.compact_action || "";
-      const outcome = signal.outcome_attached ? ` | ${signal.outcome_attached}` : "";
+  // Build role claim items
+  const allItems: InternalDigestItem[] = [];
+  let itemSequence = 0;
 
-      const body = nouns ? `${prefix}${nouns} -> ${action}${outcome}` : `${prefix}${action}${outcome}`;
-      lines.push(`  [${signal.signal_id}:${tierTag}] ${body}`);
+  const rawRoleClaims = profile.role_claims?.claims || [];
+  rawRoleClaims.forEach((claim) => {
+    const tierTag = formatTierShort(claim.claim_tier);
+    const combinedNouns = [
+      ...(claim.skills || []).map((s) => s.skill),
+      ...(claim.raw_nouns || []),
+    ];
+    const nounsStr = formatCompactedNouns(combinedNouns, claim.compact_action || "");
+    const actionPart = claim.compact_action || "";
+    const outcomePart = claim.outcome_attached ? ` | ${claim.outcome_attached}` : "";
+
+    const renderedLine = nounsStr
+      ? `  [${claim.claim_id}:${tierTag}] ${nounsStr} -> ${actionPart}${outcomePart}`
+      : `  [${claim.claim_id}:${tierTag}] ${actionPart}${outcomePart}`;
+
+    const roleIndex = entries.findIndex((e) => e.entry_id === claim.source_entry_ref);
+    const effectiveRoleIndex = roleIndex >= 0 ? roleIndex : 99;
+    const recencyScore = Math.max(0, 1000 - effectiveRoleIndex * 100);
+
+    const tierScore =
+      claim.claim_tier === "action_attributed" ? 3 : claim.claim_tier === "peripheral_action" ? 2 : 1;
+
+    allItems.push({
+      id: claim.claim_id,
+      coveredIds: [claim.claim_id],
+      kind: "role_claim",
+      roleEntryId: claim.source_entry_ref,
+      hasOutcome: claim.outcome_attached ? 1 : 0,
+      tierScore,
+      recencyScore,
+      nounCount: Math.min(4, (claim.skills?.length || 0) + (claim.raw_nouns?.length || 0)),
+      originalIndex: itemSequence++,
+      renderedLine,
+      nounPart: nounsStr ? `${nounsStr} -> ` : "",
+      actionPart: `  [${claim.claim_id}:${tierTag}] ${actionPart}`,
+      outcomePart,
+    });
+  });
+
+  // Build notable signal items, merging multiple certification signals if present
+  const rawSignals = profile.notable_signals?.signals || [];
+  const certSignals = rawSignals.filter((s) => /certif/i.test(s.context_label));
+  const nonCertSignals = rawSignals.filter((s) => !/certif/i.test(s.context_label));
+
+  for (const signal of nonCertSignals) {
+    const tierTag = formatTierShort(signal.syntactic_tier);
+    const prefix = signal.context_label ? `${signal.context_label}: ` : "";
+    const nounsStr = formatCompactedNouns(signal.raw_nouns || [], signal.compact_action || "");
+    const actionPart = signal.compact_action || "";
+    const outcomePart = signal.outcome_attached ? ` | ${signal.outcome_attached}` : "";
+
+    const body = nounsStr ? `${prefix}${nounsStr} -> ${actionPart}` : `${prefix}${actionPart}`;
+    const renderedLine = `  [${signal.signal_id}:${tierTag}] ${body}${outcomePart}`;
+
+    const tierScore = signal.syntactic_tier === "action_attributed" ? 3 : 2;
+
+    allItems.push({
+      id: signal.signal_id,
+      coveredIds: [signal.signal_id],
+      kind: "notable_signal",
+      hasOutcome: signal.outcome_attached ? 1 : 0,
+      tierScore,
+      recencyScore: 950,
+      nounCount: Math.min(4, signal.raw_nouns?.length || 0),
+      originalIndex: itemSequence++,
+      renderedLine,
+      nounPart: nounsStr ? `${nounsStr} -> ` : "",
+      actionPart: `  [${signal.signal_id}:${tierTag}] ${prefix}${actionPart}`,
+      outcomePart,
+    });
+  }
+
+  // Handle certifications (merged into one line if multiple exist)
+  if (certSignals.length > 0) {
+    const primaryCert = certSignals[0];
+    const tierTag = formatTierShort(primaryCert.syntactic_tier);
+    const joinedActions = certSignals
+      .map((s) => s.compact_action || s.raw_nouns?.join("; "))
+      .filter(Boolean)
+      .join("; ");
+    const certOutcome = certSignals.find((s) => s.outcome_attached)?.outcome_attached;
+    const outcomePart = certOutcome ? ` | ${certOutcome}` : "";
+
+    const renderedLine = `  [${primaryCert.signal_id}:${tierTag}] Certs: ${joinedActions}${outcomePart}`;
+    const coveredIds = certSignals.map((s) => s.signal_id);
+
+    allItems.push({
+      id: primaryCert.signal_id,
+      coveredIds,
+      kind: "notable_signal",
+      hasOutcome: certOutcome ? 1 : 0,
+      tierScore: 3,
+      recencyScore: 950,
+      nounCount: 0,
+      originalIndex: itemSequence++,
+      renderedLine,
+      nounPart: "",
+      actionPart: `  [${primaryCert.signal_id}:${tierTag}] Certs: ${joinedActions}`,
+      outcomePart,
+    });
+  }
+
+  // Pure digest rendering helper given a set of kept item IDs
+  const renderDigestWithKeptItems = (
+    keptIds: Set<string>,
+    isBudgeted: boolean
+  ): {
+    text: string;
+    tokenBreakdown: { headers: number; nouns: number; actions: number; outcomes: number };
+  } => {
+    const lines: string[] = [headerLine];
+    let headerTokens = approxTokens(headerLine);
+    let nounTokens = 0;
+    let actionTokens = 0;
+    let outcomeTokens = 0;
+
+    // Work history entries with nested claims
+    entries.forEach((entry) => {
+      const roleClaims = allItems.filter(
+        (i) => i.kind === "role_claim" && i.roleEntryId === entry.entry_id && keptIds.has(i.id)
+      );
+
+      // In budgeted mode, omit role header if no claims from this role were kept
+      if (isBudgeted && roleClaims.length === 0) {
+        return;
+      }
+
+      const roleHeader = roleHeadersByEntryId.get(entry.entry_id) || entry.entry_id;
+      lines.push(roleHeader);
+      headerTokens += approxTokens(roleHeader);
+
+      for (const item of roleClaims) {
+        lines.push(item.renderedLine);
+        nounTokens += approxTokens(item.nounPart);
+        actionTokens += approxTokens(item.actionPart);
+        outcomeTokens += approxTokens(item.outcomePart);
+      }
+    });
+
+    // Spikes section
+    const keptSignals = allItems.filter(
+      (i) => i.kind === "notable_signal" && keptIds.has(i.id)
+    );
+
+    if (keptSignals.length > 0) {
+      lines.push("spikes:");
+      headerTokens += approxTokens("spikes:");
+      for (const item of keptSignals) {
+        lines.push(item.renderedLine);
+        nounTokens += approxTokens(item.nounPart);
+        actionTokens += approxTokens(item.actionPart);
+        outcomeTokens += approxTokens(item.outcomePart);
+      }
+    }
+
+    return {
+      text: lines.join("\n"),
+      tokenBreakdown: {
+        headers: headerTokens,
+        nouns: nounTokens,
+        actions: actionTokens,
+        outcomes: outcomeTokens,
+      },
+    };
+  };
+
+  const totalProfileItems =
+    (profile.role_claims?.claims?.length || 0) + (profile.notable_signals?.signals?.length || 0);
+
+  // Baseline rendering with all items kept
+  const allItemIds = new Set(allItems.map((i) => i.id));
+  const isBudgeted = Boolean(opts?.tokenBudget);
+  const uncappedResult = renderDigestWithKeptItems(allItemIds, isBudgeted);
+  const uncappedTokens = approxTokens(uncappedResult.text);
+
+  // If no tokenBudget is specified or uncapped fits within budget, return uncapped
+  if (!opts?.tokenBudget || uncappedTokens <= opts.tokenBudget) {
+    return {
+      text: uncappedResult.text,
+      approxTokens: uncappedTokens,
+      totalItems: totalProfileItems,
+      keptItems: totalProfileItems,
+      droppedItemIds: [],
+      tokenBreakdown: uncappedResult.tokenBreakdown,
+    };
+  }
+
+  // Budget exceeded: greedy inclusion in priority order
+  const prioritySortedItems = [...allItems].sort(compareDigestItems);
+  const activeKeptIds = new Set<string>();
+
+  for (const candidateItem of prioritySortedItems) {
+    const testSet = new Set([...activeKeptIds, candidateItem.id]);
+    const testDigest = renderDigestWithKeptItems(testSet, true);
+    if (approxTokens(testDigest.text) <= opts.tokenBudget) {
+      activeKeptIds.add(candidateItem.id);
     }
   }
 
-  return lines.join("\n");
+  // Final budgeted render in original chronological order
+  const finalResult = renderDigestWithKeptItems(activeKeptIds, true);
+  const droppedIds: string[] = [];
+
+  for (const item of allItems) {
+    if (!activeKeptIds.has(item.id)) {
+      droppedIds.push(...item.coveredIds);
+    }
+  }
+
+  return {
+    text: finalResult.text,
+    approxTokens: approxTokens(finalResult.text),
+    totalItems: totalProfileItems,
+    keptItems: totalProfileItems - droppedIds.length,
+    droppedItemIds: droppedIds,
+    tokenBreakdown: finalResult.tokenBreakdown,
+  };
+}
+
+// Serializes a ParsedCandidateProfile into a compact Mechanism E structured digest
+export function serializeCandidateDigest(
+  profile: ParsedCandidateProfile,
+  opts?: SerializeDigestOptions
+): string {
+  return serializeCandidateDigestWithStats(profile, opts).text;
 }

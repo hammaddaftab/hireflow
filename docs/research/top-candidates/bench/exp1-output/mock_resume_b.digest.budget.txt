@@ -1,0 +1,4 @@
+[mock_resume_b] diploma Mechanical @ CTTI (Grade A expected) | Rawalpindi
+spikes:
+  [s1:action] Project: CNC, ARC welding, precision measurement -> designed Multifunction Electric Wheelchair mobility system
+  [s2:action] Certs: CNC Programming; Advanced IT Course
