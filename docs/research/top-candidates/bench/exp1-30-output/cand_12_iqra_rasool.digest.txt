@@ -1,0 +1,13 @@
+[cand_12_iqra_rasool] 0y FT (1 internship) | BSc CS @ NUST (3.06/4.00) | Sahiwal
+work_1: Freelancer @ Freelancer (2019-2025, 5.3y freelance)
+  [c1:action] MySQL, Oracle -> maintained client databases
+  [c2:action] Canva -> designed client logos
+  [c3:action] HTML, CSS -> built client web pages
+  [c4:action] Microsoft Office, Word, PowerPoint -> prepared client documents
+work_2: Customer Services and Sales Intern @ United Bank Limited (2024-2024, 0.2y internship)
+  [c5:peripheral] United Bank Limited -> supported customer service operations
+spikes:
+  [s1:action] Project: YOLOv8, Dlib -> built Drowsiness Detection System
+  [s2:action] Project: JavaScript, Node.js, Sequelize -> built Salary Management System
+  [s3:action] Project: developed Search Engine
+  [s4:peripheral] Project: React, Node.js, Bootstrap -> built HomeDoc web application

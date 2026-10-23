@@ -19,6 +19,7 @@ interface AuditCliOptions {
   limit?: number;
   timeoutMs?: number;
   budget?: number;
+  skipExisting?: boolean;
 }
 
 interface CvAuditResult {
@@ -72,6 +73,8 @@ function parseArgs(argv: string[]): AuditCliOptions {
       options.timeoutMs = parseInt(argv[++i], 10);
     } else if (arg === "--budget" && argv[i + 1]) {
       options.budget = parseInt(argv[++i], 10);
+    } else if (arg === "--skip-existing") {
+      options.skipExisting = true;
     }
   }
 
@@ -147,6 +150,78 @@ async function main() {
     const filename = selectedFiles[idx];
     const filePath = join(options.inputDir, filename);
     const cvId = basename(filename, extname(filename));
+    const existingClaimsPath = join(options.outputDir, `${cvId}.claims.json`);
+
+    if (options.skipExisting && existsSync(existingClaimsPath)) {
+      try {
+        const cached = JSON.parse(readFileSync(existingClaimsPath, "utf-8"));
+        const rawTokens = cached.tokens_approx?.raw_text ?? 0;
+        const evidenceTokens = cached.tokens_approx?.evidence_spans ?? 0;
+        const uncappedDigestTokens = cached.tokens_approx?.uncapped_digest ?? 0;
+        const budgetedDigestTokens = cached.tokens_approx?.budgeted_digest ?? 0;
+        const claimCount = cached.role_claims?.length ?? 0;
+        const signalCount = cached.notable_signals?.length ?? 0;
+        const keptItems = cached.digest_stats_budgeted?.kept_items ?? claimCount + signalCount;
+        const totalItems = cached.digest_stats_budgeted?.total_items ?? claimCount + signalCount;
+        const droppedIds: string[] = cached.digest_stats_budgeted?.dropped_item_ids ?? [];
+
+        results.push({
+          cvId,
+          filename,
+          rawTextTokensApprox: rawTokens,
+          evidenceTokensApprox: evidenceTokens,
+          uncappedDigestTokensApprox: uncappedDigestTokens,
+          budgetedDigestTokensApprox: budgetedDigestTokens,
+          evidenceToUncappedRatio:
+            uncappedDigestTokens > 0
+              ? Math.round((evidenceTokens / uncappedDigestTokens) * 100) / 100
+              : 0,
+          rawToUncappedRatio:
+            uncappedDigestTokens > 0
+              ? Math.round((rawTokens / uncappedDigestTokens) * 100) / 100
+              : 0,
+          claimCount,
+          signalCount,
+          keptItemsBudgeted: keptItems,
+          totalItemsBudgeted: totalItems,
+          droppedIdsBudgeted: droppedIds,
+          fillerDropped: cached.cleanup_stats?.filler_dropped ?? 0,
+          duplicatesDropped: cached.cleanup_stats?.duplicates_dropped ?? 0,
+          tokenSplitUncapped: cached.digest_stats_uncapped?.token_breakdown ?? {
+            headers: 0,
+            nouns: 0,
+            actions: 0,
+            outcomes: 0,
+          },
+          llmInputTokens: cached.usage?.inputTokens ?? cached.usage?.promptTokens ?? null,
+          llmOutputTokens: cached.usage?.outputTokens ?? cached.usage?.completionTokens ?? null,
+          latencyMs: cached.latency_ms ?? 0,
+        });
+
+        const droppedSet = new Set(droppedIds);
+        for (const claim of cached.role_claims || []) {
+          const escapedAction = `"${String(claim.compact_action || "").replace(/"/g, '""')}"`;
+          const droppedByBudget = droppedSet.has(claim.claim_id) ? "yes" : "no";
+          annotationRows.push(
+            `${cvId},${escapedAction},work,no,${claim.claim_id},${droppedByBudget},`
+          );
+        }
+        for (const sig of cached.notable_signals || []) {
+          const escapedAction = `"${String(sig.compact_action || "").replace(/"/g, '""')}"`;
+          const droppedByBudget = droppedSet.has(sig.signal_id) ? "yes" : "no";
+          annotationRows.push(
+            `${cvId},${escapedAction},non_work,no,${sig.signal_id},${droppedByBudget},`
+          );
+        }
+
+        console.log(
+          `[${idx + 1}/${selectedFiles.length}] Reused cached ${cvId}.claims.json (Uncapped: ${uncappedDigestTokens}t | Budgeted: ${budgetedDigestTokens}t)`
+        );
+        continue;
+      } catch (err) {
+        console.warn(`  Failed to reuse cached ${existingClaimsPath}, re-extracting:`, err);
+      }
+    }
 
     console.log(`[${idx + 1}/${selectedFiles.length}] Processing ${filename}...`);
 

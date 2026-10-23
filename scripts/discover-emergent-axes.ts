@@ -13,12 +13,15 @@ import { MOCK_CANDIDATES } from "../src/db/seeds/mockCandidates";
 import type { AiProvider } from "../src/lib/ai/types";
 
 type PoolSourceMode = "exp1" | "raw" | "mock" | "both";
+type CandidateOrderMode = "canonical" | "inside-out" | "reverse";
 
 interface AxesCliOptions {
   inputDir: string;
   rawCvsDir: string;
   outputDir: string;
   source: PoolSourceMode;
+  order: CandidateOrderMode;
+  tag?: string;
   jobKeyOrPath?: string;
   useBudgeted: boolean;
   budget?: number;
@@ -113,6 +116,7 @@ function parseArgs(argv: string[]): AxesCliOptions {
     rawCvsDir: resolve("docs/research/top-candidates/bench/cvs"),
     outputDir: resolve("docs/research/top-candidates/bench/axes-output"),
     source: "mock",
+    order: "canonical",
     useBudgeted: false,
     skipStage0: false,
   };
@@ -137,6 +141,15 @@ function parseArgs(argv: string[]): AxesCliOptions {
       }
     } else if (arg === "--job" && argv[i + 1]) {
       options.jobKeyOrPath = argv[++i];
+    } else if (arg === "--order" && argv[i + 1]) {
+      const ord = argv[++i] as CandidateOrderMode;
+      if (ord === "canonical" || ord === "inside-out" || ord === "reverse") {
+        options.order = ord;
+      } else {
+        throw new Error(`Invalid --order '${ord}'. Expected: canonical, inside-out, or reverse`);
+      }
+    } else if (arg === "--tag" && argv[i + 1]) {
+      options.tag = argv[++i];
     } else if (arg === "--use-budgeted") {
       options.useBudgeted = true;
     } else if (arg === "--budget" && argv[i + 1]) {
@@ -290,6 +303,31 @@ function loadRawMarkdownResumes(
   return loaded;
 }
 
+// Applies deterministic candidate permutation for positional bias experiments (Exp 3)
+// For N=30 with 'inside-out': splits into [8 left, 7 mid-left, 7 mid-right, 8 right]
+// and moves the 7/7 middle pairs to the outer edges while combining the 8/8 lateral pairs in the middle
+function permuteCandidateOrder<T>(items: T[], order: CandidateOrderMode): T[] {
+  if (order === "canonical" || items.length < 4) {
+    return [...items];
+  }
+  if (order === "reverse") {
+    return [...items].reverse();
+  }
+  const n = items.length;
+  // Exact 8 / 7 / 7 / 8 split for N = 30; proportional split for general N
+  const leftCount = n === 30 ? 8 : Math.round((n * 8) / 30);
+  const rightCount = n === 30 ? 8 : Math.round((n * 8) / 30);
+  const remaining = n - leftCount - rightCount;
+  const midLeftCount = Math.floor(remaining / 2);
+
+  const leftEdge = items.slice(0, leftCount);
+  const midLeft = items.slice(leftCount, leftCount + midLeftCount);
+  const midRight = items.slice(leftCount + midLeftCount, n - rightCount);
+  const rightEdge = items.slice(n - rightCount);
+
+  return [...midLeft, ...leftEdge, ...rightEdge, ...midRight];
+}
+
 async function main() {
   const options = parseArgs(process.argv);
   const { jobId, job } = resolveJobSpec(options);
@@ -298,6 +336,7 @@ async function main() {
   console.log("         MECHANISM E: STAGE 1 EMERGENT AXIS DISCOVERY (DISCOVERY ONLY)          ");
   console.log("================================================================================");
   console.log(`Pool Source     : ${options.source}`);
+  console.log(`Order Mode      : ${options.order}${options.tag ? ` (tag: ${options.tag})` : ""}`);
   console.log(`Job Preset/ID   : ${jobId} (${job.title})`);
   if (options.source === "exp1" || options.source === "both") {
     console.log(`Digest Directory: ${options.inputDir} (${options.useBudgeted ? "budgeted" : "uncapped"})`);
@@ -317,15 +356,25 @@ async function main() {
 
   const rawCandidates =
     options.source === "mock" || options.source === "both" ? MOCK_CANDIDATES : [];
-  const candidates = options.limit ? rawCandidates.slice(0, options.limit) : rawCandidates;
+  const candidates = permuteCandidateOrder(
+    options.limit ? rawCandidates.slice(0, options.limit) : rawCandidates,
+    options.order
+  );
 
   let preSerializedDigests: PreSerializedCandidateDigest[] = [];
   if (options.source === "exp1" || options.source === "both") {
     const loaded = loadPreSerializedDigests(options.inputDir, options.useBudgeted);
-    preSerializedDigests = options.limit ? loaded.slice(0, options.limit) : loaded;
+    const sliced = options.limit ? loaded.slice(0, options.limit) : loaded;
+    preSerializedDigests = permuteCandidateOrder(sliced, options.order);
   } else if (options.source === "raw") {
-    preSerializedDigests = loadRawMarkdownResumes(options.rawCvsDir, options.limit);
+    const loaded = loadRawMarkdownResumes(options.rawCvsDir, options.limit);
+    preSerializedDigests = permuteCandidateOrder(loaded, options.order);
   }
+
+  const orderedCandidateIds =
+    preSerializedDigests.length > 0
+      ? preSerializedDigests.map((d) => d.candidateId)
+      : candidates.map((c) => c.id);
 
   const discoveryRes = await discoverEmergentAxesWithUsage({
     job,
@@ -380,7 +429,9 @@ async function main() {
 
   const modeLabel =
     options.source === "exp1" && options.useBudgeted ? "exp1-budgeted" : options.source;
-  const runPrefix = `${modeLabel}-${jobId}`;
+  const orderSuffix = options.order !== "canonical" ? `-${options.order}` : "";
+  const tagSuffix = options.tag ? `-${options.tag}` : "";
+  const runPrefix = `${modeLabel}${orderSuffix}${tagSuffix}-${jobId}`;
 
   // 1. Write <runPrefix>.axes.json
   const jsonPath = join(options.outputDir, `${runPrefix}.axes.json`);
@@ -388,6 +439,8 @@ async function main() {
     job_id: jobId,
     job_title: job.title,
     source_mode: options.source,
+    order_mode: options.order,
+    candidate_order: orderedCandidateIds,
     stage0,
     pool_stats: poolStats,
     pool_summary: result.pool_summary,
@@ -409,6 +462,7 @@ async function main() {
 ## Run Configuration
 - **Job**: ${job.title} (\`${jobId}\`)
 - **Pool Source**: \`${options.source}\`
+- **Candidate Order**: \`${options.order}\` (${orderedCandidateIds.length} candidates)
 - **Stage 0 Gatekeeper**: ${
     stage0.executed
       ? `Executed — **${stage0.viableCount}** viable contenders retained, **${stage0.knockedOutCount}** knocked out`

@@ -1,0 +1,1379 @@
+You are executing the Emergent Axis Discovery step (Mechanism E) for a candidate screening pipeline.
+Your ONLY task in this step is to analyze the Job Specification alongside the pointer-backed aspect digests of 30 viable contenders in the applicant pool and discover 3 to 5 pool-relative Emergent Differentiating Axes.
+
+CRITICAL SCOPE BOUNDARY — DO NOT RANK OR SHORTLIST CANDIDATES:
+- Do NOT generate a Top 20 shortlist or rank individual candidates.
+- Individual candidates will be evaluated one by one against the axes you discover here in a separate downstream pass.
+- Focus exclusively on discovering the axes and calibrating their scoring rubrics so downstream one-by-one evaluation is grounded in this pool's actual distribution.
+
+RULES FOR EMERGENT AXIS DISCOVERY:
+
+1. GO BEYOND BASELINE KNOCKOUT REQUIREMENTS:
+   - Minimum job requirements (e.g. required programming languages, minimum years of experience, required degree) are already enforced by a deterministic gatekeeper before this step.
+   - NEVER emit an axis that merely checks binary presence of a required skill or minimum tenure (e.g. "Has Go and PostgreSQL experience" or "Meets 4+ years experience" are FORBIDDEN).
+   - Instead, discover the unstated comparative signals that separate the top tier of THIS pool from baseline-qualified contenders for THIS job:
+     * Scale & Quantified Engineering Impact: e.g. high-throughput concurrency (>10k rps), low-latency SLAs, large-scale database partitioning (25M+ rows), measurable revenue/cost outcomes.
+     * Domain & Architectural Adjacency: e.g. financial settlement ledgers, idempotency & distributed locking, event-driven streaming, zero-downtime migrations, regulatory automation, multi-agent RAG orchestration.
+     * Career Trajectory & Ownership Scope: e.g. rapid internal promotions ("promoted from..."), high average stint stability, technical/squad leadership, owning production SLAs or post-mortems.
+     * Environment & Academic Pedigree: e.g. selective high-bar engineering employers, high-selectivity university + standout CGPA/honors.
+     * Spiky Non-Work Excellence: e.g. open-source maintainership with traction, competitive programming (ICPC/Kaggle), publications, patents, or rich domain project spikes.
+
+2. STRICT EMPIRICAL GROUNDING IN THE PROVIDED POOL:
+   - Every discovered axis MUST emerge from real patterns present in <candidate_digests>.
+   - Never invent a theoretical wishlist criterion if zero candidates in the pool exhibit it, and avoid trivial criteria satisfied identically by every candidate.
+   - Back every axis with 1 to 5 concrete supporting_claims citing exact [candidate_id] and pointer IDs (e.g. claim IDs like 'c1', 'c2', signal IDs like 's1', role headers like 'work_1', or 'header').
+
+3. RESPECT SYNTACTIC OWNERSHIP TIERS ([action] vs [peripheral] vs [listed]):
+   - Each digest claim carries a syntactic ownership tag:
+     * [cX:action] / [sX:action]: Candidate had active ownership (architected, built, led, designed, maintained).
+     * [cX:peripheral] / [sX:peripheral]: Candidate had passive or assisted exposure (assisted with, worked with, participated in, or coursework/certifications).
+     * [cX:listed]: Unbacked tool listing.
+   - Never treat [peripheral] or [listed] claims as top-tier proof. Your strong_criteria MUST require active [action] ownership (or verified header/work_history trajectory facts).
+
+4. CALIBRATE RUBRICS FOR ISOLATED ONE-BY-ONE EVALUATION:
+   - Because the next pipeline step scores candidates one by one in isolation (without seeing the rest of the pool), strong_criteria and moderate_criteria MUST be self-contained and explicitly calibrated to the concrete metrics, systems, and scope observed in this pool:
+     * strong_criteria: Defines what qualifies a candidate for 'strong' on this axis (anchored to the upper echelon observed in <candidate_digests>).
+     * moderate_criteria: Defines what qualifies a candidate for 'moderate' on this axis (e.g. active ownership at smaller scale, adjacent system without explicit scale metrics, or peripheral involvement in high-scale systems).
+
+5. ORTHOGONALITY:
+   - Emit 3 to 5 distinct axes (or 2 to 4 if the pool has fewer than 4 candidates).
+   - Ensure zero conceptual overlap between axes; each axis must measure an independent dimension of candidate excellence.
+
+<job_specification>
+Role: AI / ML & Full-Stack Software Engineer (Graduate / Entry-Level) | Seniority: Entry-Level / Junior (0-1 yrs) | Department: Applied AI & Product Engineering | Location: Islamabad / Lahore, Pakistan
+Description: Hiring top graduating BS Computer Science engineers to build production AI/ML systems (LLMs, RAG, computer vision, predictive modeling) and full-stack web/mobile products. All candidates meet the baseline BS CS degree requirement; we seek standout research depth, quantified engineering impact, complex system builds, and selective lab or international experience.
+Baseline Gatekeeper Requirements (already filtered): 0+ years FT experience | Required Skills: Python, Machine Learning, Software Engineering
+Preferred / Bonus Skills: PyTorch, TensorFlow, FastAPI, RAG, Computer Vision, React, Next.js, Node.js
+</job_specification>
+
+<candidate_digests>
+[cand_01_muhammad_khizer_tariq] Muhammad Khizer Tariq
+  [L1] **BS Computer Science | National University of Sciences and Technology (NUST)**
+  [L2] Attock, Pakistan | +923135279367 | khizertariq633@gmail.com
+  [L3] ## Professional Profile
+  [L4] A Computer Science student with strong research interest in Artiﬁcial Intelligence and
+  [L5] Theoratical Computer Science
+  [L6] ## Education
+  [L7] - BS in Computer Science School of Electrical Engineering and Computer Science , 2.95
+  [L8] ## Work & Internship Experience
+  [L9] ### High Performance Computing Lab SEECS
+  [L10] **01-Jan-2024 - 31-Dec-2024**
+  [L11] - Worked on a funded Research project under Dr. Sohail Iqbal where we explored LLMs for educational purposes in Pakistan.
+  [L12] ### Machine Vision and Intelligent Systems Lab SEECS
+  [L13] **01-Oct-2024 - 29-Mar-2025**
+  [L14] - Research work involving vision based applications of Continual Learning in Robotics and Healthcare
+  [L15] ## Projects
+  [L16] ### Presented a Conference Paper at FIT 2024
+  [L17] - Published a Conference paper related to my Final year project on "Routing through Satellite Imagery", the paper presents a novel ML based technique for solving the vehicle routing problem the paper is published at the following link: https://ieeexplore.ieee.org/document/10838433
+  [L18] ### Published a Journal Paper in IJCA
+  [L19] - Published a Journal in International Journal for Computing Applications regarding Grouped Matrix Clocks for clock synchronization in Distributed Systems the paper can be accessed at: https://www.ijcaonline.org/archives/volume186/number56/grouped-matrix-clocks-with-reduced-complexity-for-distributed-synchroniz
+  [L20] ## Technical Skills
+  [L21] - Python and bash scripting
+  [L22] - C, c++, java and python
+  [L23] - Machine learning
+  [L24] ## Soft Skills
+  [L25] - Spanish
+
+[cand_02_umer_tariq] Umer Tariq
+  [L1] **BS Computer Science | National University of Sciences and Technology (NUST)**
+  [L2] H# 3, Sarooj street, , Tajbagh housing scheme, , Harbanspura, Lahore, Pakistan | +03099074437 | official.umartariq@gmail.com
+  [L3] ## Professional Profile
+  [L4] To secure a position as a MERN stack web or Flutter mobile app developer where I
+  [L5] can utilize my skills in coding, problem solving and team collaboration to design and
+  [L6] develop innovative solutions using applications.
+  [L7] ## Education
+  [L8] - BS in Computer Science School of Electrical Engineering and Computer Science , 2.75
+  [L9] - BS Computer Science SEECS, NUST , 2.75/4 (2025)
+  [L10] - FSc. Pre Engineering Govt. Islamia College Civil Lines , 936/1100 (2021)
+  [L11] - Matric (Computer Science) The Trust School , 1000/1100 (2019)
+  [L12] ## Technical Skills
+  [L13] - Javascript (es6)
+  [L14] - Flask
+  [L15] - Reactjs
+  [L16] - Flutter
+  [L17] - Mern development
+  [L18] - Mern stack
+  [L19] - Flask, flutter, uml
+  [L20] - Flutter apps development
+  [L21] ## Soft Skills
+  [L22] - Strategic communications
+  [L23] - Strong work ethics
+  [L24] - Communication skills
+  [L25] - Mern stack web developer
+
+[cand_03_abdullah_aleem] Abdullah Aleem
+  [L1] **BS Computer Science | National University of Sciences and Technology (NUST)**
+  [L2] Pakistan | +923316334020 | abdullahaleem2102@gmail.com
+  [L3] ## Professional Profile
+  [L4] As a passionate programmer, I'm eager to learn and love taking on challenges. I'm a
+  [L5] quick learner, always up for exploring new concepts and technologies. Working on
+  [L6] projects is something I enjoy, and I'm enthusiastic about collaborating with others to
+  [L7] bring ideas to fruition. I'm committed to continual improvement, seeking out daily
+  [L8] opportunities to enhance my programming abilities. My drive and determination to
+  [L9] succeed make me a valuable addition to any team, and I'm conﬁdent in my ability to
+  [L10] contribute meaningfully.
+  [L11] ## Education
+  [L12] - BS in Computer Science School of Electrical Engineering and Computer Science , 3.05
+  [L13] - Computer science NUST , present- (2025)
+  [L14] ## Work & Internship Experience
+  [L15] ### Data Eye
+  [L16] **04-Dec-2023 - 04-Jun-2024**
+  [L17] - Full Stack Engineer, my role was to create an application from scratch for their travel business, and also contribute to other projects just as internal management applications.
+  [L18] ### Hamson Tech
+  [L19] **04-Jun-2022 - 04-Aug-2022**
+  [L20] - Intern Software Developer Independently designed and developed a mobile application for a client using Flutter, seamlessly integrating Firebase for backend functionality and Firestore for efficient database management, ensuring a streamlined user experience.
+  [L21] ## Projects
+  [L22] ### HomeDoc
+  [L23] - Implemented WebSockets to enable real-time communication between users and paramedics.
+  [L24] - Developed a RESTful API using Express.js for user and paramedic registration and service booking.
+  [L25] - Integrated MongoDB for data persistence, ensuring secure and scalable user data management.
+  [L26] - Designed frontend comp
+  [L27] ### Otaku Guide
+  [L28] - Integrated collaborative and content-based ﬁltering algorithms to recommend anime based on user history.
+  [L29] - Developed custom user-based recommendation algorithms to enhance personalized recommendations.
+  [L30] - Built a REST API in Flask to handle data processing and recommendations, enabling efficient communica
+  [L31] ### AirBnB Booking Site Clone
+  [L32] - Created a secure user authentication system with JWT for session management.
+  [L33] - Designed backend with Express.js and Node.js to manage booking workﬂows and handle property listings.
+  [L34] - Leveraged MongoDB to manage user data, bookings, and property listings, ensuring robust database performance.
+  [L35] - Built dyn
+  [L36] ### Portfolio
+  [L37] - Built a responsive, visually appealing portfolio with React.js
+  [L38] - Implemented optimized code structure for smooth navigation and better performance.
+  [L39] - Designed interactive UI components to showcase projects, providing a clean and professional user experience.
+  [L40] ## Technical Skills
+  [L41] - Python socket programming
+  [L42] - Web development frameworks
+  [L43] - Typescript
+  [L44] - Javascript (es6)
+  [L45] - Jquery, ajax, mysql
+  [L46] - Nodejs
+  [L47] - React
+  [L48] - Express, nodejs
+  [L49] ## Soft Skills
+  [L50] - Logical and conceptual learner
+  [L51] - Versatility
+  [L52] - Multi tasking
+
+[cand_04_mujtaba_shafqat] Mujtaba Shafqat
+  [L1] **BS Computer Science | National University of Sciences and Technology (NUST)**
+  [L2] VILLAGE FEROZWALI, , PO KHAUR, TEH PINDIGHEB, , DISTTATTOCK, Islamabad, Pakistan | +923177926831 | mujtabashafqat0@gmail.com
+  [L3] ## Professional Profile
+  [L4] I started painting since I was six. That passion of mine had grown up to such an extent
+  [L5] that hardwork and consistency had made me an artist, better than professionals,
+  [L6] unlearned and untaught, enhancing and polishing my creativity and extracting new and
+  [L7] awesome ideas out of my mind. I am a Graphics Designer and the only thing I want is
+  [L8] to present my skills and my creativity out there, to the world.
+  [L9] ## Education
+  [L10] - BS in Computer Science School of Electrical Engineering and Computer Science , 3.36
+  [L11] - BS Computer Science SEECS , 3.46 (2021)
+  [L12] ## Work & Internship Experience
+  [L13] ### Footwear Pakistan
+  [L14] **10-Aug-2022 - 13-Sep-2022**
+  [L15] - In this project, I have been working as a Photographer and Graphics Designer for the brand Footwear Pakistan.
+  [L16] - The skills included Photography, Color Enhancement, Social Media Posts Designs and Ad-making.
+  [L17] ### Freelancing
+  [L18] **01-Sep-2021 - 13-Sep-2022**
+  [L19] - I am working as a freelancer in the ﬁeld of Graphics Designing, designing new ideas and projects for my clients.
+  [L20] ## Soft Skills
+  [L21] - Filmora
+  [L22] - Coding
+  [L23] - Gui(tkinter)
+  [L24] - Fine art
+  [L25] - Graphics designing
+  [L26] - Team management
+  [L27] - Communication and presentation
+  [L28] - Team management skills
+
+[cand_05_ali_murad] Ali Murad
+  [L1] **BS Computer Science | National University of Sciences and Technology (NUST)**
+  [L2] Village Kheensar, Taluka dahli, Chachro, Pakistan | +03422166824 | alimurad3422@gmail.com
+  [L3] ## Professional Profile
+  [L4] I am aprofessional and enthusiastic programmer in my daily life. I am a quick learner
+  [L5] with a self-learning attitude.
+  [L6] I love learning and exploring new technologies and I am passionate about problem
+  [L7] solving. I love almost all the
+  [L8] stacks of web application development and I love making the Web more open to the
+  [L9] world. My core skill is based
+  [L10] on JavaScript, and I love doing most of the things using JavaScript. I am available for
+  [L11] any kind of job opportunity
+  [L12] that suits my skills and interests.
+  [L13] ## Education
+  [L14] - BS in Computer Science School of Electrical Engineering and Computer Science , 2.66
+  [L15] - BSCS National University of Science and Technology , 2.7 (2025)
+  [L16] ## Work & Internship Experience
+  [L17] ### IoT Lab
+  [L18] **01-Jun-2023 - 01-Sep-2023**
+  [L19] - Front-End Developer
+  [L20] ### HighSkyTech
+  [L21] **01-Jul-2024 - 31-Jul-2024**
+  [L22] - Front-End Developer
+  [L23] ### NUSTRive
+  [L24] **01-Aug-2024 - 01-Feb-2025**
+  [L25] - Full Stack Developer
+  [L26] ## Projects
+  [L27] ### Generic Builder
+  [L28] - A React and React Flow-based workﬂow editor enabling users to create, edit, and visualize ﬂows with customizable nodes, drag-and-drop editing, real-time updates, and state persistence.
+  [L29] - Features include zooming, panning, and smooth user interactions, showcasing expertise in React, state management, and UI/UX
+  [L30] ### E-Commerce Website (MERN Stack, JWT Auth)
+  [L31] - A full-featured e-commerce platform built with MongoDB, Express.js, React, and Node.js, featuring JWT authentication, role-based access control, product management, shopping cart, and order management.
+  [L32] - Includes secure user authentication, responsive UI (Tailwind CSS), and Redux for state management.
+  [L33] - Utilizes
+  [L34] ### Head Start
+  [L35] - I developed a HeadStart template for a commercial consultant.
+  [L36] - As a front-end developer, I worked on creating the dashboard using React, Tailwind, and other necessary npm libraries.
+  [L37] - Technologies used: React, Redux-Toolkit, Node, Express, MongoDB, JWT Authentication, RESTful APIs
+  [L38] ### Apna Buzz
+  [L39] - Designed and developed a fully responsive and customizable website template tailored for businesses.
+  [L40] - Implemented a modern UI/UX with dynamic content sections, smooth navigation, and fast performance.
+  [L41] - Ensured scalability and easy customization, enabling businesses to adapt the template to their specific needs
+  [L42] ## Technical Skills
+  [L43] - Jquery, ajax, mysql
+  [L44] - Html, css, javascript
+  [L45] - Mongodb, express, node.js
+  [L46] - React / node.js / apis
+  [L47] ## Soft Skills
+  [L48] - Problem solving skills
+
+[cand_06_hasib_aslam] Hasib Aslam
+  [L1] **BS Computer Science | National University of Sciences and Technology (NUST)**
+  [L2] NUST H-12, Attar-1 boys hostel, Islamabad, Pakistan | +923082530653 | hasibaslam4152@gmail.com
+  [L3] ## Professional Profile
+  [L4] A full stack web developer looking for a productive envirnoment to have hands on
+  [L5] experience of converting ideas to reality
+  [L6] ## Education
+  [L7] - BS in Computer Science School of Electrical Engineering and Computer Science , 3.83
+  [L8] - FSc Pre Engineering Punjab College , 1085/1100 (2021)
+  [L9] - Matric Haider Memorial School , 1045/1100 (2019)
+  [L10] - Semester Exchange Program Linnaeus University , Passed With Distinction (2023)
+  [L11] ## Work & Internship Experience
+  [L12] ### TUKL
+  [L13] **25-Jul-2022 - 09-Sep-2022**
+  [L14] - learned basics of Machine Learning Deep Learning developed a Cat and Dog Classifier with 98% accuracy worked on Document AI
+  [L15] ### Lakehead University, Canada
+  [L16] **04-Jun-2024 - 02-Sep-2024**
+  [L17] - Identify relevant public EEG data sets that are collected with diﬀerent types of stimuli and tasks.
+  [L18] - Determine the relevance and usefulness of the activities for EEG authentication.
+  [L19] - Use basic digital processing techniques to obtain noise free data sets to be used for the authentication study.
+  [L20] - Perf
+  [L21] ## Projects
+  [L22] ### Hotel Booking and Management Website
+  [L23] - A online platform where you can book the apartments in hotels and also put your own to be rented out.
+  [L24] - It is developed using Express js , React js along with next js.
+  [L25] - MYSQL is used as database to developed this app.
+  [L26] - Hotel Owners can come and register themselves.
+  [L27] - They then register their hotels.
+  [L28] - Available
+  [L29] ### Shared Room Expense Management App
+  [L30] - A web based solution for the people living in shared accomodations.
+  [L31] - It allows roommates to eﬀectively manage the expense at ease.
+  [L32] - All they have to do is to register a room and set its entry key and master key.
+  [L33] - The master key is of great signiﬁcance and you can add or delete the roommates or level current bi
+  [L34] ### Cricket Players Profile App
+  [L35] - This app was built in using c++ data structures.
+  [L36] - It basically allowed user to search any player in database with search complexity O(1).
+  [L37] - It used multilevel hashtables (a entry in hashtable points to three other hashtable and so on) to reduce the search cost and move across diﬀerent formats such as t20,odi an
+  [L38] ### Facebook Page Media Controller
+  [L39] - A MERN stack website that allows user to register and then upload the content to the facebook page.
+  [L40] - It supports both images and videos upload to the facebook page remotely from the website .
+  [L41] - It uses Graph Api from meta to access pages using page page access token.
+  [L42] ## Technical Skills
+  [L43] - Web development frameworks
+  [L44] - Front end web development
+  [L45] - Python, keras
+  [L46] - Html, css, javascript
+  [L47] - Mern development
+  [L48] - Database (mysql)
+  [L49] - C++
+  [L50] ## Soft Skills
+  [L51] - Graphics designing
+  [L52] - Project and team management
+  [L53] - Leadership qualities
+
+[cand_07_haram_nasir] Haram Nasir
+  [L1] **BS Computer Science | National University of Sciences and Technology (NUST)**
+  [L2] SIALKOT, DEFENCE, ROAD, KHOKHAR TOWN, , STREET NO.NO.4, KHOKHAR, VILLA, HOUSE A68, Sialkot, Pakistan | +923202100427 | hagridpotter24@gmail.com
+  [L3] ## Professional Profile
+  [L4] Please update objective section.
+  [L5] ## Education
+  [L6] - BS in Computer Science School of Electrical Engineering and Computer Science , 3.12
+  [L7] - Bachelors of Computer Science National University of Sciences and Technology , 3.12 (2021)
+  [L8] ## Work & Internship Experience
+  [L9] ### Victreat Health Tech pvt ltd
+  [L10] **24-Oct-2024 - 28-Feb-2025**
+  [L11] - Was involved in writing python scripts to scrape data from medical conferences/abstracts using scrapy framework and palywright
+  [L12] ## Projects
+  [L13] ### National Science Bee Gyara Website
+  [L14] - Developed the oﬃcial website for NUST Science Society’s Science Bee event.
+  [L15] - Deployed at: https://sb-gyara.vercel.app
+  [L16] ## Technical Skills
+  [L17] - Typescript
+  [L18] - Web scraping
+  [L19] - Javascript (es6)
+  [L20] - Nodejs
+  [L21] - Front end web development
+  [L22] - Html/css 5
+  [L23] - Docker
+  [L24] - Reactjs
+  [L25] ## Soft Skills
+  [L26] - Web engineering (mean stack)
+  [L27] - Team workship
+  [L28] - Coding
+  [L29] - Communication skills
+  [L30] - Self-management skills
+  [L31] - Software debugging
+  [L32] - Graphics designing
+  [L33] - Leadership and communication
+
+[cand_08_muhammad_rouhan_faisal] Muhammad Rouhan Faisal
+  [L1] **BS Computer Science | National University of Sciences and Technology (NUST)**
+  [L2] Lahore, Pakistan | +923019068072 | rouhan.faisal1@gmail.com
+  [L3] ## Professional Profile
+  [L4] A technology enthusiast with experience in web development, artiﬁcial intelligence, and
+  [L5] deep learning. Proﬁcient in MERN, Next.js, and Flask for building web applications.
+  [L6] Currently expanding expertise in cloud computing by learning AWS and pursuing the
+  [L7] AWS Solutions Architect certiﬁcation. Passionate about leveraging AI and scalable
+  [L8] cloud solutions to develop innovative and efficient applications.
+  [L9] ## Education
+  [L10] - BS in Computer Science School of Electrical Engineering and Computer Science , 3.53
+  [L11] - BSCS School of Electrical Engineering and Computer Science , 3.53 (2025)
+  [L12] ## Work & Internship Experience
+  [L13] ### Cosmotech Technologies
+  [L14] **01-Jul-2024 - 01-Sep-2024**
+  [L15] - Assisted a 4-person team in developing a web application that simpliﬁes the tender/procurement process, potentially reducing processing time by 60%.
+  [L16] - Contributed to the development of the front-end user interface using ReactJS, ensuring a user-friendly and intuitive experience for tender participants.
+  [L17] ### CHKK
+  [L18] **01-Dec-2024 - 30-Apr-2025**
+  [L19] - Assisting in designing scalable and eﬃcient system architectures, gaining hands-on experience in cloud infrastructure and solution design.
+  [L20] - Learning about Kubernetes for container orchestration, including deployment strategies, service management, and cluster scaling.
+  [L21] - Collaborating with the team to ana
+  [L22] ## Projects
+  [L23] ### CaseCobra
+  [L24] - Developed a full-stack web application that allows users to browse and order pre-designed mobile cases or upload their own images to create custom cases.
+  [L25] - Implemented a seamless user experience with Next.js for fast and responsive UI, ensuring smooth navigation and eﬃcient case customization.
+  [L26] - Integra
+  [L27] ### Chat Application
+  [L28] - Developed a real-time chat application using the MERN stack (MongoDB, Express, React, Node.js) to facilitate communication for up to 100 concurrent users.
+  [L29] - Implemented functionalities for 100 users to engage in seamless direct messaging and group chats, fostering real-time collaboration.
+  [L30] - Leveraged Socke
+  [L31] ### Research on FusionRAG – NUST Alpha at RIRAG 2025
+  [L32] - Contributed to the development of FusionRAG, a Retrieval-Augmented Generation (RAG) system designed to enhance regulatory document retrieval and question answering.
+  [L33] - Integrated OpenAI embeddings, BM25, FAISS, and a custom rank fusion strategy to combine lexical and semantic retrieval for improved accuracy and
+  [L34] ## Technical Skills
+  [L35] - Python socket programming
+  [L36] - Big data analytics
+  [L37] - Nodejs
+  [L38] - Flask
+  [L39] - Mongodb (database)
+  [L40] - Express, nodejs
+  [L41] - Reactjs
+  [L42] - Poetry
+  [L43] ## Soft Skills
+  [L44] - Team workship
+  [L45] - Analytical thinking
+  [L46] - Teamwork, flexibility
+  [L47] - Team management
+  [L48] - Leadership and communication
+  [L49] - Flexibility and adaptability
+  [L50] - Effective leadership and manag
+
+[cand_09_hafiz_ahmed_hassan_chohan] Hafiz Ahmed Hassan Chohan
+  [L1] **BS Computer Science | National University of Sciences and Technology (NUST)**
+  [L2] GHAZALI JUNIOR, CAMPUS PHALIA:MAIN GUJRAT, MANDIBAHAUDDIN ROAD., Phalia, Pakistan | +923204740533 | ahmedhsn710@gmail.com
+  [L3] ## Professional Profile
+  [L4] I am a Machine Learning Engineer with a deep passion for research in Computer
+  [L5] Vision (CV) and Deep Learning (DL). My
+  [L6] research journey began with a strong curiosity about AI’s ability to solve real-world
+  [L7] problems, leading me to work on various
+  [L8] impactful projects.
+  [L9] As a Research Assistant at PakThai Lab, I collaborated on developing a real-time
+  [L10] traffic violation detection system, which fueled
+  [L11] my interest in applying AI to smart cities. Additionally, I contributed to projects like a
+  [L12] web-based medical data annotation
+  [L13] platform, aimed at automating fracture detection in X-rays, and a landmark detection
+  [L14] system for autonomous drones.
+  [L15] I am particularly driven by the potential of AI to transform industries, and I aim to
+  [L16] continue pushing the boundaries of AI
+  [L17] research, while working towards publishing my ﬁrst research paper. My focus is on
+  [L18] innovative projects that bridge theory with
+  [L19] real-world applications in autonomous systems, healthcare, and urban technologies.
+  [L20] ## Education
+  [L21] - BS in Computer Science School of Electrical Engineering and Computer Science , 3.62
+  [L22] - Computer Science SEECS , 3.62 (2025)
+  [L23] ## Work & Internship Experience
+  [L24] ### Signal and Machine Learning Lab
+  [L25] **08-May-2023 - 28-Jul-2023**
+  [L26] ### InLights
+  [L27] **04-Mar-2024 - 24-May-2024**
+  [L28] ### PakThai Lab NUST
+  [L29] **01-May-2024 - 31-Mar-2025**
+  [L30] ### Walee Technologies
+  [L31] **13-May-2024 - 27-Apr-2025**
+  [L32] ## Projects
+  [L33] ### Gesture-Controlled Snake Game
+  [L34] - Developed a gesture-controlled snake game using OpenCV and pygame, oﬀering a hands-free gaming experience through real-time hand gesture detection.
+  [L35] - Integrated cvzone for real-time hand tracking and gesture recognition, providing responsive and intuitive gameplay.
+  [L36] ### Convert to EBooks
+  [L37] - Created a system to convert physical book images or PDFs into fully formatted eBooks using deep learning and OCR technologies.
+  [L38] - Trained a deep neural network for segmentation, accurately extracting text from diverse fonts and layouts.
+  [L39] - Follow-up work based on the paper: Shafait, F., & Smith, R. (2010).
+  [L40] ### ANPR– Automatic Number Plate Recognition System
+  [L41] - Developed a real-time ANPR system using computer vision and deep learning, accurately detecting and recognizing vehicle license plates.
+  [L42] - Built a robust image processing pipeline using OpenCV and integrated it with easy-ocr for character recognition, achieving reliable performance under various lighting an
+
+[cand_10_muhammad_aleem_siddique_khan] Muhammad Aleem Siddique Khan
+  [L1] **BS Computer Science | National University of Sciences and Technology (NUST)**
+  [L2] MOHALLA PURANA, KHOO WALA, MUSA KHEL, , DISTRICT MIANWALI, Sargodha, Pakistan | +923167870549 | aleem.siddique.niazi@gmail.com
+  [L3] ## Professional Profile
+  [L4] A computer scientist with a strong grip on the fundamentals. I aspire to become a
+  [L5] constructive part of the society, working to serve humanity with my skills.
+  [L6] ## Education
+  [L7] - BS in Computer Science School of Electrical Engineering and Computer Science , 3.15
+  [L8] ## Work & Internship Experience
+  [L9] ### NUST
+  [L10] **01-Mar-2024 - 01-Sep-2024**
+  [L11] - I worked as a research intern under the supervision of an Associate Professor on a project titled, "URL Classiﬁcation Using Atiﬁcial Intelligence".
+  [L12] - The project aimed to develop an AI model capable of classifying a given URL into its category.
+  [L13] - I gained hands on experience with different Machine Learning and
+  [L14] ## Technical Skills
+  [L15] - Data engineering
+  [L16] - Big data analytics
+  [L17] - Operating systems
+  [L18] - Python/java/c++/octave
+  [L19] - Cryptanalysis
+  [L20] - Convolutional neural networks
+  [L21] - Recurrent neural networks
+  [L22] - Computer vision
+
+[cand_11_muhammad_ahad_sajjad] Muhammad Ahad Sajjad
+  [L1] **BS Computer Science | National University of Sciences and Technology (NUST)**
+  [L2] HOUSE NO.1, MEHTAB, STREET, TAJ BAGH, HOUSINGSOCIETY, , HARBANSPURA, LAHORE., Lahore, Pakistan | +923330497823 | imahadsajjad@gmail.com
+  [L3] ## Professional Profile
+  [L4] To leverage my expertise in UI/UX design and user-centered methodologies to create
+  [L5] impactful digital experiences that enhance user engagement and satisfaction, while
+  [L6] continuously honing my skills in a dynamic and innovative environment. My unique
+  [L7] goal is to design experiences that not only meet user needs but also create lasting
+  [L8] impressions and memorable interactions.
+  [L9] ## Education
+  [L10] - BS in Computer Science School of Electrical Engineering and Computer Science , 2.94
+  [L11] - BS Computer Science National University of Sciences and Technology (NUST) , 2.97 (2025)
+  [L12] - Intermediate in Computer Science Punjab Group of Colleges , 97.4% (2021)
+  [L13] ## Work & Internship Experience
+  [L14] ### Reviva
+  [L15] **04-Jul-2024 - 21-Dec-2024**
+  [L16] - Designed and developed an embedded kiosk and mobile app for wellness monitoring using neuro-symbolic AI, boosting user retention by 75%.
+  [L17] - Conducted extensive user research, including surveys and interviews, leading to a 25% reduction in onboarding time.
+  [L18] - Spearheaded branding eﬀorts across platforms, enhancin
+  [L19] ### NorenzTech
+  [L20] **06-Oct-2024 - 07-Dec-2024**
+  [L21] - Created HeroCV, an AI-powered resume builder, increasing user engagement by 70%.
+  [L22] - Designed AptScout, an apartment listing platform, improving user engagement by 40% and reducing bounce rates by 70%.
+  [L23] - Developed SubventureDirecte, a grant application platform, integrating AI-driven features to boost application
+  [L24] ### N-Rays
+  [L25] **08-Jun-2023 - 08-Aug-2023**
+  [L26] - Revitalized the UI/UX of the company’s website and e-commerce platform, achieving a 30% boost in customer satisfaction.
+  [L27] - Conducted usability testing and interviews, providing actionable insights that reduced customer support inquiries by 40%.
+  [L28] - Authored a UX research report that increased cross-functional adop
+  [L29] ## Projects
+  [L30] ### Interactive Wellness Monitoring System
+  [L31] - Designed a kiosk and mobile app integrating neuro-symbolic AI for health tracking, achieving a 25% reduction in onboarding time.
+  [L32] ### HeroCV
+  [L33] - Conceptualized and launched an AI-powered resume creation platform, enhancing user retention by 30%.
+  [L34] ### AptScout
+  [L35] - Streamlined apartment hunting with optimized ﬁltering options, leading to a 40% increase in user engagement.
+  [L36] ### SubventureDirecte
+  [L37] - Designed an AI-driven grant application platform, improving application completion rates by 35%.
+  [L38] ## Technical Skills
+  [L39] - Photoshop cc
+  [L40] - Indesign
+  [L41] - Design principles
+  [L42] - Web design and developmnt
+  [L43] - Logo designing
+  [L44] - Design thinking
+  [L45] - Prototyping
+  [L46] - Product design
+  [L47] ## Soft Skills
+  [L48] - Strategic communications
+  [L49] - Analytical thinking
+  [L50] - Communication skills
+  [L51] - Graphics designing
+  [L52] - Leadership and communication
+  [L53] - Communication and presentation
+  [L54] - Attention to detail
+  [L55] - Flexibility and adaptability
+
+[cand_12_iqra_rasool] Iqra Rasool
+  [L1] **BS Computer Science | National University of Sciences and Technology (NUST)**
+  [L2] 20 East Scheme No.2, Farid town, Sahiwal, Pakistan | +923146914161 | iqrarasool45@gmail.com
+  [L3] ## Professional Profile
+  [L4] A dedicated and motivated computer science student with a strong foundation in
+  [L5] database design, frontend web application development, Python and C++. Supportive
+  [L6] and enthusiastic team player dedicated to apply skills and knowledge to real-world
+  [L7] projects and continue to grow as a computer scientist.
+  [L8] ## Education
+  [L9] - BS in Computer Science School of Electrical Engineering and Computer Science , 3.06
+  [L10] - BS Computer Science National University of Science and Technology , 3.06/4.00 (2025)
+  [L11] - Higher Secondary Diploma (Pre-Eng) The Educators College , 1089/1100 (2021)
+  [L12] - Secondary Diploma Divisional Public School , 1066/1100 (2019)
+  [L13] ## Work & Internship Experience
+  [L14] ### Freelancer
+  [L15] **01-Dec-2019 - 03-Mar-2025**
+  [L16] - Maintaining database for clients using MySQL and Oracle.
+  [L17] - Designing logos for clients using Canva.
+  [L18] - Designing and Building pages using HTML and CSS.
+  [L19] - Apply expertise in Microsoft Oﬃce applications to create Word documents, built spreadsheets, prepare PowerPoint slides for clients.
+  [L20] - Research and write on
+  [L21] ### United Bank Limited (Customer Services and Sales Intern)
+  [L22] **12-Jun-2024 - 23-Jul-2024**
+  [L23] - Got a chance to get experience of sales and customer services department at United Bank Limited (UBL) Pakistan.
+  [L24] - Worked closely for people, understanding their concerns and communicating with them.
+  [L25] ## Projects
+  [L26] ### DROWSINESS DETECTION SYSTEM (FYP)
+  [L27] - Developing a system to detect drowsiness of a person on the basis of eye closure, yawning and head tilting.
+  [L28] - Model is trained to detect faces from video stream using YOLOv8 model and then these detected faces are sent to 68-points Face Landmark Detection algorithm of Dlib for further calculations of EAR, MAR a
+  [L29] ### SALARY MANAGEMENT SYSTEM
+  [L30] - Developed a small level system to manage the salaries of employees using JavaScript, Node.js, MySQL and sequelizer to connect.
+  [L31] - Main features include adding and removing employees by admin and managing their salaries according to their posts, annual increments, bonuses and reductions.
+  [L32] ### SEARCH ENGINE
+  [L33] - Developed a search engine using various sorting algorithms and tree structures for eﬀective searching.
+  [L34] ### HomeDoc WEB APPLICATION
+  [L35] - A web application where you can look for doctors and paramedics in your area and call them for your services.
+  [L36] - The frontend is using react, HTML, CSS, JavaScript and Bootstrap.
+  [L37] - Backend is using Node.js and MySQL for database, connected using sockets.
+  [L38] - Map is also used to ﬁnd paramedics in your area.
+  [L39] ## Technical Skills
+  [L40] - Agile and waterfall methods
+  [L41] - Distributed systems
+  [L42] - Python socket programming
+  [L43] - Big data analytics
+  [L44] - Web development frameworks
+  [L45] - Operating systems
+  [L46] - Game designing on unity
+  [L47] - Cryptanalysis
+  [L48] ## Soft Skills
+  [L49] - Strategic communications
+  [L50] - Korean language (beginner)
+  [L51] - Team workship
+  [L52] - Analytical thinking
+  [L53] - Coding
+  [L54] - Logical and conceptual learner
+  [L55] - Strong work ethics
+  [L56] - Managing multiple priorities
+
+[cand_13_muhammad_uzair_khan] Muhammad Uzair Khan
+  [L1] **BS Computer Science | National University of Sciences and Technology (NUST)**
+  [L2] 29/2 GULRAIZ, COLONY, PUL BARARAN, MDA, ROAD, Multan, Pakistan | +923061231795 | jerry.khan7886@gmail.com
+  [L3] ## Professional Profile
+  [L4] Driven Full-Stack Developer Seeking to Build Scalable, User-Centric Applications by
+  [L5] Leveraging Expertise in Modern Web Technologies and Creative Problem-Solving
+  [L6] ## Education
+  [L7] - BS in Computer Science School of Electrical Engineering and Computer Science , 3.25
+  [L8] ## Work & Internship Experience
+  [L9] ### Shadiyana
+  [L10] **10-Jun-2024 - 10-Sep-2024**
+  [L11] - During my internship at Shadiyana.pk , I contributed to enhancing the platform by adding new vendor categories to both the web-based user portal (built with Next.js) and the vendor app (React Native).
+  [L12] - I developed and integrated RESTful APIs using Express.js, enabling seamless communication between the fronten
+
+[cand_14_jatindar_kumar_mamnani] Jatindar Kumar Mamnani
+  [L1] **BS Computer Science | National University of Sciences and Technology (NUST)**
+  [L2] FLAT#37 ROSHAN, PLAZA MIRPURKHAS DISTRICT, SINDHMIRPURKHAS, Mirpurkhas, Pakistan | +923323117380 | jatindark906@gmail.com
+  [L3] ## Professional Profile
+  [L4] Skilled and Innovative Computer Vision Researcher with proven expertise in designing
+  [L5] and implementing ML models for autonomous systems. Skilled in Python, PyTorch,
+  [L6] and TensorFlow, with a strong track record in deep learning and multitask learning
+  [L7] projects. Seeking opportunities to further advance machine learning capabilities in real-
+  [L8] world applications.
+  [L9] ## Education
+  [L10] - BS in Computer Science School of Electrical Engineering and Computer Science , 2.93
+  [L11] - Bachelor of Science in Computer Science National University of Sciences and Technology , (2025)
+  [L12] ## Work & Internship Experience
+  [L13] ### Vision Research and development company
+  [L14] **24-Jun-2024 - 24-Sep-2024**
+  [L15] - Conduct research on the applications of computer vision and data science in Autonomous cars
+  [L16] - Design and implement ML models and algorithms
+  [L17] - Assist in collecting and preprocessing relevant datasets
+  [L18] - Contribute to the development and refinement of ML models and algorithms
+  [L19] - Document findings, metho
+  [L20] ### CodSoft
+  [L21] **25-Jul-2024 - 25-Sep-2024**
+  [L22] - Communicate with managers to set up campus computers used on campus
+  [L23] - Assess and troubleshoot computer problems brought by students, faculty and staﬀ
+  [L24] - Maintain upkeep of computers, classroom equipment, and 200 printers across campus
+  [L25] ## Projects
+  [L26] ### Prompt-No-Code Website Assistant
+  [L27] - Developed an AI-powered no-code chatbot assistant that extracts contextual insights from website URLs for automated responses.
+  [L28] - Engineered an LLM-driven chatbot system using FastAPI, enabling real-time, context-aware user interactions.
+  [L29] - Optimized API-driven chatbot responses for accuracy, automatio
+  [L30] ### SemEval-Task-8-Table Answering
+  [L31] - Built a tabular QA system using transformer-based NLP for structured data retrieval.
+  [L32] - Implemented text-to-SQL conversion using pre-trained language models to generate structured queries.
+  [L33] - Conducted model evaluation using accuracy, precision, recall, and execution latency benchmarks.
+  [L34] - Addressed NLU
+  [L35] ### VQA-Based-Medical-Advisor
+  [L36] - Developed a medical visual question-answering system using CNNs for image features and LSTMs/Transformers for text queries.
+  [L37] - Implemented multimodal fusion to combine image and text features.
+  [L38] - Trained and evaluated on the VQA-Med dataset, using accuracy, BLEU, and METEOR metrics.
+  [L39] - Tackled challen
+  [L40] ### A Video Based Multi-Task Learning Model for Autonomous Driving
+  [L41] - Developed a cutting-edge multitask learning model for real-time autonomous driving.
+  [L42] - Engineered to perform semantic segmentation, lane detection, and object detection on edge devices with high performance.
+  [L43] - Achieved 82.4% mIoU on the VIL-100 validation set for lane segmentation.
+  [L44] - Demonstrated str
+  [L45] ## Technical Skills
+  [L46] - Python socket programming
+  [L47] - Cuda
+  [L48] - Python and bash scripting
+  [L49] - Web scraping
+  [L50] - Computer vision
+  [L51] - Data science
+  [L52] - Flask
+  [L53] - Contrcat management
+  [L54] ## Soft Skills
+  [L55] - Multi tasking
+  [L56] - Group work
+
+[cand_15_abdul_basit] Abdul Basit
+  [L1] **BS Computer Science | National University of Sciences and Technology (NUST)**
+  [L2] HOSUE # 88/89 A, Street # 2 bismillah park sillanwali, road, Sargodha, Pakistan | +923487487565 | qazi1815@gmail.com
+  [L3] ## Professional Profile
+  [L4] A passionate computer science student with a strong foundation in programming,
+  [L5] software development and artificial
+  [L6] intelligence. Committed to continuous learning and eager to tackle real-world
+  [L7] challenges, with a focus on creating
+  [L8] innovative solutions and collaborating with industry experts.
+  [L9] ## Education
+  [L10] - BS in Computer Science School of Electrical Engineering and Computer Science , 2.96
+  [L11] - Bachelors of Science in Computer Science National University of Sciences and Technology , 2.97 (2025)
+  [L12] ## Work & Internship Experience
+  [L13] ### Texagon (Frontend Development Internship)
+  [L14] **03-Jul-2024 - 13-Sep-2024**
+  [L15] - Learning the basics of HTML5, ReactJS, ECMAScript.
+  [L16] - Understanding the operations of Git and GitHub
+  [L17] - Comprehending the importance of communication in corporate culture.
+  [L18] ### National University of Sciences and Technology (Research Intern)
+  [L19] **03-Jul-2024 - 30-May-2025**
+  [L20] - Working under the supervision of Dr. Muhammad Zeeshan to develop an AI model capable of classifying URLs into diﬀerent categories.
+  [L21] - Conducted extensive research on data mining, data collection, and preprocessing techniques.
+  [L22] - Explored various machine learning classifiers and tokenization methods to
+  [L23] ## Projects
+  [L24] ### Orphanage Management System
+  [L25] - Developed an all-around management system that deals with all kinds of users associated with orphanages.
+  [L26] - Used SQLite database to store and retrieve information of the users.
+  [L27] - Used Laravel to develop the backend of the system
+  [L28] ### GetHired
+  [L29] - Developed a job platform intended for job seekers and employers.
+  [L30] - Job Seeker can see the jobs, check status of the jobs, use ﬁlters to easily search for the jobs.
+  [L31] - Employer can post the jobs, can check who has applied for the jobs, can reject or accept the job seekers depending upon the profile.
+  [L32] ### Traffic Lights Detection and Recognition System
+  [L33] - Used convolutional neural network called Faster RCNN.
+  [L34] - Trained using traﬃc light images gathered in Islamabad city to detect the state of a traffic light autonomously.
+  [L35] ## Technical Skills
+  [L36] - Reactjs
+  [L37] - Html, css, ajax, javascript
+  [L38] - Mongodb, express, node.js
+  [L39] - Google firebase platform
+  [L40] ## Soft Skills
+  [L41] - Team workship
+  [L42] - Team management
+  [L43] - Problem solving skills
+
+[cand_16_mehar_ali_ahmed] Mehar Ali Ahmed
+  [L1] **BS Computer Science | National University of Sciences and Technology (NUST)**
+  [L2] E-3 DHA EME SOCIETY, LAHORE PAKISTAN, Lahore, Pakistan | +923447775558 | meharaliahmed@gmail.com
+  [L3] ## Professional Profile
+  [L4] Please update objective section.
+  [L5] ## Education
+  [L6] - BS in Computer Science School of Electrical Engineering and Computer Science , 3.62
+  [L7] - Global UGRAD Exchange Semester Saginaw Valley State University , 3.55 (2023)
+  [L8] - A-levels Lahore Grammar School Johar Town , 5 A*s (2021)
+  [L9] - O-levels Beaconhouse School System , 9 A*s, 1 A (2019)
+  [L10] ## Work & Internship Experience
+  [L11] ### Terra Nova Ventures
+  [L12] **08-Jul-2024 - 30-Sep-2024**
+  [L13] - Conducted research and development on a chatbot, enhancing conversational AI capabilities.
+  [L14] - Collected and analyzed U.S. zonal data for real estate and market insights.
+  [L15] ### General Secretary, International Students Club
+  [L16] **23-Aug-2023 - 16-Dec-2023**
+  [L17] - Collaborated with the Oﬃce of International Programs to lead a diverse group of 30 international students.
+  [L18] ### AIESEC
+  [L19] **03-Jan-2023 - 30-Sep-2023**
+  [L20] - Director Strategic Management, Marketing
+  [L21] - Developed eﬀective marketing strategies increasing sign ups by 40%.
+  [L22] - Designed an easy-to-use tracker to monitor exchange sign-ups.
+  [L23] - Participated in physical marketing stalls and PR campaign enhancing brand visibility by 20%.
+  [L24] ## Projects
+  [L25] ### Community Development Initiative
+  [L26] - Secured a $400 grant under the Global UGRAD Alumni Small Grants Award.
+  [L27] - Partnered with The Noor Project, a local NGO school, to support underserved students.
+  [L28] - Distributed essential stationery items to 70 students while conducting interactive educational activities.
+  [L29] ### Writing Style Analysis Task
+  [L30] - RoBERTa ﬁne-tuned with Low Rank Adaptation to detect change in writing style at paragraph level achieved an F1 Score of 0.80.
+  [L31] ### LandUseAI Advisor
+  [L32] - A Gemini-powered chatbot that delivers personalized land-use recommendations using a Retrieval- Augmented Generation (RAG) approach.
+  [L33] ### Hotel Recommendation System
+  [L34] - A content-based recommendation system model that utilizes TF-IDF scores to extract top tags for hotels from the Hotel Reviews Dataset.
+  [L35] ## Technical Skills
+  [L36] - Data engineering
+  [L37] - Big data analytics
+  [L38] - Digital marketing
+  [L39] - Data science
+  [L40] - Data analysis
+  [L41] - Python, keras
+  [L42] - Proficient in c & c++
+  [L43] - Mongodb
+  [L44] ## Soft Skills
+  [L45] - Statistical data analysis
+  [L46] - Empathy
+  [L47] - Creativity
+  [L48] - Strategic communications
+  [L49] - Teamwork & collaboration
+  [L50] - Leadership qualities
+
+[cand_17_ghulam_hussain_khan_sherwani] Ghulam Hussain Khan Sherwani
+  [L1] **BS Computer Science | National University of Sciences and Technology (NUST)**
+  [L2] AFGHAN HOUSE 92/A, BILAL COLONY, jhal road, Sahiwal, Pakistan | +923135977381 | ghulamhussainsherwani@gmail.com
+  [L3] ## Professional Profile
+  [L4] 6th semester BSCS student proficient in MERN stack, web dev, ML/DL. Seeking role in
+  [L5] innovative web & AI/ML projects to advance skills.
+  [L6] ## Education
+  [L7] - BS in Computer Science School of Electrical Engineering and Computer Science , 3.35
+  [L8] - Matriculation The Educators Boys High School , 1062/1100 (2019)
+  [L9] - Intermediate Divisional Public School And Inter College , 1078/1100 (2021)
+  [L10] ## Projects
+  [L11] ### Techzone
+  [L12] - Project: TechZone (MERN Stack Online Computer and Accessories E-commerce Platform) Developed a user-friendly e-commerce website, "TechZone," enabling users to browse and purchase computers and accessories.
+  [L13] - Implemented shopping cart functionality, allowing users to add and manage items for purchase.
+  [L14] - Desig
+  [L15] ### Cricket Stats Guru (C++ Application)
+  [L16] - Created a comprehensive Cricket Stats Guru application in C++.
+  [L17] - Utilized Kaggle datasets to provide users with player-speciﬁc statistics, enabling searches by player name and detailed records by various parameters such as average, economy, wickets, runs, and strike rate.
+  [L18] - Demonstrated proficiency in data h
+  [L19] ### Unet Binarizer
+  [L20] - Led Unet Binarizer project for historical document binarization.
+  [L21] - Leveraged advanced image processing and AI techniques, including median blur and adaptive thresholding, with a U-Net model.
+  [L22] - Enhanced text clarity and extracted valuable information from degraded documents.
+  [L23] - Demonstrated expertise in traditional i
+  [L24] ## Technical Skills
+  [L25] - Mern stack
+  [L26] - Programming: java, c/c++, php
+  [L27] - Python, c++, java, javascript
+  [L28] ## Soft Skills
+  [L29] - Software debugging
+  [L30] - Mern stack web developer
+  [L31] - English speaking and writing
+
+[cand_18_abdul_rehman] Abdul Rehman
+  [L1] **BS Computer Science | National University of Sciences and Technology (NUST)**
+  [L2] HOUSE #486, ST #, 1/11, GOBIND PURA, , FAISALABAD., Faisalabad, Pakistan | +923176333651 | abdulrehmanaamir21@gmail.com
+  [L3] ## Professional Profile
+  [L4] Enthusiastic and detail-oriented Computer Science student with a strong foundation in
+  [L5] software
+  [L6] development, data analysis, and machine learning. Proﬁcient in various programming
+  [L7] languages and tools,
+  [L8] with a keen interest in developing innovative solutions to complex problems. Excellent
+  [L9] problem-solving skills,
+  [L10] a collaborative mindset, and a passion for learning new technologies. Eager to
+  [L11] leverage technical skills and
+  [L12] academic knowledge to contribute to impactful projects and drive technological
+  [L13] advancements in a dynamic
+  [L14] work environment
+  [L15] ## Education
+  [L16] - BS in Computer Science School of Electrical Engineering and Computer Science , 3.12
+  [L17] - Bs Cs Seecs Nust , 3.12 (2025)
+  [L18] - Fsc Pre Engineering Punjab College of Science , 1094 (2021)
+  [L19] ## Work & Internship Experience
+  [L20] ### High Performance Lab Seecs Nust
+  [L21] **15-Jun-2024 - 15-Aug-2024**
+  [L22] - Fine-tuning Pre-trained LLMs – Optimized large language models for speciﬁc tasks.
+  [L23] - LLM API Utilization – Integrated various LLM APIs to build real-time AI applications.
+  [L24] - Project Development: News Chatbot – Built an AI-driven chatbot for real-time news updates.
+  [L25] - Presentation Generator – Developed an autom
+  [L26] ## Projects
+  [L27] ### Semantic based image search engine using Solr
+  [L28] - Developed a semantic-based image search engine using Apache Solr to eﬃciently retrieve images based on textual descriptions.
+  [L29] - Utilized the Flickr30k dataset and integrated the CLIP model for generating feature vectors of images.
+  [L30] - Implemented robust search functionality that improved image retrieval acc
+  [L31] ### Search engine like google
+  [L32] - Designed and implemented a web page search engine integrating multiple technologies for eﬃcient information retrieval.
+  [L33] - Employed a Crawler and Bloom Filter to collect and ﬁlter URLs, storing data for processing with BERT and PageRank algorithms.
+  [L34] - Utilized TF-IDF for term weighting, Apache Solr for in
+  [L35] ### Stock predictor using LSTM
+  [L36] - Developed a stock price predictor using Long Short-Term Memory (LSTM) neural networks to forecast next-day prices.
+  [L37] - Implemented data preprocessing, feature engineering, and model training to ensure high prediction accuracy.
+  [L38] - Integrated the predictor into a user-friendly interface, enabling real-time pre
+  [L39] ## Technical Skills
+  [L40] - Agile and waterfall methods
+  [L41] - Distributed systems
+  [L42] - Python socket programming
+  [L43] - Big data analytics
+  [L44] - Web development frameworks
+  [L45] - Operating systems
+  [L46] - Apache spark
+  [L47] - Jquery
+  [L48] ## Soft Skills
+  [L49] - Strategic communications
+  [L50] - Opp and design patterns
+  [L51] - Database design (sql,mongodb)
+  [L52] - C
+  [L53] - Team workship
+
+[cand_19_abdullah_khan] Abdullah Khan
+  [L1] **BS Computer Science | National University of Sciences and Technology (NUST)**
+  [L2] H # E-29, ST # 4, PHASE, # 4, OFFICERS COLONY, WAH, CANTT., Wah cantt, Pakistan | +923022222363 | abdullah.khan936@outlook.com
+  [L3] ## Professional Profile
+  [L4] To grow as an individual which adds value to any organisation I am associated with.
+  [L5] ## Education
+  [L6] - BS in Computer Science School of Electrical Engineering and Computer Science , 2.63
+  [L7] - Bachelor of Computer Science School of Electical Engineering and Computer Sciences , (2025)
+  [L8] ## Work & Internship Experience
+  [L9] ### Communication Systems and Network Lab
+  [L10] **03-Jul-2023 - 31-Aug-2023**
+  [L11] - Developed a machine learning model using Polynomial Regression to predict battery life cycles for UAVs in disaster management applications, improving predictive accuracy by 23% as measured by a custom dataset from 29 ﬂights.
+  [L12] - Created a model using Semantic Segmentation via Unet, that detects buildings
+  [L13] ### RoadGauge Ltd
+  [L14] **01-Jul-2024 - 31-Dec-2024**
+  [L15] - Worked on point cloud processing using open3d in Python, adding modules and optimizing the road asset pipeline.
+  [L16] - Created a ﬁltering system based on distance thresholds and normal vectors to enhance precision by segregating points relative to identified planes. Actively helping in identifying parked ca
+  [L17] ## Projects
+  [L18] ### Code 'o Clock 2022
+  [L19] - A workshop successfully executed under banner of Association of Computing Machines (ACM NUST) as Event head.
+  [L20] ### Dev Fest 21
+  [L21] - Part of on ground team for Dev Fest 2021 under banner of ACM NUST
+  [L22] ## Technical Skills
+  [L23] - Proficient in c & c++
+  [L24] - Html, css, javascript
+  [L25] - Tensorflow, keras, pytorch
+  [L26] - Open cv
+  [L27] - Python
+  [L28] ## Soft Skills
+  [L29] - Analytical thinking
+  [L30] - Communication skills
+  [L31] - Self-management skills
+
+[cand_20_ali_awais_safdar] Ali Awais Safdar
+  [L1] **BS Computer Science | National University of Sciences and Technology (NUST)**
+  [L2] H.NO.17, 18/E ALI, STREET, RIAZ AHMED, ROAD, SHALIMAR TOWN, Lahore, Pakistan | +923066112111 | pytwolfaliawais@gmail.com
+  [L3] ## Professional Profile
+  [L4] Aspiring computer scientist with a strong foundation in AI, machine learning, and
+  [L5] software development, seeking to leverage my expertise in advanced technologies like
+  [L6] NLP, deep learning, and blockchain to create innovative and impactful solutions. With
+  [L7] hands-on experience in developing medical diagnostic tools, resilient software
+  [L8] architectures, and multilingual AI models, I aim to contribute to cutting-edge projects
+  [L9] that bridge the gap between research and real-world applications. Passionate about
+  [L10] driving technological advancements and fostering inclusive innovation, I am committed
+  [L11] to utilizing my skills to address complex challenges and deliver meaningful outcomes
+  [L12] in a dynamic and collaborative environment.
+  [L13] ## Education
+  [L14] - BS in Computer Science School of Electrical Engineering and Computer Science , 2.96
+  [L15] - Bachelors in Computer Science School of Electrical Engineering and Computer Science , (2025)
+  [L16] - Pre Engineering Punjab College , (2021)
+  [L17] - Matriculation - Biology Garrison Boys High School , (2019)
+  [L18] ## Work & Internship Experience
+  [L19] ### Nanyang Technological University, Singapore
+  [L20] **01-Jul-2024 - 16-Aug-2024**
+  [L21] ### Vision Architech (Remote)
+  [L22] **08-Jul-2024 - 09-Sep-2024**
+  [L23] ### HPC Lab-SEECS
+  [L24] **25-Dec-2023 - 27-Dec-2024**
+  [L25] ### CarbonTeq
+  [L26] **03-Jun-2024 - 05-Jul-2024**
+  [L27] ### Software Productivity Strategists, Inc. (Remote)
+  [L28] **06-Nov-2023 - 05-Feb-2024**
+  [L29] ### Radar Research Lab, SINES
+  [L30] **02-Oct-2023 - 08-Jan-2024**
+  [L31] ## Projects
+  [L32] ### Enhancing Vehicle Routing with Time Windows: A Machine Learning-Driven Ant Colony Optimization Approach
+  [L33] - Authored a research paper focusing on integrating machine learning techniques with Ant Colony Optimization (ACO) to improve vehicle routing under time-window constraints.
+  [L34] - Presented the paper at the FIT 2024 Conference, showcasing innovative approaches to solving logistics and optimization challenges using AI
+  [L35] ### PATHVQA-VGG19-BERT-ATTENTION
+  [L36] - Developed a medical Visual Question Answering (VQA) system utilizing VGG-19 for image feature extraction and BERT for textual question processing.
+  [L37] - Incorporated attention mechanisms to enhance contextual understanding, facilitating accurate responses to complex medical queries.
+  [L38] - Created an interactive web int
+  [L39] ### Secure Information Handling with Blockchain
+  [L40] - Implemented secure data handling solutions using blockchain technology with cryptographic methods such as HMAC-SHA256 for hashing and RSA for encryption.
+  [L41] - Developed a decentralized ledger to ensure tamper-resistance and transaction verification in distributed environments.
+  [L42] ### DNS Client Efficient Design
+  [L43] - Engineered a sophisticated TypeScript-based DNS client with a modular, scalable architecture and robust error handling.
+  [L44] - Optimized performance using asynchronous processing and railway-oriented programming principles.
+  [L45] ## Technical Skills
+  [L46] - Data engineering
+  [L47] - Blackbox/whitebox testing
+  [L48] - Laptop repair
+  [L49] - Agile and waterfall methods
+  [L50] - Distributed systems
+  [L51] - Python socket programming
+  [L52] - Cuda
+  [L53] - Big data analytics
+  [L54] ## Soft Skills
+  [L55] - Financial ratio analysis
+  [L56] - Statistical data analysis
+  [L57] - Voracious reader
+  [L58] - Conflict management
+  [L59] - Team management skills
+  [L60] - Multi tasking
+  [L61] - Group work
+  [L62] - Communication oral/written
+
+[cand_21_prithvi_raj] Prithvi Raj
+  [L1] **BS Computer Science | National University of Sciences and Technology (NUST)**
+  [L2] Muhalla Shewani, , Ward#02, Umerkot, Pakistan | +923177116613 | prithviraj182002@gmail.com
+  [L3] ## Professional Profile
+  [L4] A proactive BS Computer Science student at the National University of Sciences and
+  [L5] Technology with a strong academic background and hands-on experience in
+  [L6] blockchain and Web3 development. Throughout my degree, I have worked on various
+  [L7] projects, building decentralized applications (DApps) and smart contracts using
+  [L8] Solidity, Hardhat, and Web3.js. My expertise extends to full-stack development with
+  [L9] React, Next.js, and Node.js, enabling me to create secure and scalable blockchain-
+  [L10] powered web applications. I possess strong leadership and communication skills, with
+  [L11] ﬂuency in English. Keen to pursue a career in blockchain development, decentralized
+  [L12] finance (DeFi), and Web3 innovations.
+  [L13] ## Education
+  [L14] - BS in Computer Science School of Electrical Engineering and Computer Science , 3.13
+  [L15] - Computer Science National University of Science and Technology , 3.13 (2025)
+  [L16] ## Work & Internship Experience
+  [L17] ### SKAI worldwide
+  [L18] **04-Mar-2025 - 04-Sep-2025**
+  [L19] - Software Engineer responsible for:
+  [L20] - Developing C programs (open-source based database), Management dashboards development and/or database tools development - Creating and updating technical writings - Debugging and testing code - Participating open-source project / community driven by SKAI Worldwide
+  [L21] ## Projects
+  [L22] ### Blockchain-based accreditation and degree verification system
+  [L23] - A blockchain-based system for issuing, verifying, and revoking academic credentials with immutability and real-time veriﬁcation using Hyperledger Besu and Solidity smart contracts.
+  [L24] - Used Hardhat & OpenZeppelin for smart contract testing and deployment, implementing Role-Based Access Control (RBAC) for
+  [L25] ### Blockchain Lottery system.
+  [L26] - Solidity, Ethereum, Web3.js, React.js, JavaScript, Node.js:
+  [L27] - Implemented the lottery logic using Solidity, including functions for player entry, random winner selection, and prize distribution
+  [L28] - Used Web3.js to connect the React frontend with the Ethereum blockchain, allowing users to participate in the lo
+  [L29] ### Breakout Clone.
+  [L30] - Cloned oﬃcial breakout.com.pk website MERN
+  [L31] - Cloned the user interface of breaktout.com.pk using React.js for a dynamic and responsive design.
+  [L32] - Developed backend logic and APIs with Node.js and Express, integrating with a MongoDB database.
+  [L33] - Achieved full-stack integration using the MERN stack to replic
+  [L34] ### Jotion - Notion Clone with Next.js
+  [L35] - Built a Notion-inspired platform using Next.js, enabling real-time collaborative document editing with a familiar, intuitive interface.
+  [L36] - Supports inﬁnite child documents, real-time dynamic icons, collapsible and expandable sidebar navigation, and mobile responsiveness for a seamless experience across de
+  [L37] ## Technical Skills
+  [L38] - Distributed systems
+  [L39] - Ethereum blockchain
+  [L40] - Proficient in c & c++
+  [L41] - Blockchain
+  [L42] - Mern stack
+  [L43] ## Soft Skills
+  [L44] - Teamwork, flexibility
+  [L45] - Leadership and communication
+  [L46] - Team management skills
+
+[cand_22_mariam_babar_khan] Mariam Babar Khan
+  [L1] **BS Computer Science | National University of Sciences and Technology (NUST)**
+  [L2] HOUSE#94, STREET#3, , CAVALRY GROUNDS, Islamabad, Pakistan | +923339279119 | mariamk.bscs21seecs@seecs.edu.pk
+  [L3] ## Professional Profile
+  [L4] Innovative Computer Scientist with a strong focus on Machine Learning and Artiﬁcial
+  [L5] Intelligence, currently completing a Bachelor’s degree at NUST Islamabad. Bringing
+  [L6] hands-on research experience in hybrid retrieval frameworks and ML pipelines, along
+  [L7] with robust skills in Python, C++, web development, and data analysis, I am eager to
+  [L8] contribute cutting-edge solutions to both academic and industry challenges.
+  [L9] ## Education
+  [L10] - BS in Computer Science School of Electrical Engineering and Computer Science , 3.63
+  [L11] - Matriculation Army Public School, Hamza Camp , 97.02% (2018)
+  [L12] - FSc Army Public College, Hamza Camp , 95.45% (2021)
+  [L13] - High School Robert Service High School , (2019)
+  [L14] - Bachelors of Science in Computer Science School of Electrical Engineering and Computer Science , 3.63/4.00 (2025)
+  [L15] ## Work & Internship Experience
+  [L16] ### Victreat
+  [L17] **24-Dec-2024 - 06-Mar-2025**
+  [L18] - Data Science Intern
+  [L19] ### University of California, Davis
+  [L20] **10-Jun-2024 - 06-Sep-2024**
+  [L21] - Machine Learning Intern
+  [L22] ### Onescreen Pvt Ltd
+  [L23] **04-Mar-2024 - 31-May-2024**
+  [L24] - Junior Software Developer
+  [L25] ## Projects
+  [L26] ### Text-Based Search Engine
+  [L27] - I worked on a search engine project that involved understanding the fundamental concepts and algorithms behind search engines, such as PageRank, forward and inverted indexing, and lexicons.
+  [L28] - The project required me to research how Google searches work and apply that knowledge to develop a functional search eng
+  [L29] ### Visualizing an Intel 8086 processor
+  [L30] - I worked on a project that involved visualizing an Intel 8086 processor, which is a 16-bit microprocessor used in early personal computers.
+  [L31] - The project required me to understand the inner workings of the processor, including its registers, data storage, and processing capabilities.
+  [L32] - Using HTML, CSS & JS, I sim
+  [L33] ### College Management System
+  [L34] - I developed a college management system using MySQL for database management and HTML, PHP for the user interface.
+  [L35] - The system catered to three main users - admin, teachers, and students.
+  [L36] - Students could view their grades, attendance, and GPA in a read-only format, while teachers had editing rights to update stu
+  [L37] ### Web Based Visual IDE to Implement PHP
+  [L38] - I worked on a web-based visual IDE for PHP using HTML, CSS, JavaScript, and PHP.
+  [L39] - The project involved creating a user-friendly interface that enabled users to drag and drop programmable components, which would generate skeleton code.
+  [L40] - The user could then enter custom values to generate equivalent code in PHP.
+  [L41] ## Technical Skills
+  [L42] - Data engineering
+  [L43] - Distributed systems
+  [L44] - Big data analytics
+  [L45] - Paint 3d
+  [L46] - Operating systems
+  [L47] - Gui design on visual studio
+  [L48] - Convolutional neural networks
+  [L49] - Recurrent neural networks
+  [L50] ## Soft Skills
+  [L51] - German language (a1 level)
+  [L52] - Analytical thinking
+  [L53] - Coding
+  [L54] - Gui(tkinter)
+  [L55] - Fine art
+  [L56] - Modelsim
+  [L57] - Communication skills
+  [L58] - Self-management skills
+
+[cand_23_muhammad_zaeem_khalid] Muhammad Zaeem Khalid
+  [L1] **BS Computer Science | National University of Sciences and Technology (NUST)**
+  [L2] STREET NO 3-B, LANE, NO : 5, BAQIR COLONY, , , LALAZAR ESTATES, RAWALPINDI., Rawalpindi, Pakistan | +923349165719 | zaeemkhalid070@gmail.com
+  [L3] ## Professional Profile
+  [L4] Enthusiastic and detail-oriented Computer Science student at NUST with a passion for
+  [L5] full-stack web development, product design, and UI/UX. Seeking opportunities to
+  [L6] leverage my technical skills in JavaScript, React, Node.js, and PostgreSQL to
+  [L7] contribute to innovative projects. Eager to collaborate in dynamic environments, solve
+  [L8] complex problems, and continuously enhance my expertise in software development
+  [L9] and product management.
+  [L10] ## Education
+  [L11] - BS in Computer Science School of Electrical Engineering and Computer Science , 2.93
+  [L12] - Bachelors of Computer Science NUST , 2.94 (2025)
+  [L13] ## Work & Internship Experience
+  [L14] ### Shadiyana
+  [L15] **27-Jan-2025 - 27-Mar-2025**
+  [L16] - Developed features for existing websites and mobile applications using React, Next.js, and React Native
+  [L17] - Worked with backend technologies including Node.js, TypeScript, and PostgreSQL
+  [L18] - Fixed bugs and improved functionality across the company’s web and mobile platforms
+  [L19] ### Interns Pak
+  [L20] **01-Feb-2023 - 30-Apr-2023**
+  [L21] - Mastered HTML, CSS, and JavaScript fundamentals, creating interactive and visually appealing user interfaces
+  [L22] - Gained practical experience in WordPress development, eﬃciently building and managing websites
+  [L23] - Enhanced problem-solving and coding skills through various challenging tasks and projects
+  [L24] ## Projects
+  [L25] ### FloodForecast
+  [L26] - Developed a ﬂood prediction system that analyzes satellite weather data of Pakistan and Indus river to predict f lood risks
+  [L27] - Built the web interface using Next.js to provide public access to ﬂood risk information and predictions
+  [L28] - Implemented user authentication and email notification system to
+  [L29] ### OpinionMap- Interactive Comment Visualization Platform
+  [L30] - Developed a Next.js project that allows users to create topics and submit comments or opinions
+  [L31] - Implemented Redis and Upstash for eﬃcient data storage and retrieval
+  [L32] - Utilized the Airbnb visx library to create an interactive word map visualization of user comments
+  [L33] ## Technical Skills
+  [L34] - Web development frameworks
+  [L35] - Javascript (es6)
+  [L36] - Nodejs
+  [L37] - React
+  [L38] - Mongodb (database)
+  [L39] - Express, nodejs
+  [L40] - Web design and developmnt
+  [L41] - Javascript(es6)
+  [L42] ## Soft Skills
+  [L43] - Strong work ethics
+  [L44] - Networking
+  [L45] - Situational awareness
+  [L46] - Flexibility and adaptability
+  [L47] - Managing
+  [L48] - Reasoning
+  [L49] - Determined and resolute
+  [L50] - Fast improvisation
+
+[cand_24_abdullah_saim] Abdullah Saim
+  [L1] **BS Computer Science | National University of Sciences and Technology (NUST)**
+  [L2] 219-C MILITARY, ACCOUNTS CO-OPERATIVE, HOUSING SOCIETY, COLLEGE, ROAD, Lahore, Pakistan | +923008438161 | abdullah.saim.as@gmail.com
+  [L3] ## Professional Profile
+  [L4] Motivated computer science professional with hands-on experience in machine
+  [L5] learning, AI, and web development.
+  [L6] Proven track record in developing AI-powered applications, including deep learning
+  [L7] projects for video retrieval, sign
+  [L8] language recognition, and distributed systems. Skilled in computer vision techniques,
+  [L9] natural language processing,
+  [L10] and full-stack development with React, Flask, and the MERN stack. Seeking
+  [L11] opportunities in research and roles
+  [L12] focused on advancing innovations in Computer Vision, AI, and web technologies, with
+  [L13] a passion for leveraging
+  [L14] cutting-edge solutions to solve real-world challenges
+  [L15] ## Education
+  [L16] - BS in Computer Science School of Electrical Engineering and Computer Science , 3.83
+  [L17] - FSc. Pre Engineering Punjab Group of Colleges , 1053/1100 (2021)
+  [L18] - Matriculation The Punjab School , 1065/1100 (2019)
+  [L19] ## Work & Internship Experience
+  [L20] ### Pakistan Railways (NITB)
+  [L21] **22-Aug-2022 - 12-Sep-2022**
+  [L22] - Consultant Quality Assurance Assessment Team (NUST) QA Testing of "Safar Saheli" app for Pakistan Railways
+  [L23] ### NUSTIAN USA International Summer Research Internship Program
+  [L24] **01-Jul-2024 - 01-Oct-2024**
+  [L25] - Collaborated with Prof. Zubair Shaﬁque from UC Davis on the project “A Graph-based ML Approach to Detecting JavaScript-based Online Tracking.” Conducted in-depth research on cookies, analyzing their functionality and role in online privacy.
+  [L26] - Developed a machine learning model to categorize cookies based on t
+  [L27] ## Projects
+  [L28] ### Shuttle Service App
+  [L29] - Desktop Application in Java for Shuttle Service of NUST
+  [L30] ### Water Management System
+  [L31] - Monitors the water level of Tank and keep updated on Web/Mobile App
+  [L32] ### Time Table Generator
+  [L33] - Generates Timetable in excel sheet and gives the available slots for makeup classes
+  [L34] ### JanWhere - React App
+  [L35] - JanWhere is a web application that uses the MERN stack and Google Maps API to allow users to explore and conserve indigenous animal species in Pakistan.
+  [L36] - Users can locate and mark wildlife sightings on an interactive map, upload pictures of their encounters, and learn more about the animals and their conservat
+  [L37] ## Technical Skills
+  [L38] - Agile and waterfall methods
+  [L39] - Android
+  [L40] - Python/java/c++/octave
+  [L41] - Kali linux
+  [L42] - Micro-controllers(pic, arduino)
+  [L43] - Azure cloud platform
+  [L44] - C, c++, java and python
+  [L45] - Web development
+  [L46] ## Soft Skills
+  [L47] - Team workship
+  [L48] - Filmora
+  [L49] - Analytical thinking
+  [L50] - Self-management skills
+  [L51] - Teamwork, flexibility
+  [L52] - Team management skills
+  [L53] - Group work
+  [L54] - Problem solving skills
+
+[cand_25_muhammad_abdullah] Muhammad Abdullah
+  [L1] **BS Computer Science | National University of Sciences and Technology (NUST)**
+  [L2] 237, Near main office kahyaban e, naveed, Sargodha, Pakistan | +923336718884 | ma7800501@gmail.com
+  [L3] ## Professional Profile
+  [L4] Computer Science undergraduate with expertise in web development and machine
+  [L5] learning. Experienced in
+  [L6] building scalable applications, contributing to regulatory NLP research (FUSIONRAG),
+  [L7] and developing impactful
+  [L8] projects. Proﬁcient in React, Next.js, Python, and Kubernetes, with a strong focus on
+  [L9] efficiency and innovation.
+  [L10] ## Education
+  [L11] - BS in Computer Science School of Electrical Engineering and Computer Science , 3.75
+  [L12] - BSCS NUST- SEECS , 3.75 (2025)
+  [L13] ## Work & Internship Experience
+  [L14] ### Bytewise Limited
+  [L15] **01-Jun-2024 - 01-Aug-2024**
+  [L16] - Built responsive apps with Next.js and React.
+  [L17] - Integrated APIs and optimized performance.
+  [L18] - Debugged and improved scalability.
+  [L19] ### CHKK
+  [L20] **07-Dec-2024 - 01-Apr-2025**
+  [L21] - Preparing for AWS Certiﬁed Developer Associate.
+  [L22] - Strengthening DSA skills via Educative.
+  [L23] - Gaining hands-on Kubernetes experience.
+  [L24] ## Projects
+  [L25] ### Scototo
+  [L26] - Built a platform for seamless text, voice, and video communication for individuals and teams.
+  [L27] - Tools Used: Next.js, SQL, Socket.IO, Tailwind, Clerk.
+  [L28] ### FUSIONRAG: Enhancing Regulatory Document Analysis
+  [L29] - Published at COLING 2025.
+  [L30] - Developed FUSIONRAG, combining OpenAI embeddings, BM25, FAISS, and Rank-Fusion for improved regulatory information retrieval and answer generation.
+  [L31] ### Kisan- Farmer Support App
+  [L32] - Developed an app connecting farmers with crop-speciﬁc data, disease detection, and recommendations to improve productivity.
+  [L33] - Tools Used: Node.js, React, MongoDB, Express.
+  [L34] ## Technical Skills
+  [L35] - Web development frameworks
+  [L36] - Specialization in python
+  [L37] - React
+  [L38] - Html, css, ajax, javascript
+  [L39] - Mern stack
+  [L40] - Php, laravel, vue.js, mysql
+  [L41] - Aws
+
+[cand_26_mohammad_irfan] Mohammad Irfan
+  [L1] **BS Computer Science | National University of Sciences and Technology (NUST)**
+  [L2] VILLAGE AND P/O BOX, CHUINJ, TEHSIL, MASTUJ, DISTRICT CHITRAL, Chitral, Pakistan | +923407557854 | erfanmohammad539@gmail.com
+  [L3] ## Professional Profile
+  [L4] To obtain a research internship position at TUKL-DLL for Summer 2023, and gain
+  [L5] hands-on experience in machine learning, computer vision, and artiﬁcial intelligence
+  [L6] while contributing to the lab's ongoing research and development efforts.
+  [L7] ## Education
+  [L8] - BS in Computer Science School of Electrical Engineering and Computer Science , 3.28
+  [L9] - HSSC/FSC Aga Khan Higher Secondary School Chitral , 89.3% (2020)
+  [L10] - SSC/Matric Aga Khan Higher Secondary School Chitral , 87.3% (2018)
+  [L11] ## Projects
+  [L12] ### Research project on Artificial Intelligence, in First Semester
+  [L13] - Conducted a research project on the impact of AI on various industries and its future implications.
+  [L14] - Conducted a literature review of various research articles, books, and whitepapers related to AI.
+  [L15] - Developed a conceptual framework to identify the key drivers and challenges of AI adoption in different indust
+  [L16] ## Technical Skills
+  [L17] - Mern stack
+  [L18] - Python, c++, java, javascript
+  [L19] ## Soft Skills
+  [L20] - Teamwork, flexibility
+  [L21] - Multi tasking
+  [L22] - Problem solving skills
+  [L23] - Quick learner
+
+[cand_27_muhammad_taha_mukhtar] Muhammad Taha Mukhtar
+  [L1] **BS Computer Science | National University of Sciences and Technology (NUST)**
+  [L2] CB-679, KASHMIR, COLONY, RAHWALI, , GUJRANWALA CANTT., Gujranwala, Pakistan | +923310148548 | tahamukhtar20@gmail.com
+  [L3] ## Professional Profile
+  [L4] A dedicated Computer Science student with a strong passion for math, problem-solving, and
+  [L5] programming who has been involved with renowned international open-source communities
+  [L6] and research groups, collaborating on innovative projects, and delivering impactful solutions
+  [L7] for societal problems. Proficient in Full-stack development and deep learning, I use technology
+  [L8] to address difficult problems in various domains of science.
+  [L9] ## Education
+  [L10] - BS in Computer Science School of Electrical Engineering and Computer Science , 2.99
+  [L11] ## Work & Internship Experience
+  [L12] ### Google Summer of Code -- CVAT.ai
+  [L13] **01-May-2024 - 27-Aug-2024**
+  [L14] - Improved the CVAT platform by adding a user-conﬁgurable shortcut system, enhancing annotation eﬃciency.
+  [L15] - Tested new shortcut features with Cypress, achieving 100% test coverage.
+  [L16] - Contributed to integrating Meta’s SAM into CVAT.ai’s codebase beyond the program’s scope.
+  [L17] ### Deutsches Forschungszentrum für Künstliche Intelligenz
+  [L18] **03-Jun-2024 - 01-Aug-2024**
+  [L19] - Engineered a semi-supervised model for detecting informal settlements using remote sensing.
+  [L20] - Applied techniques like FixMatch, domain adaptation between cies and pseudo-label reﬁnement via SAM2.
+  [L21] - Leveraged Germany's largest deep learning infrastructure with H100/A100 GPUs for advanced AI research.
+  [L22] ## Projects
+  [L23] ### Slum-i, Research Project
+  [L24] - Worked on a €80,000 DAAD-funded project in collaboration with RPTU & DFKI, where I interned in Germany.
+  [L25] - Aligned with 3 UN SDGs, focusing on improving living conditions for slum dwellers in Pakistan.
+  [L26] - Upcoming publication in a top remote sensing journal, using SSL for segmenting informal settlements.
+  [L27] ### lang-source, Open Source Project
+  [L28] - Created a CLI utility using the Gemini API to automate localisation workﬂows, supporting 12 languages and reducing manual eﬀort in creating JSON/YAML language files.
+  [L29] - Published as an npm package with 500+ downloads and has 5 Stars on GitHub.
+  [L30] ## Technical Skills
+  [L31] - Digital marketing
+  [L32] - Typescript
+  [L33] - Javascript (es6)
+  [L34] - Mongodb (database)
+  [L35] - Docker
+  [L36] - Mern stack
+  [L37] - Aws
+  [L38] - Tensorflow/pytorch
+  [L39] ## Soft Skills
+  [L40] - Strategic communications
+
+[cand_28_umama_zainab] Umama Zainab
+  [L1] **BS Computer Science | National University of Sciences and Technology (NUST)**
+  [L2] Ayesha Hostel, NUST, H-, 12 Sector Islamabad, Indus loop, Islamabad, Pakistan | +923481694445 | uzainab.bscs21seecs@seecs.edu.pk
+  [L3] ## Professional Profile
+  [L4] Seeking a position in a dynamic and growth-oriented environment to utilize my skills in
+  [L5] web development, machine learning, and artiﬁcial intelligence. Leveraging my
+  [L6] proﬁciency in Python, C++, HTML, CSS, JavaScript, MySQL, React, React Native,
+  [L7] MongoDB, Node.js, and the MERN stack, along with project experience in building
+  [L8] responsive applications and AI models. I aim to contribute to innovative projects,
+  [L9] enhance my existing skills, and gain hands-on experience in new areas within the ﬁeld
+  [L10] of computer science to grow as a well-rounded and innovative professional.
+  [L11] ## Education
+  [L12] - BS in Computer Science School of Electrical Engineering and Computer Science , 2.47
+  [L13] - Bachelor's in Computer Science (BsCS) School of Electrical Engineering and Computer Sciences(SEECS) , 2.5 (2025)
+  [L14] - Intermediate Ideal Degree College , 871 (2021)
+  [L15] - Matriculation Bloom Field Hall School , 1037 (2019)
+  [L16] ## Work & Internship Experience
+  [L17] ### Job as Senior Frontend Developer – Startify Funpulse, NSTP NUST (Part time)
+  [L18] **04-Oct-2024 - 15-Jan-2025**
+  [L19] ### Prompt Engineer – AI Language Model Training
+  [L20] **02-May-2024 - 15-Nov-2024**
+  [L21] ### EMR Chains - Internship MERN Stack Developer
+  [L22] **12-Jul-2023 - 12-Aug-2023**
+  [L23] ### Freelance Web Developer
+  [L24] **15-Sep-2022 - 15-Jan-2025**
+  [L25] ## Projects
+  [L26] ### Mobile App Using React Native - FindMyStay (Final Year Project)
+  [L27] - Developing a full-ﬂedged mobile application for hostellites, inspired by Airbnb.
+  [L28] - The app includes complete backend functionality using Node.js and MongoDB, along with a responsive UI built in React Native.
+  [L29] - It integrates features like user authentication, property listings, booking management, and real-time n
+  [L30] ### Grandventurers – Travel Agency Website
+  [L31] - Developed a responsive and user-friendly travel agency website using Node.js for full-stack functionality.
+  [L32] - The platform features a portfolio, blog, and review section, enhancing customer engagement.
+  [L33] - Successfully deployed on AWS to ensure scalability and performance.
+  [L34] ### Startify Web Projects
+  [L35] - Designed and developed and deployed Startify Funpulse's website, showcasing their expertise in web and game development.
+  [L36] - The platform features an interactive portfolio, client testimonials, and a responsive layout optimized for seamless navigation and performance, eﬀectively promoting their services and crea
+  [L37] ### Emotion Detection Model
+  [L38] - Implemented a CNN-based model for detecting emotions from images, utilizing Python and TensorFlow.
+  [L39] - This project strengthened my skills in deep learning and image recognition.
+  [L40] ## Technical Skills
+  [L41] - Web development frameworks
+  [L42] - Python/java/c++/octave
+  [L43] - Nodejs
+  [L44] - Mongodb
+  [L45] - Front end web development
+  [L46] - Mongodb
+  [L47] - Expressjs
+  [L48] - Html, css, javascript
+  [L49] ## Soft Skills
+  [L50] - Database design (sql,mongodb)
+  [L51] - Microsoft word, excel, project
+  [L52] - Competitiveness
+  [L53] - Python
+  [L54] - Microsoft
+  [L55] - Exel
+  [L56] - C++ programming
+  [L57] - Javascript
+
+[cand_29_abdul_ahad_qureshi] Abdul Ahad Qureshi
+  [L1] **BS Computer Science | National University of Sciences and Technology (NUST)**
+  [L2] HOUSE#19, BLOCK#C-3, , RESIDENTIAL COLONY, AIOU, H-, 8, Islamabad, Pakistan | +923328570566 | asad.faheem@aiou.edu.pk
+  [L3] ## Professional Profile
+  [L4] Please update objective section.
+  [L5] ## Education
+  [L6] - BS in Computer Science School of Electrical Engineering and Computer Science , 3.42
+  [L7] ## Work & Internship Experience
+  [L8] ### Elevate Network
+  [L9] **01-Jul-2022 - 01-Sep-2022**
+  [L10] - Spearheaded the design phase of web projects, translating client requirements and brand guidelines into visually appealing and intuitive Figma prototypes.
+  [L11] - Developed a management software application to be used within the organization to manage 50+ employees.
+  [L12] - Collaborated with cross-functional
+  [L13] ### Vaasel
+  [L14] **01-Jul-2023 - 01-Sep-2023**
+  [L15] - Actively participated in developing a responsive and user-friendly web application for Vaasel's client, ensuring seamless user experiences across various devices.
+  [L16] - Successfully integrated external APIs to fetch and display real-time data, enhancing the functionality and relevance of the web applic
+  [L17] ### Wilspun Technical Services
+  [L18] **01-Mar-2024 - 01-Jul-2024**
+  [L19] - Developing a scalable management system targeted for 100+ daily users.
+  [L20] - Collaborate with the project manager and stakeholders to create requirements documents and Figma designs.
+  [L21] ## Projects
+  [L22] ### Hostel Management System | React.js, Node.js, Express.js, MongoDB
+  [L23] - Worked in a group of 2 to develop a complete solution to the hostel needs.
+  [L24] - Utilized React.js for real-time updates and seamless manager-student experience.
+  [L25] ### Real-time Chat Application | ReactJS, Express.js, Nodejs, MongoDB, Socket.io
+  [L26] - Developed areal-time chat application using the Web Sockets.
+  [L27] - Authentication using JSON Web Token (JWT).
+  [L28] ### ChatGPT API | Next.js, GPT API
+  [L29] - Seamless integration of GPT API with Next.js 13
+
+[cand_30_wahaj_ahmad_butt] Wahaj Ahmad Butt
+  [L1] **BS Computer Science | National University of Sciences and Technology (NUST)**
+  [L2] HOUSE NO. DT 204, , SADIQABAD, St 3, Rawalpindi, Pakistan | +923015031253 | wahajahmedbutt@gmail.com
+  [L3] ## Professional Profile
+  [L4] Highly driven and results-oriented individual with hands-on experience in back-end
+  [L5] development, machine learning, and distributed systems. Skilled in Python, JavaScript,
+  [L6] PHP, and a variety of frameworks and libraries (React, Laravel, Flask, TensorFlow,
+  [L7] PyTorch etc.) to create robust, scalable solutions. Eager to leverage strong problem-
+  [L8] solving abilities and collaborative approach to contribute to cutting-edge projects that
+  [L9] merge innovation with real-world impact.
+  [L10] ## Education
+  [L11] - BS in Computer Science School of Electrical Engineering and Computer Science , 2.9
+  [L12] - Bachelor of Computer Science National University of Science and Technology , ()
+  [L13] ## Work & Internship Experience
+  [L14] ### N-Rays International
+  [L15] **01-Jun-2023 - 31-Aug-2023**
+  [L16] - Back End Developer: Collaborated on the development and maintenance of various web applications with other interns.
+  [L17] ## Projects
+  [L18] ### Visual Question Answering for Real-World Images
+  [L19] - Designed a VQA model combining convolutional neural networks (ResNet50) for image feature extraction and transformer-based language models (BERT) for question encoding.
+  [L20] - Evaluated on the processed DAQUAR dataset, analyzing performance using accuracy and semantic similarity metrics – reaching a Validation A
+  [L21] ### Fake Review Detector
+  [L22] - Developed a system to identify fake reviews using advanced natural language processing models (BERT, RoBERTa, XLNet, GPT-2).
+  [L23] - Fine-tuned each model on a labeled dataset of real and fake reviews for classification purposes.
+  [L24] ### Palingenesis
+  [L25] - Created a chat and video calling Laravel application using Web-RTC for connectivity.
+  [L26] - Made use of JWT web tokens for user authentication and stores data in a MySQL database.
+  [L27] - Also wrote extensive documentation, drawing up ERDs for the relation between various functionalities.
+  [L28] ### Emotion-Based Music Recognition System
+  [L29] - Created a music recommendation system leveraging artiﬁcial intelligence to provide accurate music suggestions based on the user's emotional state, detected via a camera.
+  [L30] - Utilized the FER2013Plus dataset for emotion recognition and ResNet50 as the base CNN model, achieving an 82.7% accuracy.
+  [L31] - The Deezer
+  [L32] ## Technical Skills
+  [L33] - Tensorflow/pytorch
+  [L34] - Back-end developer
+  [L35] - Html, css, bootstrap, node.js
+  [L36] - React / node.js / apis
+  [L37] - Machine learning
+  [L38] - Office 365
+  [L39] ## Soft Skills
+  [L40] - Microsoft word, excel, project
+  [L41] - Fast improvisation
+  [L42] - Problem solving and innovation
+  [L43] - English speaking and writing
+  [L44] - Empathy
+  [L45] - Teamwork & collaboration
+</candidate_digests>

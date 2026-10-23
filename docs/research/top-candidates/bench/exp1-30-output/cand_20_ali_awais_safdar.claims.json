@@ -1,0 +1,184 @@
+{
+  "cv_id": "cand_20_ali_awais_safdar",
+  "filename": "cand_20_ali_awais_safdar.pdf",
+  "work_history_summary": [
+    {
+      "entry_id": "work_1",
+      "employer": "CarbonTeq",
+      "title": "Not stated",
+      "start_date": "2024-06",
+      "end_date": "2024-07",
+      "is_current": false
+    },
+    {
+      "entry_id": "work_2",
+      "employer": "Nanyang Technological University, Singapore",
+      "title": "Not stated",
+      "start_date": "2024-07",
+      "end_date": "2024-08",
+      "is_current": false
+    },
+    {
+      "entry_id": "work_3",
+      "employer": "Vision Architech (Remote)",
+      "title": "Not stated",
+      "start_date": "2024-07",
+      "end_date": "2024-09",
+      "is_current": false
+    },
+    {
+      "entry_id": "work_4",
+      "employer": "HPC Lab-SEECS",
+      "title": "Not stated",
+      "start_date": "2023-12",
+      "end_date": "2024-12",
+      "is_current": false
+    },
+    {
+      "entry_id": "work_5",
+      "employer": "Software Productivity Strategists, Inc. (Remote)",
+      "title": "Not stated",
+      "start_date": "2023-11",
+      "end_date": "2024-02",
+      "is_current": false
+    },
+    {
+      "entry_id": "work_6",
+      "employer": "Radar Research Lab, SINES",
+      "title": "Not stated",
+      "start_date": "2023-10",
+      "end_date": "2024-01",
+      "is_current": false
+    }
+  ],
+  "role_claims": [],
+  "notable_signals": [
+    {
+      "signal_id": "s1",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "Ant Colony Optimization"
+      ],
+      "compact_action": "authored vehicle routing research paper",
+      "outcome_attached": null,
+      "evidence_span": "Enhancing Vehicle Routing with Time Windows: A Machine Learning-Driven Ant Colony Optimization Authored a research paper focusing on integrating machine learning techniques with Ant Colony Optimization (ACO) to improve vehicle routing under time-window constraints.",
+      "evidence_lines": [
+        "L32",
+        "L34",
+        "L35"
+      ]
+    },
+    {
+      "signal_id": "s2",
+      "context_label": "Publication",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "FIT 2024 Conference"
+      ],
+      "compact_action": "presented vehicle routing research paper",
+      "outcome_attached": null,
+      "evidence_span": "Presented the paper at the FIT 2024 Conference, showcasing innovative approaches to solving logistics and optimization challenges using AI",
+      "evidence_lines": [
+        "L36",
+        "L37"
+      ]
+    },
+    {
+      "signal_id": "s3",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "VGG-19",
+        "BERT"
+      ],
+      "compact_action": "built PATHVQA medical VQA system",
+      "outcome_attached": null,
+      "evidence_span": "PATHVQA-VGG19-BERT-ATTENTION Developed a medical Visual Question Answering (VQA) system utilizing VGG-19 for image feature extraction and BERT for textual question processing. Incorporated attention mechanisms to enhance contextual understanding, facilitating accurate responses to",
+      "evidence_lines": [
+        "L38",
+        "L39",
+        "L40",
+        "L42"
+      ]
+    },
+    {
+      "signal_id": "s4",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "HMAC-SHA256",
+        "RSA"
+      ],
+      "compact_action": "built blockchain secure data ledger",
+      "outcome_attached": null,
+      "evidence_span": "Secure Information Handling with Blockchain Implemented secure data handling solutions using blockchain technology with cryptographic methods such as HMAC-SHA256 for hashing and RSA for encryption. Developed a decentralized ledger to ensure tamper-resistance and transaction verification in distributed",
+      "evidence_lines": [
+        "L45",
+        "L46",
+        "L47",
+        "L48"
+      ]
+    },
+    {
+      "signal_id": "s5",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "TypeScript"
+      ],
+      "compact_action": "engineered DNS client architecture",
+      "outcome_attached": null,
+      "evidence_span": "DNS Client Efficient Design Engineered a sophisticated TypeScript-based DNS client with a modular, scalable architecture and robust error handling. Optimized performance using asynchronous processing and railway-oriented programming principles.",
+      "evidence_lines": [
+        "L50",
+        "L51",
+        "L52",
+        "L53"
+      ]
+    }
+  ],
+  "cleanup_stats": {
+    "filler_dropped": 0,
+    "duplicates_dropped": 0
+  },
+  "digest_stats_uncapped": {
+    "approx_tokens": 241,
+    "total_items": 5,
+    "kept_items": 5,
+    "token_breakdown": {
+      "headers": 141,
+      "nouns": 26,
+      "actions": 77,
+      "outcomes": 0
+    }
+  },
+  "digest_stats_budgeted": {
+    "budget": 200,
+    "approx_tokens": 137,
+    "total_items": 5,
+    "kept_items": 5,
+    "dropped_item_ids": [],
+    "token_breakdown": {
+      "headers": 36,
+      "nouns": 26,
+      "actions": 77,
+      "outcomes": 0
+    }
+  },
+  "warnings": [],
+  "usage": {
+    "promptTokens": 7166,
+    "completionTokens": 3992,
+    "inputTokens": 7166,
+    "outputTokens": 3992,
+    "totalTokens": 11158
+  },
+  "latency_ms": 33331,
+  "tokens_approx": {
+    "raw_text": 837,
+    "evidence_spans": 309,
+    "uncapped_digest": 241,
+    "budgeted_digest": 137
+  }
+}

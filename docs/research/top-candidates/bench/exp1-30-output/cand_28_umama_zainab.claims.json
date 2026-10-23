@@ -1,0 +1,155 @@
+{
+  "cv_id": "cand_28_umama_zainab",
+  "filename": "cand_28_umama_zainab.pdf",
+  "work_history_summary": [
+    {
+      "entry_id": "work_1",
+      "employer": "Startify Funpulse",
+      "title": "Senior Frontend Developer",
+      "start_date": "2024-10",
+      "end_date": "2025-01",
+      "is_current": false
+    },
+    {
+      "entry_id": "work_2",
+      "employer": "Not stated",
+      "title": "Freelance Web Developer",
+      "start_date": "2022-09",
+      "end_date": "2025-01",
+      "is_current": false
+    },
+    {
+      "entry_id": "work_3",
+      "employer": "AI Language Model Training",
+      "title": "Prompt Engineer",
+      "start_date": "2024-05",
+      "end_date": "2024-11",
+      "is_current": false
+    },
+    {
+      "entry_id": "work_4",
+      "employer": "EMR Chains",
+      "title": "MERN Stack Developer",
+      "start_date": "2023-07",
+      "end_date": "2023-08",
+      "is_current": false
+    }
+  ],
+  "role_claims": [],
+  "notable_signals": [
+    {
+      "signal_id": "s1",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "Node.js",
+        "MongoDB",
+        "React Native"
+      ],
+      "compact_action": "built FindMyStay hostel booking app",
+      "outcome_attached": null,
+      "evidence_span": "Mobile App Using React Native - FindMyStay (Final Year Project) Developing a full-ﬂedged mobile application for hostellites, inspired by Airbnb. The app includes complete backend functionality using Node.js and MongoDB, along with a responsive UI built in React Native.",
+      "evidence_lines": [
+        "L28",
+        "L29",
+        "L30",
+        "L31"
+      ]
+    },
+    {
+      "signal_id": "s2",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "Node.js",
+        "AWS"
+      ],
+      "compact_action": "developed Grandventurers travel website",
+      "outcome_attached": null,
+      "evidence_span": "Grandventurers – Travel Agency Website Developed a responsive and user-friendly travel agency website using Node.js for full-stack functionality. The platform features a portfolio, blog, and review section, enhancing customer engagement. Successfully deployed on AWS to ensure scalability and performance.",
+      "evidence_lines": [
+        "L33",
+        "L34",
+        "L35",
+        "L36"
+      ]
+    },
+    {
+      "signal_id": "s3",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [],
+      "compact_action": "built Startify Funpulse portfolio website",
+      "outcome_attached": null,
+      "evidence_span": "Startify Web Projects Designed and developed and deployed Startify Funpulse's website, showcasing their expertise in web and game development. The platform features an interactive portfolio, client testimonials, and a responsive layout optimized for seamless navigation and performance, eﬀectively promoting their services and crea",
+      "evidence_lines": [
+        "L37",
+        "L38",
+        "L39",
+        "L41",
+        "L42"
+      ]
+    },
+    {
+      "signal_id": "s4",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "CNN",
+        "Python",
+        "TensorFlow"
+      ],
+      "compact_action": "implemented Emotion Detection Model",
+      "outcome_attached": null,
+      "evidence_span": "Emotion Detection Model Implemented a CNN-based model for detecting emotions from images, utilizing Python and TensorFlow. This project strengthened my skills in deep learning and image recognition.",
+      "evidence_lines": [
+        "L43",
+        "L44",
+        "L45"
+      ]
+    }
+  ],
+  "cleanup_stats": {
+    "filler_dropped": 0,
+    "duplicates_dropped": 0
+  },
+  "digest_stats_uncapped": {
+    "approx_tokens": 171,
+    "total_items": 4,
+    "kept_items": 4,
+    "token_breakdown": {
+      "headers": 90,
+      "nouns": 20,
+      "actions": 62,
+      "outcomes": 0
+    }
+  },
+  "digest_stats_budgeted": {
+    "budget": 200,
+    "approx_tokens": 171,
+    "total_items": 4,
+    "kept_items": 4,
+    "dropped_item_ids": [],
+    "token_breakdown": {
+      "headers": 90,
+      "nouns": 20,
+      "actions": 62,
+      "outcomes": 0
+    }
+  },
+  "warnings": [],
+  "usage": {
+    "promptTokens": 7125,
+    "completionTokens": 3181,
+    "inputTokens": 7125,
+    "outputTokens": 3181,
+    "totalTokens": 10306
+  },
+  "latency_ms": 28616,
+  "tokens_approx": {
+    "raw_text": 756,
+    "evidence_spans": 277,
+    "uncapped_digest": 171,
+    "budgeted_digest": 171
+  }
+}

@@ -1,0 +1,10 @@
+[cand_06_hasib_aslam] 0y FT (2 internships) | Semester Exchange Program @ Linnaeus University (Passed With Distinction) | Islamabad
+work_1: Intern @ TUKL (2022-2022, 0.3y internship)
+  [c1:action] developed Cat and Dog Classifier | 98% accuracy
+work_2: Research Intern @ Lakehead University, Canada (2024-2024, 0.3y internship)
+  [c2:action] EEG -> processed authentication datasets
+spikes:
+  [s1:action] Project: Express.js, React.js, Next.js -> built Hotel Booking Management Website
+  [s2:action] Project: built Shared Room Expense App
+  [s3:action] Project: C++, Hash tables -> built Cricket Players Profile App | O(1) search complexity
+  [s4:action] Project: MERN, Meta Graph API -> built Facebook Page Media Controller

@@ -1,0 +1,135 @@
+{
+  "cv_id": "cand_11_muhammad_ahad_sajjad",
+  "filename": "cand_11_muhammad_ahad_sajjad.pdf",
+  "work_history_summary": [
+    {
+      "entry_id": "work_1",
+      "employer": "Reviva",
+      "title": "Not specified",
+      "start_date": "2024-07",
+      "end_date": "2024-12",
+      "is_current": false
+    },
+    {
+      "entry_id": "work_2",
+      "employer": "NorenzTech",
+      "title": "Not specified",
+      "start_date": "2024-10",
+      "end_date": "2024-12",
+      "is_current": false
+    },
+    {
+      "entry_id": "work_3",
+      "employer": "N-Rays",
+      "title": "Not specified",
+      "start_date": "2023-06",
+      "end_date": "2023-08",
+      "is_current": false
+    }
+  ],
+  "role_claims": [
+    {
+      "claim_id": "c1",
+      "source_entry_ref": "work_1",
+      "claim_tier": "action_attributed",
+      "skills": [],
+      "raw_nouns": [],
+      "compact_action": "built wellness monitoring kiosk and app",
+      "outcome_attached": "+75% retention, -25% onboarding",
+      "evidence_span": "Designed and developed an embedded kiosk and mobile app for wellness monitoring using neuro-symbolic AI, boosting user retention by 75%. Conducted extensive user research, including surveys and interviews, leading to a 25% reduction in onboarding time.",
+      "evidence_lines": [
+        "L17",
+        "L18",
+        "L19",
+        "L20"
+      ]
+    },
+    {
+      "claim_id": "c2",
+      "source_entry_ref": "work_2",
+      "claim_tier": "action_attributed",
+      "skills": [],
+      "raw_nouns": [],
+      "compact_action": "created HeroCV resume builder",
+      "outcome_attached": "+70% engagement",
+      "evidence_span": "Created HeroCV, an AI-powered resume builder, increasing user engagement by 70%.",
+      "evidence_lines": [
+        "L24"
+      ]
+    },
+    {
+      "claim_id": "c3",
+      "source_entry_ref": "work_2",
+      "claim_tier": "action_attributed",
+      "skills": [],
+      "raw_nouns": [],
+      "compact_action": "designed AptScout apartment platform",
+      "outcome_attached": "+40% engagement, -70% bounce",
+      "evidence_span": "Designed AptScout, an apartment listing platform, improving user engagement by 40% and reducing bounce rates by 70%.",
+      "evidence_lines": [
+        "L25",
+        "L26"
+      ]
+    },
+    {
+      "claim_id": "c4",
+      "source_entry_ref": "work_3",
+      "claim_tier": "action_attributed",
+      "skills": [],
+      "raw_nouns": [],
+      "compact_action": "revitalized website and ecommerce platform",
+      "outcome_attached": "+30% satisfaction, -40% inquiries",
+      "evidence_span": "Revitalized the UI/UX of the company’s website and e-commerce platform, achieving a 30% boost in customer satisfaction. Conducted usability testing and interviews, providing actionable insights that reduced customer support inquiries by 40%.",
+      "evidence_lines": [
+        "L30",
+        "L31",
+        "L32",
+        "L33"
+      ]
+    }
+  ],
+  "notable_signals": [],
+  "cleanup_stats": {
+    "filler_dropped": 1,
+    "duplicates_dropped": 0
+  },
+  "digest_stats_uncapped": {
+    "approx_tokens": 156,
+    "total_items": 4,
+    "kept_items": 4,
+    "token_breakdown": {
+      "headers": 75,
+      "nouns": 0,
+      "actions": 52,
+      "outcomes": 31
+    }
+  },
+  "digest_stats_budgeted": {
+    "budget": 200,
+    "approx_tokens": 156,
+    "total_items": 4,
+    "kept_items": 4,
+    "dropped_item_ids": [],
+    "token_breakdown": {
+      "headers": 75,
+      "nouns": 0,
+      "actions": 52,
+      "outcomes": 31
+    }
+  },
+  "warnings": [],
+  "usage": {
+    "promptTokens": 7070,
+    "completionTokens": 4142,
+    "inputTokens": 7070,
+    "outputTokens": 4142,
+    "totalTokens": 11212
+  },
+  "latency_ms": 33017,
+  "tokens_approx": {
+    "raw_text": 722,
+    "evidence_spans": 174,
+    "uncapped_digest": 156,
+    "budgeted_digest": 156
+  }
+}

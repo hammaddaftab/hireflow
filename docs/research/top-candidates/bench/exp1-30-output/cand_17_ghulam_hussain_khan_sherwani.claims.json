@@ -1,0 +1,103 @@
+{
+  "cv_id": "cand_17_ghulam_hussain_khan_sherwani",
+  "filename": "cand_17_ghulam_hussain_khan_sherwani.pdf",
+  "work_history_summary": [],
+  "role_claims": [],
+  "notable_signals": [
+    {
+      "signal_id": "s1",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "MERN"
+      ],
+      "compact_action": "built TechZone e-commerce platform",
+      "outcome_attached": null,
+      "evidence_span": "Techzone Project: TechZone (MERN Stack Online Computer and Accessories E-commerce Platform) Developed a userfriendly e-commerce website, \"TechZone,\" enabling users to browse and purchase computers and accessories. Implemented shopping cart functionality, allowing users to add and manage items for purchase.",
+      "evidence_lines": [
+        "L13",
+        "L14",
+        "L15"
+      ]
+    },
+    {
+      "signal_id": "s2",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "C++",
+        "Kaggle"
+      ],
+      "compact_action": "built Cricket Stats Guru application",
+      "outcome_attached": null,
+      "evidence_span": "Cricket Stats Guru (C++ Application) Created a comprehensive Cricket Stats Guru application in C++. Utilized Kaggle datasets to provide users with player-speciﬁc statistics, enabling searches by player name and detailed records by various parameters such as average, economy, wickets, runs, and strike rate.",
+      "evidence_lines": [
+        "L17",
+        "L18",
+        "L19",
+        "L20"
+      ]
+    },
+    {
+      "signal_id": "s3",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "U-Net"
+      ],
+      "compact_action": "led Unet Binarizer document project",
+      "outcome_attached": null,
+      "evidence_span": "Unet Binarizer Led Unet Binarizer project for historical document binarization. Leveraged advanced image processing and AI techniques, including median blur and adaptive thresholding, with a U-Net model. Enhanced text clarity and extracted valuable information from degraded documents.",
+      "evidence_lines": [
+        "L22",
+        "L23",
+        "L24",
+        "L25",
+        "L26"
+      ]
+    }
+  ],
+  "cleanup_stats": {
+    "filler_dropped": 0,
+    "duplicates_dropped": 0
+  },
+  "digest_stats_uncapped": {
+    "approx_tokens": 72,
+    "total_items": 3,
+    "kept_items": 3,
+    "token_breakdown": {
+      "headers": 20,
+      "nouns": 9,
+      "actions": 45,
+      "outcomes": 0
+    }
+  },
+  "digest_stats_budgeted": {
+    "budget": 200,
+    "approx_tokens": 72,
+    "total_items": 3,
+    "kept_items": 3,
+    "dropped_item_ids": [],
+    "token_breakdown": {
+      "headers": 20,
+      "nouns": 9,
+      "actions": 45,
+      "outcomes": 0
+    }
+  },
+  "warnings": [],
+  "usage": {
+    "promptTokens": 6756,
+    "completionTokens": 2056,
+    "inputTokens": 6756,
+    "outputTokens": 2056,
+    "totalTokens": 8812
+  },
+  "latency_ms": 17727,
+  "tokens_approx": {
+    "raw_text": 455,
+    "evidence_spans": 226,
+    "uncapped_digest": 72,
+    "budgeted_digest": 72
+  }
+}

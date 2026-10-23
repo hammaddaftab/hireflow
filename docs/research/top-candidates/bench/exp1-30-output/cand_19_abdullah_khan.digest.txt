@@ -1,0 +1,7 @@
+[cand_19_abdullah_khan] 0.7y FT (2 roles, avg 0.4y) | BSc CS @ NUST (2.63) | Wah Cantt
+work_1: Not specified @ RoadGauge (2024-2024, 0.5y FT)
+work_2: Not specified @ Communication Systems and Network Lab (2023-2023, 0.2y FT)
+  [c1:action] UAVs -> modeled UAV battery life cycles | +23% predictive accuracy, 29 flights
+spikes:
+  [s1:action] Project: headed Code 'o Clock workshop
+  [s2:peripheral] Project: supported Dev Fest ground team

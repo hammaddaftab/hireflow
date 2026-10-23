@@ -1,0 +1,8 @@
+[cand_11_muhammad_ahad_sajjad] 0.8y FT (3 roles, avg 0.3y) | BSc CS @ School of Electrical Engineering and Computer Science (2.94) | Lahore
+work_1: Not specified @ Reviva (2024-2024, 0.5y FT)
+  [c1:action] built wellness monitoring kiosk and app | +75% retention, -25% onboarding
+work_2: Not specified @ NorenzTech (2024-2024, 0.3y FT)
+  [c2:action] created HeroCV resume builder | +70% engagement
+  [c3:action] designed AptScout apartment platform | +40% engagement, -70% bounce
+work_3: Not specified @ N-Rays (2023-2023, 0.3y FT)
+  [c4:action] revitalized website and ecommerce platform | +30% satisfaction, -40% inquiries

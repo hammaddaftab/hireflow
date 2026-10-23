@@ -1,0 +1,138 @@
+{
+  "cv_id": "cand_25_muhammad_abdullah",
+  "filename": "cand_25_muhammad_abdullah.pdf",
+  "work_history_summary": [
+    {
+      "entry_id": "work_1",
+      "employer": "CHKK",
+      "title": "Intern",
+      "start_date": "2024-12-07",
+      "end_date": "2025-04-01",
+      "is_current": false
+    },
+    {
+      "entry_id": "work_2",
+      "employer": "Bytewise Limited",
+      "title": "Intern",
+      "start_date": "2024-06-01",
+      "end_date": "2024-08-01",
+      "is_current": false
+    }
+  ],
+  "role_claims": [
+    {
+      "claim_id": "c1",
+      "source_entry_ref": "work_1",
+      "claim_tier": "peripheral_action",
+      "skills": [],
+      "raw_nouns": [
+        "AWS Certified Developer Associate"
+      ],
+      "compact_action": "prepared AWS developer certification",
+      "outcome_attached": null,
+      "evidence_span": "Preparing for AWS Certiﬁed Developer Associate.",
+      "evidence_lines": [
+        "L19"
+      ]
+    }
+  ],
+  "notable_signals": [
+    {
+      "signal_id": "s1",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "Next.js",
+        "Socket.IO"
+      ],
+      "compact_action": "built Scototo communication platform",
+      "outcome_attached": null,
+      "evidence_span": "Scototo Built a platform for seamless text, voice, and video communication for individuals and teams. Tools Used: Next.js, SQL, Socket.IO, Tailwind, Clerk.",
+      "evidence_lines": [
+        "L23",
+        "L24",
+        "L25"
+      ]
+    },
+    {
+      "signal_id": "s2",
+      "context_label": "Publication",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "BM25",
+        "FAISS",
+        "OpenAI embeddings"
+      ],
+      "compact_action": "developed FUSIONRAG regulatory retrieval",
+      "outcome_attached": "COLING 2025",
+      "evidence_span": "FUSIONRAG: Enhancing Regulatory Document Analysis Published at COLING 2025. Developed FUSIONRAG, combining OpenAI embeddings, BM25, FAISS, and Rank-Fusion for improved regulatory information retrieval and answer generation.",
+      "evidence_lines": [
+        "L26",
+        "L27",
+        "L28",
+        "L29"
+      ]
+    },
+    {
+      "signal_id": "s3",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "Node.js",
+        "MongoDB"
+      ],
+      "compact_action": "built Kisan farmer support app",
+      "outcome_attached": null,
+      "evidence_span": "Kisan- Farmer Support App Developed an app connecting farmers with crop-speciﬁc data, disease detection, and recommendations to improve productivity. Tools Used: Node.js, React, MongoDB, Express.",
+      "evidence_lines": [
+        "L30",
+        "L31",
+        "L32",
+        "L33"
+      ]
+    }
+  ],
+  "cleanup_stats": {
+    "filler_dropped": 2,
+    "duplicates_dropped": 0
+  },
+  "digest_stats_uncapped": {
+    "approx_tokens": 143,
+    "total_items": 4,
+    "kept_items": 4,
+    "token_breakdown": {
+      "headers": 52,
+      "nouns": 30,
+      "actions": 60,
+      "outcomes": 4
+    }
+  },
+  "digest_stats_budgeted": {
+    "budget": 200,
+    "approx_tokens": 143,
+    "total_items": 4,
+    "kept_items": 4,
+    "dropped_item_ids": [],
+    "token_breakdown": {
+      "headers": 52,
+      "nouns": 30,
+      "actions": 60,
+      "outcomes": 4
+    }
+  },
+  "warnings": [],
+  "usage": {
+    "promptTokens": 6799,
+    "completionTokens": 3512,
+    "inputTokens": 6799,
+    "outputTokens": 3512,
+    "totalTokens": 10311
+  },
+  "latency_ms": 29132,
+  "tokens_approx": {
+    "raw_text": 453,
+    "evidence_spans": 156,
+    "uncapped_digest": 143,
+    "budgeted_digest": 143
+  }
+}

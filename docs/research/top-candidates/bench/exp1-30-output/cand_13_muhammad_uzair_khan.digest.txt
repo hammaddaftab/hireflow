@@ -1,0 +1,3 @@
+[cand_13_muhammad_uzair_khan] 0y FT (1 internship) | BSc CS @ NUST (3.25) | Multan
+work_1: Intern @ Shadiyana (2024-2024, 0.3y internship)
+  [c1:action] Express.js, Next.js, React Native, Shadiyana.pk -> added vendor categories across portals

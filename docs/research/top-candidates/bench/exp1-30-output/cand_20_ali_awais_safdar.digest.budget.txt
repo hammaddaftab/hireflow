@@ -1,0 +1,7 @@
+[cand_20_ali_awais_safdar] 1.3y FT (6 roles, avg 0.2y) | BSc CS @ School of Electrical Engineering and Computer Science (2.96) | Lahore
+spikes:
+  [s1:action] Project: Ant Colony Optimization -> authored vehicle routing research paper
+  [s2:action] Publication: FIT 2024 Conference -> presented vehicle routing research paper
+  [s3:action] Project: VGG-19, BERT -> built PATHVQA medical VQA system
+  [s4:action] Project: HMAC-SHA256, RSA -> built blockchain secure data ledger
+  [s5:action] Project: TypeScript -> engineered DNS client architecture

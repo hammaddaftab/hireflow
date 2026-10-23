@@ -1,0 +1,171 @@
+{
+  "cv_id": "cand_06_hasib_aslam",
+  "filename": "cand_06_hasib_aslam.pdf",
+  "work_history_summary": [
+    {
+      "entry_id": "work_1",
+      "employer": "TUKL",
+      "title": "Intern",
+      "start_date": "2022-07",
+      "end_date": "2022-09",
+      "is_current": false
+    },
+    {
+      "entry_id": "work_2",
+      "employer": "Lakehead University, Canada",
+      "title": "Research Intern",
+      "start_date": "2024-06",
+      "end_date": "2024-09",
+      "is_current": false
+    }
+  ],
+  "role_claims": [
+    {
+      "claim_id": "c1",
+      "source_entry_ref": "work_1",
+      "claim_tier": "action_attributed",
+      "skills": [],
+      "raw_nouns": [],
+      "compact_action": "developed Cat and Dog Classifier",
+      "outcome_attached": "98% accuracy",
+      "evidence_span": "learned basics of Machine Learning Deep Learning developed a Cat and Dog Classifier with 98% accuracy",
+      "evidence_lines": [
+        "L15"
+      ]
+    },
+    {
+      "claim_id": "c2",
+      "source_entry_ref": "work_2",
+      "claim_tier": "action_attributed",
+      "skills": [],
+      "raw_nouns": [
+        "EEG"
+      ],
+      "compact_action": "processed authentication datasets",
+      "outcome_attached": null,
+      "evidence_span": "Identify relevant public EEG data sets that are collected with diﬀerent types of stimuli and tasks. Determine the relevance and usefulness of the activities for EEG authentication. Use basic digital processing techniques to obtain noise free data sets to be used for the authentication study.",
+      "evidence_lines": [
+        "L19",
+        "L20",
+        "L21"
+      ]
+    }
+  ],
+  "notable_signals": [
+    {
+      "signal_id": "s1",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "Express.js",
+        "React.js",
+        "Next.js"
+      ],
+      "compact_action": "built Hotel Booking Management Website",
+      "outcome_attached": null,
+      "evidence_span": "Hotel Booking and Management Website A online platform where you can book the apartments in hotels and also put your own to be rented out. It is developed using Express js , React js along with next js. MYSQL is used as database to developed this app.",
+      "evidence_lines": [
+        "L24",
+        "L25",
+        "L26",
+        "L27"
+      ]
+    },
+    {
+      "signal_id": "s2",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [],
+      "compact_action": "built Shared Room Expense App",
+      "outcome_attached": null,
+      "evidence_span": "Shared Room Expense Management App A web based solution for the people living in shared accomodations. It allows roommates to eﬀectively manage the expense at ease. All they have to do is to register a room and set its entry key and master key. The master key is of great signiﬁcance and you can add or delete the roommates or level current bi",
+      "evidence_lines": [
+        "L31",
+        "L32",
+        "L33",
+        "L34",
+        "L35"
+      ]
+    },
+    {
+      "signal_id": "s3",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "C++",
+        "Hash tables"
+      ],
+      "compact_action": "built Cricket Players Profile App",
+      "outcome_attached": "O(1) search complexity",
+      "evidence_span": "Cricket Players Profile App This app was built in using c++ data structures. It basically allowed user to search any player in database with search complexity O(1). It used multilevel hashtables (a entry in hashtable points to three other hashtable and so on) to reduce the search cost and move across diﬀerent formats such as t20,odi an",
+      "evidence_lines": [
+        "L36",
+        "L37",
+        "L38",
+        "L40",
+        "L41"
+      ]
+    },
+    {
+      "signal_id": "s4",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "MERN",
+        "Meta Graph API"
+      ],
+      "compact_action": "built Facebook Page Media Controller",
+      "outcome_attached": null,
+      "evidence_span": "Facebook Page Media Controller A MERN stack website that allows user to register and then upload the content to the facebook page. It supports both images and videos upload to the facebook page remotely from the website . It uses Graph Api from meta to access pages using page page access token.",
+      "evidence_lines": [
+        "L42",
+        "L43",
+        "L44",
+        "L45"
+      ]
+    }
+  ],
+  "cleanup_stats": {
+    "filler_dropped": 1,
+    "duplicates_dropped": 1
+  },
+  "digest_stats_uncapped": {
+    "approx_tokens": 181,
+    "total_items": 6,
+    "kept_items": 6,
+    "token_breakdown": {
+      "headers": 69,
+      "nouns": 22,
+      "actions": 82,
+      "outcomes": 11
+    }
+  },
+  "digest_stats_budgeted": {
+    "budget": 200,
+    "approx_tokens": 181,
+    "total_items": 6,
+    "kept_items": 6,
+    "dropped_item_ids": [],
+    "token_breakdown": {
+      "headers": 69,
+      "nouns": 22,
+      "actions": 82,
+      "outcomes": 11
+    }
+  },
+  "warnings": [],
+  "usage": {
+    "promptTokens": 7052,
+    "completionTokens": 3203,
+    "inputTokens": 7052,
+    "outputTokens": 3203,
+    "totalTokens": 10255
+  },
+  "latency_ms": 24092,
+  "tokens_approx": {
+    "raw_text": 696,
+    "evidence_spans": 407,
+    "uncapped_digest": 181,
+    "budgeted_digest": 181
+  }
+}

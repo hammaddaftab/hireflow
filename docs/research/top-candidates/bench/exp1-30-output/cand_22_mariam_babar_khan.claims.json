@@ -1,0 +1,147 @@
+{
+  "cv_id": "cand_22_mariam_babar_khan",
+  "filename": "cand_22_mariam_babar_khan.pdf",
+  "work_history_summary": [
+    {
+      "entry_id": "work_1",
+      "employer": "Victreat",
+      "title": "Data Science Intern",
+      "start_date": "2024-12",
+      "end_date": "2025-03",
+      "is_current": false
+    },
+    {
+      "entry_id": "work_2",
+      "employer": "University of California, Davis",
+      "title": "Machine Learning Intern",
+      "start_date": "2024-06",
+      "end_date": "2024-09",
+      "is_current": false
+    },
+    {
+      "entry_id": "work_3",
+      "employer": "Onescreen Pvt Ltd",
+      "title": "Junior Software Developer",
+      "start_date": "2024-03",
+      "end_date": "2024-05",
+      "is_current": false
+    }
+  ],
+  "role_claims": [],
+  "notable_signals": [
+    {
+      "signal_id": "s1",
+      "context_label": "Project",
+      "syntactic_tier": "peripheral_action",
+      "raw_nouns": [
+        "PageRank",
+        "forward indexing",
+        "inverted indexing"
+      ],
+      "compact_action": "built Text-Based Search Engine",
+      "outcome_attached": null,
+      "evidence_span": "Text-Based Search Engine I worked on a search engine project that involved understanding the fundamental concepts and algorithms behind search engines, such as PageRank, forward and inverted indexing, and lexicons. The project required me to research how Google searches work and apply that knowledge to develop a",
+      "evidence_lines": [
+        "L28",
+        "L29",
+        "L30",
+        "L31"
+      ]
+    },
+    {
+      "signal_id": "s2",
+      "context_label": "Project",
+      "syntactic_tier": "peripheral_action",
+      "raw_nouns": [],
+      "compact_action": "visualized Intel 8086 processor",
+      "outcome_attached": null,
+      "evidence_span": "Visualizing an Intel 8086 processor I worked on a project that involved visualizing an Intel 8086 processor, which is a 16-bit microprocessor used in The project required me to understand the inner workings of the processor, including its registers, data storage, Using HTML, CSS & JS, I sim",
+      "evidence_lines": [
+        "L33",
+        "L34",
+        "L36",
+        "L38"
+      ]
+    },
+    {
+      "signal_id": "s3",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "MySQL",
+        "PHP"
+      ],
+      "compact_action": "developed College Management System",
+      "outcome_attached": null,
+      "evidence_span": "College Management System I developed a college management system using MySQL for database management and HTML, PHP for the user interface. The system catered to three main users - admin, teachers, and students.",
+      "evidence_lines": [
+        "L40",
+        "L41",
+        "L42",
+        "L43"
+      ]
+    },
+    {
+      "signal_id": "s4",
+      "context_label": "Project",
+      "syntactic_tier": "peripheral_action",
+      "raw_nouns": [
+        "PHP",
+        "HTML",
+        "JavaScript"
+      ],
+      "compact_action": "built Web Based Visual IDE",
+      "outcome_attached": null,
+      "evidence_span": "Web Based Visual IDE to Implement PHP I worked on a web-based visual IDE for PHP using HTML, CSS, JavaScript, and PHP. The project involved creating a user-friendly interface that enabled users to drag and drop programmable components, which would generate skeleton code.",
+      "evidence_lines": [
+        "L46",
+        "L47",
+        "L48",
+        "L49"
+      ]
+    }
+  ],
+  "cleanup_stats": {
+    "filler_dropped": 0,
+    "duplicates_dropped": 0
+  },
+  "digest_stats_uncapped": {
+    "approx_tokens": 152,
+    "total_items": 4,
+    "kept_items": 4,
+    "token_breakdown": {
+      "headers": 72,
+      "nouns": 24,
+      "actions": 59,
+      "outcomes": 0
+    }
+  },
+  "digest_stats_budgeted": {
+    "budget": 200,
+    "approx_tokens": 152,
+    "total_items": 4,
+    "kept_items": 4,
+    "dropped_item_ids": [],
+    "token_breakdown": {
+      "headers": 72,
+      "nouns": 24,
+      "actions": 59,
+      "outcomes": 0
+    }
+  },
+  "warnings": [],
+  "usage": {
+    "promptTokens": 7140,
+    "completionTokens": 3366,
+    "inputTokens": 7140,
+    "outputTokens": 3366,
+    "totalTokens": 10506
+  },
+  "latency_ms": 28953,
+  "tokens_approx": {
+    "raw_text": 759,
+    "evidence_spans": 273,
+    "uncapped_digest": 152,
+    "budgeted_digest": 152
+  }
+}

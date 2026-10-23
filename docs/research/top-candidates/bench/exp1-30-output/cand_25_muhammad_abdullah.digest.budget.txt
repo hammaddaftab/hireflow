@@ -1,0 +1,8 @@
+[cand_25_muhammad_abdullah] 0y FT (2 internships) | BSc CS @ NUST (3.75) | Sargodha
+work_1: Intern @ CHKK (2024-2025, 0.4y internship)
+  [c1:peripheral] AWS Certified Developer Associate -> prepared AWS developer certification
+work_2: Intern @ Bytewise Limited (2024-2024, 0.3y internship)
+spikes:
+  [s1:action] Project: Next.js, Socket.IO -> built Scototo communication platform
+  [s2:action] Publication: BM25, FAISS, OpenAI embeddings -> developed FUSIONRAG regulatory retrieval | COLING 2025
+  [s3:action] Project: Node.js, MongoDB -> built Kisan farmer support app

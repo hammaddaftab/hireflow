@@ -1,0 +1,266 @@
+{
+  "job_id": "grad-ai-swe",
+  "job_title": "AI / ML & Full-Stack Software Engineer (Graduate / Entry-Level)",
+  "source_mode": "raw",
+  "order_mode": "canonical",
+  "candidate_order": [
+    "cand_01_muhammad_khizer_tariq",
+    "cand_02_umer_tariq",
+    "cand_03_abdullah_aleem",
+    "cand_04_mujtaba_shafqat",
+    "cand_05_ali_murad",
+    "cand_06_hasib_aslam",
+    "cand_07_haram_nasir",
+    "cand_08_muhammad_rouhan_faisal",
+    "cand_09_hafiz_ahmed_hassan_chohan",
+    "cand_10_muhammad_aleem_siddique_khan",
+    "cand_11_muhammad_ahad_sajjad",
+    "cand_12_iqra_rasool",
+    "cand_13_muhammad_uzair_khan",
+    "cand_14_jatindar_kumar_mamnani",
+    "cand_15_abdul_basit",
+    "cand_16_mehar_ali_ahmed",
+    "cand_17_ghulam_hussain_khan_sherwani",
+    "cand_18_abdul_rehman",
+    "cand_19_abdullah_khan",
+    "cand_20_ali_awais_safdar",
+    "cand_21_prithvi_raj",
+    "cand_22_mariam_babar_khan",
+    "cand_23_muhammad_zaeem_khalid",
+    "cand_24_abdullah_saim",
+    "cand_25_muhammad_abdullah",
+    "cand_26_mohammad_irfan",
+    "cand_27_muhammad_taha_mukhtar",
+    "cand_28_umama_zainab",
+    "cand_29_abdul_ahad_qureshi",
+    "cand_30_wahaj_ahmad_butt"
+  ],
+  "stage0": {
+    "executed": false,
+    "totalInputCandidates": 30,
+    "viableCount": 30,
+    "knockedOutCount": 0,
+    "knockedOutCandidates": []
+  },
+  "pool_stats": {
+    "contenderCount": 30,
+    "jobSpecTokensApprox": 206,
+    "digestsTokensApprox": 19957,
+    "promptTokensApprox": 21264,
+    "perCandidateTokens": [
+      {
+        "candidateId": "cand_01_muhammad_khizer_tariq",
+        "approxTokens": 460
+      },
+      {
+        "candidateId": "cand_02_umer_tariq",
+        "approxTokens": 304
+      },
+      {
+        "candidateId": "cand_03_abdullah_aleem",
+        "approxTokens": 836
+      },
+      {
+        "candidateId": "cand_04_mujtaba_shafqat",
+        "approxTokens": 410
+      },
+      {
+        "candidateId": "cand_05_ali_murad",
+        "approxTokens": 746
+      },
+      {
+        "candidateId": "cand_06_hasib_aslam",
+        "approxTokens": 813
+      },
+      {
+        "candidateId": "cand_07_haram_nasir",
+        "approxTokens": 371
+      },
+      {
+        "candidateId": "cand_08_muhammad_rouhan_faisal",
+        "approxTokens": 824
+      },
+      {
+        "candidateId": "cand_09_hafiz_ahmed_hassan_chohan",
+        "approxTokens": 743
+      },
+      {
+        "candidateId": "cand_10_muhammad_aleem_siddique_khan",
+        "approxTokens": 327
+      },
+      {
+        "candidateId": "cand_11_muhammad_ahad_sajjad",
+        "approxTokens": 848
+      },
+      {
+        "candidateId": "cand_12_iqra_rasool",
+        "approxTokens": 883
+      },
+      {
+        "candidateId": "cand_13_muhammad_uzair_khan",
+        "approxTokens": 250
+      },
+      {
+        "candidateId": "cand_14_jatindar_kumar_mamnani",
+        "approxTokens": 890
+      },
+      {
+        "candidateId": "cand_15_abdul_basit",
+        "approxTokens": 692
+      },
+      {
+        "candidateId": "cand_16_mehar_ali_ahmed",
+        "approxTokens": 708
+      },
+      {
+        "candidateId": "cand_17_ghulam_hussain_khan_sherwani",
+        "approxTokens": 530
+      },
+      {
+        "candidateId": "cand_18_abdul_rehman",
+        "approxTokens": 795
+      },
+      {
+        "candidateId": "cand_19_abdullah_khan",
+        "approxTokens": 495
+      },
+      {
+        "candidateId": "cand_20_ali_awais_safdar",
+        "approxTokens": 980
+      },
+      {
+        "candidateId": "cand_21_prithvi_raj",
+        "approxTokens": 863
+      },
+      {
+        "candidateId": "cand_22_mariam_babar_khan",
+        "approxTokens": 890
+      },
+      {
+        "candidateId": "cand_23_muhammad_zaeem_khalid",
+        "approxTokens": 742
+      },
+      {
+        "candidateId": "cand_24_abdullah_saim",
+        "approxTokens": 790
+      },
+      {
+        "candidateId": "cand_25_muhammad_abdullah",
+        "approxTokens": 547
+      },
+      {
+        "candidateId": "cand_26_mohammad_irfan",
+        "approxTokens": 368
+      },
+      {
+        "candidateId": "cand_27_muhammad_taha_mukhtar",
+        "approxTokens": 673
+      },
+      {
+        "candidateId": "cand_28_umama_zainab",
+        "approxTokens": 885
+      },
+      {
+        "candidateId": "cand_29_abdul_ahad_qureshi",
+        "approxTokens": 527
+      },
+      {
+        "candidateId": "cand_30_wahaj_ahmad_butt",
+        "approxTokens": 763
+      }
+    ]
+  },
+  "pool_summary": "The pool is concentrated among NUST graduates with baseline software and ML exposure, but standout evidence clusters around research-intensive AI work, quantified model performance, selective international lab experience, and independently delivered products. The strongest differentiators are relatively sparse: only a small subset demonstrate publication-quality research, rigorous metrics, or externally validated engineering environments.",
+  "axes": [
+    {
+      "axis_id": "axis_1",
+      "label": "Publication-Grade AI Research",
+      "category": "spiky_excellence",
+      "rationale": "This role explicitly seeks research depth rather than coursework-level ML familiarity. Peer-reviewed publication, conference presentation, funded research, or a substantial research artifact separates candidates who have advanced an AI problem from those who have only implemented standard models.",
+      "strong_criteria": "Strong requires active ownership [action] of a research contribution that resulted in a peer-reviewed publication, conference presentation, funded research deliverable, or clearly documented novel method; the work must identify the problem, method, and evaluation rather than merely list an AI project.",
+      "moderate_criteria": "Moderate requires active research ownership [action] in a university or industry lab, such as designing experiments, training or evaluating models, or contributing to a research prototype, but without verified publication, presentation, novelty, or externally reviewed outcome.",
+      "estimated_pool_prevalence": "6/30 candidates show strong or moderate evidence",
+      "supporting_claims": []
+    },
+    {
+      "axis_id": "axis_2",
+      "label": "Quantified Model Performance",
+      "category": "scale_and_impact",
+      "rationale": "Many contenders list ML or computer-vision projects, but only a subset report reproducible performance or measurable improvement. For an applied AI engineer, explicit metrics such as mIoU, accuracy, F1, latency, coverage, or error reduction provide stronger evidence of technical rigor than model and framework names alone.",
+      "strong_criteria": "Strong requires active ownership [action] of an ML system with a concrete evaluation benchmark at the level observed in this pool: approximately 80%+ accuracy, 0.80+ F1, 80%+ mIoU, a reported latency or throughput benchmark, or a quantified improvement of roughly 20%+ against a stated baseline or prior approach.",
+      "moderate_criteria": "Moderate requires active ownership [action] of model training and evaluation with at least one task-appropriate metric, dataset, or comparison, but performance is below the pool’s upper benchmark, lacks a baseline, or is not tied to a deployed or externally meaningful use case.",
+      "estimated_pool_prevalence": "8/30 candidates show strong or moderate evidence",
+      "supporting_claims": [
+        {
+          "candidate_id": "cand_16_mehar_ali_ahmed",
+          "ref_id": "header",
+          "digest_line": "[cand_16_mehar_ali_ahmed] Mehar Ali Ahmed",
+          "evidence_span": null
+        }
+      ]
+    },
+    {
+      "axis_id": "axis_3",
+      "label": "End-to-End AI System Design",
+      "category": "domain_and_architecture",
+      "rationale": "The job combines LLM/RAG, computer vision, and product engineering, so the upper tier is distinguished by integrating models with retrieval, APIs, databases, real-time interfaces, or multimodal pipelines. This measures architectural complexity and integration ownership, not simple possession of a framework skill.",
+      "strong_criteria": "Strong requires active ownership [action] of an end-to-end AI application combining at least three meaningful layers—for example retrieval plus reranking plus generation, multimodal model fusion, model serving through an API, or an ML pipeline integrated with a user-facing product—and evidence of handling evaluation, data flow, or operational constraints.",
+      "moderate_criteria": "Moderate requires active ownership [action] of a working AI application with two integrated layers, such as a trained model exposed through an API, a chatbot connected to a web interface, or a vision model embedded in an application, without demonstrated retrieval quality, multimodal fusion, production constraints, or architectural depth.",
+      "estimated_pool_prevalence": "9/30 candidates show strong or moderate evidence",
+      "supporting_claims": []
+    },
+    {
+      "axis_id": "axis_4",
+      "label": "Selective External Research Environments",
+      "category": "pedigree_and_environment",
+      "rationale": "The pool contains a small cluster with experience beyond the standard local internship pattern, including international universities, overseas research labs, Google Summer of Code, and high-compute research infrastructure. Such environments are relevant because they expose entry-level engineers to stronger review standards, larger research systems, or globally distributed collaboration.",
+      "strong_criteria": "Strong requires verified participation [action] in a selective international or externally competitive environment—such as Google Summer of Code, DFKI, UC Davis, NTU Singapore, or an equivalent recognized research program—with a substantive technical deliverable rather than attendance or a generic internship title.",
+      "moderate_criteria": "Moderate requires active research or engineering work in a university lab, funded project, international exchange, or recognized external organization, but without clear selectivity, named technical output, or evidence that the candidate owned a substantial deliverable.",
+      "estimated_pool_prevalence": "7/30 candidates show strong or moderate evidence",
+      "supporting_claims": []
+    },
+    {
+      "axis_id": "axis_5",
+      "label": "Independent Product Ownership",
+      "category": "career_trajectory_and_leadership",
+      "rationale": "Because this is an applied AI and full-stack role, candidates should be able to turn ambiguous requirements into usable software, not only produce notebooks or coursework. The differentiator is repeated ownership of shipped products, user-facing workflows, deployment, or measurable adoption and business outcomes.",
+      "strong_criteria": "Strong requires active ownership [action] of at least one deployed or client-facing product spanning meaningful frontend and backend or mobile functionality, plus evidence of independently defining or delivering core workflows and either quantified adoption, user impact, operational scale, or a completed production deployment.",
+      "moderate_criteria": "Moderate requires active ownership [action] of a complete application or substantial feature set with a functional interface and backend, but only at project scale, with limited deployment, users, outcome measurement, or evidence of requirements ownership.",
+      "estimated_pool_prevalence": "10/30 candidates show strong or moderate evidence",
+      "supporting_claims": []
+    }
+  ],
+  "warnings": [
+    "Axis 'Publication-Grade AI Research' cited unknown ref_id 'work_1' on candidate 'cand_01_muhammad_khizer_tariq'",
+    "Axis 'Publication-Grade AI Research' cited unknown ref_id 'work_1' on candidate 'cand_20_ali_awais_safdar'",
+    "Axis 'Publication-Grade AI Research' cited unknown ref_id 'work_2' on candidate 'cand_25_muhammad_abdullah'",
+    "Axis 'Publication-Grade AI Research' cited unknown ref_id 'work_1' on candidate 'cand_27_muhammad_taha_mukhtar'",
+    "Axis 'Quantified Model Performance' cited unknown ref_id 'work_1' on candidate 'cand_06_hasib_aslam'",
+    "Axis 'Quantified Model Performance' cited unknown ref_id 'work_1' on candidate 'cand_14_jatindar_kumar_mamnani'",
+    "Axis 'Quantified Model Performance' cited unknown ref_id 'work_1' on candidate 'cand_19_abdullah_khan'",
+    "Axis 'Quantified Model Performance' cited unknown ref_id 'work_1' on candidate 'cand_30_wahaj_ahmad_butt'",
+    "Axis 'End-to-End AI System Design' cited unknown ref_id 'work_2' on candidate 'cand_08_muhammad_rouhan_faisal'",
+    "Axis 'End-to-End AI System Design' cited unknown ref_id 'work_1' on candidate 'cand_14_jatindar_kumar_mamnani'",
+    "Axis 'End-to-End AI System Design' cited unknown ref_id 'work_1' on candidate 'cand_20_ali_awais_safdar'",
+    "Axis 'End-to-End AI System Design' cited unknown ref_id 'work_1' on candidate 'cand_25_muhammad_abdullah'",
+    "Axis 'End-to-End AI System Design' cited unknown ref_id 'work_1' on candidate 'cand_30_wahaj_ahmad_butt'",
+    "Axis 'Selective External Research Environments' cited unknown ref_id 'work_2' on candidate 'cand_06_hasib_aslam'",
+    "Axis 'Selective External Research Environments' cited unknown ref_id 'work_1' on candidate 'cand_20_ali_awais_safdar'",
+    "Axis 'Selective External Research Environments' cited unknown ref_id 'work_2' on candidate 'cand_22_mariam_babar_khan'",
+    "Axis 'Selective External Research Environments' cited unknown ref_id 'work_2' on candidate 'cand_24_abdullah_saim'",
+    "Axis 'Selective External Research Environments' cited unknown ref_id 'work_1' on candidate 'cand_27_muhammad_taha_mukhtar'",
+    "Axis 'Independent Product Ownership' cited unknown ref_id 'work_1' on candidate 'cand_03_abdullah_aleem'",
+    "Axis 'Independent Product Ownership' cited unknown ref_id 'work_3' on candidate 'cand_05_ali_murad'",
+    "Axis 'Independent Product Ownership' cited unknown ref_id 'work_1' on candidate 'cand_11_muhammad_ahad_sajjad'",
+    "Axis 'Independent Product Ownership' cited unknown ref_id 'work_1' on candidate 'cand_28_umama_zainab'",
+    "Axis 'Independent Product Ownership' cited unknown ref_id 'work_1' on candidate 'cand_29_abdul_ahad_qureshi'"
+  ],
+  "usage": {
+    "promptTokens": 23930,
+    "completionTokens": 2636,
+    "inputTokens": 23930,
+    "outputTokens": 2636,
+    "totalTokens": 26566
+  },
+  "latency_ms": 22358
+}

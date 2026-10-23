@@ -1,0 +1,10 @@
+[cand_29_abdul_ahad_qureshi] 0.9y FT (3 roles, avg 0.3y) | BSc CS @ NUST (3.42) | Islamabad
+work_1: Not specified @ Elevate Network (2022-2022, 0.3y FT)
+  [c1:action] Figma -> built employee management software | 50+ employees
+work_2: Not specified @ Vaasel (2023-2023, 0.3y FT)
+work_3: Not specified @ Wilspun Technical Services (2024-2024, 0.4y FT)
+  [c2:action] Figma -> developed scalable management system | 100+ daily users
+spikes:
+  [s1:peripheral] Project: React.js, Node.js, MongoDB -> developed Hostel Management System | team of 2
+  [s2:action] Project: Socket.io, JSON Web Token (JWT) -> built Real-time Chat Application
+  [s3:action] Project: Next.js -> integrated ChatGPT API solution

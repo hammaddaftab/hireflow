@@ -1,0 +1,8 @@
+[cand_21_prithvi_raj] 0.6y FT (1 role) | BSc CS @ NUST (3.13) | Umerkot
+work_1: SWE @ SKAI worldwide (2025-2025, 0.6y FT)
+  [c1:action] C, open-source database -> developed database tools and dashboards
+spikes:
+  [s1:action] Project: Hyperledger Besu, Solidity -> built accreditation verification system
+  [s2:action] Project: Ethereum, Web3.js -> built Blockchain Lottery prize platform
+  [s3:action] Project: React.js, Node.js, MongoDB -> cloned Breakout Clone website
+  [s4:action] Project: Next.js -> built Jotion collaborative editor

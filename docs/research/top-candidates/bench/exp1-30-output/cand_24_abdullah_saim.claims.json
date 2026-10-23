@@ -1,0 +1,164 @@
+{
+  "cv_id": "cand_24_abdullah_saim",
+  "filename": "cand_24_abdullah_saim.pdf",
+  "work_history_summary": [
+    {
+      "entry_id": "work_1",
+      "employer": "NUSTIAN USA International Summer Research Internship Program",
+      "title": "Research Intern",
+      "start_date": "2024-07",
+      "end_date": "2024-10",
+      "is_current": false
+    },
+    {
+      "entry_id": "work_2",
+      "employer": "Pakistan Railways (NITB)",
+      "title": "Consultant Quality Assurance Assessment Team (NUST)",
+      "start_date": "2022-08",
+      "end_date": "2022-09",
+      "is_current": false
+    }
+  ],
+  "role_claims": [
+    {
+      "claim_id": "c1",
+      "source_entry_ref": "work_1",
+      "claim_tier": "action_attributed",
+      "skills": [],
+      "raw_nouns": [
+        "cookies",
+        "online tracking"
+      ],
+      "compact_action": "developed cookie classification model",
+      "outcome_attached": null,
+      "evidence_span": "Collaborated with Prof. Zubair Shaﬁque from UC Davis on the project “A Graph-based ML Approach to Detecting JavaScript-based Online Tracking.” Conducted in-depth research on cookies, analyzing their functionality and role in online privacy. Developed a machine learning model to categorize cookies based on t",
+      "evidence_lines": [
+        "L23",
+        "L24",
+        "L25",
+        "L26"
+      ]
+    },
+    {
+      "claim_id": "c2",
+      "source_entry_ref": "work_2",
+      "claim_tier": "context_listed",
+      "skills": [],
+      "raw_nouns": [],
+      "compact_action": "tested Safar Saheli railway app",
+      "outcome_attached": null,
+      "evidence_span": "Consultant Quality Assurance Assessment Team (NUST) QA Testing of \"Safar Saheli\" app for Pakistan Railways",
+      "evidence_lines": [
+        "L19",
+        "L20"
+      ]
+    }
+  ],
+  "notable_signals": [
+    {
+      "signal_id": "s1",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "Java"
+      ],
+      "compact_action": "built Shuttle Service App desktop application",
+      "outcome_attached": null,
+      "evidence_span": "Shuttle Service App Desktop Application in Java for Shuttle Service of NUST",
+      "evidence_lines": [
+        "L28",
+        "L29"
+      ]
+    },
+    {
+      "signal_id": "s2",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [],
+      "compact_action": "built Water Management System monitor",
+      "outcome_attached": null,
+      "evidence_span": "Water Management System Monitors the water level of Tank and keep updated on Web/Mobile App",
+      "evidence_lines": [
+        "L30",
+        "L31"
+      ]
+    },
+    {
+      "signal_id": "s3",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "Excel"
+      ],
+      "compact_action": "built Time Table Generator scheduler",
+      "outcome_attached": null,
+      "evidence_span": "Time Table Generator Generates Timetable in excel sheet and gives the available slots for makeup classes",
+      "evidence_lines": [
+        "L32",
+        "L33"
+      ]
+    },
+    {
+      "signal_id": "s4",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "MERN stack",
+        "Google Maps API",
+        "React"
+      ],
+      "compact_action": "built JanWhere wildlife mapping app",
+      "outcome_attached": null,
+      "evidence_span": "JanWhere - React App JanWhere is a web application that uses the MERN stack and Google Maps API to allow users to explore and conserve indigenous animal species in Pakistan. Users can locate and mark wildlife sightings on an interactive map, upload pictures of their encounters, and",
+      "evidence_lines": [
+        "L34",
+        "L35",
+        "L36",
+        "L37"
+      ]
+    }
+  ],
+  "cleanup_stats": {
+    "filler_dropped": 0,
+    "duplicates_dropped": 0
+  },
+  "digest_stats_uncapped": {
+    "approx_tokens": 184,
+    "total_items": 6,
+    "kept_items": 6,
+    "token_breakdown": {
+      "headers": 76,
+      "nouns": 22,
+      "actions": 87,
+      "outcomes": 0
+    }
+  },
+  "digest_stats_budgeted": {
+    "budget": 200,
+    "approx_tokens": 184,
+    "total_items": 6,
+    "kept_items": 6,
+    "dropped_item_ids": [],
+    "token_breakdown": {
+      "headers": 76,
+      "nouns": 22,
+      "actions": 87,
+      "outcomes": 0
+    }
+  },
+  "warnings": [],
+  "usage": {
+    "promptTokens": 7015,
+    "completionTokens": 3308,
+    "inputTokens": 7015,
+    "outputTokens": 3308,
+    "totalTokens": 10323
+  },
+  "latency_ms": 27705,
+  "tokens_approx": {
+    "raw_text": 670,
+    "evidence_spans": 243,
+    "uncapped_digest": 184,
+    "budgeted_digest": 184
+  }
+}

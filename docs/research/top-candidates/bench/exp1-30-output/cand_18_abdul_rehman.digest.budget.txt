@@ -1,0 +1,6 @@
+[cand_18_abdul_rehman] 0y FT (1 internship) | BSc CS @ NUST (3.12) | Faisalabad
+work_1: Intern @ High Performance Lab Seecs Nust (2024-2024, 0.3y internship)
+spikes:
+  [s1:action] Project: Apache Solr, CLIP, Flickr30k -> built semantic image search engine
+  [s2:action] Project: Bloom Filter, BERT, PageRank -> built Google-like web search engine
+  [s3:action] Project: LSTM -> built stock price predictor

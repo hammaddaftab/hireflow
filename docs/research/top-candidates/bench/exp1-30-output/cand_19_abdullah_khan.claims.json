@@ -1,0 +1,113 @@
+{
+  "cv_id": "cand_19_abdullah_khan",
+  "filename": "cand_19_abdullah_khan.pdf",
+  "work_history_summary": [
+    {
+      "entry_id": "work_1",
+      "employer": "RoadGauge Ltd",
+      "title": "Not specified",
+      "start_date": "2024-07",
+      "end_date": "2024-12",
+      "is_current": false
+    },
+    {
+      "entry_id": "work_2",
+      "employer": "Communication Systems and Network Lab",
+      "title": "Not specified",
+      "start_date": "2023-07",
+      "end_date": "2023-08",
+      "is_current": false
+    }
+  ],
+  "role_claims": [
+    {
+      "claim_id": "c1",
+      "source_entry_ref": "work_2",
+      "claim_tier": "action_attributed",
+      "skills": [],
+      "raw_nouns": [
+        "UAVs"
+      ],
+      "compact_action": "modeled UAV battery life cycles",
+      "outcome_attached": "+23% predictive accuracy, 29 flights",
+      "evidence_span": "Developed a machine learning model using Polynomial Regression to predict battery life cycles for UAVs in disaster management applications, improving predictive accuracy by 23% as measured by a custom dataset from 29 ﬂights.",
+      "evidence_lines": [
+        "L13",
+        "L14",
+        "L15"
+      ]
+    }
+  ],
+  "notable_signals": [
+    {
+      "signal_id": "s1",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [],
+      "compact_action": "headed Code 'o Clock workshop",
+      "outcome_attached": null,
+      "evidence_span": "Code 'o Clock 2022 A workshop successfully executed under banner of Association of Computing Machines (ACM NUST) as Event head.",
+      "evidence_lines": [
+        "L24",
+        "L25",
+        "L26"
+      ]
+    },
+    {
+      "signal_id": "s2",
+      "context_label": "Project",
+      "syntactic_tier": "peripheral_action",
+      "raw_nouns": [],
+      "compact_action": "supported Dev Fest ground team",
+      "outcome_attached": null,
+      "evidence_span": "Dev Fest 21 Part of on ground team for Dev Fest 2021 under banner of ACM NUST",
+      "evidence_lines": [
+        "L27",
+        "L28"
+      ]
+    }
+  ],
+  "cleanup_stats": {
+    "filler_dropped": 2,
+    "duplicates_dropped": 0
+  },
+  "digest_stats_uncapped": {
+    "approx_tokens": 109,
+    "total_items": 3,
+    "kept_items": 3,
+    "token_breakdown": {
+      "headers": 59,
+      "nouns": 2,
+      "actions": 40,
+      "outcomes": 10
+    }
+  },
+  "digest_stats_budgeted": {
+    "budget": 200,
+    "approx_tokens": 109,
+    "total_items": 3,
+    "kept_items": 3,
+    "dropped_item_ids": [],
+    "token_breakdown": {
+      "headers": 59,
+      "nouns": 2,
+      "actions": 40,
+      "outcomes": 10
+    }
+  },
+  "warnings": [],
+  "usage": {
+    "promptTokens": 6761,
+    "completionTokens": 2915,
+    "inputTokens": 6761,
+    "outputTokens": 2915,
+    "totalTokens": 9676
+  },
+  "latency_ms": 25043,
+  "tokens_approx": {
+    "raw_text": 423,
+    "evidence_spans": 108,
+    "uncapped_digest": 109,
+    "budgeted_digest": 109
+  }
+}

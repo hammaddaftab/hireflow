@@ -1,0 +1,3 @@
+[cand_26_mohammad_irfan] BSc CS @ NUST (3.28) | Chitral
+spikes:
+  [s1:action] Project: conducted AI adoption research

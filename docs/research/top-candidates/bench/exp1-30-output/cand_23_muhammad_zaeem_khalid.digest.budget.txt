@@ -1,0 +1,10 @@
+[cand_23_muhammad_zaeem_khalid] 0y FT (2 internships) | BSc CS @ NUST (2.93; 2.94) | Rawalpindi
+work_1: Intern @ Shadiyana (2025-2025, 0.3y internship)
+  [c1:action] React, Next.js, React Native -> developed web and mobile features
+  [c2:peripheral] Node.js, TypeScript, PostgreSQL -> supported web-platform backends
+work_2: Intern @ Interns Pak (2023-2023, 0.3y internship)
+  [c3:action] HTML, CSS, JavaScript -> built interactive user interfaces
+  [c4:action] WordPress -> built and managed websites
+spikes:
+  [s1:action] Project: Next.js -> built FloodForecast flood risk predictor
+  [s2:action] Project: Redis, Upstash, Airbnb visx -> built OpinionMap comment visualization

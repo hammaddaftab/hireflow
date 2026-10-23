@@ -1,0 +1,184 @@
+{
+  "cv_id": "cand_08_muhammad_rouhan_faisal",
+  "filename": "cand_08_muhammad_rouhan_faisal.pdf",
+  "work_history_summary": [
+    {
+      "entry_id": "work_1",
+      "employer": "CHKK",
+      "title": "Intern",
+      "start_date": "2024-12",
+      "end_date": "2025-04",
+      "is_current": false
+    },
+    {
+      "entry_id": "work_2",
+      "employer": "Cosmotech Technologies",
+      "title": "Intern",
+      "start_date": "2024-07",
+      "end_date": "2024-09",
+      "is_current": false
+    }
+  ],
+  "role_claims": [
+    {
+      "claim_id": "c1",
+      "source_entry_ref": "work_1",
+      "claim_tier": "peripheral_action",
+      "skills": [
+        {
+          "skill": "Kubernetes",
+          "syntactic_tier": "peripheral_action",
+          "canonical_skill": "kubernetes"
+        }
+      ],
+      "raw_nouns": [],
+      "compact_action": "supported scalable system architecture",
+      "outcome_attached": null,
+      "evidence_span": "Assisting in designing scalable and eﬃcient system architectures, gaining hands-on experience in cloud infrastructure and solution design. Learning about Kubernetes for container orchestration, including deployment strategies, service management, and cluster scaling.",
+      "evidence_lines": [
+        "L21",
+        "L22",
+        "L23",
+        "L24"
+      ]
+    },
+    {
+      "claim_id": "c2",
+      "source_entry_ref": "work_2",
+      "claim_tier": "peripheral_action",
+      "skills": [
+        {
+          "skill": "ReactJS",
+          "syntactic_tier": "peripheral_action",
+          "canonical_skill": "react"
+        }
+      ],
+      "raw_nouns": [
+        "4-person team"
+      ],
+      "compact_action": "supported tender procurement application",
+      "outcome_attached": "potentially -60% processing time",
+      "evidence_span": "Assisted a 4-person team in developing a web application that simpliﬁes the tender/procurement process, potentially reducing processing time by 60%. Contributed to the development of the front-end user interface using ReactJS, ensuring a user-friendly and intuitive experience for tender participants.",
+      "evidence_lines": [
+        "L15",
+        "L16",
+        "L17",
+        "L18"
+      ]
+    }
+  ],
+  "notable_signals": [
+    {
+      "signal_id": "s1",
+      "context_label": "Certification",
+      "syntactic_tier": "peripheral_action",
+      "raw_nouns": [],
+      "compact_action": "pursuing AWS Solutions Architect certification",
+      "outcome_attached": null,
+      "evidence_span": "MERN, Next.js, and Flask for building web applications. Currently expanding expertise in cloud computing by learning AWS and pursuing the AWS Solutions Architect certiﬁcation. Passionate about leveraging AI and scalable",
+      "evidence_lines": [
+        "L6",
+        "L7"
+      ]
+    },
+    {
+      "signal_id": "s2",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "Next.js"
+      ],
+      "compact_action": "built CaseCobra custom case store",
+      "outcome_attached": null,
+      "evidence_span": "CaseCobra Developed a full-stack web application that allows users to browse and order pre-designed mobile cases or upload their own images to create custom cases. Implemented a seamless user experience with Next.js for fast and responsive UI, ensuring smooth navigation",
+      "evidence_lines": [
+        "L27",
+        "L28",
+        "L29",
+        "L30"
+      ]
+    },
+    {
+      "signal_id": "s3",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "MongoDB",
+        "Express",
+        "Node.js"
+      ],
+      "compact_action": "built Chat Application real-time messenger",
+      "outcome_attached": "100 concurrent users",
+      "evidence_span": "Chat Application Developed a real-time chat application using the MERN stack (MongoDB, Express, React, Node.js) to facilitate communication for up to 100 concurrent users. Implemented functionalities for 100 users to engage in seamless direct messaging and group chats, fostering",
+      "evidence_lines": [
+        "L33",
+        "L34",
+        "L35",
+        "L36"
+      ]
+    },
+    {
+      "signal_id": "s4",
+      "context_label": "Project",
+      "syntactic_tier": "peripheral_action",
+      "raw_nouns": [
+        "OpenAI embeddings",
+        "BM25",
+        "FAISS"
+      ],
+      "compact_action": "contributed FusionRAG regulatory retrieval",
+      "outcome_attached": null,
+      "evidence_span": "Research on FusionRAG – NUST Alpha at RIRAG 2025 Contributed to the development of FusionRAG, a Retrieval-Augmented Generation (RAG) system designed to enhance regulatory document retrieval and question answering. Integrated OpenAI embeddings, BM25, FAISS, and a custom rank fusion strategy to combine lexical and semantic retrieval for improved accuracy and",
+      "evidence_lines": [
+        "L40",
+        "L41",
+        "L42",
+        "L43",
+        "L44"
+      ]
+    }
+  ],
+  "cleanup_stats": {
+    "filler_dropped": 0,
+    "duplicates_dropped": 0
+  },
+  "digest_stats_uncapped": {
+    "approx_tokens": 189,
+    "total_items": 6,
+    "kept_items": 6,
+    "token_breakdown": {
+      "headers": 51,
+      "nouns": 31,
+      "actions": 96,
+      "outcomes": 15
+    }
+  },
+  "digest_stats_budgeted": {
+    "budget": 200,
+    "approx_tokens": 189,
+    "total_items": 6,
+    "kept_items": 6,
+    "dropped_item_ids": [],
+    "token_breakdown": {
+      "headers": 51,
+      "nouns": 31,
+      "actions": 96,
+      "outcomes": 15
+    }
+  },
+  "warnings": [],
+  "usage": {
+    "promptTokens": 7035,
+    "completionTokens": 3649,
+    "inputTokens": 7035,
+    "outputTokens": 3649,
+    "totalTokens": 10684
+  },
+  "latency_ms": 27331,
+  "tokens_approx": {
+    "raw_text": 710,
+    "evidence_spans": 425,
+    "uncapped_digest": 189,
+    "budgeted_digest": 189
+  }
+}

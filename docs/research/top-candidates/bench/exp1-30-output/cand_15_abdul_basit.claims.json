@@ -1,0 +1,114 @@
+{
+  "cv_id": "cand_15_abdul_basit",
+  "filename": "cand_15_abdul_basit.pdf",
+  "work_history_summary": [
+    {
+      "entry_id": "work_1",
+      "employer": "National University of Sciences and Technology",
+      "title": "Research Intern",
+      "start_date": "2024-07",
+      "end_date": "2025-05",
+      "is_current": false
+    },
+    {
+      "entry_id": "work_2",
+      "employer": "Texagon",
+      "title": "Frontend Development Intern",
+      "start_date": "2024-07",
+      "end_date": "2024-09",
+      "is_current": false
+    }
+  ],
+  "role_claims": [],
+  "notable_signals": [
+    {
+      "signal_id": "s1",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [],
+      "compact_action": "built Orphanage Management System backend",
+      "outcome_attached": null,
+      "evidence_span": "Orphanage Management System Developed an all-around management system that deals with all kinds of users associated with orphanages. Used SQLite database to store and retrieve information of the users. Used Laravel to develop the backend of the system",
+      "evidence_lines": [
+        "L25",
+        "L26",
+        "L27",
+        "L28"
+      ]
+    },
+    {
+      "signal_id": "s2",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [],
+      "compact_action": "built GetHired job platform",
+      "outcome_attached": null,
+      "evidence_span": "GetHired Developed a job platform intended for job seekers and employers. Job Seeker can see the jobs, check status of the jobs, use ﬁlters to easily search for the jobs. Employer can post the jobs, can check who has applied for the jobs, can reject or accept the job seekers",
+      "evidence_lines": [
+        "L29",
+        "L30",
+        "L31",
+        "L32"
+      ]
+    },
+    {
+      "signal_id": "s3",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "Faster RCNN"
+      ],
+      "compact_action": "built Traffic Lights Detection System",
+      "outcome_attached": null,
+      "evidence_span": "Traffic Lights Detection and Recognition System Used convolutional neural network called Faster RCNN. Trained using traﬃc light images gathered in Islamabad city to detect the state of a traffic light autonomously.",
+      "evidence_lines": [
+        "L34",
+        "L35",
+        "L36"
+      ]
+    }
+  ],
+  "cleanup_stats": {
+    "filler_dropped": 2,
+    "duplicates_dropped": 0
+  },
+  "digest_stats_uncapped": {
+    "approx_tokens": 114,
+    "total_items": 3,
+    "kept_items": 3,
+    "token_breakdown": {
+      "headers": 67,
+      "nouns": 4,
+      "actions": 44,
+      "outcomes": 0
+    }
+  },
+  "digest_stats_budgeted": {
+    "budget": 200,
+    "approx_tokens": 114,
+    "total_items": 3,
+    "kept_items": 3,
+    "dropped_item_ids": [],
+    "token_breakdown": {
+      "headers": 67,
+      "nouns": 4,
+      "actions": 44,
+      "outcomes": 0
+    }
+  },
+  "warnings": [],
+  "usage": {
+    "promptTokens": 6899,
+    "completionTokens": 2787,
+    "inputTokens": 6899,
+    "outputTokens": 2787,
+    "totalTokens": 9686
+  },
+  "latency_ms": 24222,
+  "tokens_approx": {
+    "raw_text": 595,
+    "evidence_spans": 186,
+    "uncapped_digest": 114,
+    "budgeted_digest": 114
+  }
+}

@@ -1,0 +1,5 @@
+[cand_07_haram_nasir] 0y FT (1 internship) | BSc CS @ NUST (3.12) | Sialkot
+work_1: Not specified @ Victreat Health Tech (2024-2025, 0.4y internship)
+  [c1:action] Python, Scrapy, Playwright -> scraped medical conference abstracts
+spikes:
+  [s1:action] Project: built National Science Bee website

@@ -1,0 +1,7 @@
+[cand_15_abdul_basit] 0y FT (2 internships) | BSc CS @ NUST (2.97) | Sargodha
+work_1: Research Intern @ National University of Sciences and Technology (2024-2025, 0.9y internship)
+work_2: Frontend Development Intern @ Texagon (2024-2024, 0.3y internship)
+spikes:
+  [s1:action] Project: built Orphanage Management System backend
+  [s2:action] Project: built GetHired job platform
+  [s3:action] Project: Faster RCNN -> built Traffic Lights Detection System

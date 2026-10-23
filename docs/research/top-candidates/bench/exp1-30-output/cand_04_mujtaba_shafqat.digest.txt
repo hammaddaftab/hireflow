@@ -1,0 +1,5 @@
+[cand_04_mujtaba_shafqat] 0.2y FT (1 role) | BSc CS @ School of Electrical Engineering and Computer Science (3.36) | Islamabad
+work_1: Photographer and Graphics Designer @ Footwear Pakistan (2022-2022, 0.2y FT)
+  [c1:action] Footwear Pakistan -> created brand visual content
+work_2: Freelancer, Graphics Designer @ Freelancing (2021-2022, 1.1y freelance)
+  [c2:action] clients -> designed client graphics projects

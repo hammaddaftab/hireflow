@@ -1,0 +1,9 @@
+[cand_27_muhammad_taha_mukhtar] 0y FT (2 internships) | BSc CS @ NUST (2.99) | Gujranwala
+work_1: Research Intern @ Deutsches Forschungszentrum für Künstliche Intelligenz (2024-2024, 0.3y internship)
+  [c1:action] FixMatch, SAM2, H100 GPUs, A100 GPUs, remote sensing -> engineered settlement detection model
+work_2: Google Summer of Code @ CVAT.ai (2024-2024, 0.3y internship)
+  [c2:action] Cypress -> improved CVAT shortcut system | 100% test coverage
+  [c3:peripheral] SAM, Meta -> extended CVAT annotation codebase
+spikes:
+  [s1:action] Project: DAAD, RPTU, DFKI -> advanced Slum-i settlement segmentation | €80k DAAD funding
+  [s2:action] Open-Source: Gemini API -> created lang-source localization CLI | 500+ downloads, 5 stars

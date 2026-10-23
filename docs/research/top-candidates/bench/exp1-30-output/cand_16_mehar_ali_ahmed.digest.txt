@@ -1,0 +1,12 @@
+[cand_16_mehar_ali_ahmed] 1.3y FT (3 roles, avg 0.4y) | BSc CS @ NUST (3.62) | Lahore
+work_1: Not specified @ Terra Nova Ventures (2024-2024, 0.3y FT)
+  [c1:action] U.S. zonal data, real estate -> analyzed U.S. real-estate zones
+work_2: General Secretary @ International Students Club (2023-2023, 0.4y FT)
+  [c2:action] led international student group | 30 international students
+work_3: Director Strategic Management, Marketing @ AIESEC (2023-2023, 0.8y FT)
+  [c3:action] designed marketing tracker and campaigns | +40% sign-ups, +20% visibility
+spikes:
+  [s1:action] Project: Global UGRAD Alumni Small Grants Award, The Noor Project -> secured community education grant | $400 grant
+  [s2:action] Project: RoBERTa, Low Rank Adaptation -> built writing-style change detector | 0.80 F1 score
+  [s3:action] Project: Gemini, RAG -> built LandUseAI Advisor recommender
+  [s4:action] Project: TF-IDF -> built hotel recommendation system

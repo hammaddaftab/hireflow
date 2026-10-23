@@ -1,0 +1,9 @@
+[cand_22_mariam_babar_khan] 0.3y FT (1 role) | BSc CS @ NUST (3.63/4.00) | Islamabad
+work_1: DS Intern @ Victreat (2024-2025, 0.3y internship)
+work_2: ML Intern @ University of California, Davis (2024-2024, 0.3y internship)
+work_3: Jr Software Dev @ Onescreen (2024-2024, 0.3y FT)
+spikes:
+  [s1:peripheral] Project: PageRank, forward indexing, inverted indexing -> built Text-Based Search Engine
+  [s2:peripheral] Project: visualized Intel 8086 processor
+  [s3:action] Project: MySQL, PHP -> developed College Management System
+  [s4:peripheral] Project: PHP, HTML, JavaScript -> built Web Based Visual IDE

@@ -1,0 +1,149 @@
+{
+  "cv_id": "cand_14_jatindar_kumar_mamnani",
+  "filename": "cand_14_jatindar_kumar_mamnani.pdf",
+  "work_history_summary": [
+    {
+      "entry_id": "work_1",
+      "employer": "Vision Research and development company",
+      "title": "Computer Vision Researcher",
+      "start_date": "2024-06",
+      "end_date": "2024-09",
+      "is_current": false
+    },
+    {
+      "entry_id": "work_2",
+      "employer": "CodSoft",
+      "title": "IT Support Intern",
+      "start_date": "2024-07",
+      "end_date": "2024-09",
+      "is_current": false
+    }
+  ],
+  "role_claims": [
+    {
+      "claim_id": "c1",
+      "source_entry_ref": "work_2",
+      "claim_tier": "action_attributed",
+      "skills": [],
+      "raw_nouns": [],
+      "compact_action": "maintained campus computer equipment",
+      "outcome_attached": "200 printers",
+      "evidence_span": "Communicate with managers to set up campus computers used on campus Maintain upkeep of computers, classroom equipment, and 200 printers across campus",
+      "evidence_lines": [
+        "L23",
+        "L25"
+      ]
+    }
+  ],
+  "notable_signals": [
+    {
+      "signal_id": "s1",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "FastAPI"
+      ],
+      "compact_action": "built Prompt-No-Code Website Assistant chatbot",
+      "outcome_attached": null,
+      "evidence_span": "Prompt-No-Code Website Assistant Developed an AI-powered no-code chatbot assistant that extracts contextual insights from website URLs for Engineered an LLM-driven chatbot system using FastAPI, enabling real-time, context-aware user interactions.",
+      "evidence_lines": [
+        "L27",
+        "L28",
+        "L30"
+      ]
+    },
+    {
+      "signal_id": "s2",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "Transformers"
+      ],
+      "compact_action": "built SemEval table-answering system",
+      "outcome_attached": null,
+      "evidence_span": "SemEval-Task-8-Table Answering Built a tabular QA system using transformer-based NLP for structured data retrieval. Implemented text-to-SQL conversion using pre-trained language models to generate structured queries.",
+      "evidence_lines": [
+        "L32",
+        "L33",
+        "L34"
+      ]
+    },
+    {
+      "signal_id": "s3",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "CNNs",
+        "LSTMs",
+        "Transformers"
+      ],
+      "compact_action": "built VQA medical advisor system",
+      "outcome_attached": null,
+      "evidence_span": "VQA-Based-Medical-Advisor Developed a medical visual question-answering system using CNNs for image features and LSTMs/ Transformers for text queries. Implemented multimodal fusion to combine image and text features.",
+      "evidence_lines": [
+        "L37",
+        "L38",
+        "L39",
+        "L41"
+      ]
+    },
+    {
+      "signal_id": "s4",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [],
+      "compact_action": "built autonomous-driving multitask model",
+      "outcome_attached": "82.4% mIoU",
+      "evidence_span": "A Video Based Multi-Task Learning Model for Autonomous Driving Developed a cutting-edge multitask learning model for real-time autonomous driving. Engineered to perform semantic segmentation, lane detection, and object detection on edge devices with high Achieved 82.4% mIoU on the VIL-100 validation set for lane segmentation.",
+      "evidence_lines": [
+        "L44",
+        "L45",
+        "L46",
+        "L48"
+      ]
+    }
+  ],
+  "cleanup_stats": {
+    "filler_dropped": 1,
+    "duplicates_dropped": 0
+  },
+  "digest_stats_uncapped": {
+    "approx_tokens": 164,
+    "total_items": 5,
+    "kept_items": 5,
+    "token_breakdown": {
+      "headers": 68,
+      "nouns": 15,
+      "actions": 76,
+      "outcomes": 8
+    }
+  },
+  "digest_stats_budgeted": {
+    "budget": 200,
+    "approx_tokens": 164,
+    "total_items": 5,
+    "kept_items": 5,
+    "dropped_item_ids": [],
+    "token_breakdown": {
+      "headers": 68,
+      "nouns": 15,
+      "actions": 76,
+      "outcomes": 8
+    }
+  },
+  "warnings": [],
+  "usage": {
+    "promptTokens": 7083,
+    "completionTokens": 4490,
+    "inputTokens": 7083,
+    "outputTokens": 4490,
+    "totalTokens": 11573
+  },
+  "latency_ms": 35043,
+  "tokens_approx": {
+    "raw_text": 764,
+    "evidence_spans": 290,
+    "uncapped_digest": 164,
+    "budgeted_digest": 164
+  }
+}

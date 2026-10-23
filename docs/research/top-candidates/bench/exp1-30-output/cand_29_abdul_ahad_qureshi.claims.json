@@ -1,0 +1,168 @@
+{
+  "cv_id": "cand_29_abdul_ahad_qureshi",
+  "filename": "cand_29_abdul_ahad_qureshi.pdf",
+  "work_history_summary": [
+    {
+      "entry_id": "work_1",
+      "employer": "Elevate Network",
+      "title": "Not specified",
+      "start_date": "2022-07",
+      "end_date": "2022-09",
+      "is_current": false
+    },
+    {
+      "entry_id": "work_2",
+      "employer": "Vaasel",
+      "title": "Not specified",
+      "start_date": "2023-07",
+      "end_date": "2023-09",
+      "is_current": false
+    },
+    {
+      "entry_id": "work_3",
+      "employer": "Wilspun Technical Services",
+      "title": "Not specified",
+      "start_date": "2024-03",
+      "end_date": "2024-07",
+      "is_current": false
+    }
+  ],
+  "role_claims": [
+    {
+      "claim_id": "c1",
+      "source_entry_ref": "work_1",
+      "claim_tier": "action_attributed",
+      "skills": [
+        {
+          "skill": "Figma",
+          "syntactic_tier": "action_attributed",
+          "canonical_skill": null
+        }
+      ],
+      "raw_nouns": [],
+      "compact_action": "built employee management software",
+      "outcome_attached": "50+ employees",
+      "evidence_span": "Spearheaded the design phase of web projects, translating client requirements and brand guidelines into visually appealing and intuitive Figma prototypes. Developed a management software application to be used within the organization to manage 50+ employees.",
+      "evidence_lines": [
+        "L12",
+        "L13",
+        "L14"
+      ]
+    },
+    {
+      "claim_id": "c2",
+      "source_entry_ref": "work_3",
+      "claim_tier": "action_attributed",
+      "skills": [
+        {
+          "skill": "Figma",
+          "syntactic_tier": "action_attributed",
+          "canonical_skill": null
+        }
+      ],
+      "raw_nouns": [],
+      "compact_action": "developed scalable management system",
+      "outcome_attached": "100+ daily users",
+      "evidence_span": "Developing a scalable management system targeted for 100+ daily users. Collaborate with the project manager and stakeholders to create requirements documents and Figma designs.",
+      "evidence_lines": [
+        "L24",
+        "L25"
+      ]
+    }
+  ],
+  "notable_signals": [
+    {
+      "signal_id": "s1",
+      "context_label": "Project",
+      "syntactic_tier": "peripheral_action",
+      "raw_nouns": [
+        "React.js",
+        "Node.js",
+        "MongoDB"
+      ],
+      "compact_action": "developed Hostel Management System",
+      "outcome_attached": "team of 2",
+      "evidence_span": "Hostel Management System | React.js, Node.js, Express.js, MongoDB Worked in a group of 2 to develop a complete solution to the hostel needs. Utilized React.js for real-time updates and seamless manager-student experience.",
+      "evidence_lines": [
+        "L27",
+        "L28",
+        "L29"
+      ]
+    },
+    {
+      "signal_id": "s2",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "Socket.io",
+        "JSON Web Token (JWT)"
+      ],
+      "compact_action": "built Real-time Chat Application",
+      "outcome_attached": null,
+      "evidence_span": "Real-time Chat Application | ReactJS, Express.js, Nodejs, MongoDB, Socket.io Developed areal-time chat application using the Web Sockets. Authentication using JSON Web Token (JWT).",
+      "evidence_lines": [
+        "L30",
+        "L31",
+        "L32"
+      ]
+    },
+    {
+      "signal_id": "s3",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "Next.js"
+      ],
+      "compact_action": "integrated ChatGPT API solution",
+      "outcome_attached": null,
+      "evidence_span": "ChatGPT API | Next.js, GPT API Seamless integration of GPT API with Next.js 13",
+      "evidence_lines": [
+        "L33",
+        "L34"
+      ]
+    }
+  ],
+  "cleanup_stats": {
+    "filler_dropped": 1,
+    "duplicates_dropped": 0
+  },
+  "digest_stats_uncapped": {
+    "approx_tokens": 175,
+    "total_items": 5,
+    "kept_items": 5,
+    "token_breakdown": {
+      "headers": 71,
+      "nouns": 26,
+      "actions": 69,
+      "outcomes": 12
+    }
+  },
+  "digest_stats_budgeted": {
+    "budget": 200,
+    "approx_tokens": 175,
+    "total_items": 5,
+    "kept_items": 5,
+    "dropped_item_ids": [],
+    "token_breakdown": {
+      "headers": 71,
+      "nouns": 26,
+      "actions": 69,
+      "outcomes": 12
+    }
+  },
+  "warnings": [],
+  "usage": {
+    "promptTokens": 6753,
+    "completionTokens": 3549,
+    "inputTokens": 6753,
+    "outputTokens": 3549,
+    "totalTokens": 10302
+  },
+  "latency_ms": 30319,
+  "tokens_approx": {
+    "raw_text": 454,
+    "evidence_spans": 230,
+    "uncapped_digest": 175,
+    "budgeted_digest": 175
+  }
+}

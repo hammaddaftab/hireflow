@@ -1,0 +1,184 @@
+{
+  "cv_id": "cand_27_muhammad_taha_mukhtar",
+  "filename": "cand_27_muhammad_taha_mukhtar.pdf",
+  "work_history_summary": [
+    {
+      "entry_id": "work_1",
+      "employer": "Deutsches Forschungszentrum für Künstliche Intelligenz",
+      "title": "Research Intern",
+      "start_date": "2024-06-03",
+      "end_date": "2024-08-01",
+      "is_current": false
+    },
+    {
+      "entry_id": "work_2",
+      "employer": "CVAT.ai",
+      "title": "Google Summer of Code",
+      "start_date": "2024-05-01",
+      "end_date": "2024-08-27",
+      "is_current": false
+    }
+  ],
+  "role_claims": [
+    {
+      "claim_id": "c1",
+      "source_entry_ref": "work_1",
+      "claim_tier": "action_attributed",
+      "skills": [
+        {
+          "skill": "FixMatch",
+          "syntactic_tier": "action_attributed",
+          "canonical_skill": null
+        },
+        {
+          "skill": "SAM2",
+          "syntactic_tier": "action_attributed",
+          "canonical_skill": null
+        },
+        {
+          "skill": "H100 GPUs",
+          "syntactic_tier": "peripheral_action",
+          "canonical_skill": null
+        },
+        {
+          "skill": "A100 GPUs",
+          "syntactic_tier": "peripheral_action",
+          "canonical_skill": null
+        }
+      ],
+      "raw_nouns": [
+        "remote sensing"
+      ],
+      "compact_action": "engineered settlement detection model",
+      "outcome_attached": null,
+      "evidence_span": "Engineered a semi-supervised model for detecting informal settlements using remote sensing. Applied techniques like FixMatch, domain adaptation between cies and pseudo-label reﬁnement via SAM2. Leveraged Germany's largest deep learning infrastructure with H100/A100 GPUs for advanced AI research.",
+      "evidence_lines": [
+        "L20",
+        "L21",
+        "L22"
+      ]
+    },
+    {
+      "claim_id": "c2",
+      "source_entry_ref": "work_2",
+      "claim_tier": "action_attributed",
+      "skills": [
+        {
+          "skill": "Cypress",
+          "syntactic_tier": "action_attributed",
+          "canonical_skill": "cypress"
+        }
+      ],
+      "raw_nouns": [],
+      "compact_action": "improved CVAT shortcut system",
+      "outcome_attached": "100% test coverage",
+      "evidence_span": "Improved the CVAT platform by adding a user-conﬁgurable shortcut system, enhancing annotation eﬃciency. Tested new shortcut features with Cypress, achieving 100% test coverage.",
+      "evidence_lines": [
+        "L15",
+        "L16"
+      ]
+    },
+    {
+      "claim_id": "c3",
+      "source_entry_ref": "work_2",
+      "claim_tier": "peripheral_action",
+      "skills": [
+        {
+          "skill": "SAM",
+          "syntactic_tier": "peripheral_action",
+          "canonical_skill": null
+        }
+      ],
+      "raw_nouns": [
+        "Meta"
+      ],
+      "compact_action": "extended CVAT annotation codebase",
+      "outcome_attached": null,
+      "evidence_span": "Contributed to integrating Meta’s SAM into CVAT.ai’s codebase beyond the program’s scope.",
+      "evidence_lines": [
+        "L17"
+      ]
+    }
+  ],
+  "notable_signals": [
+    {
+      "signal_id": "s1",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "DAAD",
+        "RPTU",
+        "DFKI"
+      ],
+      "compact_action": "advanced Slum-i settlement segmentation",
+      "outcome_attached": "€80k DAAD funding",
+      "evidence_span": "Slum-i, Research Project Worked on a €80,000 DAAD-funded project in collaboration with RPTU & DFKI, where I interned in Germany. Aligned with 3 UN SDGs, focusing on improving living conditions for slum dwellers in Pakistan. Upcoming publication in a top remote sensing journal, using SSL for segmenting informal settlements.",
+      "evidence_lines": [
+        "L24",
+        "L25",
+        "L26",
+        "L27"
+      ]
+    },
+    {
+      "signal_id": "s2",
+      "context_label": "Open-Source",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "Gemini API"
+      ],
+      "compact_action": "created lang-source localization CLI",
+      "outcome_attached": "500+ downloads, 5 stars",
+      "evidence_span": "lang-source, Open Source Project Created a CLI utility using the Gemini API to automate localisation workﬂows, supporting 12 languages and reducing manual eﬀort in creating JSON/YAML language files. Published as an npm package with 500+ downloads and has 5 Stars on GitHub.",
+      "evidence_lines": [
+        "L28",
+        "L29",
+        "L30",
+        "L31"
+      ]
+    }
+  ],
+  "cleanup_stats": {
+    "filler_dropped": 0,
+    "duplicates_dropped": 0
+  },
+  "digest_stats_uncapped": {
+    "approx_tokens": 183,
+    "total_items": 5,
+    "kept_items": 5,
+    "token_breakdown": {
+      "headers": 70,
+      "nouns": 30,
+      "actions": 69,
+      "outcomes": 18
+    }
+  },
+  "digest_stats_budgeted": {
+    "budget": 200,
+    "approx_tokens": 183,
+    "total_items": 5,
+    "kept_items": 5,
+    "dropped_item_ids": [],
+    "token_breakdown": {
+      "headers": 70,
+      "nouns": 30,
+      "actions": 69,
+      "outcomes": 18
+    }
+  },
+  "warnings": [],
+  "usage": {
+    "promptTokens": 6903,
+    "completionTokens": 3774,
+    "inputTokens": 6903,
+    "outputTokens": 3774,
+    "totalTokens": 10677
+  },
+  "latency_ms": 29010,
+  "tokens_approx": {
+    "raw_text": 580,
+    "evidence_spans": 291,
+    "uncapped_digest": 183,
+    "budgeted_digest": 183
+  }
+}

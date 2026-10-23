@@ -1,0 +1,113 @@
+{
+  "cv_id": "cand_18_abdul_rehman",
+  "filename": "cand_18_abdul_rehman.pdf",
+  "work_history_summary": [
+    {
+      "entry_id": "work_1",
+      "employer": "High Performance Lab Seecs Nust",
+      "title": "Intern",
+      "start_date": "2024-06",
+      "end_date": "2024-08",
+      "is_current": false
+    }
+  ],
+  "role_claims": [],
+  "notable_signals": [
+    {
+      "signal_id": "s1",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "Apache Solr",
+        "CLIP",
+        "Flickr30k"
+      ],
+      "compact_action": "built semantic image search engine",
+      "outcome_attached": null,
+      "evidence_span": "Semantic based image search engine using Solr Developed a semantic-based image search engine using Apache Solr to eﬃciently retrieve images based on Utilized the Flickr30k dataset and integrated the CLIP model for generating feature vectors of images.",
+      "evidence_lines": [
+        "L23",
+        "L24",
+        "L26"
+      ]
+    },
+    {
+      "signal_id": "s2",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "Bloom Filter",
+        "BERT",
+        "PageRank"
+      ],
+      "compact_action": "built Google-like web search engine",
+      "outcome_attached": null,
+      "evidence_span": "Search engine like google Designed and implemented a web page search engine integrating multiple technologies for eﬃcient Employed a Crawler and Bloom Filter to collect and ﬁlter URLs, storing data for processing with BERT and PageRank algorithms.",
+      "evidence_lines": [
+        "L28",
+        "L29",
+        "L31",
+        "L32"
+      ]
+    },
+    {
+      "signal_id": "s3",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "LSTM"
+      ],
+      "compact_action": "built stock price predictor",
+      "outcome_attached": null,
+      "evidence_span": "Stock predictor using LSTM Developed a stock price predictor using Long Short-Term Memory (LSTM) neural networks to forecast next-day Implemented data preprocessing, feature engineering, and model training to ensure high prediction accuracy.",
+      "evidence_lines": [
+        "L34",
+        "L35",
+        "L37"
+      ]
+    }
+  ],
+  "cleanup_stats": {
+    "filler_dropped": 4,
+    "duplicates_dropped": 0
+  },
+  "digest_stats_uncapped": {
+    "approx_tokens": 102,
+    "total_items": 3,
+    "kept_items": 3,
+    "token_breakdown": {
+      "headers": 42,
+      "nouns": 18,
+      "actions": 43,
+      "outcomes": 0
+    }
+  },
+  "digest_stats_budgeted": {
+    "budget": 200,
+    "approx_tokens": 102,
+    "total_items": 3,
+    "kept_items": 3,
+    "dropped_item_ids": [],
+    "token_breakdown": {
+      "headers": 42,
+      "nouns": 18,
+      "actions": 43,
+      "outcomes": 0
+    }
+  },
+  "warnings": [],
+  "usage": {
+    "promptTokens": 6988,
+    "completionTokens": 3676,
+    "inputTokens": 6988,
+    "outputTokens": 3676,
+    "totalTokens": 10664
+  },
+  "latency_ms": 29438,
+  "tokens_approx": {
+    "raw_text": 679,
+    "evidence_spans": 186,
+    "uncapped_digest": 102,
+    "budgeted_digest": 102
+  }
+}

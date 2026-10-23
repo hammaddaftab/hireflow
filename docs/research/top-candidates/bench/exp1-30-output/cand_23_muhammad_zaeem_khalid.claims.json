@@ -1,0 +1,211 @@
+{
+  "cv_id": "cand_23_muhammad_zaeem_khalid",
+  "filename": "cand_23_muhammad_zaeem_khalid.pdf",
+  "work_history_summary": [
+    {
+      "entry_id": "work_1",
+      "employer": "Shadiyana",
+      "title": "Intern",
+      "start_date": "2025-01",
+      "end_date": "2025-03",
+      "is_current": false
+    },
+    {
+      "entry_id": "work_2",
+      "employer": "Interns Pak",
+      "title": "Intern",
+      "start_date": "2023-02",
+      "end_date": "2023-04",
+      "is_current": false
+    }
+  ],
+  "role_claims": [
+    {
+      "claim_id": "c1",
+      "source_entry_ref": "work_1",
+      "claim_tier": "action_attributed",
+      "skills": [
+        {
+          "skill": "React",
+          "syntactic_tier": "action_attributed",
+          "canonical_skill": "react"
+        },
+        {
+          "skill": "Next.js",
+          "syntactic_tier": "action_attributed",
+          "canonical_skill": "next.js"
+        },
+        {
+          "skill": "React Native",
+          "syntactic_tier": "action_attributed",
+          "canonical_skill": "react native"
+        }
+      ],
+      "raw_nouns": [],
+      "compact_action": "developed web and mobile features",
+      "outcome_attached": null,
+      "evidence_span": "Developed features for existing websites and mobile applications using React, Next.js, and React Native",
+      "evidence_lines": [
+        "L17"
+      ]
+    },
+    {
+      "claim_id": "c2",
+      "source_entry_ref": "work_1",
+      "claim_tier": "peripheral_action",
+      "skills": [
+        {
+          "skill": "Node.js",
+          "syntactic_tier": "peripheral_action",
+          "canonical_skill": "node.js"
+        },
+        {
+          "skill": "TypeScript",
+          "syntactic_tier": "peripheral_action",
+          "canonical_skill": "typescript"
+        },
+        {
+          "skill": "PostgreSQL",
+          "syntactic_tier": "peripheral_action",
+          "canonical_skill": "postgresql"
+        }
+      ],
+      "raw_nouns": [],
+      "compact_action": "supported web-platform backends",
+      "outcome_attached": null,
+      "evidence_span": "Worked with backend technologies including Node.js, TypeScript, and PostgreSQL",
+      "evidence_lines": [
+        "L18"
+      ]
+    },
+    {
+      "claim_id": "c3",
+      "source_entry_ref": "work_2",
+      "claim_tier": "action_attributed",
+      "skills": [
+        {
+          "skill": "HTML",
+          "syntactic_tier": "action_attributed",
+          "canonical_skill": null
+        },
+        {
+          "skill": "CSS",
+          "syntactic_tier": "action_attributed",
+          "canonical_skill": null
+        },
+        {
+          "skill": "JavaScript",
+          "syntactic_tier": "action_attributed",
+          "canonical_skill": "javascript"
+        }
+      ],
+      "raw_nouns": [],
+      "compact_action": "built interactive user interfaces",
+      "outcome_attached": null,
+      "evidence_span": "Mastered HTML, CSS, and JavaScript fundamentals, creating interactive and visually appealing user interfaces",
+      "evidence_lines": [
+        "L22"
+      ]
+    },
+    {
+      "claim_id": "c4",
+      "source_entry_ref": "work_2",
+      "claim_tier": "action_attributed",
+      "skills": [
+        {
+          "skill": "WordPress",
+          "syntactic_tier": "action_attributed",
+          "canonical_skill": null
+        }
+      ],
+      "raw_nouns": [],
+      "compact_action": "built and managed websites",
+      "outcome_attached": null,
+      "evidence_span": "Gained practical experience in WordPress development, eﬃciently building and managing websites",
+      "evidence_lines": [
+        "L23"
+      ]
+    }
+  ],
+  "notable_signals": [
+    {
+      "signal_id": "s1",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "Next.js"
+      ],
+      "compact_action": "built FloodForecast flood risk predictor",
+      "outcome_attached": null,
+      "evidence_span": "FloodForecast Developed a ﬂood prediction system that analyzes satellite weather data of Pakistan and Indus river to predict f lood risks Built the web interface using Next.js to provide public access to ﬂood risk information and predictions",
+      "evidence_lines": [
+        "L26",
+        "L27",
+        "L28",
+        "L29"
+      ]
+    },
+    {
+      "signal_id": "s2",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "Redis",
+        "Upstash",
+        "Airbnb visx"
+      ],
+      "compact_action": "built OpinionMap comment visualization",
+      "outcome_attached": null,
+      "evidence_span": "OpinionMap- Interactive Comment Visualization Platform Developed a Next.js project that allows users to create topics and submit comments or opinions Implemented Redis and Upstash for eﬃcient data storage and retrieval Utilized the Airbnb visx library to create an interactive word map visualization of user comments",
+      "evidence_lines": [
+        "L31",
+        "L32",
+        "L33",
+        "L34"
+      ]
+    }
+  ],
+  "cleanup_stats": {
+    "filler_dropped": 0,
+    "duplicates_dropped": 0
+  },
+  "digest_stats_uncapped": {
+    "approx_tokens": 170,
+    "total_items": 6,
+    "kept_items": 6,
+    "token_breakdown": {
+      "headers": 55,
+      "nouns": 39,
+      "actions": 79,
+      "outcomes": 0
+    }
+  },
+  "digest_stats_budgeted": {
+    "budget": 200,
+    "approx_tokens": 170,
+    "total_items": 6,
+    "kept_items": 6,
+    "dropped_item_ids": [],
+    "token_breakdown": {
+      "headers": 55,
+      "nouns": 39,
+      "actions": 79,
+      "outcomes": 0
+    }
+  },
+  "warnings": [],
+  "usage": {
+    "promptTokens": 6961,
+    "completionTokens": 3298,
+    "inputTokens": 6961,
+    "outputTokens": 3298,
+    "totalTokens": 10259
+  },
+  "latency_ms": 28353,
+  "tokens_approx": {
+    "raw_text": 630,
+    "evidence_spans": 237,
+    "uncapped_digest": 170,
+    "budgeted_digest": 170
+  }
+}

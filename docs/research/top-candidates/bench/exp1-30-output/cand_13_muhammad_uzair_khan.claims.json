@@ -1,0 +1,93 @@
+{
+  "cv_id": "cand_13_muhammad_uzair_khan",
+  "filename": "cand_13_muhammad_uzair_khan.pdf",
+  "work_history_summary": [
+    {
+      "entry_id": "work_1",
+      "employer": "Shadiyana",
+      "title": "Intern",
+      "start_date": "2024-06",
+      "end_date": "2024-09",
+      "is_current": false
+    }
+  ],
+  "role_claims": [
+    {
+      "claim_id": "c1",
+      "source_entry_ref": "work_1",
+      "claim_tier": "action_attributed",
+      "skills": [
+        {
+          "skill": "Express.js",
+          "syntactic_tier": "action_attributed",
+          "canonical_skill": "express js"
+        },
+        {
+          "skill": "Next.js",
+          "syntactic_tier": "context_listed",
+          "canonical_skill": "next.js"
+        },
+        {
+          "skill": "React Native",
+          "syntactic_tier": "context_listed",
+          "canonical_skill": "react native"
+        }
+      ],
+      "raw_nouns": [
+        "Shadiyana.pk"
+      ],
+      "compact_action": "added vendor categories across portals",
+      "outcome_attached": null,
+      "evidence_span": "During my internship at Shadiyana.pk , I contributed to enhancing the platform by adding new vendor categories to both the web-based user portal (built with Next.js) and the vendor app (React Native). I developed and integrated RESTful APIs using Express.js, enabling seamless communication between the",
+      "evidence_lines": [
+        "L13",
+        "L14",
+        "L15"
+      ]
+    }
+  ],
+  "notable_signals": [],
+  "cleanup_stats": {
+    "filler_dropped": 0,
+    "duplicates_dropped": 0
+  },
+  "digest_stats_uncapped": {
+    "approx_tokens": 61,
+    "total_items": 1,
+    "kept_items": 1,
+    "token_breakdown": {
+      "headers": 35,
+      "nouns": 13,
+      "actions": 13,
+      "outcomes": 0
+    }
+  },
+  "digest_stats_budgeted": {
+    "budget": 200,
+    "approx_tokens": 61,
+    "total_items": 1,
+    "kept_items": 1,
+    "dropped_item_ids": [],
+    "token_breakdown": {
+      "headers": 35,
+      "nouns": 13,
+      "actions": 13,
+      "outcomes": 0
+    }
+  },
+  "warnings": [],
+  "usage": {
+    "promptTokens": 6489,
+    "completionTokens": 1229,
+    "inputTokens": 6489,
+    "outputTokens": 1229,
+    "totalTokens": 7718
+  },
+  "latency_ms": 10609,
+  "tokens_approx": {
+    "raw_text": 217,
+    "evidence_spans": 76,
+    "uncapped_digest": 61,
+    "budgeted_digest": 61
+  }
+}

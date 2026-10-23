@@ -1,0 +1,10 @@
+[cand_28_umama_zainab] 0.8y FT (2 roles, avg 0.4y) | BSc CS @ SEECS (2.5) | Islamabad
+work_1: Sr Frontend Dev @ Startify Funpulse (2024-2025, 0.3y FT)
+work_2: Freelance Web Dev @ Not stated (2022-2025, 2.4y freelance)
+work_3: Prompt Eng @ AI Language Model Training (2024-2024, 0.6y FT)
+work_4: MERN Stack Dev @ EMR Chains (2023-2023, 0.2y internship)
+spikes:
+  [s1:action] Project: Node.js, MongoDB, React Native -> built FindMyStay hostel booking app
+  [s2:action] Project: Node.js, AWS -> developed Grandventurers travel website
+  [s3:action] Project: built Startify Funpulse portfolio website
+  [s4:action] Project: CNN, Python, TensorFlow -> implemented Emotion Detection Model

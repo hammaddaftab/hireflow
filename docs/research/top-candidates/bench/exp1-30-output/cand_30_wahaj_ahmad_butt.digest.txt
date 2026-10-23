@@ -1,0 +1,7 @@
+[cand_30_wahaj_ahmad_butt] 0y FT (1 internship) | BSc CS @ School of Electrical Engineering and Computer Science (2.9) | Rawalpindi
+work_1: Back End Dev @ N-Rays International (2023-2023, 0.3y internship)
+spikes:
+  [s1:action] Project: ResNet50, BERT -> designed VQA real-world image model
+  [s2:action] Project: BERT, RoBERTa, XLNet -> built Fake Review Detector classifier
+  [s3:action] Project: Laravel, WebRTC, MySQL -> built Palingenesis chat video application
+  [s4:action] Project: FER2013Plus, ResNet50 -> built Emotion-Based Music Recognition system | 82.7% accuracy

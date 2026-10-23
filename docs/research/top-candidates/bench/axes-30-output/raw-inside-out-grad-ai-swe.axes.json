@@ -1,0 +1,267 @@
+{
+  "job_id": "grad-ai-swe",
+  "job_title": "AI / ML & Full-Stack Software Engineer (Graduate / Entry-Level)",
+  "source_mode": "raw",
+  "order_mode": "inside-out",
+  "candidate_order": [
+    "cand_09_hafiz_ahmed_hassan_chohan",
+    "cand_10_muhammad_aleem_siddique_khan",
+    "cand_11_muhammad_ahad_sajjad",
+    "cand_12_iqra_rasool",
+    "cand_13_muhammad_uzair_khan",
+    "cand_14_jatindar_kumar_mamnani",
+    "cand_15_abdul_basit",
+    "cand_01_muhammad_khizer_tariq",
+    "cand_02_umer_tariq",
+    "cand_03_abdullah_aleem",
+    "cand_04_mujtaba_shafqat",
+    "cand_05_ali_murad",
+    "cand_06_hasib_aslam",
+    "cand_07_haram_nasir",
+    "cand_08_muhammad_rouhan_faisal",
+    "cand_23_muhammad_zaeem_khalid",
+    "cand_24_abdullah_saim",
+    "cand_25_muhammad_abdullah",
+    "cand_26_mohammad_irfan",
+    "cand_27_muhammad_taha_mukhtar",
+    "cand_28_umama_zainab",
+    "cand_29_abdul_ahad_qureshi",
+    "cand_30_wahaj_ahmad_butt",
+    "cand_16_mehar_ali_ahmed",
+    "cand_17_ghulam_hussain_khan_sherwani",
+    "cand_18_abdul_rehman",
+    "cand_19_abdullah_khan",
+    "cand_20_ali_awais_safdar",
+    "cand_21_prithvi_raj",
+    "cand_22_mariam_babar_khan"
+  ],
+  "stage0": {
+    "executed": false,
+    "totalInputCandidates": 30,
+    "viableCount": 30,
+    "knockedOutCount": 0,
+    "knockedOutCandidates": []
+  },
+  "pool_stats": {
+    "contenderCount": 30,
+    "jobSpecTokensApprox": 206,
+    "digestsTokensApprox": 19957,
+    "promptTokensApprox": 21264,
+    "perCandidateTokens": [
+      {
+        "candidateId": "cand_09_hafiz_ahmed_hassan_chohan",
+        "approxTokens": 743
+      },
+      {
+        "candidateId": "cand_10_muhammad_aleem_siddique_khan",
+        "approxTokens": 327
+      },
+      {
+        "candidateId": "cand_11_muhammad_ahad_sajjad",
+        "approxTokens": 848
+      },
+      {
+        "candidateId": "cand_12_iqra_rasool",
+        "approxTokens": 883
+      },
+      {
+        "candidateId": "cand_13_muhammad_uzair_khan",
+        "approxTokens": 250
+      },
+      {
+        "candidateId": "cand_14_jatindar_kumar_mamnani",
+        "approxTokens": 890
+      },
+      {
+        "candidateId": "cand_15_abdul_basit",
+        "approxTokens": 692
+      },
+      {
+        "candidateId": "cand_01_muhammad_khizer_tariq",
+        "approxTokens": 460
+      },
+      {
+        "candidateId": "cand_02_umer_tariq",
+        "approxTokens": 304
+      },
+      {
+        "candidateId": "cand_03_abdullah_aleem",
+        "approxTokens": 836
+      },
+      {
+        "candidateId": "cand_04_mujtaba_shafqat",
+        "approxTokens": 410
+      },
+      {
+        "candidateId": "cand_05_ali_murad",
+        "approxTokens": 746
+      },
+      {
+        "candidateId": "cand_06_hasib_aslam",
+        "approxTokens": 813
+      },
+      {
+        "candidateId": "cand_07_haram_nasir",
+        "approxTokens": 371
+      },
+      {
+        "candidateId": "cand_08_muhammad_rouhan_faisal",
+        "approxTokens": 824
+      },
+      {
+        "candidateId": "cand_23_muhammad_zaeem_khalid",
+        "approxTokens": 742
+      },
+      {
+        "candidateId": "cand_24_abdullah_saim",
+        "approxTokens": 790
+      },
+      {
+        "candidateId": "cand_25_muhammad_abdullah",
+        "approxTokens": 547
+      },
+      {
+        "candidateId": "cand_26_mohammad_irfan",
+        "approxTokens": 368
+      },
+      {
+        "candidateId": "cand_27_muhammad_taha_mukhtar",
+        "approxTokens": 673
+      },
+      {
+        "candidateId": "cand_28_umama_zainab",
+        "approxTokens": 885
+      },
+      {
+        "candidateId": "cand_29_abdul_ahad_qureshi",
+        "approxTokens": 527
+      },
+      {
+        "candidateId": "cand_30_wahaj_ahmad_butt",
+        "approxTokens": 763
+      },
+      {
+        "candidateId": "cand_16_mehar_ali_ahmed",
+        "approxTokens": 708
+      },
+      {
+        "candidateId": "cand_17_ghulam_hussain_khan_sherwani",
+        "approxTokens": 530
+      },
+      {
+        "candidateId": "cand_18_abdul_rehman",
+        "approxTokens": 795
+      },
+      {
+        "candidateId": "cand_19_abdullah_khan",
+        "approxTokens": 495
+      },
+      {
+        "candidateId": "cand_20_ali_awais_safdar",
+        "approxTokens": 980
+      },
+      {
+        "candidateId": "cand_21_prithvi_raj",
+        "approxTokens": 863
+      },
+      {
+        "candidateId": "cand_22_mariam_babar_khan",
+        "approxTokens": 890
+      }
+    ]
+  },
+  "pool_summary": "The contender pool clusters around two standout profiles: research-oriented builders with publications, international lab exposure, or advanced AI systems, and product-oriented engineers with end-to-end web/mobile ownership and measurable user or usage outcomes. A smaller upper echelon combines both research rigor and deployable AI/full-stack integration, while leadership and selective-environment signals provide additional separation among otherwise qualified graduates.",
+  "axes": [
+    {
+      "axis_id": "axis_1",
+      "label": "Publication-Grade ML Research",
+      "category": "spiky_excellence",
+      "rationale": "The role explicitly seeks research depth, and this pool contains a meaningful subset with conference or journal publications, externally funded work, and quantitative model evaluation. This separates candidates who merely completed ML projects from those who produced externally validated or rigorously benchmarked research artifacts.",
+      "strong_criteria": "Strong requires active ownership [action] of an ML/AI research contribution that produced a peer-reviewed publication, conference presentation, externally funded research deliverable, or comparable external artifact, plus explicit experimental metrics, dataset details, or methodological novelty. A project description must show what the candidate built or investigated rather than only naming a research topic.",
+      "moderate_criteria": "Moderate requires active research [action] in a university or industry lab with a defined ML model, dataset, experiment, or evaluation metric, but without verified publication, external presentation, or clearly novel contribution. A completed benchmarked FYP or supervised research project qualifies when the candidate's implementation ownership is explicit.",
+      "estimated_pool_prevalence": "8/30 candidates",
+      "supporting_claims": []
+    },
+    {
+      "axis_id": "axis_2",
+      "label": "End-to-End AI Productization",
+      "category": "domain_and_architecture",
+      "rationale": "The job requires production AI systems rather than isolated model notebooks, and several candidates demonstrate the comparatively rare ability to connect models to retrieval, APIs, multimodal interfaces, or usable applications. This axis measures architectural integration and delivery ownership, independently of publication prestige or general web development.",
+      "strong_criteria": "Strong requires active ownership [action] of an end-to-end AI application combining a nontrivial model or retrieval pipeline with application/API integration, such as RAG using hybrid retrieval and ranking, multimodal VQA, LLM serving through FastAPI, or an AI feature embedded in a deployed web/mobile workflow. The evidence should identify the model or retrieval components and the serving or product integration performed.",
+      "moderate_criteria": "Moderate requires active ownership [action] of a working AI application or model-backed interface with one clear integration layer, such as a chatbot using an LLM API, a computer-vision system exposed through an application, or a predictive model connected to a basic UI. Coursework-only, tool listings, or peripheral participation in another person's AI system does not qualify as strong evidence.",
+      "estimated_pool_prevalence": "10/30 candidates",
+      "supporting_claims": []
+    },
+    {
+      "axis_id": "axis_3",
+      "label": "Quantified Product Impact",
+      "category": "scale_and_impact",
+      "rationale": "Most candidates list applications or internships, but only a smaller group quantifies user adoption, throughput, operational scale, or measurable product outcomes. For an applied AI and product-engineering role, demonstrated impact is a stronger differentiator than framework familiarity alone.",
+      "strong_criteria": "Strong requires active ownership [action] of a shipped or demonstrably usable product with a concrete outcome such as at least 40% improvement in engagement, retention, onboarding, satisfaction, support volume, or processing time; or an explicit operating scale of at least 100 concurrent users, 100 daily users, or 50 managed organizational users. The metric must be tied to the candidate's own build or feature contribution.",
+      "moderate_criteria": "Moderate requires active ownership [action] of a complete multi-user web/mobile product, real-time system, or operational application with a stated but smaller scale or qualitative outcome, such as a deployed platform, booking workflow, real-time communication feature, or system used by a defined organization. Unquantified prototypes and generic feature contributions remain moderate at most.",
+      "estimated_pool_prevalence": "7/30 candidates",
+      "supporting_claims": []
+    },
+    {
+      "axis_id": "axis_4",
+      "label": "Selective Global Research Exposure",
+      "category": "pedigree_and_environment",
+      "rationale": "The pool is unusually concentrated at one strong local university, so university attendance alone does not separate candidates. The meaningful comparative signal is verified participation in selective international universities, research centers, funded programs, or globally competitive engineering communities where the candidate actively contributed to advanced work.",
+      "strong_criteria": "Strong requires verified active contribution [action] in a selective external environment such as an international university research internship, DFKI/major research-center placement, Google Summer of Code, or comparable funded global program, with a concrete technical deliverable rather than attendance alone. The candidate must identify the host environment and the work performed.",
+      "moderate_criteria": "Moderate requires active research or engineering ownership [action] in a recognized university lab, exchange program, or reputable local research group with a defined technical deliverable, but without evidence of selective international or globally competitive placement. Passive exchange participation, generic employer names, or unbacked prestige claims do not qualify.",
+      "estimated_pool_prevalence": "8/30 candidates",
+      "supporting_claims": [
+        {
+          "candidate_id": "cand_16_mehar_ali_ahmed",
+          "ref_id": "header",
+          "digest_line": "[cand_16_mehar_ali_ahmed] Mehar Ali Ahmed",
+          "evidence_span": null
+        }
+      ]
+    },
+    {
+      "axis_id": "axis_5",
+      "label": "Early Ownership Trajectory",
+      "category": "career_trajectory_and_leadership",
+      "rationale": "At entry level, formal seniority is not expected, so the differentiator is whether candidates repeatedly moved beyond narrowly assigned tasks to own products, lead initiatives, or sustain responsibility across multiple roles. This captures initiative and scope growth without duplicating technical depth or measured product impact.",
+      "strong_criteria": "Strong requires verified trajectory evidence showing either a promotion or senior/lead designation, ownership of a project or workstream from requirements through delivery, or leadership of a team/community of at least 10 people, alongside multiple substantive responsibilities across internships, part-time work, or projects. The evidence must show active accountability [action], not merely participation.",
+      "moderate_criteria": "Moderate requires active ownership [action] of at least one complete project or workstream, such as independently building a client application, leading a capstone, managing stakeholder requirements, or coordinating a small team, but without promotion, repeated scope expansion, or substantial people leadership.",
+      "estimated_pool_prevalence": "9/30 candidates",
+      "supporting_claims": []
+    }
+  ],
+  "warnings": [
+    "Axis 'Publication-Grade ML Research' cited unknown ref_id 'work_1' on candidate 'cand_01_muhammad_khizer_tariq'",
+    "Axis 'Publication-Grade ML Research' cited unknown ref_id 'work_1' on candidate 'cand_25_muhammad_abdullah'",
+    "Axis 'Publication-Grade ML Research' cited unknown ref_id 'work_1' on candidate 'cand_27_muhammad_taha_mukhtar'",
+    "Axis 'Publication-Grade ML Research' cited unknown ref_id 'work_1' on candidate 'cand_20_ali_awais_safdar'",
+    "Axis 'Publication-Grade ML Research' cited unknown ref_id 'work_1' on candidate 'cand_14_jatindar_kumar_mamnani'",
+    "Axis 'End-to-End AI Productization' cited unknown ref_id 'work_1' on candidate 'cand_14_jatindar_kumar_mamnani'",
+    "Axis 'End-to-End AI Productization' cited unknown ref_id 'work_1' on candidate 'cand_08_muhammad_rouhan_faisal'",
+    "Axis 'End-to-End AI Productization' cited unknown ref_id 'work_1' on candidate 'cand_25_muhammad_abdullah'",
+    "Axis 'End-to-End AI Productization' cited unknown ref_id 'work_1' on candidate 'cand_20_ali_awais_safdar'",
+    "Axis 'End-to-End AI Productization' cited unknown ref_id 'work_1' on candidate 'cand_18_abdul_rehman'",
+    "Axis 'Quantified Product Impact' cited unknown ref_id 'work_1' on candidate 'cand_11_muhammad_ahad_sajjad'",
+    "Axis 'Quantified Product Impact' cited unknown ref_id 'work_1' on candidate 'cand_08_muhammad_rouhan_faisal'",
+    "Axis 'Quantified Product Impact' cited unknown ref_id 'work_1' on candidate 'cand_29_abdul_ahad_qureshi'",
+    "Axis 'Quantified Product Impact' cited unknown ref_id 'work_1' on candidate 'cand_03_abdullah_aleem'",
+    "Axis 'Quantified Product Impact' cited unknown ref_id 'work_1' on candidate 'cand_19_abdullah_khan'",
+    "Axis 'Selective Global Research Exposure' cited unknown ref_id 'work_1' on candidate 'cand_27_muhammad_taha_mukhtar'",
+    "Axis 'Selective Global Research Exposure' cited unknown ref_id 'work_1' on candidate 'cand_24_abdullah_saim'",
+    "Axis 'Selective Global Research Exposure' cited unknown ref_id 'work_1' on candidate 'cand_20_ali_awais_safdar'",
+    "Axis 'Selective Global Research Exposure' cited unknown ref_id 'work_1' on candidate 'cand_06_hasib_aslam'",
+    "Axis 'Early Ownership Trajectory' cited unknown ref_id 'work_1' on candidate 'cand_28_umama_zainab'",
+    "Axis 'Early Ownership Trajectory' cited unknown ref_id 'work_1' on candidate 'cand_17_ghulam_hussain_khan_sherwani'",
+    "Axis 'Early Ownership Trajectory' cited unknown ref_id 'work_1' on candidate 'cand_16_mehar_ali_ahmed'",
+    "Axis 'Early Ownership Trajectory' cited unknown ref_id 'work_1' on candidate 'cand_29_abdul_ahad_qureshi'",
+    "Axis 'Early Ownership Trajectory' cited unknown ref_id 'work_1' on candidate 'cand_03_abdullah_aleem'"
+  ],
+  "usage": {
+    "promptTokens": 23930,
+    "completionTokens": 2821,
+    "inputTokens": 23930,
+    "outputTokens": 2821,
+    "totalTokens": 26751
+  },
+  "latency_ms": 33982
+}

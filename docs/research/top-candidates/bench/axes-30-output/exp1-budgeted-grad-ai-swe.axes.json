@@ -1,0 +1,384 @@
+{
+  "job_id": "grad-ai-swe",
+  "job_title": "AI / ML & Full-Stack Software Engineer (Graduate / Entry-Level)",
+  "source_mode": "exp1",
+  "order_mode": "canonical",
+  "candidate_order": [
+    "cand_01_muhammad_khizer_tariq",
+    "cand_02_umer_tariq",
+    "cand_03_abdullah_aleem",
+    "cand_04_mujtaba_shafqat",
+    "cand_05_ali_murad",
+    "cand_06_hasib_aslam",
+    "cand_07_haram_nasir",
+    "cand_08_muhammad_rouhan_faisal",
+    "cand_09_hafiz_ahmed_hassan_chohan",
+    "cand_10_muhammad_aleem_siddique_khan",
+    "cand_11_muhammad_ahad_sajjad",
+    "cand_12_iqra_rasool",
+    "cand_13_muhammad_uzair_khan",
+    "cand_14_jatindar_kumar_mamnani",
+    "cand_15_abdul_basit",
+    "cand_16_mehar_ali_ahmed",
+    "cand_17_ghulam_hussain_khan_sherwani",
+    "cand_18_abdul_rehman",
+    "cand_19_abdullah_khan",
+    "cand_20_ali_awais_safdar",
+    "cand_21_prithvi_raj",
+    "cand_22_mariam_babar_khan",
+    "cand_23_muhammad_zaeem_khalid",
+    "cand_24_abdullah_saim",
+    "cand_25_muhammad_abdullah",
+    "cand_26_mohammad_irfan",
+    "cand_27_muhammad_taha_mukhtar",
+    "cand_28_umama_zainab",
+    "cand_29_abdul_ahad_qureshi",
+    "cand_30_wahaj_ahmad_butt"
+  ],
+  "stage0": {
+    "executed": false,
+    "totalInputCandidates": 30,
+    "viableCount": 30,
+    "knockedOutCount": 0,
+    "knockedOutCandidates": []
+  },
+  "pool_stats": {
+    "contenderCount": 30,
+    "jobSpecTokensApprox": 206,
+    "digestsTokensApprox": 3989,
+    "promptTokensApprox": 5296,
+    "perCandidateTokens": [
+      {
+        "candidateId": "cand_01_muhammad_khizer_tariq",
+        "approxTokens": 130
+      },
+      {
+        "candidateId": "cand_02_umer_tariq",
+        "approxTokens": 14
+      },
+      {
+        "candidateId": "cand_03_abdullah_aleem",
+        "approxTokens": 160
+      },
+      {
+        "candidateId": "cand_04_mujtaba_shafqat",
+        "approxTokens": 104
+      },
+      {
+        "candidateId": "cand_05_ali_murad",
+        "approxTokens": 145
+      },
+      {
+        "candidateId": "cand_06_hasib_aslam",
+        "approxTokens": 181
+      },
+      {
+        "candidateId": "cand_07_haram_nasir",
+        "approxTokens": 74
+      },
+      {
+        "candidateId": "cand_08_muhammad_rouhan_faisal",
+        "approxTokens": 189
+      },
+      {
+        "candidateId": "cand_09_hafiz_ahmed_hassan_chohan",
+        "approxTokens": 135
+      },
+      {
+        "candidateId": "cand_10_muhammad_aleem_siddique_khan",
+        "approxTokens": 65
+      },
+      {
+        "candidateId": "cand_11_muhammad_ahad_sajjad",
+        "approxTokens": 156
+      },
+      {
+        "candidateId": "cand_12_iqra_rasool",
+        "approxTokens": 191
+      },
+      {
+        "candidateId": "cand_13_muhammad_uzair_khan",
+        "approxTokens": 61
+      },
+      {
+        "candidateId": "cand_14_jatindar_kumar_mamnani",
+        "approxTokens": 164
+      },
+      {
+        "candidateId": "cand_15_abdul_basit",
+        "approxTokens": 114
+      },
+      {
+        "candidateId": "cand_16_mehar_ali_ahmed",
+        "approxTokens": 198
+      },
+      {
+        "candidateId": "cand_17_ghulam_hussain_khan_sherwani",
+        "approxTokens": 72
+      },
+      {
+        "candidateId": "cand_18_abdul_rehman",
+        "approxTokens": 102
+      },
+      {
+        "candidateId": "cand_19_abdullah_khan",
+        "approxTokens": 109
+      },
+      {
+        "candidateId": "cand_20_ali_awais_safdar",
+        "approxTokens": 137
+      },
+      {
+        "candidateId": "cand_21_prithvi_raj",
+        "approxTokens": 135
+      },
+      {
+        "candidateId": "cand_22_mariam_babar_khan",
+        "approxTokens": 152
+      },
+      {
+        "candidateId": "cand_23_muhammad_zaeem_khalid",
+        "approxTokens": 170
+      },
+      {
+        "candidateId": "cand_24_abdullah_saim",
+        "approxTokens": 184
+      },
+      {
+        "candidateId": "cand_25_muhammad_abdullah",
+        "approxTokens": 143
+      },
+      {
+        "candidateId": "cand_26_mohammad_irfan",
+        "approxTokens": 30
+      },
+      {
+        "candidateId": "cand_27_muhammad_taha_mukhtar",
+        "approxTokens": 183
+      },
+      {
+        "candidateId": "cand_28_umama_zainab",
+        "approxTokens": 171
+      },
+      {
+        "candidateId": "cand_29_abdul_ahad_qureshi",
+        "approxTokens": 175
+      },
+      {
+        "candidateId": "cand_30_wahaj_ahmad_butt",
+        "approxTokens": 144
+      }
+    ]
+  },
+  "pool_summary": "The contender pool clusters into three standout profiles: research-oriented AI builders with publications, advanced computer-vision or multimodal systems, and product-oriented engineers with measurable user or business outcomes. A smaller but meaningful group demonstrates retrieval-augmented generation, real-time architecture, international lab exposure, or open-source traction beyond ordinary coursework projects.",
+  "axes": [
+    {
+      "axis_id": "axis_1",
+      "label": "Research-Grade AI Evidence",
+      "category": "spiky_excellence",
+      "rationale": "Research outputs, externally funded work, and reproducible model evaluation distinguish candidates who can contribute to production AI beyond assembling standard demos. This axis separates genuine research depth from merely listing ML tools or completing an undifferentiated ML project.",
+      "strong_criteria": "Active ownership [action] of at least one peer-reviewed publication, externally funded research project, or research-grade AI system with a reported metric, novel method, or substantial experimental contribution; evidence should resemble the pool’s published work, funded segmentation research, or quantified model-building.",
+      "moderate_criteria": "Active ownership [action] of a substantive AI research or advanced model project without publication or external validation, or a clearly documented research internship contribution with a concrete dataset, model, or evaluation; peripheral participation in a research project is only moderate at most.",
+      "estimated_pool_prevalence": "7/30 candidates show strong or moderate evidence",
+      "supporting_claims": [
+        {
+          "candidate_id": "cand_01_muhammad_khizer_tariq",
+          "ref_id": "s1",
+          "digest_line": "[s1:action] Publication: FIT 2024 -> published Routing through Satellite Imagery paper",
+          "evidence_span": "Presented a Conference Paper at FIT 2024 Published a Conference paper related to my Final year project on \"Routing through Satellite Imagery\", the paper presents a novel ML based technique for solving the vehicle routing problem the paper is published at"
+        },
+        {
+          "candidate_id": "cand_01_muhammad_khizer_tariq",
+          "ref_id": "s2",
+          "digest_line": "[s2:action] Publication: IJCA -> published Grouped Matrix Clocks paper",
+          "evidence_span": "Published a Journal Paper in IJCA Published a Journal in International Journal for Computing Applications regarding Grouped Matrix Clocks for clock synchronization in Distributed Systems the paper can be accessed at: https://www.ijcaonline.org/"
+        },
+        {
+          "candidate_id": "cand_20_ali_awais_safdar",
+          "ref_id": "s1",
+          "digest_line": "[s1:action] Project: Ant Colony Optimization -> authored vehicle routing research paper",
+          "evidence_span": "Enhancing Vehicle Routing with Time Windows: A Machine Learning-Driven Ant Colony Optimization Authored a research paper focusing on integrating machine learning techniques with Ant Colony Optimization (ACO) to improve vehicle routing under time-window constraints."
+        },
+        {
+          "candidate_id": "cand_27_muhammad_taha_mukhtar",
+          "ref_id": "s1",
+          "digest_line": "[s1:action] Project: DAAD, RPTU, DFKI -> advanced Slum-i settlement segmentation | €80k DAAD funding",
+          "evidence_span": "Slum-i, Research Project Worked on a €80,000 DAAD-funded project in collaboration with RPTU & DFKI, where I interned in Germany. Aligned with 3 UN SDGs, focusing on improving living conditions for slum dwellers in Pakistan. Upcoming publication in a top remote sensing journal, using SSL for segmenting informal settlements."
+        },
+        {
+          "candidate_id": "cand_27_muhammad_taha_mukhtar",
+          "ref_id": "s2",
+          "digest_line": "[s2:action] Open-Source: Gemini API -> created lang-source localization CLI | 500+ downloads, 5 stars",
+          "evidence_span": "lang-source, Open Source Project Created a CLI utility using the Gemini API to automate localisation workﬂows, supporting 12 languages and reducing manual eﬀort in creating JSON/YAML language files. Published as an npm package with 500+ downloads and has 5 Stars on GitHub."
+        }
+      ]
+    },
+    {
+      "axis_id": "axis_2",
+      "label": "Multimodal Model-Building Depth",
+      "category": "domain_and_architecture",
+      "rationale": "The role spans LLMs, retrieval, computer vision, and predictive modeling, while the pool contains a selective set of candidates who built nontrivial systems across modalities rather than single-model classroom exercises. The differentiator is hands-on architecture and evaluation of complex AI systems, not baseline Python or ML exposure.",
+      "strong_criteria": "Active ownership [action] of a complex multimodal or advanced vision/NLP system using multiple model families, modalities, or stages, with a concrete evaluation result such as 82%+ accuracy/mIoU, OCR or ANPR performance, VQA, segmentation, or a comparable measured outcome.",
+      "moderate_criteria": "Active ownership [action] of one substantial computer-vision, NLP, recommendation, or predictive-modeling system using a nontrivial architecture such as CNNs, Transformers, BERT, CLIP, LSTM, or YOLO, but without multiple modalities, staged architecture, or a quantified evaluation; a simple classifier with a metric is moderate.",
+      "estimated_pool_prevalence": "9/30 candidates show strong or moderate evidence",
+      "supporting_claims": [
+        {
+          "candidate_id": "cand_14_jatindar_kumar_mamnani",
+          "ref_id": "s3",
+          "digest_line": "[s3:action] Project: CNNs, LSTMs, Transformers -> built VQA medical advisor system",
+          "evidence_span": "VQA-Based-Medical-Advisor Developed a medical visual question-answering system using CNNs for image features and LSTMs/ Transformers for text queries. Implemented multimodal fusion to combine image and text features."
+        },
+        {
+          "candidate_id": "cand_14_jatindar_kumar_mamnani",
+          "ref_id": "s4",
+          "digest_line": "[s4:action] Project: built autonomous-driving multitask model | 82.4% mIoU",
+          "evidence_span": "A Video Based Multi-Task Learning Model for Autonomous Driving Developed a cutting-edge multitask learning model for real-time autonomous driving. Engineered to perform semantic segmentation, lane detection, and object detection on edge devices with high Achieved 82.4% mIoU on the VIL-100 validation set for lane segmentation."
+        },
+        {
+          "candidate_id": "cand_20_ali_awais_safdar",
+          "ref_id": "s3",
+          "digest_line": "[s3:action] Project: VGG-19, BERT -> built PATHVQA medical VQA system",
+          "evidence_span": "PATHVQA-VGG19-BERT-ATTENTION Developed a medical Visual Question Answering (VQA) system utilizing VGG-19 for image feature extraction and BERT for textual question processing. Incorporated attention mechanisms to enhance contextual understanding, facilitating accurate responses to"
+        },
+        {
+          "candidate_id": "cand_30_wahaj_ahmad_butt",
+          "ref_id": "s1",
+          "digest_line": "[s1:action] Project: ResNet50, BERT -> designed VQA real-world image model",
+          "evidence_span": "Visual Question Answering for Real-World Images Designed a VQA model combining convolutional neural networks (ResNet50) for image feature extraction and transformer-based language models (BERT) for question encoding. Evaluated on the processed DAQUAR dataset, analyzing performance using accuracy and semantic similarity"
+        },
+        {
+          "candidate_id": "cand_30_wahaj_ahmad_butt",
+          "ref_id": "s4",
+          "digest_line": "[s4:action] Project: FER2013Plus, ResNet50 -> built Emotion-Based Music Recognition system | 82.7% accuracy",
+          "evidence_span": "Emotion-Based Music Recognition System Created a music recommendation system leveraging artiﬁcial intelligence to provide accurate music suggestions based on the user's emotional state, detected via a camera. Utilized the FER2013Plus dataset for emotion recognition and ResNet50 as the base CNN model, achieving an 82.7% accuracy."
+        }
+      ]
+    },
+    {
+      "axis_id": "axis_3",
+      "label": "RAG Retrieval Architecture",
+      "category": "domain_and_architecture",
+      "rationale": "RAG is explicitly preferred for this role, but only a few candidates show exposure to the full retrieval mechanism rather than generic chatbot or LLM API usage. The key separation is active construction of hybrid retrieval and indexing pipelines with technically meaningful components and validation.",
+      "strong_criteria": "Active ownership [action] of an end-to-end RAG or semantic retrieval system combining at least two concrete mechanisms such as embeddings, BM25, FAISS, vector search, reranking, or domain-specific document retrieval, ideally with publication, evaluation, or a deployed workflow.",
+      "moderate_criteria": "Active ownership [action] of an LLM-powered assistant, semantic search, or document QA system using a single retrieval or model component, or peripheral contribution [peripheral] to a technically specified RAG pipeline such as embeddings/BM25/FAISS; generic ChatGPT API integration without retrieval is only moderate at most.",
+      "estimated_pool_prevalence": "4/30 candidates show strong or moderate evidence",
+      "supporting_claims": [
+        {
+          "candidate_id": "cand_25_muhammad_abdullah",
+          "ref_id": "s2",
+          "digest_line": "[s2:action] Publication: BM25, FAISS, OpenAI embeddings -> developed FUSIONRAG regulatory retrieval | COLING 2025",
+          "evidence_span": "FUSIONRAG: Enhancing Regulatory Document Analysis Published at COLING 2025. Developed FUSIONRAG, combining OpenAI embeddings, BM25, FAISS, and Rank-Fusion for improved regulatory information retrieval and answer generation."
+        },
+        {
+          "candidate_id": "cand_08_muhammad_rouhan_faisal",
+          "ref_id": "s4",
+          "digest_line": "[s4:peripheral] Project: OpenAI embeddings, BM25, FAISS -> contributed FusionRAG regulatory retrieval",
+          "evidence_span": "Research on FusionRAG – NUST Alpha at RIRAG 2025 Contributed to the development of FusionRAG, a Retrieval-Augmented Generation (RAG) system designed to enhance regulatory document retrieval and question answering. Integrated OpenAI embeddings, BM25, FAISS, and a custom rank fusion strategy to combine lexical and semantic retrieval for improved accuracy and"
+        },
+        {
+          "candidate_id": "cand_14_jatindar_kumar_mamnani",
+          "ref_id": "s1",
+          "digest_line": "[s1:action] Project: FastAPI -> built Prompt-No-Code Website Assistant chatbot",
+          "evidence_span": "Prompt-No-Code Website Assistant Developed an AI-powered no-code chatbot assistant that extracts contextual insights from website URLs for Engineered an LLM-driven chatbot system using FastAPI, enabling real-time, context-aware user interactions."
+        },
+        {
+          "candidate_id": "cand_29_abdul_ahad_qureshi",
+          "ref_id": "s3",
+          "digest_line": "[s3:action] Project: Next.js -> integrated ChatGPT API solution",
+          "evidence_span": "ChatGPT API | Next.js, GPT API Seamless integration of GPT API with Next.js 13"
+        }
+      ]
+    },
+    {
+      "axis_id": "axis_4",
+      "label": "Quantified Product Impact",
+      "category": "scale_and_impact",
+      "rationale": "Most candidates describe projects without adoption, business, or operational outcomes, whereas a small group demonstrates that their software changed engagement, retention, onboarding, usage, or processing performance. This axis is especially relevant to an applied AI and product-engineering role where prototypes must produce measurable user value.",
+      "strong_criteria": "Active ownership [action] of a shipped product or feature with at least one quantified outcome comparable to the pool’s evidence: roughly 30%+ improvement in engagement/satisfaction/retention, 25%+ reduction in onboarding, bounce, or inquiry burden, 50+ active users, 100+ daily users, or a similarly explicit business/usage metric.",
+      "moderate_criteria": "Active ownership [action] of a usable application with explicit but smaller-scale adoption, performance, or operational measurement, such as around 100 concurrent users, a quantified model/product result without clear business impact, or a concrete workflow improvement lacking a strong before-and-after metric.",
+      "estimated_pool_prevalence": "6/30 candidates show strong or moderate evidence",
+      "supporting_claims": [
+        {
+          "candidate_id": "cand_11_muhammad_ahad_sajjad",
+          "ref_id": "c1",
+          "digest_line": "[c1:action] built wellness monitoring kiosk and app | +75% retention, -25% onboarding",
+          "evidence_span": "Designed and developed an embedded kiosk and mobile app for wellness monitoring using neuro-symbolic AI, boosting user retention by 75%. Conducted extensive user research, including surveys and interviews, leading to a 25% reduction in onboarding time."
+        },
+        {
+          "candidate_id": "cand_11_muhammad_ahad_sajjad",
+          "ref_id": "c2",
+          "digest_line": "[c2:action] created HeroCV resume builder | +70% engagement",
+          "evidence_span": "Created HeroCV, an AI-powered resume builder, increasing user engagement by 70%."
+        },
+        {
+          "candidate_id": "cand_11_muhammad_ahad_sajjad",
+          "ref_id": "c3",
+          "digest_line": "[c3:action] designed AptScout apartment platform | +40% engagement, -70% bounce",
+          "evidence_span": "Designed AptScout, an apartment listing platform, improving user engagement by 40% and reducing bounce rates by 70%."
+        },
+        {
+          "candidate_id": "cand_29_abdul_ahad_qureshi",
+          "ref_id": "c2",
+          "digest_line": "[c2:action] Figma -> developed scalable management system | 100+ daily users",
+          "evidence_span": "Developing a scalable management system targeted for 100+ daily users. Collaborate with the project manager and stakeholders to create requirements documents and Figma designs."
+        },
+        {
+          "candidate_id": "cand_08_muhammad_rouhan_faisal",
+          "ref_id": "s3",
+          "digest_line": "[s3:action] Project: MongoDB, Express, Node.js -> built Chat Application real-time messenger | 100 concurrent users",
+          "evidence_span": "Chat Application Developed a real-time chat application using the MERN stack (MongoDB, Express, React, Node.js) to facilitate communication for up to 100 concurrent users. Implemented functionalities for 100 users to engage in seamless direct messaging and group chats, fostering"
+        }
+      ]
+    },
+    {
+      "axis_id": "axis_5",
+      "label": "Real-Time Full-Stack Architecture",
+      "category": "domain_and_architecture",
+      "rationale": "The full-stack portion of the role favors candidates who can integrate frontend, backend, persistence, authentication, and live communication rather than deliver isolated UI pages. Real-time messaging, WebSockets, WebRTC, and multi-layer application ownership form a selective architectural cluster in this pool.",
+      "strong_criteria": "Active ownership [action] of a multi-layer web or mobile application that integrates frontend and backend services, persistence/authentication, and real-time behavior through WebSockets, Socket.IO, WebRTC, or an equivalent mechanism, with explicit concurrency, usage, or production-scope evidence when available.",
+      "moderate_criteria": "Active ownership [action] of a complete frontend-backend application with database and API integration, or a real-time feature without demonstrated scale; isolated frontend work, a static website, or peripheral backend support is not strong and is moderate only when paired with meaningful application ownership.",
+      "estimated_pool_prevalence": "8/30 candidates show strong or moderate evidence",
+      "supporting_claims": [
+        {
+          "candidate_id": "cand_03_abdullah_aleem",
+          "ref_id": "s1",
+          "digest_line": "[s1:action] Project: WebSockets, Express.js, MongoDB -> built HomeDoc real-time service platform",
+          "evidence_span": "HomeDoc Implemented WebSockets to enable real-time communication between users and paramedics. Developed a RESTful API using Express.js for user and paramedic registration and service booking. Integrated MongoDB for data persistence, ensuring secure and scalable user data management."
+        },
+        {
+          "candidate_id": "cand_08_muhammad_rouhan_faisal",
+          "ref_id": "s3",
+          "digest_line": "[s3:action] Project: MongoDB, Express, Node.js -> built Chat Application real-time messenger | 100 concurrent users",
+          "evidence_span": "Chat Application Developed a real-time chat application using the MERN stack (MongoDB, Express, React, Node.js) to facilitate communication for up to 100 concurrent users. Implemented functionalities for 100 users to engage in seamless direct messaging and group chats, fostering"
+        },
+        {
+          "candidate_id": "cand_25_muhammad_abdullah",
+          "ref_id": "s1",
+          "digest_line": "[s1:action] Project: Next.js, Socket.IO -> built Scototo communication platform",
+          "evidence_span": "Scototo Built a platform for seamless text, voice, and video communication for individuals and teams. Tools Used: Next.js, SQL, Socket.IO, Tailwind, Clerk."
+        },
+        {
+          "candidate_id": "cand_29_abdul_ahad_qureshi",
+          "ref_id": "s2",
+          "digest_line": "[s2:action] Project: Socket.io, JSON Web Token (JWT) -> built Real-time Chat Application",
+          "evidence_span": "Real-time Chat Application | ReactJS, Express.js, Nodejs, MongoDB, Socket.io Developed areal-time chat application using the Web Sockets. Authentication using JSON Web Token (JWT)."
+        },
+        {
+          "candidate_id": "cand_30_wahaj_ahmad_butt",
+          "ref_id": "s3",
+          "digest_line": "[s3:action] Project: Laravel, WebRTC, MySQL -> built Palingenesis chat video application",
+          "evidence_span": "Palingenesis Created a chat and video calling Laravel application using Web-RTC for connectivity. Made use of JWT web tokens for user authentication and stores data in a MySQL database. Also wrote extensive documentation, drawing up ERDs for the relation between various functionalities."
+        }
+      ]
+    }
+  ],
+  "warnings": [],
+  "usage": {
+    "promptTokens": 6909,
+    "completionTokens": 2732,
+    "inputTokens": 6909,
+    "outputTokens": 2732,
+    "totalTokens": 9641
+  },
+  "latency_ms": 28117
+}

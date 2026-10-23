@@ -1,0 +1,104 @@
+{
+  "cv_id": "cand_07_haram_nasir",
+  "filename": "cand_07_haram_nasir.pdf",
+  "work_history_summary": [
+    {
+      "entry_id": "work_1",
+      "employer": "Victreat Health Tech pvt ltd",
+      "title": "Not specified",
+      "start_date": "2024-10",
+      "end_date": "2025-02",
+      "is_current": false
+    }
+  ],
+  "role_claims": [
+    {
+      "claim_id": "c1",
+      "source_entry_ref": "work_1",
+      "claim_tier": "action_attributed",
+      "skills": [
+        {
+          "skill": "Python",
+          "syntactic_tier": "action_attributed",
+          "canonical_skill": "python"
+        },
+        {
+          "skill": "Scrapy",
+          "syntactic_tier": "action_attributed",
+          "canonical_skill": null
+        },
+        {
+          "skill": "Playwright",
+          "syntactic_tier": "action_attributed",
+          "canonical_skill": "playwright"
+        }
+      ],
+      "raw_nouns": [],
+      "compact_action": "scraped medical conference abstracts",
+      "outcome_attached": null,
+      "evidence_span": "Was involved in writing python scripts to scrape data from medical conferences/abstracts using scrapy framework and palywright",
+      "evidence_lines": [
+        "L13",
+        "L14"
+      ]
+    }
+  ],
+  "notable_signals": [
+    {
+      "signal_id": "s1",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [],
+      "compact_action": "built National Science Bee website",
+      "outcome_attached": null,
+      "evidence_span": "National Science Bee Gyara Website Developed the oﬃcial website for NUST Science Society’s Science Bee event.",
+      "evidence_lines": [
+        "L16",
+        "L17"
+      ]
+    }
+  ],
+  "cleanup_stats": {
+    "filler_dropped": 0,
+    "duplicates_dropped": 0
+  },
+  "digest_stats_uncapped": {
+    "approx_tokens": 74,
+    "total_items": 2,
+    "kept_items": 2,
+    "token_breakdown": {
+      "headers": 40,
+      "nouns": 8,
+      "actions": 28,
+      "outcomes": 0
+    }
+  },
+  "digest_stats_budgeted": {
+    "budget": 200,
+    "approx_tokens": 74,
+    "total_items": 2,
+    "kept_items": 2,
+    "dropped_item_ids": [],
+    "token_breakdown": {
+      "headers": 40,
+      "nouns": 8,
+      "actions": 28,
+      "outcomes": 0
+    }
+  },
+  "warnings": [],
+  "usage": {
+    "promptTokens": 6654,
+    "completionTokens": 1918,
+    "inputTokens": 6654,
+    "outputTokens": 1918,
+    "totalTokens": 8572
+  },
+  "latency_ms": 17577,
+  "tokens_approx": {
+    "raw_text": 298,
+    "evidence_spans": 60,
+    "uncapped_digest": 74,
+    "budgeted_digest": 74
+  }
+}

@@ -1,0 +1,10 @@
+[cand_24_abdullah_saim] 0.2y FT (1 role) | BSc CS @ NUST (3.83) | Lahore
+work_1: Research Intern @ NUSTIAN USA International Summer Research Internship Program (2024-2024, 0.3y internship)
+  [c1:action] cookies, online tracking -> developed cookie classification model
+work_2: Consultant Quality Assurance Assessment Team (NUST) @ Pakistan Railways (NITB) (2022-2022, 0.2y FT)
+  [c2:listed] tested Safar Saheli railway app
+spikes:
+  [s1:action] Project: Java -> built Shuttle Service App desktop application
+  [s2:action] Project: built Water Management System monitor
+  [s3:action] Project: Excel -> built Time Table Generator scheduler
+  [s4:action] Project: MERN stack, Google Maps API, React -> built JanWhere wildlife mapping app

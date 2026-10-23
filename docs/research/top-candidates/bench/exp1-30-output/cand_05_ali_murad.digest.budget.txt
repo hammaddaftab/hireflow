@@ -1,0 +1,9 @@
+[cand_05_ali_murad] 1y FT (3 roles, avg 0.3y) | BSc CS @ NUST (2.7) | Chachro
+work_1: Full Stack Dev @ NUSTRive (2024-2025, 0.6y FT)
+work_2: Front-End Dev @ HighSkyTech (2024-2024, 0.1y FT)
+work_3: Front-End Dev @ IoT Lab (2023-2023, 0.3y FT)
+spikes:
+  [s1:action] Project: React, React Flow -> built Generic Builder workflow editor
+  [s2:action] Project: MongoDB, Express.js, React -> built E-Commerce Website platform
+  [s3:action] Project: React, Tailwind, Redux-Toolkit -> developed HeadStart consultant dashboard
+  [s4:action] Project: designed Apna Buzz business template

@@ -1,0 +1,148 @@
+{
+  "cv_id": "cand_05_ali_murad",
+  "filename": "cand_05_ali_murad.pdf",
+  "work_history_summary": [
+    {
+      "entry_id": "work_1",
+      "employer": "NUSTRive",
+      "title": "Full Stack Developer",
+      "start_date": "2024-08",
+      "end_date": "2025-02",
+      "is_current": false
+    },
+    {
+      "entry_id": "work_2",
+      "employer": "HighSkyTech",
+      "title": "Front-End Developer",
+      "start_date": "2024-07",
+      "end_date": "2024-07",
+      "is_current": false
+    },
+    {
+      "entry_id": "work_3",
+      "employer": "IoT Lab",
+      "title": "Front-End Developer",
+      "start_date": "2023-06",
+      "end_date": "2023-09",
+      "is_current": false
+    }
+  ],
+  "role_claims": [],
+  "notable_signals": [
+    {
+      "signal_id": "s1",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "React",
+        "React Flow"
+      ],
+      "compact_action": "built Generic Builder workflow editor",
+      "outcome_attached": null,
+      "evidence_span": "Generic Builder A React and React Flow-based workﬂow editor enabling users to create, edit, and visualize ﬂows with customizable nodes, drag-and-drop editing, real-time updates, and state persistence. Features include zooming, panning, and smooth user interactions, showcasing expertise in React, state",
+      "evidence_lines": [
+        "L24",
+        "L25",
+        "L26",
+        "L27"
+      ]
+    },
+    {
+      "signal_id": "s2",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "MongoDB",
+        "Express.js",
+        "React"
+      ],
+      "compact_action": "built E-Commerce Website platform",
+      "outcome_attached": null,
+      "evidence_span": "E-Commerce Website (MERN Stack, JWT Auth) A full-featured e-commerce platform built with MongoDB, Express.js, React, and Node.js, featuring JWT authentication, role-based access control, product management, shopping cart, and order management. Includes secure user authentication, responsive UI (Tailwind CSS), and Redux for state management.",
+      "evidence_lines": [
+        "L29",
+        "L30",
+        "L31",
+        "L32"
+      ]
+    },
+    {
+      "signal_id": "s3",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "React",
+        "Tailwind",
+        "Redux-Toolkit"
+      ],
+      "compact_action": "developed HeadStart consultant dashboard",
+      "outcome_attached": null,
+      "evidence_span": "Head Start I developed a HeadStart template for a commercial consultant. As a front-end developer, I worked on creating the dashboard using React, Tailwind, and other necessary npm libraries. Technologies used: React, Redux-Toolkit, Node, Express, MongoDB, JWT Authentication, RESTful APIs",
+      "evidence_lines": [
+        "L34",
+        "L35",
+        "L36",
+        "L37",
+        "L38"
+      ]
+    },
+    {
+      "signal_id": "s4",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [],
+      "compact_action": "designed Apna Buzz business template",
+      "outcome_attached": null,
+      "evidence_span": "Apna Buzz Designed and developed a fully responsive and customizable website template tailored for businesses. Implemented a modern UI/UX with dynamic content sections, smooth navigation, and fast performance. Ensured scalability and easy customization, enabling businesses to adapt the template to their specific needs",
+      "evidence_lines": [
+        "L40",
+        "L41",
+        "L42",
+        "L43"
+      ]
+    }
+  ],
+  "cleanup_stats": {
+    "filler_dropped": 0,
+    "duplicates_dropped": 0
+  },
+  "digest_stats_uncapped": {
+    "approx_tokens": 145,
+    "total_items": 4,
+    "kept_items": 4,
+    "token_breakdown": {
+      "headers": 63,
+      "nouns": 23,
+      "actions": 60,
+      "outcomes": 0
+    }
+  },
+  "digest_stats_budgeted": {
+    "budget": 200,
+    "approx_tokens": 145,
+    "total_items": 4,
+    "kept_items": 4,
+    "dropped_item_ids": [],
+    "token_breakdown": {
+      "headers": 63,
+      "nouns": 23,
+      "actions": 60,
+      "outcomes": 0
+    }
+  },
+  "warnings": [],
+  "usage": {
+    "promptTokens": 6983,
+    "completionTokens": 4265,
+    "inputTokens": 6983,
+    "outputTokens": 4265,
+    "totalTokens": 11248
+  },
+  "latency_ms": 33268,
+  "tokens_approx": {
+    "raw_text": 637,
+    "evidence_spans": 314,
+    "uncapped_digest": 145,
+    "budgeted_digest": 145
+  }
+}

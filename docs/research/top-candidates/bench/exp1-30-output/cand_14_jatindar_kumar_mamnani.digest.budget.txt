@@ -1,0 +1,9 @@
+[cand_14_jatindar_kumar_mamnani] 0y FT (2 internships) | BSc CS @ NUST (2.93) | Mirpurkhas
+work_1: Computer Vision Researcher @ Vision Research and development company (2024-2024, 0.3y internship)
+work_2: IT Support Intern @ CodSoft (2024-2024, 0.3y internship)
+  [c1:action] maintained campus computer equipment | 200 printers
+spikes:
+  [s1:action] Project: FastAPI -> built Prompt-No-Code Website Assistant chatbot
+  [s2:action] Project: Transformers -> built SemEval table-answering system
+  [s3:action] Project: CNNs, LSTMs, Transformers -> built VQA medical advisor system
+  [s4:action] Project: built autonomous-driving multitask model | 82.4% mIoU

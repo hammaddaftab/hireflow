@@ -1,0 +1,5 @@
+[cand_17_ghulam_hussain_khan_sherwani] BSc CS @ NUST (3.35) | Sahiwal
+spikes:
+  [s1:action] Project: MERN -> built TechZone e-commerce platform
+  [s2:action] Project: C++, Kaggle -> built Cricket Stats Guru application
+  [s3:action] Project: U-Net -> led Unet Binarizer document project

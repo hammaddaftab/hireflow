@@ -1,0 +1,9 @@
+[cand_09_hafiz_ahmed_hassan_chohan] 1.4y FT (4 roles, avg 0.4y) | BSc CS @ NUST (3.62) | Phalia
+work_1:  @ Walee (2024-2025, 1y FT)
+work_2: Research Assistant @ PakThai Lab NUST (2024-2025, 0.9y FT)
+work_3:  @ InLights (2024-2024, 0.3y FT)
+work_4:  @ Signal and Machine Learning Lab (2023-2023, 0.3y FT)
+spikes:
+  [s1:action] Project: OpenCV, pygame -> built Gesture-Controlled Snake Game
+  [s2:action] Project: OCR -> built Convert to EBooks conversion system
+  [s3:action] Project: OpenCV, easy-ocr -> built ANPR license plate recognizer

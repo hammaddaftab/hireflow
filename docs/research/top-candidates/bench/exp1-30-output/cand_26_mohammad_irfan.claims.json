@@ -1,0 +1,66 @@
+{
+  "cv_id": "cand_26_mohammad_irfan",
+  "filename": "cand_26_mohammad_irfan.pdf",
+  "work_history_summary": [],
+  "role_claims": [],
+  "notable_signals": [
+    {
+      "signal_id": "s1",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [],
+      "compact_action": "conducted AI adoption research",
+      "outcome_attached": null,
+      "evidence_span": "Research project on Artificial Intelligence, in First Semester Conducted a research project on the impact of AI on various industries and its future implications. Conducted a literature review of various research articles, books, and whitepapers related to AI. Developed a conceptual framework to identify the key drivers and challenges of AI adoption in different indust",
+      "evidence_lines": [
+        "L14",
+        "L15",
+        "L16",
+        "L17"
+      ]
+    }
+  ],
+  "cleanup_stats": {
+    "filler_dropped": 0,
+    "duplicates_dropped": 0
+  },
+  "digest_stats_uncapped": {
+    "approx_tokens": 30,
+    "total_items": 1,
+    "kept_items": 1,
+    "token_breakdown": {
+      "headers": 16,
+      "nouns": 0,
+      "actions": 14,
+      "outcomes": 0
+    }
+  },
+  "digest_stats_budgeted": {
+    "budget": 200,
+    "approx_tokens": 30,
+    "total_items": 1,
+    "kept_items": 1,
+    "dropped_item_ids": [],
+    "token_breakdown": {
+      "headers": 16,
+      "nouns": 0,
+      "actions": 14,
+      "outcomes": 0
+    }
+  },
+  "warnings": [],
+  "usage": {
+    "promptTokens": 6610,
+    "completionTokens": 1732,
+    "inputTokens": 6610,
+    "outputTokens": 1732,
+    "totalTokens": 8342
+  },
+  "latency_ms": 16323,
+  "tokens_approx": {
+    "raw_text": 315,
+    "evidence_spans": 93,
+    "uncapped_digest": 30,
+    "budgeted_digest": 30
+  }
+}

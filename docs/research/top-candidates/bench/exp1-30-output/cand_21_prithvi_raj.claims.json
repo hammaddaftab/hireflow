@@ -1,0 +1,158 @@
+{
+  "cv_id": "cand_21_prithvi_raj",
+  "filename": "cand_21_prithvi_raj.pdf",
+  "work_history_summary": [
+    {
+      "entry_id": "work_1",
+      "employer": "SKAI worldwide",
+      "title": "Software Engineer",
+      "start_date": "2025-03",
+      "end_date": "2025-09",
+      "is_current": false
+    }
+  ],
+  "role_claims": [
+    {
+      "claim_id": "c1",
+      "source_entry_ref": "work_1",
+      "claim_tier": "action_attributed",
+      "skills": [
+        {
+          "skill": "C",
+          "syntactic_tier": "action_attributed",
+          "canonical_skill": "c"
+        }
+      ],
+      "raw_nouns": [
+        "open-source database"
+      ],
+      "compact_action": "developed database tools and dashboards",
+      "outcome_attached": null,
+      "evidence_span": "Developing C programs (open-source based database), Management dashboards development and/or database tools development - Creating and updating technical writings - Debugging and testing code Participating open-source project / community driven by SKAI Worldwide",
+      "evidence_lines": [
+        "L19",
+        "L20"
+      ]
+    }
+  ],
+  "notable_signals": [
+    {
+      "signal_id": "s1",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "Hyperledger Besu",
+        "Solidity"
+      ],
+      "compact_action": "built accreditation verification system",
+      "outcome_attached": null,
+      "evidence_span": "Blockchain-based accreditation and degree verification system A blockchain-based system for issuing, verifying, and revoking academic credentials with immutability and realtime veriﬁcation using Hyperledger Besu and Solidity smart contracts. Used Hardhat & OpenZeppelin for smart contract testing and deployment, implementing Role-Based Access Control (RBAC) for",
+      "evidence_lines": [
+        "L22",
+        "L23",
+        "L24",
+        "L25"
+      ]
+    },
+    {
+      "signal_id": "s2",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "Ethereum",
+        "Web3.js"
+      ],
+      "compact_action": "built Blockchain Lottery prize platform",
+      "outcome_attached": null,
+      "evidence_span": "Blockchain Lottery system. Solidity, Ethereum, Web3.js, React.js, JavaScript, Node.js: Implemented the lottery logic using Solidity, including functions for player entry, random winner selection, and prize distribution Used Web3.js to connect the React frontend with the Ethereum blockchain, allowing users to participate in the",
+      "evidence_lines": [
+        "L26",
+        "L27",
+        "L28",
+        "L29",
+        "L30"
+      ]
+    },
+    {
+      "signal_id": "s3",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "React.js",
+        "Node.js",
+        "MongoDB"
+      ],
+      "compact_action": "cloned Breakout Clone website",
+      "outcome_attached": null,
+      "evidence_span": "Breakout Clone. Cloned oﬃcial breakout.com.pk website MERN Cloned the user interface of breaktout.com.pk using React.js for a dynamic and responsive design. Developed backend logic and APIs with Node.js and Express, integrating with a MongoDB database. Achieved full-stack integration using the MERN stack to replic",
+      "evidence_lines": [
+        "L32",
+        "L33",
+        "L34",
+        "L35",
+        "L36"
+      ]
+    },
+    {
+      "signal_id": "s4",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "Next.js"
+      ],
+      "compact_action": "built Jotion collaborative editor",
+      "outcome_attached": null,
+      "evidence_span": "Jotion - Notion Clone with Next.js Built a Notion-inspired platform using Next.js, enabling real-time collaborative document editing with a familiar, intuitive interface. Supports inﬁnite child documents, real-time dynamic icons, collapsible and expandable sidebar navigation, and mobile responsiveness for a seamless experience across de",
+      "evidence_lines": [
+        "L38",
+        "L39",
+        "L40",
+        "L41",
+        "L42"
+      ]
+    }
+  ],
+  "cleanup_stats": {
+    "filler_dropped": 0,
+    "duplicates_dropped": 0
+  },
+  "digest_stats_uncapped": {
+    "approx_tokens": 135,
+    "total_items": 5,
+    "kept_items": 5,
+    "token_breakdown": {
+      "headers": 33,
+      "nouns": 32,
+      "actions": 73,
+      "outcomes": 0
+    }
+  },
+  "digest_stats_budgeted": {
+    "budget": 200,
+    "approx_tokens": 135,
+    "total_items": 5,
+    "kept_items": 5,
+    "dropped_item_ids": [],
+    "token_breakdown": {
+      "headers": 33,
+      "nouns": 32,
+      "actions": 73,
+      "outcomes": 0
+    }
+  },
+  "warnings": [],
+  "usage": {
+    "promptTokens": 7027,
+    "completionTokens": 3274,
+    "inputTokens": 7027,
+    "outputTokens": 3274,
+    "totalTokens": 10301
+  },
+  "latency_ms": 31855,
+  "tokens_approx": {
+    "raw_text": 760,
+    "evidence_spans": 403,
+    "uncapped_digest": 135,
+    "budgeted_digest": 135
+  }
+}

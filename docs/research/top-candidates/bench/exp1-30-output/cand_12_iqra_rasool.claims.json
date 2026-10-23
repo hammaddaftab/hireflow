@@ -1,0 +1,256 @@
+{
+  "cv_id": "cand_12_iqra_rasool",
+  "filename": "cand_12_iqra_rasool.pdf",
+  "work_history_summary": [
+    {
+      "entry_id": "work_1",
+      "employer": "Freelancer",
+      "title": "Freelancer",
+      "start_date": "2019-12",
+      "end_date": "2025-03",
+      "is_current": false
+    },
+    {
+      "entry_id": "work_2",
+      "employer": "United Bank Limited",
+      "title": "Customer Services and Sales Intern",
+      "start_date": "2024-06",
+      "end_date": "2024-07",
+      "is_current": false
+    }
+  ],
+  "role_claims": [
+    {
+      "claim_id": "c1",
+      "source_entry_ref": "work_1",
+      "claim_tier": "action_attributed",
+      "skills": [
+        {
+          "skill": "MySQL",
+          "syntactic_tier": "action_attributed",
+          "canonical_skill": "mysql"
+        },
+        {
+          "skill": "Oracle",
+          "syntactic_tier": "action_attributed",
+          "canonical_skill": null
+        }
+      ],
+      "raw_nouns": [],
+      "compact_action": "maintained client databases",
+      "outcome_attached": null,
+      "evidence_span": "Maintaining database for clients using MySQL and Oracle.",
+      "evidence_lines": [
+        "L16"
+      ]
+    },
+    {
+      "claim_id": "c2",
+      "source_entry_ref": "work_1",
+      "claim_tier": "action_attributed",
+      "skills": [
+        {
+          "skill": "Canva",
+          "syntactic_tier": "action_attributed",
+          "canonical_skill": null
+        }
+      ],
+      "raw_nouns": [],
+      "compact_action": "designed client logos",
+      "outcome_attached": null,
+      "evidence_span": "Designing logos for clients using Canva.",
+      "evidence_lines": [
+        "L17"
+      ]
+    },
+    {
+      "claim_id": "c3",
+      "source_entry_ref": "work_1",
+      "claim_tier": "action_attributed",
+      "skills": [
+        {
+          "skill": "HTML",
+          "syntactic_tier": "action_attributed",
+          "canonical_skill": null
+        },
+        {
+          "skill": "CSS",
+          "syntactic_tier": "action_attributed",
+          "canonical_skill": null
+        }
+      ],
+      "raw_nouns": [],
+      "compact_action": "built client web pages",
+      "outcome_attached": null,
+      "evidence_span": "Designing and Building pages using HTML and CSS.",
+      "evidence_lines": [
+        "L18"
+      ]
+    },
+    {
+      "claim_id": "c4",
+      "source_entry_ref": "work_1",
+      "claim_tier": "action_attributed",
+      "skills": [
+        {
+          "skill": "Microsoft Office",
+          "syntactic_tier": "action_attributed",
+          "canonical_skill": null
+        },
+        {
+          "skill": "Word",
+          "syntactic_tier": "action_attributed",
+          "canonical_skill": null
+        },
+        {
+          "skill": "PowerPoint",
+          "syntactic_tier": "action_attributed",
+          "canonical_skill": null
+        }
+      ],
+      "raw_nouns": [],
+      "compact_action": "prepared client documents",
+      "outcome_attached": null,
+      "evidence_span": "Apply expertise in Microsoft Oﬃce applications to create Word documents, built spreadsheets, prepare PowerPoint slides for clients.",
+      "evidence_lines": [
+        "L19",
+        "L20"
+      ]
+    },
+    {
+      "claim_id": "c5",
+      "source_entry_ref": "work_2",
+      "claim_tier": "peripheral_action",
+      "skills": [],
+      "raw_nouns": [
+        "United Bank Limited"
+      ],
+      "compact_action": "supported customer service operations",
+      "outcome_attached": null,
+      "evidence_span": "United Bank Limited (Customer Services and Sales Intern) Got a chance to get experience of sales and customer services department at United Bank Limited (UBL) Worked closely for people, understanding their concerns and communicating with them.",
+      "evidence_lines": [
+        "L22",
+        "L24",
+        "L26"
+      ]
+    }
+  ],
+  "notable_signals": [
+    {
+      "signal_id": "s1",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "YOLOv8",
+        "Dlib"
+      ],
+      "compact_action": "built Drowsiness Detection System",
+      "outcome_attached": null,
+      "evidence_span": "DROWSINESS DETECTION SYSTEM (FYP) Developing a system to detect drowsiness of a person on the basis of eye closure, yawning and head tilting. Model is trained to detect faces from video stream using YOLOv8 model and then these detected faces are sent to 68-points Face Landmark Detection algorithm of Dlib for further calculations of EAR, MAR a",
+      "evidence_lines": [
+        "L28",
+        "L29",
+        "L30",
+        "L31"
+      ]
+    },
+    {
+      "signal_id": "s2",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "JavaScript",
+        "Node.js",
+        "Sequelize"
+      ],
+      "compact_action": "built Salary Management System",
+      "outcome_attached": null,
+      "evidence_span": "SALARY MANAGEMENT SYSTEM Developed a small level system to manage the salaries of employees using JavaScript, Node.js, MySQL and sequelizer to connect. Main features include adding and removing employees by admin and managing their salaries according to their posts, annual increments, bonuses and reductions.",
+      "evidence_lines": [
+        "L32",
+        "L33",
+        "L34",
+        "L35",
+        "L36"
+      ]
+    },
+    {
+      "signal_id": "s3",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [],
+      "compact_action": "developed Search Engine",
+      "outcome_attached": null,
+      "evidence_span": "SEARCH ENGINE Developed a search engine using various sorting algorithms and tree structures for eﬀective searching.",
+      "evidence_lines": [
+        "L37",
+        "L38"
+      ]
+    },
+    {
+      "signal_id": "s4",
+      "context_label": "Project",
+      "syntactic_tier": "peripheral_action",
+      "raw_nouns": [
+        "React",
+        "Node.js",
+        "Bootstrap"
+      ],
+      "compact_action": "built HomeDoc web application",
+      "outcome_attached": null,
+      "evidence_span": "HomeDoc WEB APPLICATION A web application where you can look for doctors and paramedics in your area and call them for your services. The frontend is using react, HTML, CSS, JavaScript and Bootstrap. Backend is using Node.js and MySQL for database, connected using sockets. Map is also used to ﬁnd paramedics in your area.",
+      "evidence_lines": [
+        "L40",
+        "L41",
+        "L42",
+        "L43",
+        "L44"
+      ]
+    }
+  ],
+  "cleanup_stats": {
+    "filler_dropped": 0,
+    "duplicates_dropped": 0
+  },
+  "digest_stats_uncapped": {
+    "approx_tokens": 212,
+    "total_items": 9,
+    "kept_items": 9,
+    "token_breakdown": {
+      "headers": 61,
+      "nouns": 49,
+      "actions": 107,
+      "outcomes": 0
+    }
+  },
+  "digest_stats_budgeted": {
+    "budget": 200,
+    "approx_tokens": 191,
+    "total_items": 9,
+    "kept_items": 8,
+    "dropped_item_ids": [
+      "s4"
+    ],
+    "token_breakdown": {
+      "headers": 61,
+      "nouns": 41,
+      "actions": 93,
+      "outcomes": 0
+    }
+  },
+  "warnings": [],
+  "usage": {
+    "promptTokens": 7091,
+    "completionTokens": 4832,
+    "inputTokens": 7091,
+    "outputTokens": 4832,
+    "totalTokens": 11923
+  },
+  "latency_ms": 38518,
+  "tokens_approx": {
+    "raw_text": 760,
+    "evidence_spans": 405,
+    "uncapped_digest": 212,
+    "budgeted_digest": 191
+  }
+}
