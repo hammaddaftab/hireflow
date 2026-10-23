@@ -1,0 +1,236 @@
+{
+  "job_id": "grad-ai-swe",
+  "job_title": "AI / ML & Full-Stack Software Engineer (Graduate / Entry-Level)",
+  "source_mode": "exp1",
+  "stage0": {
+    "executed": false,
+    "totalInputCandidates": 10,
+    "viableCount": 10,
+    "knockedOutCount": 0,
+    "knockedOutCandidates": []
+  },
+  "pool_stats": {
+    "contenderCount": 10,
+    "jobSpecTokensApprox": 206,
+    "digestsTokensApprox": 1197,
+    "promptTokensApprox": 2504,
+    "perCandidateTokens": [
+      {
+        "candidateId": "cand_01_muhammad_khizer_tariq",
+        "approxTokens": 130
+      },
+      {
+        "candidateId": "cand_02_umer_tariq",
+        "approxTokens": 14
+      },
+      {
+        "candidateId": "cand_03_abdullah_aleem",
+        "approxTokens": 160
+      },
+      {
+        "candidateId": "cand_04_mujtaba_shafqat",
+        "approxTokens": 104
+      },
+      {
+        "candidateId": "cand_05_ali_murad",
+        "approxTokens": 145
+      },
+      {
+        "candidateId": "cand_06_hasib_aslam",
+        "approxTokens": 181
+      },
+      {
+        "candidateId": "cand_07_haram_nasir",
+        "approxTokens": 74
+      },
+      {
+        "candidateId": "cand_08_muhammad_rouhan_faisal",
+        "approxTokens": 189
+      },
+      {
+        "candidateId": "cand_09_hafiz_ahmed_hassan_chohan",
+        "approxTokens": 135
+      },
+      {
+        "candidateId": "cand_10_muhammad_aleem_siddique_khan",
+        "approxTokens": 65
+      }
+    ]
+  },
+  "pool_summary": "The contender pool separates into a few clear standout clusters: publication-oriented research, hands-on computer-vision/AI implementation, and end-to-end product builders with real-time or quantified usage. International/selective research exposure is rarer, while most candidates show only project-level full-stack or research evidence without measured production impact.",
+  "axes": [
+    {
+      "axis_id": "axis_1",
+      "label": "Publication-Backed Research Depth",
+      "category": "spiky_excellence",
+      "rationale": "For an entry-level Applied AI role, demonstrated research output is a stronger differentiator than merely listing machine-learning skills or coursework. The pool contains a small publication cluster and a broader group with research-assistant or research-intern exposure but no scholarly output.",
+      "strong_criteria": "At least two completed peer-reviewed or formally published technical research outputs with active authorship ownership [action], preferably involving AI, computer vision, optimization, or systems methods; this matches the highest research signal observed in the pool.",
+      "moderate_criteria": "Active research-assistant or research-intern ownership of a technical investigation, dataset, or model without publication evidence, or one completed publication/project with research framing. Passive lab participation or a generic AI project alone does not qualify as strong.",
+      "estimated_pool_prevalence": "3/10 candidates show strong or moderate evidence",
+      "supporting_claims": [
+        {
+          "candidate_id": "cand_01_muhammad_khizer_tariq",
+          "ref_id": "s1",
+          "digest_line": "[s1:action] Publication: FIT 2024 -> published Routing through Satellite Imagery paper",
+          "evidence_span": "Presented a Conference Paper at FIT 2024 Published a Conference paper related to my Final year project on \"Routing through Satellite Imagery\", the paper presents a novel ML based technique for solving the vehicle routing problem the paper is published at"
+        },
+        {
+          "candidate_id": "cand_01_muhammad_khizer_tariq",
+          "ref_id": "s2",
+          "digest_line": "[s2:action] Publication: IJCA -> published Grouped Matrix Clocks paper",
+          "evidence_span": "Published a Journal Paper in IJCA Published a Journal in International Journal for Computing Applications regarding Grouped Matrix Clocks for clock synchronization in Distributed Systems the paper can be accessed at: https://www.ijcaonline.org/"
+        },
+        {
+          "candidate_id": "cand_06_hasib_aslam",
+          "ref_id": "c2",
+          "digest_line": "[c2:action] EEG -> processed authentication datasets",
+          "evidence_span": "Identify relevant public EEG data sets that are collected with diﬀerent types of stimuli and tasks. Determine the relevance and usefulness of the activities for EEG authentication. Use basic digital processing techniques to obtain noise free data sets to be used for the authentication study."
+        },
+        {
+          "candidate_id": "cand_09_hafiz_ahmed_hassan_chohan",
+          "ref_id": "work_2",
+          "digest_line": "work_2: Research Assistant @ PakThai Lab NUST (2024-2025, 0.9y FT)",
+          "evidence_span": null
+        },
+        {
+          "candidate_id": "cand_10_muhammad_aleem_siddique_khan",
+          "ref_id": "work_1",
+          "digest_line": "work_1: Research Intern @ NUST (2024-2024, 0.6y internship)",
+          "evidence_span": null
+        }
+      ]
+    },
+    {
+      "axis_id": "axis_2",
+      "label": "Quantified AI/CV System Ownership",
+      "category": "scale_and_impact",
+      "rationale": "The job emphasizes production AI/ML, yet most candidates provide only unquantified project descriptions. The upper pool is distinguished by personally building a model or vision system with an explicit accuracy, recognition, or processing outcome.",
+      "strong_criteria": "Personally built and implemented an AI, machine-learning, or computer-vision system [action] with a concrete performance or operational metric, such as the 98% classifier accuracy observed in this pool, or an implemented OCR/ANPR pipeline with a clearly defined recognition/conversion outcome.",
+      "moderate_criteria": "Active ownership [action] of a nontrivial AI/CV model or pipeline—such as classification, OCR, ANPR, EEG processing, or recommendation—without a quantified result, or a quantified ML exercise that lacks evidence of an end-to-end system. Peripheral contribution, coursework, or a tool listing is insufficient for strong.",
+      "estimated_pool_prevalence": "3/10 candidates show strong or moderate evidence",
+      "supporting_claims": [
+        {
+          "candidate_id": "cand_06_hasib_aslam",
+          "ref_id": "c1",
+          "digest_line": "[c1:action] developed Cat and Dog Classifier | 98% accuracy",
+          "evidence_span": "learned basics of Machine Learning Deep Learning developed a Cat and Dog Classifier with 98% accuracy"
+        },
+        {
+          "candidate_id": "cand_06_hasib_aslam",
+          "ref_id": "c2",
+          "digest_line": "[c2:action] EEG -> processed authentication datasets",
+          "evidence_span": "Identify relevant public EEG data sets that are collected with diﬀerent types of stimuli and tasks. Determine the relevance and usefulness of the activities for EEG authentication. Use basic digital processing techniques to obtain noise free data sets to be used for the authentication study."
+        },
+        {
+          "candidate_id": "cand_09_hafiz_ahmed_hassan_chohan",
+          "ref_id": "s2",
+          "digest_line": "[s2:action] Project: OCR -> built Convert to EBooks conversion system",
+          "evidence_span": "Convert to EBooks Created a system to convert physical book images or PDFs into fully formatted eBooks using deep learning and OCR technologies. Trained a deep neural network for segmentation, accurately extracting text from diverse fonts and layouts."
+        },
+        {
+          "candidate_id": "cand_09_hafiz_ahmed_hassan_chohan",
+          "ref_id": "s3",
+          "digest_line": "[s3:action] Project: OpenCV, easy-ocr -> built ANPR license plate recognizer",
+          "evidence_span": "ANPR– Automatic Number Plate Recognition System Developed a real-time ANPR system using computer vision and deep learning, accurately detecting and recognizing vehicle license plates. Built a robust image processing pipeline using OpenCV and integrated it with easy-ocr for character"
+        },
+        {
+          "candidate_id": "cand_03_abdullah_aleem",
+          "ref_id": "s2",
+          "digest_line": "[s2:action] Project: collaborative filtering, Flask -> built Otaku Guide recommendation engine",
+          "evidence_span": "Otaku Guide Integrated collaborative and content-based ﬁltering algorithms to recommend anime based on user history. Developed custom user-based recommendation algorithms to enhance personalized recommendations. Built a REST API in Flask to handle data processing and recommendations, enabling efficient communica"
+        }
+      ]
+    },
+    {
+      "axis_id": "axis_3",
+      "label": "Real-Time Product Engineering Scale",
+      "category": "scale_and_impact",
+      "rationale": "Full-stack capability is common in this pool, but real-time behavior and explicit usage scale provide a more selective signal for production product engineering. This axis distinguishes candidates who moved beyond CRUD-style applications into concurrent messaging, WebSocket services, or workflow systems.",
+      "strong_criteria": "Actively built [action] an end-to-end real-time or workflow product across frontend and backend layers, with explicit concurrency or operational scale such as approximately 100 concurrent users, WebSocket-based interaction, or an equivalent measurable system behavior.",
+      "moderate_criteria": "Actively built [action] a multi-layer web or mobile product using backend, database, and frontend components, including a real-time, workflow, booking, marketplace, or recommendation feature, but without explicit scale metrics or demonstrated production operation.",
+      "estimated_pool_prevalence": "5/10 candidates show strong or moderate evidence",
+      "supporting_claims": [
+        {
+          "candidate_id": "cand_08_muhammad_rouhan_faisal",
+          "ref_id": "s3",
+          "digest_line": "[s3:action] Project: MongoDB, Express, Node.js -> built Chat Application real-time messenger | 100 concurrent users",
+          "evidence_span": "Chat Application Developed a real-time chat application using the MERN stack (MongoDB, Express, React, Node.js) to facilitate communication for up to 100 concurrent users. Implemented functionalities for 100 users to engage in seamless direct messaging and group chats, fostering"
+        },
+        {
+          "candidate_id": "cand_03_abdullah_aleem",
+          "ref_id": "s1",
+          "digest_line": "[s1:action] Project: WebSockets, Express.js, MongoDB -> built HomeDoc real-time service platform",
+          "evidence_span": "HomeDoc Implemented WebSockets to enable real-time communication between users and paramedics. Developed a RESTful API using Express.js for user and paramedic registration and service booking. Integrated MongoDB for data persistence, ensuring secure and scalable user data management."
+        },
+        {
+          "candidate_id": "cand_05_ali_murad",
+          "ref_id": "s1",
+          "digest_line": "[s1:action] Project: React, React Flow -> built Generic Builder workflow editor",
+          "evidence_span": "Generic Builder A React and React Flow-based workﬂow editor enabling users to create, edit, and visualize ﬂows with customizable nodes, drag-and-drop editing, real-time updates, and state persistence. Features include zooming, panning, and smooth user interactions, showcasing expertise in React, state"
+        },
+        {
+          "candidate_id": "cand_06_hasib_aslam",
+          "ref_id": "s1",
+          "digest_line": "[s1:action] Project: Express.js, React.js, Next.js -> built Hotel Booking Management Website",
+          "evidence_span": "Hotel Booking and Management Website A online platform where you can book the apartments in hotels and also put your own to be rented out. It is developed using Express js , React js along with next js. MYSQL is used as database to developed this app."
+        },
+        {
+          "candidate_id": "cand_03_abdullah_aleem",
+          "ref_id": "c1",
+          "digest_line": "[c1:action] Flutter, Firebase, Firestore -> developed client mobile application",
+          "evidence_span": "Intern Software Developer Independently designed and developed a mobile application for a client using Flutter, seamlessly integrating Firebase for backend functionality and Firestore for efficient database management, ensuring a streamlined user experience."
+        }
+      ]
+    },
+    {
+      "axis_id": "axis_4",
+      "label": "International Research Environment",
+      "category": "pedigree_and_environment",
+      "rationale": "The role explicitly values selective labs and international experience, and this pool contains a rare international academic/research signal distinct from ordinary internships or local project work. It indicates exposure to different research standards and engineering environments, but should not substitute for proof of technical ownership.",
+      "strong_criteria": "Verified participation in an international university, exchange, or research-lab environment with distinction or active technical contribution [action], such as an overseas research internship plus distinguished exchange performance; the candidate must show more than attendance or a passive affiliation.",
+      "moderate_criteria": "Verified active placement in a selective university research lab or technical lab, or international academic exposure without both a distinguished outcome and substantial technical ownership. Local lab affiliation alone is moderate only when paired with a concrete research role or output.",
+      "estimated_pool_prevalence": "4/10 candidates show strong or moderate evidence",
+      "supporting_claims": [
+        {
+          "candidate_id": "cand_06_hasib_aslam",
+          "ref_id": "header",
+          "digest_line": "[cand_06_hasib_aslam] 0y FT (2 internships) | Semester Exchange Program @ Linnaeus University (Passed With Distinction) | Islamabad",
+          "evidence_span": null
+        },
+        {
+          "candidate_id": "cand_06_hasib_aslam",
+          "ref_id": "work_2",
+          "digest_line": "work_2: Research Intern @ Lakehead University, Canada (2024-2024, 0.3y internship)",
+          "evidence_span": null
+        },
+        {
+          "candidate_id": "cand_01_muhammad_khizer_tariq",
+          "ref_id": "work_1",
+          "digest_line": "work_1: Researcher @ High Performance Computing Lab SEECS (2024-2024, 1y FT)",
+          "evidence_span": null
+        },
+        {
+          "candidate_id": "cand_01_muhammad_khizer_tariq",
+          "ref_id": "work_2",
+          "digest_line": "work_2: Researcher @ Machine Vision and Intelligent Systems Lab SEECS (2024-2025, 0.5y FT)",
+          "evidence_span": null
+        },
+        {
+          "candidate_id": "cand_09_hafiz_ahmed_hassan_chohan",
+          "ref_id": "work_2",
+          "digest_line": "work_2: Research Assistant @ PakThai Lab NUST (2024-2025, 0.9y FT)",
+          "evidence_span": null
+        }
+      ]
+    }
+  ],
+  "warnings": [],
+  "usage": {
+    "promptTokens": 3353,
+    "completionTokens": 1802,
+    "inputTokens": 3353,
+    "outputTokens": 1802,
+    "totalTokens": 5155
+  },
+  "latency_ms": 17842
+}
