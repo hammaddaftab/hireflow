@@ -11,19 +11,26 @@ To grow as an individual which adds value to any organisation I am associated wi
 
 ## Education
 - BS in Computer Science School of Electrical Engineering and Computer Science , 2.63
-- Matric / O levels , (2019)
-- Intermediate / A levels , (2021) Bachelor of Computer Science School of Electical Engineering and Computer Sciences , (2025)
+- Bachelor of Computer Science School of Electical Engineering and Computer Sciences , (2025)
 
 ---
 
 ## Work & Internship Experience
+### Communication Systems and Network Lab
+
+**03-Jul-2023 - 31-Aug-2023**
+
+- Developed a machine learning model using Polynomial Regression to predict battery life cycles for UAVs in disaster management applications, improving predictive accuracy by 23% as measured by a custom dataset from 29 ﬂights.
+
+- Created a model using Semantic Segmentation via Unet, that detects buildings
+
 ### RoadGauge Ltd
 
 **01-Jul-2024 - 31-Dec-2024**
 
-- Communication Systems and Network Lab ( 03-Jul-2023 - 31-Aug-2023 ) • Developed a machine learning model using Polynomial Regression to predict battery life cycles for UAVs in disaster management applications, improving predictive accuracy by 23% as measured by a custom dataset from 29 ﬂights. • Created a model using Semantic Segmentation via Unet, that detects buildings • Worked on point cloud processing using open3d in Python, adding modules and optimizing the road asset pipeline. • Created a ﬁltering system based on distance thresholds and normal vectors to enhance precision by segregating points relative to identified planes.
+- Worked on point cloud processing using open3d in Python, adding modules and optimizing the road asset pipeline.
 
-- Actively helping in identifying parked ca
+- Created a ﬁltering system based on distance thresholds and normal vectors to enhance precision by segregating points relative to identified planes. Actively helping in identifying parked ca
 
 ---
 

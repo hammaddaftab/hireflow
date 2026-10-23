@@ -1,0 +1,10 @@
+[cand_08_muhammad_rouhan_faisal] 0y FT (2 internships) | BSc CS @ NUST (3.53) | Lahore
+work_1: Intern @ CHKK (2024-2025, 0.4y internship)
+  [c1:peripheral] Kubernetes -> supported scalable system architecture
+work_2: Intern @ Cosmotech (2024-2024, 0.3y internship)
+  [c2:peripheral] ReactJS, 4-person team -> supported tender procurement application | potentially -60% processing time
+spikes:
+  [s2:action] Project: Next.js -> built CaseCobra custom case store
+  [s3:action] Project: MongoDB, Express, Node.js -> built Chat Application real-time messenger | 100 concurrent users
+  [s4:peripheral] Project: OpenAI embeddings, BM25, FAISS -> contributed FusionRAG regulatory retrieval
+  [s1:peripheral] Certs: pursuing AWS Solutions Architect certification

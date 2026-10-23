@@ -11,8 +11,6 @@ Please update objective section.
 
 ## Education
 - BS in Computer Science School of Electrical Engineering and Computer Science , 3.12
-- Matric / O levels , (2018)
-- Intermediate / A levels , (2020)
 - Bachelors of Computer Science National University of Sciences and Technology , 3.12 (2021)
 
 ---
@@ -22,7 +20,7 @@ Please update objective section.
 
 **24-Oct-2024 - 28-Feb-2025**
 
-- Was involved in writing python scripts to scrape              data   from   medical conferences/abstracts using scrapy framework and palywright
+- Was involved in writing python scripts to scrape data from medical conferences/abstracts using scrapy framework and palywright
 
 ---
 
@@ -31,9 +29,7 @@ Please update objective section.
 
 - Developed the oﬃcial website for NUST Science Society’s Science Bee event.
 
-### Deployed at: https://sb-gyara.vercel.app
-
-- 
+- Deployed at: https://sb-gyara.vercel.app
 
 ---
 

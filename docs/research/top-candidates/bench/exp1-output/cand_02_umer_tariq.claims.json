@@ -1,0 +1,50 @@
+{
+  "cv_id": "cand_02_umer_tariq",
+  "filename": "cand_02_umer_tariq.pdf",
+  "work_history_summary": [],
+  "role_claims": [],
+  "notable_signals": [],
+  "cleanup_stats": {
+    "filler_dropped": 0,
+    "duplicates_dropped": 0
+  },
+  "digest_stats_uncapped": {
+    "approx_tokens": 14,
+    "total_items": 0,
+    "kept_items": 0,
+    "token_breakdown": {
+      "headers": 14,
+      "nouns": 0,
+      "actions": 0,
+      "outcomes": 0
+    }
+  },
+  "digest_stats_budgeted": {
+    "budget": 200,
+    "approx_tokens": 14,
+    "total_items": 0,
+    "kept_items": 0,
+    "dropped_item_ids": [],
+    "token_breakdown": {
+      "headers": 14,
+      "nouns": 0,
+      "actions": 0,
+      "outcomes": 0
+    }
+  },
+  "warnings": [],
+  "usage": {
+    "promptTokens": 6567,
+    "completionTokens": 938,
+    "inputTokens": 6567,
+    "outputTokens": 938,
+    "totalTokens": 7505
+  },
+  "latency_ms": 10598,
+  "tokens_approx": {
+    "raw_text": 250,
+    "evidence_spans": 0,
+    "uncapped_digest": 14,
+    "budgeted_digest": 14
+  }
+}

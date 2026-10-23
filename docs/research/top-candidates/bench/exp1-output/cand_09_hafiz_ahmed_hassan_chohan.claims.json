@@ -1,0 +1,137 @@
+{
+  "cv_id": "cand_09_hafiz_ahmed_hassan_chohan",
+  "filename": "cand_09_hafiz_ahmed_hassan_chohan.pdf",
+  "work_history_summary": [
+    {
+      "entry_id": "work_1",
+      "employer": "Walee Technologies",
+      "title": "",
+      "start_date": "2024-05",
+      "end_date": "2025-04",
+      "is_current": false
+    },
+    {
+      "entry_id": "work_2",
+      "employer": "PakThai Lab NUST",
+      "title": "Research Assistant",
+      "start_date": "2024-05",
+      "end_date": "2025-03",
+      "is_current": false
+    },
+    {
+      "entry_id": "work_3",
+      "employer": "InLights",
+      "title": "",
+      "start_date": "2024-03",
+      "end_date": "2024-05",
+      "is_current": false
+    },
+    {
+      "entry_id": "work_4",
+      "employer": "Signal and Machine Learning Lab",
+      "title": "",
+      "start_date": "2023-05",
+      "end_date": "2023-07",
+      "is_current": false
+    }
+  ],
+  "role_claims": [],
+  "notable_signals": [
+    {
+      "signal_id": "s1",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "OpenCV",
+        "pygame"
+      ],
+      "compact_action": "built Gesture-Controlled Snake Game",
+      "outcome_attached": null,
+      "evidence_span": "Gesture-Controlled Snake Game Developed a gesture-controlled snake game using OpenCV and pygame, oﬀering a hands-free gaming experience through real-time hand gesture detection. Integrated cvzone for real-time hand tracking and gesture recognition, providing responsive and intuitive",
+      "evidence_lines": [
+        "L28",
+        "L29",
+        "L30",
+        "L31"
+      ]
+    },
+    {
+      "signal_id": "s2",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "OCR"
+      ],
+      "compact_action": "built Convert to EBooks conversion system",
+      "outcome_attached": null,
+      "evidence_span": "Convert to EBooks Created a system to convert physical book images or PDFs into fully formatted eBooks using deep learning and OCR technologies. Trained a deep neural network for segmentation, accurately extracting text from diverse fonts and layouts.",
+      "evidence_lines": [
+        "L33",
+        "L34",
+        "L35",
+        "L36"
+      ]
+    },
+    {
+      "signal_id": "s3",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "OpenCV",
+        "easy-ocr"
+      ],
+      "compact_action": "built ANPR license plate recognizer",
+      "outcome_attached": null,
+      "evidence_span": "ANPR– Automatic Number Plate Recognition System Developed a real-time ANPR system using computer vision and deep learning, accurately detecting and recognizing vehicle license plates. Built a robust image processing pipeline using OpenCV and integrated it with easy-ocr for character",
+      "evidence_lines": [
+        "L38",
+        "L39",
+        "L40",
+        "L42"
+      ]
+    }
+  ],
+  "cleanup_stats": {
+    "filler_dropped": 1,
+    "duplicates_dropped": 0
+  },
+  "digest_stats_uncapped": {
+    "approx_tokens": 135,
+    "total_items": 3,
+    "kept_items": 3,
+    "token_breakdown": {
+      "headers": 78,
+      "nouns": 12,
+      "actions": 46,
+      "outcomes": 0
+    }
+  },
+  "digest_stats_budgeted": {
+    "budget": 200,
+    "approx_tokens": 135,
+    "total_items": 3,
+    "kept_items": 3,
+    "dropped_item_ids": [],
+    "token_breakdown": {
+      "headers": 78,
+      "nouns": 12,
+      "actions": 46,
+      "outcomes": 0
+    }
+  },
+  "warnings": [],
+  "usage": {
+    "promptTokens": 6930,
+    "completionTokens": 2954,
+    "inputTokens": 6930,
+    "outputTokens": 2954,
+    "totalTokens": 9884
+  },
+  "latency_ms": 25644,
+  "tokens_approx": {
+    "raw_text": 642,
+    "evidence_spans": 205,
+    "uncapped_digest": 135,
+    "budgeted_digest": 135
+  }
+}

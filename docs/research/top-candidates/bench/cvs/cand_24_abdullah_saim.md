@@ -21,8 +21,6 @@ cutting-edge solutions to solve real-world challenges
 
 ## Education
 - BS in Computer Science School of Electrical Engineering and Computer Science , 3.83
-- Matric / O levels , (2019)
-- Intermediate / A levels , (2021)
 - FSc. Pre Engineering Punjab Group of Colleges , 1053/1100 (2021)
 - Matriculation The Punjab School , 1065/1100 (2019)
 
@@ -33,9 +31,13 @@ cutting-edge solutions to solve real-world challenges
 
 **22-Aug-2022 - 12-Sep-2022**
 
-- Consultant Quality Assurance Assessment Team (NUST) QA Testing of "Safar Saheli" app for Pakistan Railways NUSTIAN USA International Summer Research Internship Program ( 01-Jul-2024 - 01-Oct-2024 ) Collaborated with Prof.
+- Consultant Quality Assurance Assessment Team (NUST) QA Testing of "Safar Saheli" app for Pakistan Railways
 
-- Zubair Shaﬁque from UC Davis on the project “A Graph-based ML Approach to Detecting JavaScript-based Online Tracking.” Conducted in-depth research on cookies, analyzing their functionality and role in online privacy.
+### NUSTIAN USA International Summer Research Internship Program
+
+**01-Jul-2024 - 01-Oct-2024**
+
+- Collaborated with Prof. Zubair Shaﬁque from UC Davis on the project “A Graph-based ML Approach to Detecting JavaScript-based Online Tracking.” Conducted in-depth research on cookies, analyzing their functionality and role in online privacy.
 
 - Developed a machine learning model to categorize cookies based on t
 
@@ -58,11 +60,7 @@ cutting-edge solutions to solve real-world challenges
 
 - JanWhere is a web application that uses the MERN stack and Google Maps API to allow users to explore and conserve indigenous animal species in Pakistan.
 
-- Users can locate and mark wildlife sightings on an interactive map, upload pictures of their encounters, and learn more about the
-
-### animals and their conservat
-
-- 
+- Users can locate and mark wildlife sightings on an interactive map, upload pictures of their encounters, and learn more about the animals and their conservat
 
 ---
 

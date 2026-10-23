@@ -14,8 +14,6 @@ projects and continue to grow as a computer scientist.
 
 ## Education
 - BS in Computer Science School of Electrical Engineering and Computer Science , 3.06
-- Matric / O levels , (2019)
-- Intermediate / A levels , (2021)
 - BS Computer Science National University of Science and Technology , 3.06/4.00 (2025)
 - Higher Secondary Diploma (Pre-Eng) The Educators College , 1089/1100 (2021)
 - Secondary Diploma Divisional Public School , 1066/1100 (2019)
@@ -35,7 +33,13 @@ projects and continue to grow as a computer scientist.
 
 - Apply expertise in Microsoft Oﬃce applications to create Word documents, built spreadsheets, prepare PowerPoint slides for clients.
 
-- Research and write on United Bank Limited (Customer Services and Sales Intern) ( 12-Jun- 2024 - 23-Jul-2024 ) Got a chance to get experience of sales and customer services department at United Bank Limited (UBL) Pakistan.
+- Research and write on
+
+### United Bank Limited (Customer Services and Sales Intern)
+
+**12-Jun-2024 - 23-Jul-2024**
+
+- Got a chance to get experience of sales and customer services department at United Bank Limited (UBL) Pakistan.
 
 - Worked closely for people, understanding their concerns and communicating with them.
 
@@ -44,13 +48,13 @@ projects and continue to grow as a computer scientist.
 ## Projects
 ### DROWSINESS DETECTION SYSTEM (FYP)
 
-- Developing a system to detect drowsiness of a person on the basis of eye closure, yawning and head tilting. Model is trained to detect faces from video stream using YOLOv8 model and then these detected faces are sent to 68
+- Developing a system to detect drowsiness of a person on the basis of eye closure, yawning and head tilting.
 
-- points Face Landmark Detection algorithm of Dlib for further
+- Model is trained to detect faces from video stream using YOLOv8 model and then these detected faces are sent to 68-points Face Landmark Detection algorithm of Dlib for further calculations of EAR, MAR a
 
-### calculations of EAR, MAR a
+### SALARY MANAGEMENT SYSTEM
 
-- SALARY MANAGEMENT SYSTEM Developed a small level system to manage the salaries of employees using JavaScript, Node.js, MySQL and sequelizer to connect.
+- Developed a small level system to manage the salaries of employees using JavaScript, Node.js, MySQL and sequelizer to connect.
 
 - Main features include adding and removing employees by admin and managing their salaries according to their posts, annual increments, bonuses and reductions.
 

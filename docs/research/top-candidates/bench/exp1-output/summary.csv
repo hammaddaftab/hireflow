@@ -1,3 +1,11 @@
 cv_id,filename,raw_tokens_approx,evidence_tokens_approx,uncapped_digest_tokens_approx,budgeted_digest_tokens_approx,evidence_to_uncapped_ratio,raw_to_uncapped_ratio,claim_count,signal_count,kept_total_budgeted,dropped_ids_budgeted,filler_dropped,duplicates_dropped,token_split_uncapped_h_n_a_o,llm_input_tokens,llm_output_tokens,latency_ms
-mock_resume_a,mock_resume_a.pdf,4061,1832,738,196,2.48,5.5,12,10,"6/22","c1;c2;c3;c4;c5;c6;c7;c8;c9;c10;c11;c12;s1;s2;s4;s9",0,0,"118/169/363/103",10321,8547,68209
-mock_resume_b,mock_resume_b.pdf,935,190,66,66,2.88,14.17,0,2,"2/2","none",0,0,"21/11/35/0",7190,2099,22824
+cand_01_muhammad_khizer_tariq,cand_01_muhammad_khizer_tariq.pdf,397,150,130,130,1.15,3.05,1,2,"3/3","none",1,0,"67/11/52/0",6686,3036,24662
+cand_02_umer_tariq,cand_02_umer_tariq.pdf,250,0,14,14,0,17.86,0,0,"0/0","none",0,0,"14/0/0/0",6567,938,10598
+cand_03_abdullah_aleem,cand_03_abdullah_aleem.pdf,720,357,160,160,2.23,4.5,1,4,"5/5","none",1,0,"53/36/73/0",6983,4025,29041
+cand_04_mujtaba_shafqat,cand_04_mujtaba_shafqat.pdf,344,77,104,104,0.74,3.31,2,0,"2/2","none",0,0,"73/9/23/0",6672,2352,21772
+cand_05_ali_murad,cand_05_ali_murad.pdf,637,314,145,145,2.17,4.39,0,4,"4/4","none",0,0,"63/23/60/0",6983,4265,33268
+cand_06_hasib_aslam,cand_06_hasib_aslam.pdf,696,407,181,181,2.25,3.85,2,4,"6/6","none",1,1,"69/22/82/11",7052,3203,24092
+cand_07_haram_nasir,cand_07_haram_nasir.pdf,298,60,74,74,0.81,4.03,1,1,"2/2","none",0,0,"40/8/28/0",6654,1918,17577
+cand_08_muhammad_rouhan_faisal,cand_08_muhammad_rouhan_faisal.pdf,710,425,189,189,2.25,3.76,2,4,"6/6","none",0,0,"51/31/96/15",7035,3649,27331
+cand_09_hafiz_ahmed_hassan_chohan,cand_09_hafiz_ahmed_hassan_chohan.pdf,642,205,135,135,1.52,4.76,0,3,"3/3","none",1,0,"78/12/46/0",6930,2954,25644
+cand_10_muhammad_aleem_siddique_khan,cand_10_muhammad_aleem_siddique_khan.pdf,272,61,65,65,0.94,4.18,1,0,"1/1","none",0,0,"39/13/13/0",6571,1503,14005

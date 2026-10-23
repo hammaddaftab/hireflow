@@ -16,8 +16,7 @@ merge innovation with real-world impact.
 
 ## Education
 - BS in Computer Science School of Electrical Engineering and Computer Science , 2.9
-- Matric / O levels , (2019)
-- Intermediate / A levels , (2021) Bachelor of Computer Science National University of Science and Technology , ()
+- Bachelor of Computer Science National University of Science and Technology , ()
 
 ---
 
@@ -33,33 +32,31 @@ merge innovation with real-world impact.
 ## Projects
 ### Visual Question Answering for Real-World Images
 
-- Designed a VQA model combining convolutional neural networks (ResNet50) for image feature extraction and transformer
+- Designed a VQA model combining convolutional neural networks (ResNet50) for image feature extraction and transformer-based language models (BERT) for question encoding.
 
-- based language models (BERT) for question encoding. Evaluated on the processed DAQUAR dataset, analyzing performance using accuracy and semantic similarity metrics
+- Evaluated on the processed DAQUAR dataset, analyzing performance using accuracy and semantic similarity metrics – reaching a Validation A
 
-### – reaching a Validation A
+### Fake Review Detector
 
-- Fake Review Detector Developed a system to identify fake reviews using advanced natural language processing models (BERT, RoBERTa, XLNet, GPT
+- Developed a system to identify fake reviews using advanced natural language processing models (BERT, RoBERTa, XLNet, GPT-2).
 
-- 2). Fine
-
-- tuned each model on a labeled dataset of real and fake reviews for classification purposes.
+- Fine-tuned each model on a labeled dataset of real and fake reviews for classification purposes.
 
 ### Palingenesis
 
-- Created a chat and video calling Laravel application using Web
+- Created a chat and video calling Laravel application using Web-RTC for connectivity.
 
-- RTC for connectivity. Made use of JWT web tokens for user authentication and stores data in a MySQL database. Also wrote extensive documentation, drawing up ERDs for the relation between various functionalities.
+- Made use of JWT web tokens for user authentication and stores data in a MySQL database.
+
+- Also wrote extensive documentation, drawing up ERDs for the relation between various functionalities.
 
 ### Emotion-Based Music Recognition System
 
 - Created a music recommendation system leveraging artiﬁcial intelligence to provide accurate music suggestions based on the user's emotional state, detected via a camera.
 
-- Utilized the FER2013Plus dataset for emotion recognition and ResNet50 as the base CNN model, achieving an 82.7%
+- Utilized the FER2013Plus dataset for emotion recognition and ResNet50 as the base CNN model, achieving an 82.7% accuracy.
 
-### accuracy. The Deezer
-
-- 
+- The Deezer
 
 ---
 

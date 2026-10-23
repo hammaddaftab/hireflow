@@ -1,0 +1,77 @@
+{
+  "cv_id": "cand_10_muhammad_aleem_siddique_khan",
+  "filename": "cand_10_muhammad_aleem_siddique_khan.pdf",
+  "work_history_summary": [
+    {
+      "entry_id": "work_1",
+      "employer": "NUST",
+      "title": "Research Intern",
+      "start_date": "2024-03",
+      "end_date": "2024-09",
+      "is_current": false
+    }
+  ],
+  "role_claims": [
+    {
+      "claim_id": "c1",
+      "source_entry_ref": "work_1",
+      "claim_tier": "peripheral_action",
+      "skills": [],
+      "raw_nouns": [
+        "URL Classification Using Artificial Intelligence"
+      ],
+      "compact_action": "developed URL classification model",
+      "outcome_attached": null,
+      "evidence_span": "I worked as a research intern under the supervision of an Associate Professor on a project titled, \"URL Classiﬁcation Using Atiﬁcial Intelligence\". The project aimed to develop an AI model capable of classifying a given URL into its category.",
+      "evidence_lines": [
+        "L13",
+        "L14",
+        "L15"
+      ]
+    }
+  ],
+  "notable_signals": [],
+  "cleanup_stats": {
+    "filler_dropped": 0,
+    "duplicates_dropped": 0
+  },
+  "digest_stats_uncapped": {
+    "approx_tokens": 65,
+    "total_items": 1,
+    "kept_items": 1,
+    "token_breakdown": {
+      "headers": 39,
+      "nouns": 13,
+      "actions": 13,
+      "outcomes": 0
+    }
+  },
+  "digest_stats_budgeted": {
+    "budget": 200,
+    "approx_tokens": 65,
+    "total_items": 1,
+    "kept_items": 1,
+    "dropped_item_ids": [],
+    "token_breakdown": {
+      "headers": 39,
+      "nouns": 13,
+      "actions": 13,
+      "outcomes": 0
+    }
+  },
+  "warnings": [],
+  "usage": {
+    "promptTokens": 6571,
+    "completionTokens": 1503,
+    "inputTokens": 6571,
+    "outputTokens": 1503,
+    "totalTokens": 8074
+  },
+  "latency_ms": 14005,
+  "tokens_approx": {
+    "raw_text": 272,
+    "evidence_spans": 61,
+    "uncapped_digest": 65,
+    "budgeted_digest": 65
+  }
+}

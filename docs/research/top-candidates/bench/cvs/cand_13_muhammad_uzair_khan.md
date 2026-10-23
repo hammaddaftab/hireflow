@@ -12,8 +12,6 @@ Leveraging Expertise in Modern Web Technologies and Creative Problem-Solving
 
 ## Education
 - BS in Computer Science School of Electrical Engineering and Computer Science , 3.25
-- Matric / O levels , (2019)
-- Intermediate / A levels , (2021)
 
 ---
 

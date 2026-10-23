@@ -21,8 +21,8 @@ work environment
 
 ## Education
 - BS in Computer Science School of Electrical Engineering and Computer Science , 3.12
-- Matric / O levels , (2019)
-- Intermediate / A levels , (2021) Bs Cs Seecs Nust , 3.12 (2025) Fsc Pre Engineering Punjab College of Science , 1094 (2021)
+- Bs Cs Seecs Nust , 3.12 (2025)
+- Fsc Pre Engineering Punjab College of Science , 1094 (2021)
 
 ---
 
@@ -44,21 +44,27 @@ work environment
 ## Projects
 ### Semantic based image search engine using Solr
 
-- Developed a semantic
+- Developed a semantic-based image search engine using Apache Solr to eﬃciently retrieve images based on textual descriptions.
 
-- based image search engine using Apache Solr to eﬃciently retrieve images based on textual descriptions. Utilized the Flickr30k dataset and integrated the CLIP model for generating feature vectors of images. Implemented robust search functionality that improved image
+- Utilized the Flickr30k dataset and integrated the CLIP model for generating feature vectors of images.
 
-### retrieval acc
+- Implemented robust search functionality that improved image retrieval acc
 
-- Search engine like google Designed and implemented a web page search engine integrating multiple technologies for eﬃcient information retrieval. Employed a Crawler and Bloom Filter to collect and ﬁlter URLs, storing data for processing with BERT and PageRank algorithms. Utilized TF
+### Search engine like google
 
-- IDF for term weighting, Apache Solr for
+- Designed and implemented a web page search engine integrating multiple technologies for eﬃcient information retrieval.
 
-### in
+- Employed a Crawler and Bloom Filter to collect and ﬁlter URLs, storing data for processing with BERT and PageRank algorithms.
 
-- Stock predictor using LSTM Developed a stock price predictor using Long Short
+- Utilized TF-IDF for term weighting, Apache Solr for in
 
-- Term Memory (LSTM) neural networks to
+### Stock predictor using LSTM
+
+- Developed a stock price predictor using Long Short-Term Memory (LSTM) neural networks to forecast next-day prices.
+
+- Implemented data preprocessing, feature engineering, and model training to ensure high prediction accuracy.
+
+- Integrated the predictor into a user-friendly interface, enabling real-time pre
 
 ---
 

@@ -12,15 +12,17 @@ import { INITIAL_JOBS } from "../src/db/seeds/jobs";
 import { MOCK_CANDIDATES } from "../src/db/seeds/mockCandidates";
 import type { AiProvider } from "../src/lib/ai/types";
 
-type PoolSourceMode = "exp1" | "mock" | "both";
+type PoolSourceMode = "exp1" | "raw" | "mock" | "both";
 
 interface AxesCliOptions {
   inputDir: string;
+  rawCvsDir: string;
   outputDir: string;
   source: PoolSourceMode;
   jobKeyOrPath?: string;
   useBudgeted: boolean;
   budget?: number;
+  limit?: number;
   skipStage0: boolean;
   provider?: AiProvider;
   model?: string;
@@ -30,6 +32,18 @@ interface AxesCliOptions {
 // Built-in job presets from seeds/jobs.ts and 05-test-bench.md Section 3.2
 const BUILTIN_JOBS: Record<string, JobSpecInput> = {
   "go-backend": INITIAL_JOBS[0],
+  "grad-ai-swe": {
+    id: "job-grad-ai-swe",
+    title: "AI / ML & Full-Stack Software Engineer (Graduate / Entry-Level)",
+    department: "Applied AI & Product Engineering",
+    location: "Islamabad / Lahore, Pakistan",
+    seniority_level: "Entry-Level / Junior (0-1 yrs)",
+    description:
+      "Hiring top graduating BS Computer Science engineers to build production AI/ML systems (LLMs, RAG, computer vision, predictive modeling) and full-stack web/mobile products. All candidates meet the baseline BS CS degree requirement; we seek standout research depth, quantified engineering impact, complex system builds, and selective lab or international experience.",
+    min_experience_years: 0,
+    skills_required: ["Python", "Machine Learning", "Software Engineering"],
+    skills_preferred: ["PyTorch", "TensorFlow", "FastAPI", "RAG", "Computer Vision", "React", "Next.js", "Node.js"],
+  },
   "ai-ml-genai": {
     id: "job-ai-ml-genai",
     title: "Senior AI / ML & GenAI Engineer",
@@ -96,6 +110,7 @@ const BUILTIN_JOBS: Record<string, JobSpecInput> = {
 function parseArgs(argv: string[]): AxesCliOptions {
   const options: AxesCliOptions = {
     inputDir: resolve("docs/research/top-candidates/bench/exp1-output"),
+    rawCvsDir: resolve("docs/research/top-candidates/bench/cvs"),
     outputDir: resolve("docs/research/top-candidates/bench/axes-output"),
     source: "mock",
     useBudgeted: false,
@@ -109,11 +124,14 @@ function parseArgs(argv: string[]): AxesCliOptions {
     if (arg === "--dir" && argv[i + 1]) {
       options.inputDir = resolve(argv[++i]);
       if (!explicitSource) options.source = "exp1";
+    } else if (arg === "--raw-dir" && argv[i + 1]) {
+      options.rawCvsDir = resolve(argv[++i]);
+      if (!explicitSource) options.source = "raw";
     } else if (arg === "--out" && argv[i + 1]) {
       options.outputDir = resolve(argv[++i]);
     } else if (arg === "--source" && argv[i + 1]) {
       const val = argv[++i] as PoolSourceMode;
-      if (val === "exp1" || val === "mock" || val === "both") {
+      if (val === "exp1" || val === "raw" || val === "mock" || val === "both") {
         options.source = val;
         explicitSource = true;
       }
@@ -123,6 +141,8 @@ function parseArgs(argv: string[]): AxesCliOptions {
       options.useBudgeted = true;
     } else if (arg === "--budget" && argv[i + 1]) {
       options.budget = parseInt(argv[++i], 10);
+    } else if (arg === "--limit" && argv[i + 1]) {
+      options.limit = parseInt(argv[++i], 10);
     } else if (arg === "--skip-stage0") {
       options.skipStage0 = true;
     } else if (arg === "--provider" && argv[i + 1]) {
@@ -141,8 +161,8 @@ function parseArgs(argv: string[]): AxesCliOptions {
 function resolveJobSpec(options: AxesCliOptions): { jobId: string; job: JobSpecInput } {
   const key = options.jobKeyOrPath;
   if (!key) {
-    if (options.source === "exp1") {
-      return { jobId: "ai-ml-genai", job: BUILTIN_JOBS["ai-ml-genai"] };
+    if (options.source === "exp1" || options.source === "raw") {
+      return { jobId: "grad-ai-swe", job: BUILTIN_JOBS["grad-ai-swe"] };
     }
     return { jobId: "go-backend", job: BUILTIN_JOBS["go-backend"] };
   }
@@ -223,6 +243,53 @@ function loadPreSerializedDigests(
   return loaded;
 }
 
+// Loads raw markdown resumes from bench/cvs for direct Raw-CV vs Digest axis discovery comparison
+function loadRawMarkdownResumes(
+  dirPath: string,
+  limit?: number
+): PreSerializedCandidateDigest[] {
+  if (!existsSync(dirPath)) return [];
+
+  const mdFiles = readdirSync(dirPath)
+    .filter((f) => f.endsWith(".md") && f.toLowerCase() !== "readme.md")
+    .sort();
+
+  const selected = limit ? mdFiles.slice(0, limit) : mdFiles;
+  const loaded: PreSerializedCandidateDigest[] = [];
+
+  for (const file of selected) {
+    const candidateId = file.slice(0, -3);
+    const rawMd = readFileSync(join(dirPath, file), "utf-8").trim();
+    if (!rawMd) continue;
+
+    const nonEmptyLines = rawMd
+      .split(/\r?\n/)
+      .map((l) => l.trim())
+      .filter((l) => l.length > 0 && l !== "---");
+
+    const numberedLines: string[] = [];
+    const evidenceSpanByRefId: Record<string, string> = {};
+
+    nonEmptyLines.forEach((line, idx) => {
+      if (idx === 0) {
+        numberedLines.push(`[${candidateId}] ${line.replace(/^#\s*/, "")}`);
+      } else {
+        const refId = `L${idx}`;
+        numberedLines.push(`  [${refId}] ${line}`);
+        evidenceSpanByRefId[refId] = line.replace(/^[•\-*#]+\s*/, "");
+      }
+    });
+
+    loaded.push({
+      candidateId,
+      digestText: numberedLines.join("\n"),
+      evidenceSpanByRefId,
+    });
+  }
+
+  return loaded;
+}
+
 async function main() {
   const options = parseArgs(process.argv);
   const { jobId, job } = resolveJobSpec(options);
@@ -232,10 +299,13 @@ async function main() {
   console.log("================================================================================");
   console.log(`Pool Source     : ${options.source}`);
   console.log(`Job Preset/ID   : ${jobId} (${job.title})`);
-  if (options.source !== "mock") {
+  if (options.source === "exp1" || options.source === "both") {
     console.log(`Digest Directory: ${options.inputDir} (${options.useBudgeted ? "budgeted" : "uncapped"})`);
+  } else if (options.source === "raw") {
+    console.log(`Raw CV Directory: ${options.rawCvsDir}`);
   }
   console.log(`Output Directory: ${options.outputDir}`);
+  if (options.limit) console.log(`Candidate Limit : ${options.limit}`);
   if (options.provider) console.log(`Provider        : ${options.provider}`);
   if (options.model) console.log(`Model           : ${options.model}`);
   if (options.budget) console.log(`Digest Budget   : ${options.budget} tokens`);
@@ -245,12 +315,17 @@ async function main() {
     mkdirSync(options.outputDir, { recursive: true });
   }
 
-  const candidates =
+  const rawCandidates =
     options.source === "mock" || options.source === "both" ? MOCK_CANDIDATES : [];
-  const preSerializedDigests =
-    options.source === "exp1" || options.source === "both"
-      ? loadPreSerializedDigests(options.inputDir, options.useBudgeted)
-      : [];
+  const candidates = options.limit ? rawCandidates.slice(0, options.limit) : rawCandidates;
+
+  let preSerializedDigests: PreSerializedCandidateDigest[] = [];
+  if (options.source === "exp1" || options.source === "both") {
+    const loaded = loadPreSerializedDigests(options.inputDir, options.useBudgeted);
+    preSerializedDigests = options.limit ? loaded.slice(0, options.limit) : loaded;
+  } else if (options.source === "raw") {
+    preSerializedDigests = loadRawMarkdownResumes(options.rawCvsDir, options.limit);
+  }
 
   const discoveryRes = await discoverEmergentAxesWithUsage({
     job,
@@ -303,7 +378,9 @@ async function main() {
     }
   }
 
-  const runPrefix = `${options.source}-${jobId}`;
+  const modeLabel =
+    options.source === "exp1" && options.useBudgeted ? "exp1-budgeted" : options.source;
+  const runPrefix = `${modeLabel}-${jobId}`;
 
   // 1. Write <runPrefix>.axes.json
   const jsonPath = join(options.outputDir, `${runPrefix}.axes.json`);

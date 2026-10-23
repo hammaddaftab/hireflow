@@ -12,8 +12,6 @@ constructive part of the society, working to serve humanity with my skills.
 
 ## Education
 - BS in Computer Science School of Electrical Engineering and Computer Science , 3.15
-- Matric / O levels , (2019)
-- Intermediate / A levels , (2021)
 
 ---
 

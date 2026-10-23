@@ -258,8 +258,8 @@ export function indexCandidateDigest(
       continue;
     }
 
-    // Claim or signal line: [c1:action] ... or [s1:action] ...
-    const itemMatch = trimmed.match(/^\[([a-zA-Z]+\d+):[^\]]+\]/);
+    // Claim, signal, or numbered raw line: [c1:action] ..., [s1:action] ..., or [L1] ...
+    const itemMatch = trimmed.match(/^\[([a-zA-Z]+\d+)(?::[^\]]+)?\]/);
     if (itemMatch) {
       lineByRefId.set(itemMatch[1], trimmed);
     }

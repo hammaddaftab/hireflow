@@ -12,8 +12,6 @@ innovative web & AI/ML projects to advance skills.
 
 ## Education
 - BS in Computer Science School of Electrical Engineering and Computer Science , 3.35
-- Matric / O levels , (2019)
-- Intermediate / A levels , (2021)
 - Matriculation The Educators Boys High School , 1062/1100 (2019)
 - Intermediate Divisional Public School And Inter College , 1078/1100 (2021)
 
@@ -22,29 +20,29 @@ innovative web & AI/ML projects to advance skills.
 ## Projects
 ### Techzone
 
-- Project: TechZone (MERN Stack Online Computer and Accessories E
+- Project: TechZone (MERN Stack Online Computer and Accessories E-commerce Platform) Developed a user-friendly e-commerce website, "TechZone," enabling users to browse and purchase computers and accessories.
 
-- commerce Platform) Developed a user
+- Implemented shopping cart functionality, allowing users to add and manage items for purchase.
 
-- friendly e
+- Desig
 
-- commerce website, "TechZone," enabling users to browse and purchase computers and accessories. Implemented shopping cart functionality, allowing users to add and
+### Cricket Stats Guru (C++ Application)
 
-### manage items for purchase. Desig
+- Created a comprehensive Cricket Stats Guru application in C++.
 
-- Cricket Stats Guru (C++ Application) Created a comprehensive Cricket Stats Guru application in C++. Utilized Kaggle datasets to provide users with player
+- Utilized Kaggle datasets to provide users with player-speciﬁc statistics, enabling searches by player name and detailed records by various parameters such as average, economy, wickets, runs, and strike rate.
 
-- speciﬁc statistics, enabling searches by player name and detailed records by various parameters such as average, economy, wickets, runs, and strike rate. Demonstrated
+- Demonstrated proficiency in data h
 
-### proficiency in data h
+### Unet Binarizer
 
-- Unet Binarizer Led Unet Binarizer project for historical document binarization. Leveraged advanced image processing and AI techniques, including median blur and adaptive thresholding, with a U
+- Led Unet Binarizer project for historical document binarization.
 
-- Net model. Enhanced text clarity and extracted valuable information from degraded documents. Demonstrated
+- Leveraged advanced image processing and AI techniques, including median blur and adaptive thresholding, with a U-Net model.
 
-### expertise in traditional i
+- Enhanced text clarity and extracted valuable information from degraded documents.
 
-- 
+- Demonstrated expertise in traditional i
 
 ---
 

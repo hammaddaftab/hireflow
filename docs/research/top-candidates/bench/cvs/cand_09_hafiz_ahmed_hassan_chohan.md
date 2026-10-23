@@ -26,8 +26,7 @@ innovative projects that bridge theory with
 
 ## Education
 - BS in Computer Science School of Electrical Engineering and Computer Science , 3.62
-- Matric / O levels , (2019)
-- Intermediate / A levels , (2021) Computer Science SEECS , 3.62 (2025)
+- Computer Science SEECS , 3.62 (2025)
 
 ---
 
@@ -53,32 +52,22 @@ innovative projects that bridge theory with
 ## Projects
 ### Gesture-Controlled Snake Game
 
-- – Developed a gesture
+- Developed a gesture-controlled snake game using OpenCV and pygame, oﬀering a hands-free gaming experience through real-time hand gesture detection.
 
-- controlled snake game using OpenCV and pygame, oﬀering a hands
-
-- free gaming experience through real
-
-- time hand gesture detection. – Integrated cvzone for real
-
-- time hand tracking and gesture recognition, providing responsive and intuitive gameplay.
+- Integrated cvzone for real-time hand tracking and gesture recognition, providing responsive and intuitive gameplay.
 
 ### Convert to EBooks
 
-- – Created a system to convert physical book images or PDFs into fully formatted eBooks using deep learning and OCR technologies. – Trained a deep neural network for segmentation, accurately extracting text from diverse fonts and layouts. – Follow
+- Created a system to convert physical book images or PDFs into fully formatted eBooks using deep learning and OCR technologies.
 
-- up work based on the paper: Shafait, F., & Smith, R. (2010).
+- Trained a deep neural network for segmentation, accurately extracting text from diverse fonts and layouts.
+
+- Follow-up work based on the paper: Shafait, F., & Smith, R. (2010).
 
 ### ANPR– Automatic Number Plate Recognition System
 
-- – Developed a real
+- Developed a real-time ANPR system using computer vision and deep learning, accurately detecting and recognizing vehicle license plates.
 
-- time ANPR system using computer vision and deep learning, accurately detecting and recognizing vehicle license plates. – Built a robust image processing pipeline using OpenCV and integrated it with easy
-
-- ocr for character recognition, achieving reliable performance under various
-
-### lighting an
-
-- 
+- Built a robust image processing pipeline using OpenCV and integrated it with easy-ocr for character recognition, achieving reliable performance under various lighting an
 
 ---

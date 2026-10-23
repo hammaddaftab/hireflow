@@ -385,8 +385,9 @@ export async function extractCandidateProfileWithUsage(
         return true;
       });
 
-      // Filler safety net: drop claim if 0 skills, 0 raw_nouns, and no outcome_attached
-      if (dedupedSkills.length === 0 && filteredRawNouns.length === 0 && !promptClaim.outcome_attached) {
+      // Filler safety net: drop claim only if originally empty of skills, nouns, and outcomes
+      const hasOriginalNouns = (promptClaim.raw_nouns || []).some((n) => n.trim().length > 0);
+      if (dedupedSkills.length === 0 && !hasOriginalNouns && !promptClaim.outcome_attached) {
         fillerDroppedCount++;
         continue;
       }

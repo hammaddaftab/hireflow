@@ -13,8 +13,6 @@ develop innovative solutions using applications.
 
 ## Education
 - BS in Computer Science School of Electrical Engineering and Computer Science , 2.75
-- Matric / O levels , (2019)
-- Intermediate / A levels , (2021)
 - BS Computer Science SEECS, NUST , 2.75/4 (2025)
 - FSc. Pre Engineering Govt. Islamia College Civil Lines , 936/1100 (2021)
 - Matric (Computer Science) The Trust School , 1000/1100 (2019)

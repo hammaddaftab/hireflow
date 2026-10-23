@@ -10,7 +10,10 @@ Please update objective section.
 ---
 
 ## Education
-- BS in Computer Science School of Electrical Engineering and Computer Science , 3.62 , (2019) , (2021) Global UGRAD Exchange Semester Saginaw Valley State University , 3.55 (2023) A-levels Lahore Grammar School Johar Town , 5 A*s (2021) O-levels Beaconhouse School System , 9 A*s, 1 A (2019)
+- BS in Computer Science School of Electrical Engineering and Computer Science , 3.62
+- Global UGRAD Exchange Semester Saginaw Valley State University , 3.55 (2023)
+- A-levels Lahore Grammar School Johar Town , 5 A*s (2021)
+- O-levels Beaconhouse School System , 9 A*s, 1 A (2019)
 
 ---
 
@@ -19,7 +22,9 @@ Please update objective section.
 
 **08-Jul-2024 - 30-Sep-2024**
 
-- Conducted research and development on a chatbot, enhancing conversational AI capabilities. • Collected and analyzed U.S. zonal data for real estate and market insights.
+- Conducted research and development on a chatbot, enhancing conversational AI capabilities.
+
+- Collected and analyzed U.S. zonal data for real estate and market insights.
 
 ### General Secretary, International Students Club
 
@@ -31,7 +36,13 @@ Please update objective section.
 
 **03-Jan-2023 - 30-Sep-2023**
 
-- Director Strategic Management, Marketing • Developed eﬀective marketing strategies increasing sign ups by 40%. • Designed an easy-to-use tracker to monitor exchange sign-ups. • Participated in physical marketing stalls and PR campaign enhancing brand visibility by 20%.
+- Director Strategic Management, Marketing
+
+- Developed eﬀective marketing strategies increasing sign ups by 40%.
+
+- Designed an easy-to-use tracker to monitor exchange sign-ups.
+
+- Participated in physical marketing stalls and PR campaign enhancing brand visibility by 20%.
 
 ---
 
@@ -46,27 +57,15 @@ Please update objective section.
 
 ### Writing Style Analysis Task
 
-- RoBERTa ﬁne
-
-- tuned with Low Rank Adaptation to detect change in writing style at paragraph level achieved an F1 Score of 0.80.
+- RoBERTa ﬁne-tuned with Low Rank Adaptation to detect change in writing style at paragraph level achieved an F1 Score of 0.80.
 
 ### LandUseAI Advisor
 
-- A Gemini
-
-- powered chatbot that delivers personalized land
-
-- use recommendations using a Retrieval
-
-- Augmented Generation (RAG) approach.
+- A Gemini-powered chatbot that delivers personalized land-use recommendations using a Retrieval- Augmented Generation (RAG) approach.
 
 ### Hotel Recommendation System
 
-- A content
-
-- based recommendation system model that utilizes TF
-
-- IDF scores to extract top tags for hotels from the Hotel Reviews Dataset.
+- A content-based recommendation system model that utilizes TF-IDF scores to extract top tags for hotels from the Hotel Reviews Dataset.
 
 ---
 

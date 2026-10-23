@@ -1,0 +1,7 @@
+[cand_01_muhammad_khizer_tariq] 1.3y FT (2 roles, avg 0.7y) | BSc CS @ NUST (2.95) | Attock
+work_1: Researcher @ High Performance Computing Lab SEECS (2024-2024, 1y FT)
+work_2: Researcher @ Machine Vision and Intelligent Systems Lab SEECS (2024-2025, 0.5y FT)
+  [c1:peripheral] Continual Learning -> studied continual-learning robotics applications
+spikes:
+  [s1:action] Publication: FIT 2024 -> published Routing through Satellite Imagery paper
+  [s2:action] Publication: IJCA -> published Grouped Matrix Clocks paper

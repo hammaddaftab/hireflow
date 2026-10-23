@@ -15,8 +15,6 @@ to address difficult problems in various domains of science.
 
 ## Education
 - BS in Computer Science School of Electrical Engineering and Computer Science , 2.99
-- Matric / O levels , (2019)
-- Intermediate / A levels , (2021)
 
 ---
 
@@ -31,7 +29,11 @@ to address difficult problems in various domains of science.
 
 - Contributed to integrating Meta’s SAM into CVAT.ai’s codebase beyond the program’s scope.
 
-- Deutsches Forschungszentrum für Künstliche Intelligenz ( 03-Jun- 2024 - 01-Aug-2024 ) - Engineered a semi-supervised model for detecting informal settlements using remote sensing.
+### Deutsches Forschungszentrum für Künstliche Intelligenz
+
+**03-Jun-2024 - 01-Aug-2024**
+
+- Engineered a semi-supervised model for detecting informal settlements using remote sensing.
 
 - Applied techniques like FixMatch, domain adaptation between cies and pseudo-label reﬁnement via SAM2.
 
@@ -42,9 +44,7 @@ to address difficult problems in various domains of science.
 ## Projects
 ### Slum-i, Research Project
 
-- Worked on a €80,000 DAAD
-
-- funded project in collaboration with RPTU & DFKI, where I interned in Germany.
+- Worked on a €80,000 DAAD-funded project in collaboration with RPTU & DFKI, where I interned in Germany.
 
 - Aligned with 3 UN SDGs, focusing on improving living conditions for slum dwellers in Pakistan.
 

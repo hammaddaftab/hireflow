@@ -13,8 +13,8 @@ while contributing to the lab's ongoing research and development efforts.
 
 ## Education
 - BS in Computer Science School of Electrical Engineering and Computer Science , 3.28
-- Matric / O levels , (2018)
-- Intermediate / A levels , (2020) HSSC/FSC Aga Khan Higher Secondary School Chitral , 89.3% (2020) SSC/Matric Aga Khan Higher Secondary School Chitral , 87.3% (2018)
+- HSSC/FSC Aga Khan Higher Secondary School Chitral , 89.3% (2020)
+- SSC/Matric Aga Khan Higher Secondary School Chitral , 87.3% (2018)
 
 ---
 
@@ -25,11 +25,7 @@ while contributing to the lab's ongoing research and development efforts.
 
 - Conducted a literature review of various research articles, books, and whitepapers related to AI.
 
-- Developed a conceptual framework to identify the key
-
-### drivers and challenges of AI adoption in different indust
-
-- 
+- Developed a conceptual framework to identify the key drivers and challenges of AI adoption in different indust
 
 ---
 

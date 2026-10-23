@@ -15,8 +15,6 @@ impressions and memorable interactions.
 
 ## Education
 - BS in Computer Science School of Electrical Engineering and Computer Science , 2.94
-- Matric / O levels , (2019)
-- Intermediate / A levels , (2021)
 - BS Computer Science National University of Sciences and Technology (NUST) , 2.97 (2025)
 - Intermediate in Computer Science Punjab Group of Colleges , 97.4% (2021)
 
@@ -27,7 +25,7 @@ impressions and memorable interactions.
 
 **04-Jul-2024 - 21-Dec-2024**
 
-- Designed and developed an embedded kiosk and mobile app for wellness monitoring using neuro- symbolic AI, boosting user retention by 75%.
+- Designed and developed an embedded kiosk and mobile app for wellness monitoring using neuro-symbolic AI, boosting user retention by 75%.
 
 - Conducted extensive user research, including surveys and interviews, leading to a 25% reduction in onboarding time.
 
@@ -51,22 +49,18 @@ impressions and memorable interactions.
 
 - Conducted usability testing and interviews, providing actionable insights that reduced customer support inquiries by 40%.
 
-- Authored a UX research report that increased cross- functional adop
+- Authored a UX research report that increased cross-functional adop
 
 ---
 
 ## Projects
 ### Interactive Wellness Monitoring System
 
-- Designed a kiosk and mobile app integrating neuro
-
-- symbolic AI for health tracking, achieving a 25% reduction in onboarding time.
+- Designed a kiosk and mobile app integrating neuro-symbolic AI for health tracking, achieving a 25% reduction in onboarding time.
 
 ### HeroCV
 
-- Conceptualized and launched an AI
-
-- powered resume creation platform, enhancing user retention by 30%.
+- Conceptualized and launched an AI-powered resume creation platform, enhancing user retention by 30%.
 
 ### AptScout
 
@@ -74,9 +68,7 @@ impressions and memorable interactions.
 
 ### SubventureDirecte
 
-- Designed an AI
-
-- driven grant application platform, improving application completion rates by 35%.
+- Designed an AI-driven grant application platform, improving application completion rates by 35%.
 
 ---
 

@@ -117,7 +117,8 @@ async function main() {
     .filter((f) => {
       const ext = extname(f).toLowerCase();
       return ext === ".pdf" || ext === ".txt";
-    });
+    })
+    .sort();
 
   if (cvFiles.length === 0) {
     console.log(`No CV files (.pdf or .txt) found in: ${options.inputDir}`);

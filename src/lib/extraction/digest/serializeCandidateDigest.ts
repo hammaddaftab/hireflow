@@ -114,8 +114,31 @@ function computeMergedFtTenure(
 
 // Formats degree level and field into a clean compact string
 function formatDegreeSummary(profile: ParsedCandidateProfile): string | null {
-  const entry = profile.education?.entries?.[0];
-  if (!entry) return null;
+  const entries = profile.education?.entries || [];
+  if (entries.length === 0) return null;
+
+  // Prefer highest degree level (doctorate > masters > bachelors > diploma > high_school)
+  const rankMap: Record<string, number> = {
+    doctorate: 5,
+    masters: 4,
+    bachelors: 3,
+    diploma: 2,
+    high_school: 1,
+  };
+
+  let bestEntry = entries[0];
+  let bestRank = -1;
+
+  for (const entry of entries) {
+    const norm = entry.degree_level?.normalized || "";
+    const rank = rankMap[norm] ?? 0;
+    if (rank > bestRank) {
+      bestRank = rank;
+      bestEntry = entry;
+    }
+  }
+
+  const entry = bestEntry;
 
   let degree = entry.degree_level?.normalized || entry.degree_level?.raw || "";
   const field = entry.field?.normalized || entry.field?.raw || "";
@@ -348,11 +371,14 @@ export function serializeCandidateDigestWithStats(
 
   // 1. Header line: [cand_id] Tenure | Education | Logistics
   const { totalYears, ftCount, avgYears } = computeMergedFtTenure(entries, nowYear, nowMonth);
+  const internCount = entries.filter((e) => e?.employment_type?.value === "internship").length;
   let tenureSummary = "";
   if (ftCount > 1) {
     tenureSummary = `${totalYears}y FT (${ftCount} roles, avg ${avgYears}y)`;
   } else if (ftCount === 1) {
     tenureSummary = `${totalYears}y FT (1 role)`;
+  } else if (internCount > 0) {
+    tenureSummary = `0y FT (${internCount} internship${internCount > 1 ? "s" : ""})`;
   } else if (entries.length > 0) {
     tenureSummary = `${totalYears}y FT`;
   }
@@ -452,7 +478,7 @@ export function serializeCandidateDigestWithStats(
       kind: "notable_signal",
       hasOutcome: signal.outcome_attached ? 1 : 0,
       tierScore,
-      recencyScore: 950,
+      recencyScore: 750,
       nounCount: Math.min(4, signal.raw_nouns?.length || 0),
       originalIndex: itemSequence++,
       renderedLine,
@@ -481,8 +507,8 @@ export function serializeCandidateDigestWithStats(
       coveredIds,
       kind: "notable_signal",
       hasOutcome: certOutcome ? 1 : 0,
-      tierScore: 3,
-      recencyScore: 950,
+      tierScore: 2,
+      recencyScore: 650,
       nounCount: 0,
       originalIndex: itemSequence++,
       renderedLine,
@@ -559,10 +585,9 @@ export function serializeCandidateDigestWithStats(
   const totalProfileItems =
     (profile.role_claims?.claims?.length || 0) + (profile.notable_signals?.signals?.length || 0);
 
-  // Baseline rendering with all items kept
+  // Baseline rendering with all items kept (preserving all role headers when under budget)
   const allItemIds = new Set(allItems.map((i) => i.id));
-  const isBudgeted = Boolean(opts?.tokenBudget);
-  const uncappedResult = renderDigestWithKeptItems(allItemIds, isBudgeted);
+  const uncappedResult = renderDigestWithKeptItems(allItemIds, false);
   const uncappedTokens = approxTokens(uncappedResult.text);
 
   // If no tokenBudget is specified or uncapped fits within budget, return uncapped
@@ -577,11 +602,15 @@ export function serializeCandidateDigestWithStats(
     };
   }
 
-  // Budget exceeded: greedy inclusion in priority order
+  // Budget exceeded: greedy inclusion in priority order, ensuring primary work role is represented first
   const prioritySortedItems = [...allItems].sort(compareDigestItems);
+  const topWorkClaim = prioritySortedItems.find((i) => i.kind === "role_claim");
+  const orderedCandidates = topWorkClaim
+    ? [topWorkClaim, ...prioritySortedItems.filter((i) => i.id !== topWorkClaim.id)]
+    : prioritySortedItems;
   const activeKeptIds = new Set<string>();
 
-  for (const candidateItem of prioritySortedItems) {
+  for (const candidateItem of orderedCandidates) {
     const testSet = new Set([...activeKeptIds, candidateItem.id]);
     const testDigest = renderDigestWithKeptItems(testSet, true);
     if (approxTokens(testDigest.text) <= opts.tokenBudget) {

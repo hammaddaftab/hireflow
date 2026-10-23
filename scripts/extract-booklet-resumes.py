@@ -17,17 +17,63 @@ OUTPUT_DIR = "/home/hammad/code/hackathon/docs/research/top-candidates/bench/cvs
 def crop_text(sheet, x, y, w, h):
     # Extracts text from a specific rectangular region of a PDF sheet
     try:
-        return subprocess.check_output([
+        raw = subprocess.check_output([
             "pdftotext", "-layout", "-f", str(sheet), "-l", str(sheet),
             "-x", str(x), "-y", str(y), "-W", str(w), "-H", str(h),
             PDF_PATH, "-"
-        ]).decode("utf-8", "ignore").strip()
+        ]).decode("utf-8", "ignore")
+        # Remove booklet page footer lines if present
+        raw = re.sub(r"^[ \t]*Page No\.\s*\d+\s*\|\s*BSCS.*$", "", raw, flags=re.MULTILINE)
+        return raw.strip()
     except Exception as e:
         print(f"Error cropping sheet {sheet} ({x},{y},{w},{h}): {e}", file=sys.stderr)
         return ""
 
 def clean_lines(text):
     return [l.strip() for l in text.splitlines() if l.strip()]
+
+def join_wrapped_lines(lines):
+    # Reconnects hyphenated line wraps without inserting spaces inside compound words or URLs
+    if not lines:
+        return ""
+    text = "\n".join(l.strip() for l in lines if l.strip())
+    text = re.sub(r"([A-Za-z0-9])-\n([a-z0-9])", r"\1-\2", text)
+    text = re.sub(r"\s*\n\s*", " ", text)
+    return re.sub(r"\s{2,}", " ", text).strip()
+
+def split_into_bullets(body_text):
+    # Splits a paragraph into clean bullets without breaking hyphenated words
+    if not body_text:
+        return []
+    cleaned = body_text.strip()
+    # Remove trailing orphan bullet markers at the end of a block
+    cleaned = re.sub(r"[\s•●◦–-]+$", "", cleaned).strip()
+    if not cleaned:
+        return []
+
+    # Check if explicit bullet symbols or dash-bullets exist
+    has_symbol_bullets = bool(re.search(r"[•●◦]", cleaned))
+    has_dash_bullets = bool(re.search(r"(?:^|(?<=[\.\!\?\:\;])\s+)[–-]\s+(?=[A-Z0-9])", cleaned))
+
+    if has_symbol_bullets or has_dash_bullets:
+        parts = re.split(
+            r"\s*[•●◦]\s*|(?:^|(?<=[\.\!\?\:\;])\s+)[–-]\s+(?=[A-Z0-9])",
+            cleaned,
+        )
+        bullets = [re.sub(r"^[•●◦–-]\s*", "", p).strip() for p in parts if p and p.strip()]
+        bullets = [re.sub(r"[\s•●◦–-]+$", "", b).strip() for b in bullets if b]
+        return [b for b in bullets if b]
+
+    # Otherwise split on sentence boundaries while avoiding common title/company abbreviations
+    sentences = [
+        s.strip()
+        for s in re.split(
+            r"(?<!\bDr\.)(?<!\bProf\.)(?<!\bMr\.)(?<!\bMs\.)(?<!\bMrs\.)(?<!\bInc\.)(?<!\bLtd\.)(?<!\bPvt\.)(?<!\bF\.)(?<=[.!?])\s+(?=[A-Z])",
+            cleaned,
+        )
+        if s.strip()
+    ]
+    return sentences if sentences else [cleaned]
 
 def parse_sidebar(sidebar_raw):
     cell = ""
@@ -120,126 +166,118 @@ def parse_main_content(main_raw, p2_raw=""):
 def format_education(edu_raw):
     if not edu_raw:
         return "- **Bachelor of Science in Computer Science (BS CS)**  \n  National University of Sciences and Technology (NUST) - SEECS (2021 – 2025)"
-        
+
     lines = clean_lines(edu_raw)
     items = []
     current_item = []
-    
-    for line in lines:
-        if line.startswith("BS in") or line.startswith("BS ") or line.startswith("Bachelors") or line.startswith("Matric") or line.startswith("Intermediate") or line.startswith("FSc") or line.startswith("Higher Secondary") or line.startswith("Secondary") or line.startswith("Semester Exchange") or line.startswith("A levels") or line.startswith("O levels"):
-            if current_item:
-                items.append(" ".join(current_item))
-                current_item = []
+
+    for idx, line in enumerate(lines):
         current_item.append(line)
-        
+        # If the next line is a bare wrapped year like '(2025)', let the next iteration attach it
+        if idx + 1 < len(lines) and re.match(r"^\(\d{4}\)$|^\(\s*\)$", lines[idx + 1]):
+            continue
+        # In the NUST booklet template, every education entry ends on the line with ', <grade>' or '(<year>)'
+        if re.search(r",\s*\d+(?:\.\d+)?(?:/\d+(?:\.\d+)?)?\s*(?:\(\d{4}\))?$|,\s*[^,]+\(\d{4}\)$|\(\d{4}\)$|\(\s*\)$", line):
+            items.append(" ".join(current_item))
+            current_item = []
+
     if current_item:
         items.append(" ".join(current_item))
-        
+
     formatted = []
     for item in items:
-        # Clean formatting of institution and grades
         cleaned = re.sub(r"\s+", " ", item).strip()
-        # Add bullet
+        # Skip empty portal placeholders like ", (2019)" or "Matric / O levels , (2019)" with no school/grade
+        if re.match(r"^(?:Matric\s*/\s*O\s*levels|Intermediate\s*/\s*A\s*levels)?\s*,\s*\(\d{0,4}\)$", cleaned, re.IGNORECASE):
+            continue
         formatted.append(f"- {cleaned}")
-        
+
     return "\n".join(formatted) if formatted else edu_raw
+
+def collapse_multiline_dates(text):
+    # Collapses multiline date ranges inside parentheses onto the same line as the company header
+    def _repl(m):
+        inner = re.sub(r"\s*\n\s*", " ", m.group(1)).strip()
+        inner = re.sub(r"(\d{2}-)\s+([A-Za-z]{3})", r"\1\2", inner)
+        inner = re.sub(r"([A-Za-z]{3}-)\s+(\d{4})", r"\1\2", inner)
+        return f"( {inner} )"
+
+    return re.sub(r"\(([^()]*\d{4}[^()]*)\)", _repl, text)
 
 def format_internships(intern_raw):
     if not intern_raw:
         return ""
-        
-    lines = intern_raw.splitlines()
+
+    normalized = collapse_multiline_dates(intern_raw)
+    lines = normalized.splitlines()
     formatted = []
     current_title = None
+    current_dates = None
     current_body = []
-    
+
+    def flush_entry(title, dates, body_lines):
+        entry_blocks = [f"### {title}"]
+        if dates:
+            entry_blocks.append(f"**{dates}**")
+        body_text = join_wrapped_lines(body_lines)
+        for b in split_into_bullets(body_text):
+            entry_blocks.append(f"- {b}")
+        formatted.append("\n\n".join(entry_blocks))
+
     for line in lines:
         trimmed = line.strip()
         if not trimmed:
             continue
-            
+
         # Match company and date pattern e.g. "Company ( 01-Jan-2024 - 31-Dec-2024 )"
-        date_match = re.search(r"^(.*?)\s*\(\s*([^\)]+-[^\)]+)\s*\)", trimmed)
+        date_match = re.search(r"^(.*?)\s*\(\s*(\d{2}-[A-Za-z]{3}-\d{4}\s*-\s*\d{2}-[A-Za-z]{3}-\d{4})\s*\)$", trimmed)
         if date_match:
             if current_title:
-                formatted.append(f"### {current_title}")
-                if current_dates:
-                    formatted.append(f"**{current_dates}**")
-                body_text = " ".join(current_body).strip()
-                if body_text:
-                    # Break into sentences/bullets if possible
-                    sentences = [s.strip() for s in re.split(r"(?<=[.!?])\s+(?=[A-Z\-])", body_text) if s.strip()]
-                    for s in sentences:
-                        clean_s = re.sub(r"^[•\-*]\s*", "", s).strip()
-                        formatted.append(f"- {clean_s}")
+                flush_entry(current_title, current_dates, current_body)
                 current_body = []
             current_title = date_match.group(1).strip()
             current_dates = date_match.group(2).strip()
         else:
             current_body.append(trimmed)
-            
+
     if current_title:
-        formatted.append(f"### {current_title}")
-        if current_dates:
-            formatted.append(f"**{current_dates}**")
-        body_text = " ".join(current_body).strip()
-        if body_text:
-            sentences = [s.strip() for s in re.split(r"(?<=[.!?])\s+(?=[A-Z\-])", body_text) if s.strip()]
-            for s in sentences:
-                clean_s = re.sub(r"^[•\-*]\s*", "", s).strip()
-                formatted.append(f"- {clean_s}")
-                
+        flush_entry(current_title, current_dates, current_body)
+
     return "\n\n".join(formatted) if formatted else intern_raw
 
 def format_projects(proj_raw):
-    if not proj_raw:
+    if not proj_raw or not proj_raw.strip():
         return ""
-        
-    lines = proj_raw.splitlines()
+
+    # Each project in the booklet is separated by a blank line
+    blocks = re.split(r"\n\s*\n", proj_raw.strip())
     formatted = []
-    current_title = None
-    current_body = []
-    
-    for line in lines:
-        trimmed = line.strip()
-        if not trimmed:
+
+    for block in blocks:
+        lines = [l.strip() for l in block.splitlines() if l.strip()]
+        if not lines:
             continue
-            
-        # Check if line looks like a project title (short line, not a bullet, title case or caps)
-        is_bullet = trimmed.startswith("-") or trimmed.startswith("•") or trimmed.startswith("*")
-        is_likely_title = not is_bullet and len(trimmed) < 65 and not trimmed.endswith(".") and not trimmed.endswith(";")
-        
-        if is_likely_title and not current_title:
-            current_title = trimmed
-        elif is_likely_title and current_title and len(current_body) > 0:
-            formatted.append(f"### {current_title}")
-            body_text = " ".join(current_body).strip()
-            # Split bullets by • or -
-            bullets = [b.strip() for b in re.split(r"[•\-*]\s*", body_text) if b.strip()]
-            if len(bullets) > 1:
-                for b in bullets:
-                    formatted.append(f"- {b}")
-            else:
-                sentences = [s.strip() for s in re.split(r"(?<=[.!?])\s+(?=[A-Z])", body_text) if s.strip()]
-                for s in (sentences or [body_text]):
-                    formatted.append(f"- {s}")
-            current_title = trimmed
-            current_body = []
-        else:
-            current_body.append(trimmed)
-            
-    if current_title:
-        formatted.append(f"### {current_title}")
-        body_text = " ".join(current_body).strip()
-        bullets = [b.strip() for b in re.split(r"[•\-*]\s*", body_text) if b.strip()]
-        if len(bullets) > 1:
-            for b in bullets:
-                formatted.append(f"- {b}")
-        else:
-            sentences = [s.strip() for s in re.split(r"(?<=[.!?])\s+(?=[A-Z])", body_text) if s.strip()]
-            for s in (sentences or [body_text]):
-                formatted.append(f"- {s}")
-                
+
+        title = lines[0]
+        body_lines = lines[1:]
+
+        # Handle wrapped 2-line project titles (e.g. long title on L0 wrapping a short phrase onto L1)
+        if (
+            len(lines) >= 3
+            and len(lines[0]) >= 60
+            and len(lines[1]) < 40
+            and not re.match(r"^[•●◦–-]", lines[1])
+            and not lines[1].endswith(".")
+        ):
+            title = join_wrapped_lines([lines[0], lines[1]])
+            body_lines = lines[2:]
+
+        proj_out = [f"### {title}"]
+        body_text = join_wrapped_lines(body_lines)
+        for b in split_into_bullets(body_text):
+            proj_out.append(f"- {b}")
+        formatted.append("\n\n".join(proj_out))
+
     return "\n\n".join(formatted) if formatted else proj_raw
 
 def discover_student_pages():
@@ -275,14 +313,14 @@ def generate_markdown(candidate, index):
     main_sheet, main_side = sheets[0]
     x_offset = 0 if main_side == "left" else 548
     
-    sidebar_raw = crop_text(main_sheet, x_offset, 125, 185, 630)
-    main_raw = crop_text(main_sheet, x_offset + 185, 125, 363, 630)
+    sidebar_raw = crop_text(main_sheet, x_offset, 125, 185, 665)
+    main_raw = crop_text(main_sheet, x_offset + 185, 125, 363, 665)
     
     p2_raw = ""
     if len(sheets) > 1:
         p2_sheet, p2_side = sheets[1]
         p2_x = 0 if p2_side == "left" else 548
-        p2_raw = crop_text(p2_sheet, p2_x, 0, 548, 760)
+        p2_raw = crop_text(p2_sheet, p2_x, 0, 548, 790)
         
     cell, email, address, tech_skills, soft_skills = parse_sidebar(sidebar_raw)
     sections = parse_main_content(main_raw, p2_raw)

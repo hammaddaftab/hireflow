@@ -19,9 +19,8 @@ in a dynamic and collaborative environment.
 
 ## Education
 - BS in Computer Science School of Electrical Engineering and Computer Science , 2.96
-- Matric / O levels , (2019)
-- Intermediate / A levels , (2021)
-- Bachelors in Computer Science School of Electrical Engineering and Computer Science , (2025) Pre Engineering Punjab College , (2021)
+- Bachelors in Computer Science School of Electrical Engineering and Computer Science , (2025)
+- Pre Engineering Punjab College , (2021)
 - Matriculation - Biology Garrison Boys High School , (2019)
 
 ---
@@ -54,41 +53,31 @@ in a dynamic and collaborative environment.
 ---
 
 ## Projects
-### Colony Optimization Approach
+### Enhancing Vehicle Routing with Time Windows: A Machine Learning-Driven Ant Colony Optimization Approach
 
-- Enhancing Vehicle Routing with Time Windows: A Machine Learning
+- Authored a research paper focusing on integrating machine learning techniques with Ant Colony Optimization (ACO) to improve vehicle routing under time-window constraints.
 
-- Driven Ant Authored a research paper focusing on integrating machine learning techniques with Ant Colony Optimization (ACO) to improve vehicle routing under time
+- Presented the paper at the FIT 2024 Conference, showcasing innovative approaches to solving logistics and optimization challenges using AI
 
-- window constraints. Presented the paper at the FIT 2024 Conference, showcasing innovative approaches to solving logistics and optimization
+### PATHVQA-VGG19-BERT-ATTENTION
 
-### challenges using AI
+- Developed a medical Visual Question Answering (VQA) system utilizing VGG-19 for image feature extraction and BERT for textual question processing.
 
-- PATHVQA
+- Incorporated attention mechanisms to enhance contextual understanding, facilitating accurate responses to complex medical queries.
 
-- VGG19
+- Created an interactive web int
 
-- BERT
+### Secure Information Handling with Blockchain
 
-- ATTENTION Developed a medical Visual Question Answering (VQA) system utilizing VGG
+- Implemented secure data handling solutions using blockchain technology with cryptographic methods such as HMAC-SHA256 for hashing and RSA for encryption.
 
-- 19 for image feature extraction and BERT for textual question processing. Incorporated attention mechanisms to enhance contextual understanding, facilitating accurate responses to complex medical queries. Created an
-
-### interactive web int
-
-- Secure Information Handling with Blockchain Implemented secure data handling solutions using blockchain technology with cryptographic methods such as HMAC
-
-- SHA256 for hashing and RSA for encryption. Developed a decentralized ledger to ensure tamper
-
-- resistance and transaction verification in distributed environments.
+- Developed a decentralized ledger to ensure tamper-resistance and transaction verification in distributed environments.
 
 ### DNS Client Efficient Design
 
-- Engineered a sophisticated TypeScript
+- Engineered a sophisticated TypeScript-based DNS client with a modular, scalable architecture and robust error handling.
 
-- based DNS client with a modular, scalable architecture and robust error handling. Optimized performance using asynchronous processing and railway
-
-- oriented programming principles.
+- Optimized performance using asynchronous processing and railway-oriented programming principles.
 
 ---
 

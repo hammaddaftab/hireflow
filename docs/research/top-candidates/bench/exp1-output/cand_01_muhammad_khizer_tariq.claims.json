@@ -1,0 +1,120 @@
+{
+  "cv_id": "cand_01_muhammad_khizer_tariq",
+  "filename": "cand_01_muhammad_khizer_tariq.pdf",
+  "work_history_summary": [
+    {
+      "entry_id": "work_1",
+      "employer": "High Performance Computing Lab SEECS",
+      "title": "Researcher",
+      "start_date": "2024-01",
+      "end_date": "2024-12",
+      "is_current": false
+    },
+    {
+      "entry_id": "work_2",
+      "employer": "Machine Vision and Intelligent Systems Lab SEECS",
+      "title": "Researcher",
+      "start_date": "2024-10",
+      "end_date": "2025-03",
+      "is_current": false
+    }
+  ],
+  "role_claims": [
+    {
+      "claim_id": "c1",
+      "source_entry_ref": "work_2",
+      "claim_tier": "peripheral_action",
+      "skills": [
+        {
+          "skill": "Continual Learning",
+          "syntactic_tier": "peripheral_action",
+          "canonical_skill": null
+        }
+      ],
+      "raw_nouns": [],
+      "compact_action": "studied continual-learning robotics applications",
+      "outcome_attached": null,
+      "evidence_span": "Research work involving vision based applications of Continual Learning in Robotics and Healthcare",
+      "evidence_lines": [
+        "L16"
+      ]
+    }
+  ],
+  "notable_signals": [
+    {
+      "signal_id": "s1",
+      "context_label": "Publication",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "FIT 2024"
+      ],
+      "compact_action": "published Routing through Satellite Imagery paper",
+      "outcome_attached": null,
+      "evidence_span": "Presented a Conference Paper at FIT 2024 Published a Conference paper related to my Final year project on \"Routing through Satellite Imagery\", the paper presents a novel ML based technique for solving the vehicle routing problem the paper is published at",
+      "evidence_lines": [
+        "L18",
+        "L19",
+        "L20"
+      ]
+    },
+    {
+      "signal_id": "s2",
+      "context_label": "Publication",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "IJCA"
+      ],
+      "compact_action": "published Grouped Matrix Clocks paper",
+      "outcome_attached": null,
+      "evidence_span": "Published a Journal Paper in IJCA Published a Journal in International Journal for Computing Applications regarding Grouped Matrix Clocks for clock synchronization in Distributed Systems the paper can be accessed at: https://www.ijcaonline.org/",
+      "evidence_lines": [
+        "L22",
+        "L23",
+        "L24"
+      ]
+    }
+  ],
+  "cleanup_stats": {
+    "filler_dropped": 1,
+    "duplicates_dropped": 0
+  },
+  "digest_stats_uncapped": {
+    "approx_tokens": 130,
+    "total_items": 3,
+    "kept_items": 3,
+    "token_breakdown": {
+      "headers": 67,
+      "nouns": 11,
+      "actions": 52,
+      "outcomes": 0
+    }
+  },
+  "digest_stats_budgeted": {
+    "budget": 200,
+    "approx_tokens": 130,
+    "total_items": 3,
+    "kept_items": 3,
+    "dropped_item_ids": [],
+    "token_breakdown": {
+      "headers": 67,
+      "nouns": 11,
+      "actions": 52,
+      "outcomes": 0
+    }
+  },
+  "warnings": [],
+  "usage": {
+    "promptTokens": 6686,
+    "completionTokens": 3036,
+    "inputTokens": 6686,
+    "outputTokens": 3036,
+    "totalTokens": 9722
+  },
+  "latency_ms": 24662,
+  "tokens_approx": {
+    "raw_text": 397,
+    "evidence_spans": 150,
+    "uncapped_digest": 130,
+    "budgeted_digest": 130
+  }
+}

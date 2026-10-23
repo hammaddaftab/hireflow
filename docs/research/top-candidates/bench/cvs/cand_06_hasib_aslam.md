@@ -12,8 +12,6 @@ experience of converting ideas to reality
 
 ## Education
 - BS in Computer Science School of Electrical Engineering and Computer Science , 3.83
-- Matric / O levels , (2019)
-- Intermediate / A levels , (2021)
 - FSc Pre Engineering Punjab College , 1085/1100 (2021)
 - Matric Haider Memorial School , 1045/1100 (2019)
 - Semester Exchange Program Linnaeus University , Passed With Distinction (2023)
@@ -54,27 +52,29 @@ experience of converting ideas to reality
 
 - They then register their hotels.
 
-### Available
+- Available
 
-- Shared Room Expense Management App A web based solution for the people living in shared accomodations.
+### Shared Room Expense Management App
+
+- A web based solution for the people living in shared accomodations.
 
 - It allows roommates to eﬀectively manage the expense at ease.
 
 - All they have to do is to register a room and set its entry key and master key.
 
-- The master key is of great signiﬁcance and you can add or delete the roommates or
+- The master key is of great signiﬁcance and you can add or delete the roommates or level current bi
 
-### level current bi
+### Cricket Players Profile App
 
-- Cricket Players Profile App This app was built in using c++ data structures.
+- This app was built in using c++ data structures.
 
 - It basically allowed user to search any player in database with search complexity O(1).
 
-- It used multilevel hashtables (a entry in hashtable points to three other hashtable and so on) to reduce the search cost and move across diﬀerent formats such
+- It used multilevel hashtables (a entry in hashtable points to three other hashtable and so on) to reduce the search cost and move across diﬀerent formats such as t20,odi an
 
-### as t20,odi an
+### Facebook Page Media Controller
 
-- Facebook Page Media Controller A MERN stack website that allows user to register and then upload the content to the facebook page.
+- A MERN stack website that allows user to register and then upload the content to the facebook page.
 
 - It supports both images and videos upload to the facebook page remotely from the website .
 

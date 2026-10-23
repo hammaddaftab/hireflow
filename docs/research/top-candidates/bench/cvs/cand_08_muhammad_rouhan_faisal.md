@@ -14,8 +14,8 @@ cloud solutions to develop innovative and efficient applications.
 ---
 
 ## Education
-- BS in Computer Science School of Electrical Engineering and Computer Science , 3.53 , (2019)
-- Intermediate / A levels , (2021) BSCS School of Electrical Engineering and Computer Science , 3.53 (2025)
+- BS in Computer Science School of Electrical Engineering and Computer Science , 3.53
+- BSCS School of Electrical Engineering and Computer Science , 3.53 (2025)
 
 ---
 
@@ -26,7 +26,7 @@ cloud solutions to develop innovative and efficient applications.
 
 - Assisted a 4-person team in developing a web application that simpliﬁes the tender/procurement process, potentially reducing processing time by 60%.
 
-- Contributed to the development of the front-end user interface using ReactJS, ensuring a user- friendly and intuitive experience for tender participants.
+- Contributed to the development of the front-end user interface using ReactJS, ensuring a user-friendly and intuitive experience for tender participants.
 
 ### CHKK
 
@@ -43,25 +43,25 @@ cloud solutions to develop innovative and efficient applications.
 ## Projects
 ### CaseCobra
 
-- Developed a full
+- Developed a full-stack web application that allows users to browse and order pre-designed mobile cases or upload their own images to create custom cases.
 
-- stack web application that allows users to browse and order pre
+- Implemented a seamless user experience with Next.js for fast and responsive UI, ensuring smooth navigation and eﬃcient case customization.
 
-- designed mobile cases or upload their own images to create custom cases. Implemented a seamless user experience with Next.js for fast and responsive UI, ensuring smooth navigation and eﬃcient case customization.
+- Integra
 
-### Integra
+### Chat Application
 
-- Chat Application Developed a real
+- Developed a real-time chat application using the MERN stack (MongoDB, Express, React, Node.js) to facilitate communication for up to 100 concurrent users.
 
-- time chat application using the MERN stack (MongoDB, Express, React, Node.js) to facilitate communication for up to 100 concurrent users. Implemented functionalities for 100 users to engage in seamless direct messaging and group chats, fostering real
+- Implemented functionalities for 100 users to engage in seamless direct messaging and group chats, fostering real-time collaboration.
 
-- time collaboration. Leveraged
+- Leveraged Socke
 
-### Socke
+### Research on FusionRAG – NUST Alpha at RIRAG 2025
 
-- Research on FusionRAG – NUST Alpha at RIRAG 2025 Contributed to the development of FusionRAG, a Retrieval
+- Contributed to the development of FusionRAG, a Retrieval-Augmented Generation (RAG) system designed to enhance regulatory document retrieval and question answering.
 
-- Augmented Generation (RAG) system designed to enhance regulatory document retrieval and question answering. Integrated OpenAI embeddings, BM25, FAISS, and a custom rank fusion strategy to combine lexical and semantic
+- Integrated OpenAI embeddings, BM25, FAISS, and a custom rank fusion strategy to combine lexical and semantic retrieval for improved accuracy and
 
 ---
 

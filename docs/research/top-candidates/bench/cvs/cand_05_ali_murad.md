@@ -19,8 +19,7 @@ that suits my skills and interests.
 
 ## Education
 - BS in Computer Science School of Electrical Engineering and Computer Science , 2.66
-- Matric / O levels , (2019)
-- Intermediate / A levels , (2021) BSCS National University of Science and Technology , 2.7 (2025)
+- BSCS National University of Science and Technology , 2.7 (2025)
 
 ---
 
@@ -48,35 +47,25 @@ that suits my skills and interests.
 ## Projects
 ### Generic Builder
 
-- A React and React Flow
+- A React and React Flow-based workﬂow editor enabling users to create, edit, and visualize ﬂows with customizable nodes, drag-and-drop editing, real-time updates, and state persistence.
 
-- based workﬂow editor enabling users to create, edit, and visualize ﬂows with customizable nodes, drag
+- Features include zooming, panning, and smooth user interactions, showcasing expertise in React, state management, and UI/UX
 
-- and
+### E-Commerce Website (MERN Stack, JWT Auth)
 
-- drop editing, real
+- A full-featured e-commerce platform built with MongoDB, Express.js, React, and Node.js, featuring JWT authentication, role-based access control, product management, shopping cart, and order management.
 
-- time updates, and state persistence. Features include zooming, panning, and smooth user interactions, showcasing expertise in React, state
+- Includes secure user authentication, responsive UI (Tailwind CSS), and Redux for state management.
 
-### management, and UI/UX
+- Utilizes
 
-- E
+### Head Start
 
-- Commerce Website (MERN Stack, JWT Auth) A full
+- I developed a HeadStart template for a commercial consultant.
 
-- featured e
+- As a front-end developer, I worked on creating the dashboard using React, Tailwind, and other necessary npm libraries.
 
-- commerce platform built with MongoDB, Express.js, React, and Node.js, featuring JWT authentication, role
-
-- based access control, product management, shopping cart, and order management. Includes secure user authentication, responsive UI (Tailwind CSS), and Redux for state
-
-### management. Utilizes
-
-- Head Start I developed a HeadStart template for a commercial consultant. As a front
-
-- end developer, I worked on creating the dashboard using React, Tailwind, and other necessary npm libraries. Technologies used: React, Redux
-
-- Toolkit, Node, Express, MongoDB, JWT Authentication, RESTful APIs
+- Technologies used: React, Redux-Toolkit, Node, Express, MongoDB, JWT Authentication, RESTful APIs
 
 ### Apna Buzz
 
@@ -84,11 +73,7 @@ that suits my skills and interests.
 
 - Implemented a modern UI/UX with dynamic content sections, smooth navigation, and fast performance.
 
-- Ensured scalability and easy customization, enabling businesses to adapt the
-
-### template to their specific needs
-
-- 
+- Ensured scalability and easy customization, enabling businesses to adapt the template to their specific needs
 
 ---
 

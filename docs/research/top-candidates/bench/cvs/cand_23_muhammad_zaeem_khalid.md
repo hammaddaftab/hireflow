@@ -16,8 +16,6 @@ and product management.
 
 ## Education
 - BS in Computer Science School of Electrical Engineering and Computer Science , 2.93
-- Matric / O levels , (2018)
-- Intermediate / A levels , (2020)
 - Bachelors of Computer Science NUST , 2.94 (2025)
 
 ---
@@ -27,13 +25,21 @@ and product management.
 
 **27-Jan-2025 - 27-Mar-2025**
 
-- Developed features for existing websites and mobile applications using React, Next.js, and React Native • Worked with backend technologies including Node.js, TypeScript, and PostgreSQL • Fixed bugs and improved functionality across the company’s web and mobile platforms
+- Developed features for existing websites and mobile applications using React, Next.js, and React Native
+
+- Worked with backend technologies including Node.js, TypeScript, and PostgreSQL
+
+- Fixed bugs and improved functionality across the company’s web and mobile platforms
 
 ### Interns Pak
 
 **01-Feb-2023 - 30-Apr-2023**
 
-- Mastered HTML, CSS, and JavaScript fundamentals, creating interactive and visually appealing user interfaces • Gained practical experience in WordPress development, eﬃciently building and managing websites • Enhanced problem-solving and coding skills through various challenging tasks and projects
+- Mastered HTML, CSS, and JavaScript fundamentals, creating interactive and visually appealing user interfaces
+
+- Gained practical experience in WordPress development, eﬃciently building and managing websites
+
+- Enhanced problem-solving and coding skills through various challenging tasks and projects
 
 ---
 
@@ -44,23 +50,15 @@ and product management.
 
 - Built the web interface using Next.js to provide public access to ﬂood risk information and predictions
 
-- Implemented user
+- Implemented user authentication and email notification system to
 
-### authentication and email notification system to
-
-- OpinionMap
-
-- Interactive Comment Visualization Platform
+### OpinionMap- Interactive Comment Visualization Platform
 
 - Developed a Next.js project that allows users to create topics and submit comments or opinions
 
 - Implemented Redis and Upstash for eﬃcient data storage and retrieval
 
-- Utilized the Airbnb visx library to create an interactive word map visualization of user
-
-### comments
-
-- 
+- Utilized the Airbnb visx library to create an interactive word map visualization of user comments
 
 ---
 

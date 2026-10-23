@@ -1,0 +1,100 @@
+{
+  "cv_id": "cand_04_mujtaba_shafqat",
+  "filename": "cand_04_mujtaba_shafqat.pdf",
+  "work_history_summary": [
+    {
+      "entry_id": "work_1",
+      "employer": "Footwear Pakistan",
+      "title": "Photographer and Graphics Designer",
+      "start_date": "2022-08",
+      "end_date": "2022-09",
+      "is_current": false
+    },
+    {
+      "entry_id": "work_2",
+      "employer": "Freelancing",
+      "title": "Freelancer, Graphics Designer",
+      "start_date": "2021-09",
+      "end_date": "2022-09",
+      "is_current": false
+    }
+  ],
+  "role_claims": [
+    {
+      "claim_id": "c1",
+      "source_entry_ref": "work_1",
+      "claim_tier": "action_attributed",
+      "skills": [],
+      "raw_nouns": [
+        "Footwear Pakistan"
+      ],
+      "compact_action": "created brand visual content",
+      "outcome_attached": null,
+      "evidence_span": "In this project, I have been working as a Photographer and Graphics Designer for the brand Footwear The skills included Photography, Color Enhancement, Social Media Posts Designs and Ad-making.",
+      "evidence_lines": [
+        "L16",
+        "L18"
+      ]
+    },
+    {
+      "claim_id": "c2",
+      "source_entry_ref": "work_2",
+      "claim_tier": "action_attributed",
+      "skills": [],
+      "raw_nouns": [
+        "clients"
+      ],
+      "compact_action": "designed client graphics projects",
+      "outcome_attached": null,
+      "evidence_span": "I am working as a freelancer in the ﬁeld of Graphics Designing, designing new ideas and projects for my clients.",
+      "evidence_lines": [
+        "L21",
+        "L22"
+      ]
+    }
+  ],
+  "notable_signals": [],
+  "cleanup_stats": {
+    "filler_dropped": 0,
+    "duplicates_dropped": 0
+  },
+  "digest_stats_uncapped": {
+    "approx_tokens": 104,
+    "total_items": 2,
+    "kept_items": 2,
+    "token_breakdown": {
+      "headers": 73,
+      "nouns": 9,
+      "actions": 23,
+      "outcomes": 0
+    }
+  },
+  "digest_stats_budgeted": {
+    "budget": 200,
+    "approx_tokens": 104,
+    "total_items": 2,
+    "kept_items": 2,
+    "dropped_item_ids": [],
+    "token_breakdown": {
+      "headers": 73,
+      "nouns": 9,
+      "actions": 23,
+      "outcomes": 0
+    }
+  },
+  "warnings": [],
+  "usage": {
+    "promptTokens": 6672,
+    "completionTokens": 2352,
+    "inputTokens": 6672,
+    "outputTokens": 2352,
+    "totalTokens": 9024
+  },
+  "latency_ms": 21772,
+  "tokens_approx": {
+    "raw_text": 344,
+    "evidence_spans": 77,
+    "uncapped_digest": 104,
+    "budgeted_digest": 104
+  }
+}

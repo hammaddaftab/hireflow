@@ -16,8 +16,8 @@ contribute meaningfully.
 ---
 
 ## Education
-- BS in Computer Science School of Electrical Engineering and Computer Science , 3.05 , (2019)
-- Intermediate / A levels , (2021) Computer science NUST , present- (2025)
+- BS in Computer Science School of Electrical Engineering and Computer Science , 3.05
+- Computer science NUST , present- (2025)
 
 ---
 
@@ -39,41 +39,33 @@ contribute meaningfully.
 ## Projects
 ### HomeDoc
 
-- Implemented WebSockets to enable real
-
-- time communication between users and paramedics.
+- Implemented WebSockets to enable real-time communication between users and paramedics.
 
 - Developed a RESTful API using Express.js for user and paramedic registration and service booking.
 
 - Integrated MongoDB for data persistence, ensuring secure and scalable user data management.
 
-### Designed frontend comp
+- Designed frontend comp
 
-- Otaku Guide
+### Otaku Guide
 
-- Integrated collaborative and content
+- Integrated collaborative and content-based ﬁltering algorithms to recommend anime based on user history.
 
-- based ﬁltering algorithms to recommend anime based on user history.
+- Developed custom user-based recommendation algorithms to enhance personalized recommendations.
 
-- Developed custom user
+- Built a REST API in Flask to handle data processing and recommendations, enabling efficient communica
 
-- based recommendation algorithms to enhance personalized recommendations.
-
-- Built a REST API in Flask to handle data processing and recommendations,
-
-### enabling efficient communica
-
-- AirBnB Booking Site Clone
+### AirBnB Booking Site Clone
 
 - Created a secure user authentication system with JWT for session management.
 
 - Designed backend with Express.js and Node.js to manage booking workﬂows and handle property listings.
 
-- Leveraged MongoDB to manage user data, bookings, and property listings, ensuring robust database
+- Leveraged MongoDB to manage user data, bookings, and property listings, ensuring robust database performance.
 
-### performance. • Built dyn
+- Built dyn
 
-- Portfolio
+### Portfolio
 
 - Built a responsive, visually appealing portfolio with React.js
 

@@ -15,8 +15,6 @@ to present my skills and my creativity out there, to the world.
 
 ## Education
 - BS in Computer Science School of Electrical Engineering and Computer Science , 3.36
-- Matric / O levels , (2019)
-- Intermediate / A levels , (2021)
 - BS Computer Science SEECS , 3.46 (2021)
 
 ---

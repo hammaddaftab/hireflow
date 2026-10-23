@@ -1,0 +1,127 @@
+You are executing the Emergent Axis Discovery step (Mechanism E) for a candidate screening pipeline.
+Your ONLY task in this step is to analyze the Job Specification alongside the pointer-backed aspect digests of 10 viable contenders in the applicant pool and discover 3 to 5 pool-relative Emergent Differentiating Axes.
+
+CRITICAL SCOPE BOUNDARY — DO NOT RANK OR SHORTLIST CANDIDATES:
+- Do NOT generate a Top 20 shortlist or rank individual candidates.
+- Individual candidates will be evaluated one by one against the axes you discover here in a separate downstream pass.
+- Focus exclusively on discovering the axes and calibrating their scoring rubrics so downstream one-by-one evaluation is grounded in this pool's actual distribution.
+
+RULES FOR EMERGENT AXIS DISCOVERY:
+
+1. GO BEYOND BASELINE KNOCKOUT REQUIREMENTS:
+   - Minimum job requirements (e.g. required programming languages, minimum years of experience, required degree) are already enforced by a deterministic gatekeeper before this step.
+   - NEVER emit an axis that merely checks binary presence of a required skill or minimum tenure (e.g. "Has Go and PostgreSQL experience" or "Meets 4+ years experience" are FORBIDDEN).
+   - Instead, discover the unstated comparative signals that separate the top tier of THIS pool from baseline-qualified contenders for THIS job:
+     * Scale & Quantified Engineering Impact: e.g. high-throughput concurrency (>10k rps), low-latency SLAs, large-scale database partitioning (25M+ rows), measurable revenue/cost outcomes.
+     * Domain & Architectural Adjacency: e.g. financial settlement ledgers, idempotency & distributed locking, event-driven streaming, zero-downtime migrations, regulatory automation, multi-agent RAG orchestration.
+     * Career Trajectory & Ownership Scope: e.g. rapid internal promotions ("promoted from..."), high average stint stability, technical/squad leadership, owning production SLAs or post-mortems.
+     * Environment & Academic Pedigree: e.g. selective high-bar engineering employers, high-selectivity university + standout CGPA/honors.
+     * Spiky Non-Work Excellence: e.g. open-source maintainership with traction, competitive programming (ICPC/Kaggle), publications, patents, or rich domain project spikes.
+
+2. STRICT EMPIRICAL GROUNDING IN THE PROVIDED POOL:
+   - Every discovered axis MUST emerge from real patterns present in <candidate_digests>.
+   - Never invent a theoretical wishlist criterion if zero candidates in the pool exhibit it, and avoid trivial criteria satisfied identically by every candidate.
+   - Back every axis with 1 to 5 concrete supporting_claims citing exact [candidate_id] and pointer IDs (e.g. claim IDs like 'c1', 'c2', signal IDs like 's1', role headers like 'work_1', or 'header').
+
+3. RESPECT SYNTACTIC OWNERSHIP TIERS ([action] vs [peripheral] vs [listed]):
+   - Each digest claim carries a syntactic ownership tag:
+     * [cX:action] / [sX:action]: Candidate had active ownership (architected, built, led, designed, maintained).
+     * [cX:peripheral] / [sX:peripheral]: Candidate had passive or assisted exposure (assisted with, worked with, participated in, or coursework/certifications).
+     * [cX:listed]: Unbacked tool listing.
+   - Never treat [peripheral] or [listed] claims as top-tier proof. Your strong_criteria MUST require active [action] ownership (or verified header/work_history trajectory facts).
+
+4. CALIBRATE RUBRICS FOR ISOLATED ONE-BY-ONE EVALUATION:
+   - Because the next pipeline step scores candidates one by one in isolation (without seeing the rest of the pool), strong_criteria and moderate_criteria MUST be self-contained and explicitly calibrated to the concrete metrics, systems, and scope observed in this pool:
+     * strong_criteria: Defines what qualifies a candidate for 'strong' on this axis (anchored to the upper echelon observed in <candidate_digests>).
+     * moderate_criteria: Defines what qualifies a candidate for 'moderate' on this axis (e.g. active ownership at smaller scale, adjacent system without explicit scale metrics, or peripheral involvement in high-scale systems).
+
+5. ORTHOGONALITY:
+   - Emit 3 to 5 distinct axes (or 2 to 4 if the pool has fewer than 4 candidates).
+   - Ensure zero conceptual overlap between axes; each axis must measure an independent dimension of candidate excellence.
+
+<job_specification>
+Role: AI / ML & Full-Stack Software Engineer (Graduate / Entry-Level) | Seniority: Entry-Level / Junior (0-1 yrs) | Department: Applied AI & Product Engineering | Location: Islamabad / Lahore, Pakistan
+Description: Hiring top graduating BS Computer Science engineers to build production AI/ML systems (LLMs, RAG, computer vision, predictive modeling) and full-stack web/mobile products. All candidates meet the baseline BS CS degree requirement; we seek standout research depth, quantified engineering impact, complex system builds, and selective lab or international experience.
+Baseline Gatekeeper Requirements (already filtered): 0+ years FT experience | Required Skills: Python, Machine Learning, Software Engineering
+Preferred / Bonus Skills: PyTorch, TensorFlow, FastAPI, RAG, Computer Vision, React, Next.js, Node.js
+</job_specification>
+
+<candidate_digests>
+[cand_01_muhammad_khizer_tariq] 1.3y FT (2 roles, avg 0.7y) | BSc CS @ NUST (2.95) | Attock
+work_1: Researcher @ High Performance Computing Lab SEECS (2024-2024, 1y FT)
+work_2: Researcher @ Machine Vision and Intelligent Systems Lab SEECS (2024-2025, 0.5y FT)
+  [c1:peripheral] Continual Learning -> studied continual-learning robotics applications
+spikes:
+  [s1:action] Publication: FIT 2024 -> published Routing through Satellite Imagery paper
+  [s2:action] Publication: IJCA -> published Grouped Matrix Clocks paper
+
+[cand_02_umer_tariq] BSc CS @ SEECS (2.75/4) | Lahore
+
+[cand_03_abdullah_aleem] 0.6y FT (1 role) | BSc CS @ NUST (3.05) | Pakistan
+work_1: Full Stack Eng @ Data Eye (2023-2024, 0.6y FT)
+work_2: Intern Software Dev @ Hamson Tech (2022-2022, 0.3y internship)
+  [c1:action] Flutter, Firebase, Firestore -> developed client mobile application
+spikes:
+  [s1:action] Project: WebSockets, Express.js, MongoDB -> built HomeDoc real-time service platform
+  [s2:action] Project: collaborative filtering, Flask -> built Otaku Guide recommendation engine
+  [s3:action] Project: JWT, Express.js, MongoDB -> built AirBnB booking site clone
+  [s4:action] Project: React.js -> built Portfolio showcase website
+
+[cand_04_mujtaba_shafqat] 0.2y FT (1 role) | BSc CS @ School of Electrical Engineering and Computer Science (3.36) | Islamabad
+work_1: Photographer and Graphics Designer @ Footwear Pakistan (2022-2022, 0.2y FT)
+  [c1:action] Footwear Pakistan -> created brand visual content
+work_2: Freelancer, Graphics Designer @ Freelancing (2021-2022, 1.1y freelance)
+  [c2:action] clients -> designed client graphics projects
+
+[cand_05_ali_murad] 1y FT (3 roles, avg 0.3y) | BSc CS @ NUST (2.7) | Chachro
+work_1: Full Stack Dev @ NUSTRive (2024-2025, 0.6y FT)
+work_2: Front-End Dev @ HighSkyTech (2024-2024, 0.1y FT)
+work_3: Front-End Dev @ IoT Lab (2023-2023, 0.3y FT)
+spikes:
+  [s1:action] Project: React, React Flow -> built Generic Builder workflow editor
+  [s2:action] Project: MongoDB, Express.js, React -> built E-Commerce Website platform
+  [s3:action] Project: React, Tailwind, Redux-Toolkit -> developed HeadStart consultant dashboard
+  [s4:action] Project: designed Apna Buzz business template
+
+[cand_06_hasib_aslam] 0y FT (2 internships) | Semester Exchange Program @ Linnaeus University (Passed With Distinction) | Islamabad
+work_1: Intern @ TUKL (2022-2022, 0.3y internship)
+  [c1:action] developed Cat and Dog Classifier | 98% accuracy
+work_2: Research Intern @ Lakehead University, Canada (2024-2024, 0.3y internship)
+  [c2:action] EEG -> processed authentication datasets
+spikes:
+  [s1:action] Project: Express.js, React.js, Next.js -> built Hotel Booking Management Website
+  [s2:action] Project: built Shared Room Expense App
+  [s3:action] Project: C++, Hash tables -> built Cricket Players Profile App | O(1) search complexity
+  [s4:action] Project: MERN, Meta Graph API -> built Facebook Page Media Controller
+
+[cand_07_haram_nasir] 0y FT (1 internship) | BSc CS @ NUST (3.12) | Sialkot
+work_1: Not specified @ Victreat Health Tech (2024-2025, 0.4y internship)
+  [c1:action] Python, Scrapy, Playwright -> scraped medical conference abstracts
+spikes:
+  [s1:action] Project: built National Science Bee website
+
+[cand_08_muhammad_rouhan_faisal] 0y FT (2 internships) | BSc CS @ NUST (3.53) | Lahore
+work_1: Intern @ CHKK (2024-2025, 0.4y internship)
+  [c1:peripheral] Kubernetes -> supported scalable system architecture
+work_2: Intern @ Cosmotech (2024-2024, 0.3y internship)
+  [c2:peripheral] ReactJS, 4-person team -> supported tender procurement application | potentially -60% processing time
+spikes:
+  [s2:action] Project: Next.js -> built CaseCobra custom case store
+  [s3:action] Project: MongoDB, Express, Node.js -> built Chat Application real-time messenger | 100 concurrent users
+  [s4:peripheral] Project: OpenAI embeddings, BM25, FAISS -> contributed FusionRAG regulatory retrieval
+  [s1:peripheral] Certs: pursuing AWS Solutions Architect certification
+
+[cand_09_hafiz_ahmed_hassan_chohan] 1.4y FT (4 roles, avg 0.4y) | BSc CS @ NUST (3.62) | Phalia
+work_1:  @ Walee (2024-2025, 1y FT)
+work_2: Research Assistant @ PakThai Lab NUST (2024-2025, 0.9y FT)
+work_3:  @ InLights (2024-2024, 0.3y FT)
+work_4:  @ Signal and Machine Learning Lab (2023-2023, 0.3y FT)
+spikes:
+  [s1:action] Project: OpenCV, pygame -> built Gesture-Controlled Snake Game
+  [s2:action] Project: OCR -> built Convert to EBooks conversion system
+  [s3:action] Project: OpenCV, easy-ocr -> built ANPR license plate recognizer
+
+[cand_10_muhammad_aleem_siddique_khan] 0y FT (1 internship) | BSc CS @ NUST (3.15) | Sargodha
+work_1: Research Intern @ NUST (2024-2024, 0.6y internship)
+  [c1:peripheral] URL Classification Using Artificial Intelligence -> developed URL classification model
+</candidate_digests>

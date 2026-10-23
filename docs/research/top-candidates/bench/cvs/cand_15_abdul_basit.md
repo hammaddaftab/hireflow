@@ -15,42 +15,43 @@ innovative solutions and collaborating with industry experts.
 
 ## Education
 - BS in Computer Science School of Electrical Engineering and Computer Science , 2.96
-- Matric / O levels , (2019)
-- Intermediate / A levels , (2021)
 - Bachelors of Science in Computer Science National University of Sciences and Technology , 2.97 (2025)
 
 ---
 
 ## Work & Internship Experience
-Texagon (Frontend Development Internship) ( 03-Jul-2024 - 13-Sep-
-2024 )
-• Learning the basics of HTML5, ReactJS, ECMAScript. • Understanding the
-operations of Git and GitHub • Comprehending the importance of communication in
-corporate culture.
+### Texagon (Frontend Development Internship)
 
-National University of Sciences and Technology (Research Intern) ( 03-
-Jul-2024 - 30-May-2025 )
-• Working under the supervision of Dr. Muhammad Zeeshan to develop an AI model
-capable of classifying URLs into diﬀerent categories. • Conducted extensive research
-on data mining, data collection, and preprocessing techniques. • Explored various
-machine learning classifiers and tokenization methods to
+**03-Jul-2024 - 13-Sep-2024**
+
+- Learning the basics of HTML5, ReactJS, ECMAScript.
+
+- Understanding the operations of Git and GitHub
+
+- Comprehending the importance of communication in corporate culture.
+
+### National University of Sciences and Technology (Research Intern)
+
+**03-Jul-2024 - 30-May-2025**
+
+- Working under the supervision of Dr. Muhammad Zeeshan to develop an AI model capable of classifying URLs into diﬀerent categories.
+
+- Conducted extensive research on data mining, data collection, and preprocessing techniques.
+
+- Explored various machine learning classifiers and tokenization methods to
 
 ---
 
 ## Projects
 ### Orphanage Management System
 
-- Developed an all
-
-- around management system that deals with all kinds of users associated with orphanages.
+- Developed an all-around management system that deals with all kinds of users associated with orphanages.
 
 - Used SQLite database to store and retrieve information of the users.
 
-- Used Laravel to
+- Used Laravel to develop the backend of the system
 
-### develop the backend of the system
-
-- GetHired
+### GetHired
 
 - Developed a job platform intended for job seekers and employers.
 

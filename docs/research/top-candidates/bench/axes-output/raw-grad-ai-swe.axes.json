@@ -1,0 +1,159 @@
+{
+  "job_id": "grad-ai-swe",
+  "job_title": "AI / ML & Full-Stack Software Engineer (Graduate / Entry-Level)",
+  "source_mode": "raw",
+  "stage0": {
+    "executed": false,
+    "totalInputCandidates": 10,
+    "viableCount": 10,
+    "knockedOutCount": 0,
+    "knockedOutCandidates": []
+  },
+  "pool_stats": {
+    "contenderCount": 10,
+    "jobSpecTokensApprox": 206,
+    "digestsTokensApprox": 5836,
+    "promptTokensApprox": 7143,
+    "perCandidateTokens": [
+      {
+        "candidateId": "cand_01_muhammad_khizer_tariq",
+        "approxTokens": 460
+      },
+      {
+        "candidateId": "cand_02_umer_tariq",
+        "approxTokens": 304
+      },
+      {
+        "candidateId": "cand_03_abdullah_aleem",
+        "approxTokens": 836
+      },
+      {
+        "candidateId": "cand_04_mujtaba_shafqat",
+        "approxTokens": 410
+      },
+      {
+        "candidateId": "cand_05_ali_murad",
+        "approxTokens": 746
+      },
+      {
+        "candidateId": "cand_06_hasib_aslam",
+        "approxTokens": 813
+      },
+      {
+        "candidateId": "cand_07_haram_nasir",
+        "approxTokens": 371
+      },
+      {
+        "candidateId": "cand_08_muhammad_rouhan_faisal",
+        "approxTokens": 824
+      },
+      {
+        "candidateId": "cand_09_hafiz_ahmed_hassan_chohan",
+        "approxTokens": 743
+      },
+      {
+        "candidateId": "cand_10_muhammad_aleem_siddique_khan",
+        "approxTokens": 327
+      }
+    ]
+  },
+  "pool_summary": "The pool separates into a small research-heavy AI cohort, a broader full-stack product-building cohort, and a few candidates with unusually strong academic or external-environment signals. The clearest upper-echelon differentiators are applied AI system complexity, independently owned end-to-end products, measurable validation or operational impact, and research or international depth beyond baseline coursework.",
+  "axes": [
+    {
+      "axis_id": "axis_1",
+      "label": "Research-to-Application Depth",
+      "category": "spiky_excellence",
+      "rationale": "For an entry-level Applied AI role, substantive research involvement is more differentiating than generic ML exposure, particularly when it connects to a novel method, publication, or real-world application. This separates candidates with sustained lab or research ownership from those whose evidence is limited to listed tools or one basic model.",
+      "strong_criteria": "Demonstrates active [action] ownership in a substantive AI research effort across at least one applied domain—such as LLMs, continual learning, computer vision, robotics, healthcare, or intelligent transportation—and provides a research artifact or verified research trajectory such as a peer-reviewed publication, funded lab project, multi-month research appointment, or novel evaluated method.",
+      "moderate_criteria": "Shows active [action] participation in one supervised AI research or lab project, such as training a classifier, processing research data, or implementing an applied ML prototype, but without a publication, sustained multi-domain trajectory, or clearly novel/evaluated contribution.",
+      "estimated_pool_prevalence": "4/10 candidates show strong or moderate evidence; approximately 2/10 show strong evidence.",
+      "supporting_claims": []
+    },
+    {
+      "axis_id": "axis_2",
+      "label": "Applied AI System Complexity",
+      "category": "domain_and_architecture",
+      "rationale": "The job requires turning ML capability into production-oriented systems spanning retrieval, perception, signal processing, and model-serving workflows. The pool contains a meaningful but selective cluster with exposure to complex modalities and operational pipelines rather than isolated coursework models.",
+      "strong_criteria": "Provides active [action] ownership of a multi-stage AI system with meaningful architectural complexity—for example real-time computer vision plus recognition, OCR and document transformation, EEG or signal-processing authentication, continual-learning robotics, or hybrid semantic/lexical RAG—and explains the pipeline, evaluation, or deployment behavior.",
+      "moderate_criteria": "Actively [action] builds or evaluates a single applied model or AI component, such as an image classifier, URL classifier, recommendation model, or basic document-processing pipeline, but lacks evidence of multi-stage orchestration, real-time constraints, retrieval architecture, or deployment complexity.",
+      "estimated_pool_prevalence": "5/10 candidates show strong or moderate evidence; approximately 3/10 show strong evidence.",
+      "supporting_claims": []
+    },
+    {
+      "axis_id": "axis_3",
+      "label": "End-to-End Product Ownership",
+      "category": "domain_and_architecture",
+      "rationale": "The role combines AI with full-stack product engineering, so the differentiator is not merely knowing React or Node but independently connecting interfaces, APIs, persistence, authentication, and user-facing workflows. This axis distinguishes candidates who have shipped coherent products from candidates with only tool lists or narrow frontend exposure.",
+      "strong_criteria": "Demonstrates active [action] ownership of at least one end-to-end product, including multiple layers such as frontend/mobile UI, backend APIs, database persistence, authentication or authorization, and a real workflow; evidence should include building from scratch, independently delivering a client application, or owning a substantial production-like feature.",
+      "moderate_criteria": "Shows active [action] delivery of a smaller full-stack or mobile application with at least two connected layers—such as a React/Flutter frontend plus REST backend and database—but with limited evidence of independent ownership, security/workflow depth, or complete product scope.",
+      "estimated_pool_prevalence": "5/10 candidates show strong or moderate evidence; approximately 2/10 show strong evidence.",
+      "supporting_claims": []
+    },
+    {
+      "axis_id": "axis_4",
+      "label": "Measured Impact & Validation",
+      "category": "scale_and_impact",
+      "rationale": "Quantified outcomes are unusually selective in this pool and are especially valuable for judging whether an entry-level candidate can validate engineering or model work rather than merely describe implementation. The observed evidence ranges from model accuracy to processing-time reduction and concurrent-user capacity.",
+      "strong_criteria": "Provides active [action] ownership of a system or model with a concrete validation or operational metric comparable to the pool’s strongest evidence: approximately 98% model accuracy, around 60% processing-time reduction, or a demonstrated real-time/concurrent-user workload around 100 users; the metric must be tied to the candidate’s implementation or evaluation method.",
+      "moderate_criteria": "Actively [action] builds, deploys, or evaluates an application or model with some stated testing, performance, accuracy, user, or workflow outcome, but below the observed high-water marks or without enough methodological detail to verify the result.",
+      "estimated_pool_prevalence": "2/10 candidates show strong evidence and approximately 4/10 show strong or moderate evidence.",
+      "supporting_claims": []
+    },
+    {
+      "axis_id": "axis_5",
+      "label": "Academic & External Environment Signal",
+      "category": "pedigree_and_environment",
+      "rationale": "Because all contenders share the same BS CS baseline, academic distinction and experience in selective or international environments provide a pool-relative signal of preparation and exposure to higher-bar work. This is intentionally separate from technical ownership: it measures the environment and verified academic trajectory, not the complexity of a candidate’s projects.",
+      "strong_criteria": "Has verified academic distinction around the upper end of this pool—approximately 3.6+ CGPA—and at least one additional external-environment signal such as an international exchange or university research placement, distinction during international study, or sustained work in a selective research lab or external technology organization.",
+      "moderate_criteria": "Has either a comparatively strong academic record around 3.4+ CGPA or a verified external environment such as a research lab, international collaboration, or technology-company placement, but not both at the upper-pool level.",
+      "estimated_pool_prevalence": "5/10 candidates show strong or moderate evidence; approximately 2/10 show strong evidence.",
+      "supporting_claims": [
+        {
+          "candidate_id": "cand_06_hasib_aslam",
+          "ref_id": "header",
+          "digest_line": "[cand_06_hasib_aslam] Hasib Aslam",
+          "evidence_span": null
+        },
+        {
+          "candidate_id": "cand_09_hafiz_ahmed_hassan_chohan",
+          "ref_id": "header",
+          "digest_line": "[cand_09_hafiz_ahmed_hassan_chohan] Hafiz Ahmed Hassan Chohan",
+          "evidence_span": null
+        },
+        {
+          "candidate_id": "cand_08_muhammad_rouhan_faisal",
+          "ref_id": "header",
+          "digest_line": "[cand_08_muhammad_rouhan_faisal] Muhammad Rouhan Faisal",
+          "evidence_span": null
+        }
+      ]
+    }
+  ],
+  "warnings": [
+    "Axis 'Research-to-Application Depth' cited unknown ref_id 'work_1' on candidate 'cand_01_muhammad_khizer_tariq'",
+    "Axis 'Research-to-Application Depth' cited unknown ref_id 'work_2' on candidate 'cand_01_muhammad_khizer_tariq'",
+    "Axis 'Research-to-Application Depth' cited unknown ref_id 'work_3' on candidate 'cand_09_hafiz_ahmed_hassan_chohan'",
+    "Axis 'Research-to-Application Depth' cited unknown ref_id 'work_1' on candidate 'cand_10_muhammad_aleem_siddique_khan'",
+    "Axis 'Applied AI System Complexity' cited unknown ref_id 'work_2' on candidate 'cand_01_muhammad_khizer_tariq'",
+    "Axis 'Applied AI System Complexity' cited unknown ref_id 'work_2' on candidate 'cand_06_hasib_aslam'",
+    "Axis 'Applied AI System Complexity' cited unknown ref_id 'work_3' on candidate 'cand_09_hafiz_ahmed_hassan_chohan'",
+    "Axis 'Applied AI System Complexity' cited unknown ref_id 'work_1' on candidate 'cand_10_muhammad_aleem_siddique_khan'",
+    "Axis 'End-to-End Product Ownership' cited unknown ref_id 'work_1' on candidate 'cand_03_abdullah_aleem'",
+    "Axis 'End-to-End Product Ownership' cited unknown ref_id 'work_2' on candidate 'cand_03_abdullah_aleem'",
+    "Axis 'End-to-End Product Ownership' cited unknown ref_id 'work_3' on candidate 'cand_05_ali_murad'",
+    "Axis 'End-to-End Product Ownership' cited unknown ref_id 'work_1' on candidate 'cand_08_muhammad_rouhan_faisal'",
+    "Axis 'Measured Impact & Validation' cited unknown ref_id 'work_1' on candidate 'cand_06_hasib_aslam'",
+    "Axis 'Measured Impact & Validation' cited unknown ref_id 'work_1' on candidate 'cand_08_muhammad_rouhan_faisal'",
+    "Axis 'Measured Impact & Validation' cited unknown ref_id 'work_3' on candidate 'cand_09_hafiz_ahmed_hassan_chohan'",
+    "Axis 'Academic & External Environment Signal' cited unknown ref_id 'work_2' on candidate 'cand_06_hasib_aslam'",
+    "Axis 'Academic & External Environment Signal' cited unknown ref_id 'work_3' on candidate 'cand_09_hafiz_ahmed_hassan_chohan'"
+  ],
+  "usage": {
+    "promptTokens": 8365,
+    "completionTokens": 2947,
+    "inputTokens": 8365,
+    "outputTokens": 2947,
+    "totalTokens": 11312
+  },
+  "latency_ms": 25593
+}
