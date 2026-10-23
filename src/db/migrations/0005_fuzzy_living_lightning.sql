@@ -1,0 +1,2 @@
+ALTER TABLE "candidates" ADD COLUMN "role_claims" jsonb DEFAULT '{"claims":[]}'::jsonb;--> statement-breakpoint
+ALTER TABLE "candidates" ADD COLUMN "notable_signals" jsonb DEFAULT '{"signals":[]}'::jsonb;

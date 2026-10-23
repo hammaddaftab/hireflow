@@ -1,0 +1,66 @@
+{
+  "cv_id": "mock_resume_b",
+  "filename": "mock_resume_b.pdf",
+  "work_history_summary": [],
+  "role_claims": [],
+  "notable_signals": [
+    {
+      "signal_id": "s1",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "Multifunction Electric Wheelchair",
+        "base frame",
+        "integrated mechanical systems",
+        "suspension",
+        "lifting mechanisms",
+        "reclining mechanisms"
+      ],
+      "compact_action": "Designed and fabricated wheelchair frame and mechanisms",
+      "outcome_attached": null,
+      "evidence_span": "Role & Contribution: Designed and fabricated the wheelchair's base frame and integrated mechanical systems, ensuring structural strength, stability, safety, and durability. Utilized CNC and manual machining, ARC welding, drilling, and precision measurement tools to manufacture and assemble components, including the frame, suspension, lifting, and reclining mechanisms for reliable and comfortable operation."
+    },
+    {
+      "signal_id": "s2",
+      "context_label": "Certification",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "Computerized Numerical Control",
+        "CNC Turning Machines",
+        "CTTI"
+      ],
+      "compact_action": "Completed CNC programming and turning machine operation course",
+      "outcome_attached": null,
+      "evidence_span": "Computerized Numerical Control, Programming & Operation of CNC Turning Machines — CTTI | Jan 2025 | Grade A"
+    },
+    {
+      "signal_id": "s3",
+      "context_label": "Certification",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "Advanced IT Course",
+        "MS Office",
+        "MS Windows",
+        "Hardware Concepts",
+        "Institute of Skill Development"
+      ],
+      "compact_action": "Completed advanced information technology course with Grade A",
+      "outcome_attached": null,
+      "evidence_span": "Advanced IT Course (MS Office, Typing, Internet Browsing, Email, Printing, MS Windows & Software Installation, Hardware Concepts) | Institute of Skill Development | Mar 2023 – Aug 2023 | Grade A"
+    }
+  ],
+  "warnings": [],
+  "usage": {
+    "promptTokens": 5814,
+    "completionTokens": 2464,
+    "inputTokens": 5814,
+    "outputTokens": 2464,
+    "totalTokens": 8278
+  },
+  "latency_ms": 23775,
+  "tokens_approx": {
+    "raw_text": 935,
+    "evidence_spans": 179,
+    "digest": 163
+  }
+}

@@ -26,6 +26,14 @@ import {
   type LogisticsExtraction,
 } from "./extraction/candidate/aspects/logistics";
 import {
+  RoleClaimsExtractionSchema,
+  type RoleClaimsExtraction,
+} from "./extraction/candidate/aspects/roleClaims";
+import {
+  NotableSignalsExtractionSchema,
+  type NotableSignalsExtraction,
+} from "./extraction/candidate/aspects/notableSignals";
+import {
   ExtractionMetadataSchema,
   type ExtractionMetadata,
 } from "./extraction/candidate/aspects/extractionMetadata";
@@ -78,6 +86,8 @@ export const candidates = pgTable("candidates", {
   skillsDemonstrated: jsonb("skills_demonstrated").$type<SkillsDemonstratedExtraction>().notNull(),
   skillsDeclared: jsonb("skills_declared").$type<SkillsDeclaredExtraction>().notNull(),
   logistics: jsonb("logistics").$type<LogisticsExtraction>().notNull(),
+  roleClaims: jsonb("role_claims").$type<RoleClaimsExtraction>().default({ claims: [] }),
+  notableSignals: jsonb("notable_signals").$type<NotableSignalsExtraction>().default({ signals: [] }),
   extractionMetadata: jsonb("extraction_metadata").$type<ExtractionMetadata>().notNull(),
 
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
@@ -107,6 +117,8 @@ export const ParsedCandidateProfileSchema = z.object({
   skills_demonstrated: SkillsDemonstratedExtractionSchema,
   skills_declared: SkillsDeclaredExtractionSchema,
   logistics: LogisticsExtractionSchema,
+  role_claims: RoleClaimsExtractionSchema.optional().default({ claims: [] }),
+  notable_signals: NotableSignalsExtractionSchema.optional().default({ signals: [] }),
   extraction_metadata: ExtractionMetadataSchema,
 });
 
@@ -201,6 +213,8 @@ export function candidateProfileToRow(profile: ParsedCandidateProfile): NewCandi
     skillsDemonstrated: profile.skills_demonstrated,
     skillsDeclared: profile.skills_declared,
     logistics: profile.logistics,
+    roleClaims: profile.role_claims ?? { claims: [] },
+    notableSignals: profile.notable_signals ?? { signals: [] },
     extractionMetadata: profile.extraction_metadata,
 
     createdAt: profile.created_at ? new Date(profile.created_at) : new Date(),
@@ -222,6 +236,8 @@ export function candidateRowToProfile(row: CandidateRecord): ParsedCandidateProf
     skills_demonstrated: row.skillsDemonstrated,
     skills_declared: row.skillsDeclared,
     logistics: row.logistics,
+    role_claims: row.roleClaims ?? { claims: [] },
+    notable_signals: row.notableSignals ?? { signals: [] },
     extraction_metadata: row.extractionMetadata,
   };
 }

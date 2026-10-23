@@ -3,7 +3,7 @@ import "server-only";
 // Candidate profile normalization across education fields and demonstrated/declared skills
 
 import type { ParsedCandidateProfile } from "@/entities/candidate";
-import { normalizeSkill } from "./skillNormalizer";
+import { normalizeSkill, resolveCanonicalSkill } from "./skillNormalizer";
 import { normalizeFieldOfStudy } from "./fieldOfStudyNormalizer";
 
 export function normalizeCandidateProfile(c: ParsedCandidateProfile): ParsedCandidateProfile {
@@ -32,5 +32,16 @@ export function normalizeCandidateProfile(c: ParsedCandidateProfile): ParsedCand
         new Set((c.skills_declared?.skills_declared || []).map(normalizeSkill).filter(Boolean))
       ),
     },
+    role_claims: {
+      ...c.role_claims,
+      claims: (c.role_claims?.claims || []).map((claim) => ({
+        ...claim,
+        skills: (claim.skills || []).map((item) => ({
+          ...item,
+          canonical_skill: item.canonical_skill ?? resolveCanonicalSkill(item.skill),
+        })),
+      })),
+    },
+    notable_signals: c.notable_signals ?? { signals: [] },
   };
 }

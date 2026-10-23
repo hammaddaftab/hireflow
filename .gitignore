@@ -1,7 +1,8 @@
 node_modules
 .*/
 coverage/
-scripts/
+scripts/*
+!scripts/extraction-recall-audit.ts
 *-local*
 *.tar
 tsconfig.tsbuildinfo

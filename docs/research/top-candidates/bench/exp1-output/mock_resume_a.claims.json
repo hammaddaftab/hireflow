@@ -1,0 +1,1029 @@
+{
+  "cv_id": "mock_resume_a",
+  "filename": "mock_resume_a.pdf",
+  "work_history_summary": [
+    {
+      "entry_id": "work_1",
+      "employer": "PURELOGICS",
+      "title": "Senior Data Scientist & Machine Learning Software Engineer (Generative AI)",
+      "start_date": "2024-12",
+      "end_date": null,
+      "is_current": true
+    },
+    {
+      "entry_id": "work_2",
+      "employer": "NVIDIA",
+      "title": "Senior Data Scientist Machine Learning & Gen AI Engineer (Volunteer)",
+      "start_date": "2024-08",
+      "end_date": null,
+      "is_current": true
+    },
+    {
+      "entry_id": "work_3",
+      "employer": "BLOCBELT",
+      "title": "Senior Data Scientist & Machine Learning Engineer",
+      "start_date": "2022-12",
+      "end_date": "2024-12",
+      "is_current": false
+    },
+    {
+      "entry_id": "work_4",
+      "employer": "GOOGLE-KAGGLE",
+      "title": "AI Data Scientist Kaggle Master Mentor (Part-Time, 20 hours/week)",
+      "start_date": "2022-12",
+      "end_date": "2024-11",
+      "is_current": false
+    },
+    {
+      "entry_id": "work_5",
+      "employer": "Crypto-Express",
+      "title": "Data Scientist",
+      "start_date": "2022-01",
+      "end_date": "2022-12",
+      "is_current": false
+    },
+    {
+      "entry_id": "work_6",
+      "employer": "Pakistan Freelancing Training Center",
+      "title": "Artificial Intelligence Engineer",
+      "start_date": "2021-01",
+      "end_date": "2021-12",
+      "is_current": false
+    }
+  ],
+  "role_claims": [
+    {
+      "claim_id": "c1",
+      "source_entry_ref": "work_1",
+      "claim_tier": "action_attributed",
+      "skills": [
+        {
+          "skill": "Generative AI",
+          "syntactic_tier": "action_attributed",
+          "canonical_skill": "generative ai"
+        },
+        {
+          "skill": "RAG",
+          "syntactic_tier": "context_listed",
+          "canonical_skill": null
+        },
+        {
+          "skill": "Autonomous AI Agents",
+          "syntactic_tier": "context_listed",
+          "canonical_skill": null
+        }
+      ],
+      "raw_nouns": [
+        "Enterprise-Grade RAG Pipeline for BI",
+        "Health Guard AI Pipeline for Remote Patient Monitoring",
+        "GPT-4o-Based Conversational AI Chatbot",
+        "Agentic AI System for Legal & Financial Advisory"
+      ],
+      "compact_action": "Spearheaded enterprise AI MVP and deployment projects",
+      "outcome_attached": null,
+      "evidence_span": "Spearheaded high-impact MVP projects, including an Enterprise-Grade RAG Pipeline for BI, a Health Guard AI Pipeline for Remote Patient Monitoring, a GPT-4o-Based Conversational AI Chatbot, and an Agentic AI System for Legal & Financial Advisory, leveraging Generative AI, RAG, and Autonomous AI Agents."
+    },
+    {
+      "claim_id": "c2",
+      "source_entry_ref": "work_1",
+      "claim_tier": "action_attributed",
+      "skills": [
+        {
+          "skill": "AI/ML pipelines",
+          "syntactic_tier": "action_attributed",
+          "canonical_skill": null
+        },
+        {
+          "skill": "AWS",
+          "syntactic_tier": "context_listed",
+          "canonical_skill": "amazon web services"
+        },
+        {
+          "skill": "GCP",
+          "syntactic_tier": "context_listed",
+          "canonical_skill": "google cloud platform"
+        }
+      ],
+      "raw_nouns": [
+        "AI/ML pipelines",
+        "AWS SageMaker",
+        "AWS Bedrock",
+        "AWS Lambda",
+        "GCP Vertex AI",
+        "BigQuery",
+        "Cloud Run"
+      ],
+      "compact_action": "Designed and optimized end-to-end cloud AI pipelines",
+      "outcome_attached": null,
+      "evidence_span": "Designed, deployed, and optimized end-to-end AI/ML pipelines on AWS (SageMaker, Bedrock, Lambda) and GCP (Vertex AI, BigQuery, Cloud Run), ensuring high availability, cost efficiency, and real-time insights."
+    },
+    {
+      "claim_id": "c3",
+      "source_entry_ref": "work_1",
+      "claim_tier": "action_attributed",
+      "skills": [
+        {
+          "skill": "multi-agent systems",
+          "syntactic_tier": "action_attributed",
+          "canonical_skill": null
+        },
+        {
+          "skill": "LangChain",
+          "syntactic_tier": "context_listed",
+          "canonical_skill": "langchain"
+        },
+        {
+          "skill": "LangGraph",
+          "syntactic_tier": "context_listed",
+          "canonical_skill": null
+        },
+        {
+          "skill": "PhiData",
+          "syntactic_tier": "context_listed",
+          "canonical_skill": null
+        },
+        {
+          "skill": "Pinecone",
+          "syntactic_tier": "context_listed",
+          "canonical_skill": "pinecone"
+        }
+      ],
+      "raw_nouns": [
+        "multi-agent systems",
+        "LangChain",
+        "LangGraph",
+        "PhiData",
+        "Pinecone",
+        "Graph DBs"
+      ],
+      "compact_action": "Engineered multi-agent architectures for autonomous workflows",
+      "outcome_attached": null,
+      "evidence_span": "Engineered multi-agent systems with LangChain, LangGraph, PhiData, Pinecone, and Graph DBs to enhance automation, decision-making, and autonomous AI-driven workflows across domains."
+    },
+    {
+      "claim_id": "c4",
+      "source_entry_ref": "work_1",
+      "claim_tier": "action_attributed",
+      "skills": [
+        {
+          "skill": "LLMOps",
+          "syntactic_tier": "action_attributed",
+          "canonical_skill": null
+        },
+        {
+          "skill": "MLOps",
+          "syntactic_tier": "action_attributed",
+          "canonical_skill": null
+        }
+      ],
+      "raw_nouns": [
+        "cross-functional teams",
+        "AI strategies",
+        "LLMOps pipelines",
+        "MLOps pipelines",
+        "model lifecycle management"
+      ],
+      "compact_action": "Led teams and optimized production model lifecycle pipelines",
+      "outcome_attached": null,
+      "evidence_span": "Led cross-functional teams, aligning AI strategies with business objectives, optimizing LLMOps & MLOps pipelines, and ensuring seamless model lifecycle management from development to production."
+    },
+    {
+      "claim_id": "c5",
+      "source_entry_ref": "work_1",
+      "claim_tier": "action_attributed",
+      "skills": [
+        {
+          "skill": "LLM fine-tuning",
+          "syntactic_tier": "peripheral_action",
+          "canonical_skill": null
+        },
+        {
+          "skill": "RAG",
+          "syntactic_tier": "context_listed",
+          "canonical_skill": null
+        },
+        {
+          "skill": "AI-powered automation",
+          "syntactic_tier": "context_listed",
+          "canonical_skill": null
+        }
+      ],
+      "raw_nouns": [
+        "AI/ML teams",
+        "LLM fine-tuning",
+        "Retrieval-Augmented Generation (RAG)",
+        "AI-powered automation",
+        "GenAI applications"
+      ],
+      "compact_action": "Mentored AI teams in LLM and RAG techniques",
+      "outcome_attached": null,
+      "evidence_span": "Mentored AI/ML teams, fostering expertise in LLM fine-tuning, Retrieval-Augmented Generation (RAG), and AI-powered automation, while driving continuous innovation in GenAI applications."
+    },
+    {
+      "claim_id": "c6",
+      "source_entry_ref": "work_2",
+      "claim_tier": "peripheral_action",
+      "skills": [
+        {
+          "skill": "GPU-optimized applications",
+          "syntactic_tier": "peripheral_action",
+          "canonical_skill": null
+        },
+        {
+          "skill": "Generative AI",
+          "syntactic_tier": "peripheral_action",
+          "canonical_skill": "generative ai"
+        }
+      ],
+      "raw_nouns": [
+        "NVIDIA & Z by HP Developer Programs",
+        "GPU-optimized applications",
+        "NVIDIA AI Studio",
+        "Z by HP platforms"
+      ],
+      "compact_action": "Contributed to GPU-optimized enterprise AI applications",
+      "outcome_attached": null,
+      "evidence_span": "Active member contributing to GPU-optimized applications and testing enterprise-level Generative AI solutions on NVIDIA AI Studio and Z by HP platforms."
+    },
+    {
+      "claim_id": "c7",
+      "source_entry_ref": "work_2",
+      "claim_tier": "action_attributed",
+      "skills": [
+        {
+          "skill": "LLMs",
+          "syntactic_tier": "action_attributed",
+          "canonical_skill": null
+        },
+        {
+          "skill": "vLLMs",
+          "syntactic_tier": "context_listed",
+          "canonical_skill": null
+        }
+      ],
+      "raw_nouns": [
+        "open-source LLMs",
+        "enterprise-level LLMs",
+        "vLLMs",
+        "Generative AI domains"
+      ],
+      "compact_action": "Developed and tested open-source enterprise LLMs",
+      "outcome_attached": null,
+      "evidence_span": "Developed and tested open-source and enterprise-level LLMs, including vLLMs, for Generative AI domains."
+    },
+    {
+      "claim_id": "c8",
+      "source_entry_ref": "work_2",
+      "claim_tier": "action_attributed",
+      "skills": [
+        {
+          "skill": "NVIDIA tools and SDKs",
+          "syntactic_tier": "action_attributed",
+          "canonical_skill": null
+        }
+      ],
+      "raw_nouns": [
+        "NVIDIA tools",
+        "SDKs",
+        "AI solutions"
+      ],
+      "compact_action": "Leveraged NVIDIA SDKs to optimize AI solutions",
+      "outcome_attached": null,
+      "evidence_span": "Leveraged cutting-edge NVIDIA tools and SDKs to build and optimize AI solutions."
+    },
+    {
+      "claim_id": "c9",
+      "source_entry_ref": "work_2",
+      "claim_tier": "peripheral_action",
+      "skills": [
+        {
+          "skill": "AI tools",
+          "syntactic_tier": "peripheral_action",
+          "canonical_skill": null
+        },
+        {
+          "skill": "AI frameworks",
+          "syntactic_tier": "peripheral_action",
+          "canonical_skill": null
+        }
+      ],
+      "raw_nouns": [
+        "NVIDIA teams",
+        "Z by HP teams",
+        "AI tools",
+        "frameworks"
+      ],
+      "compact_action": "Validated AI tools and frameworks with partner teams",
+      "outcome_attached": null,
+      "evidence_span": "Worked closely with NVIDIA and Z by HP teams to validate and enhance AI tools and frameworks."
+    },
+    {
+      "claim_id": "c10",
+      "source_entry_ref": "work_2",
+      "claim_tier": "peripheral_action",
+      "skills": [
+        {
+          "skill": "open-source LLM projects",
+          "syntactic_tier": "peripheral_action",
+          "canonical_skill": null
+        },
+        {
+          "skill": "Generative AI",
+          "syntactic_tier": "context_listed",
+          "canonical_skill": "generative ai"
+        }
+      ],
+      "raw_nouns": [
+        "open-source LLM projects",
+        "Generative AI",
+        "large-scale deployments"
+      ],
+      "compact_action": "Contributed to open-source LLM projects and deployments",
+      "outcome_attached": null,
+      "evidence_span": "Actively contributed to open-source LLM projects, driving innovation in Generative AI and large-scale deployments."
+    },
+    {
+      "claim_id": "c11",
+      "source_entry_ref": "work_3",
+      "claim_tier": "action_attributed",
+      "skills": [
+        {
+          "skill": "AI Engineering",
+          "syntactic_tier": "context_listed",
+          "canonical_skill": null
+        },
+        {
+          "skill": "Big Data",
+          "syntactic_tier": "context_listed",
+          "canonical_skill": null
+        },
+        {
+          "skill": "Data Analysis",
+          "syntactic_tier": "context_listed",
+          "canonical_skill": null
+        }
+      ],
+      "raw_nouns": [
+        "AI-driven SaaS solutions",
+        "PaaS solutions",
+        "team of three",
+        "Big Data",
+        "Data Analysis",
+        "AI Engineering"
+      ],
+      "compact_action": "Led SaaS and PaaS AI development with three-person team",
+      "outcome_attached": "$2M in cost savings for clients",
+      "evidence_span": "Led the development of AI-driven SaaS and PaaS solutions, managing a team of three, with a focus on Big Data, Data Analysis, and AI Engineering. This initiative enhanced operational efficiency, resulting in $2M in cost savings for clients."
+    },
+    {
+      "claim_id": "c12",
+      "source_entry_ref": "work_3",
+      "claim_tier": "action_attributed",
+      "skills": [
+        {
+          "skill": "data analysis",
+          "syntactic_tier": "action_attributed",
+          "canonical_skill": null
+        },
+        {
+          "skill": "sales forecasting",
+          "syntactic_tier": "context_listed",
+          "canonical_skill": null
+        }
+      ],
+      "raw_nouns": [
+        "sales forecasting",
+        "120+ market entities",
+        "growth strategies",
+        "sales workflows"
+      ],
+      "compact_action": "Improved forecasting accuracy across 120-plus market entities",
+      "outcome_attached": "80-90%",
+      "evidence_span": "Improved sales forecasting accuracy by 80-90% through data analysis across 120+ market entities, leading to actionable growth strategies and enhanced sales workflows."
+    },
+    {
+      "claim_id": "c13",
+      "source_entry_ref": "work_3",
+      "claim_tier": "action_attributed",
+      "skills": [
+        {
+          "skill": "recommendation engine",
+          "syntactic_tier": "context_listed",
+          "canonical_skill": null
+        }
+      ],
+      "raw_nouns": [
+        "personalized fashion e-commerce platform",
+        "advanced recommendation engine"
+      ],
+      "compact_action": "Launched personalized fashion e-commerce recommendation platform",
+      "outcome_attached": "80% increase in sales; 200% surge in online orders; three months ahead of schedule",
+      "evidence_span": "Successfully launched a client-focused personalized fashion e-commerce platform featuring an advanced recommendation engine. This initiative led to an 80% increase in sales and a 200% surge in online orders, surpassing project goals by three months ahead of schedule."
+    },
+    {
+      "claim_id": "c14",
+      "source_entry_ref": "work_3",
+      "claim_tier": "action_attributed",
+      "skills": [
+        {
+          "skill": "OpenCV",
+          "syntactic_tier": "context_listed",
+          "canonical_skill": "opencv"
+        }
+      ],
+      "raw_nouns": [
+        "data processing",
+        "workflows",
+        "OpenCV"
+      ],
+      "compact_action": "Streamlined data processing and optimized OpenCV workflows",
+      "outcome_attached": null,
+      "evidence_span": "Streamlined data processing and optimized workflows using OpenCV, leading to significant cost savings and improved efficiency."
+    },
+    {
+      "claim_id": "c15",
+      "source_entry_ref": "work_3",
+      "claim_tier": "action_attributed",
+      "skills": [
+        {
+          "skill": "statistical models",
+          "syntactic_tier": "context_listed",
+          "canonical_skill": null
+        },
+        {
+          "skill": "predictive analytics",
+          "syntactic_tier": "context_listed",
+          "canonical_skill": null
+        }
+      ],
+      "raw_nouns": [
+        "statistical models",
+        "predictive analytics"
+      ],
+      "compact_action": "Developed statistical models and predictive analytics",
+      "outcome_attached": "18% increase in company revenue",
+      "evidence_span": "Led the development of statistical models and predictive analytics, resulting in an 18% increase in company revenue."
+    },
+    {
+      "claim_id": "c16",
+      "source_entry_ref": "work_3",
+      "claim_tier": "action_attributed",
+      "skills": [
+        {
+          "skill": "strategic dashboards",
+          "syntactic_tier": "context_listed",
+          "canonical_skill": null
+        }
+      ],
+      "raw_nouns": [
+        "data visibility",
+        "strategic dashboards",
+        "cross-functional collaboration"
+      ],
+      "compact_action": "Enhanced data visibility through strategic dashboards",
+      "outcome_attached": "45%",
+      "evidence_span": "Enhanced data visibility by 45% with strategic dashboards, fostering cross-functional collaboration."
+    },
+    {
+      "claim_id": "c17",
+      "source_entry_ref": "work_3",
+      "claim_tier": "action_attributed",
+      "skills": [
+        {
+          "skill": "AI",
+          "syntactic_tier": "action_attributed",
+          "canonical_skill": null
+        },
+        {
+          "skill": "distributed systems",
+          "syntactic_tier": "context_listed",
+          "canonical_skill": "distributed systems"
+        },
+        {
+          "skill": "A/B testing",
+          "syntactic_tier": "action_attributed",
+          "canonical_skill": null
+        }
+      ],
+      "raw_nouns": [
+        "SaaS offerings",
+        "PaaS offerings",
+        "distributed systems",
+        "e-commerce experience"
+      ],
+      "compact_action": "Integrated AI into distributed SaaS and PaaS systems",
+      "outcome_attached": "over 25 A/B tests",
+      "evidence_span": "Integrated AI into SaaS and PaaS offerings, focusing on distributed systems and conducting over 25 A/B tests to refine the e-commerce experience, driving technological advancements."
+    },
+    {
+      "claim_id": "c18",
+      "source_entry_ref": "work_4",
+      "claim_tier": "action_attributed",
+      "skills": [
+        {
+          "skill": "mentorship",
+          "syntactic_tier": "action_attributed",
+          "canonical_skill": null
+        }
+      ],
+      "raw_nouns": [
+        "Kaggle-X BIPOC Mentorship Program",
+        "aspiring data scientists",
+        "technical skill development"
+      ],
+      "compact_action": "Championed Kaggle-X mentorship for aspiring data scientists",
+      "outcome_attached": "20 hours weekly",
+      "evidence_span": "Championed mentorship initiatives through the Kaggle-X BIPOC Mentorship Program, dedicating 20 hours weekly to guiding aspiring data scientists in technical skill development and community contributions."
+    },
+    {
+      "claim_id": "c19",
+      "source_entry_ref": "work_4",
+      "claim_tier": "action_attributed",
+      "skills": [
+        {
+          "skill": "Kaggle",
+          "syntactic_tier": "action_attributed",
+          "canonical_skill": null
+        }
+      ],
+      "raw_nouns": [
+        "Top 100 Kaggle contributors",
+        "first Pakistani mentor",
+        "Kaggle"
+      ],
+      "compact_action": "Ranked among top global Kaggle contributors",
+      "outcome_attached": "Top 100 globally",
+      "evidence_span": "Secured a position among the Top 100 Kaggle contributors globally, recognized as the first Pakistani mentor in the program."
+    },
+    {
+      "claim_id": "c20",
+      "source_entry_ref": "work_4",
+      "claim_tier": "action_attributed",
+      "skills": [
+        {
+          "skill": "data science",
+          "syntactic_tier": "context_listed",
+          "canonical_skill": null
+        },
+        {
+          "skill": "machine learning",
+          "syntactic_tier": "context_listed",
+          "canonical_skill": "machine learning"
+        }
+      ],
+      "raw_nouns": [
+        "team of four mentees",
+        "data science",
+        "machine learning",
+        "real-world problem-solving"
+      ],
+      "compact_action": "Led four mentees in data science development",
+      "outcome_attached": null,
+      "evidence_span": "Led a team of four mentees, enhancing their skills in data science, machine learning, and real-world problem-solving."
+    },
+    {
+      "claim_id": "c21",
+      "source_entry_ref": "work_4",
+      "claim_tier": "peripheral_action",
+      "skills": [
+        {
+          "skill": "AI",
+          "syntactic_tier": "peripheral_action",
+          "canonical_skill": null
+        }
+      ],
+      "raw_nouns": [
+        "high-impact AI projects",
+        "global data science community"
+      ],
+      "compact_action": "Collaborated on AI projects and community contributions",
+      "outcome_attached": null,
+      "evidence_span": "Drove innovation by collaborating on high-impact AI projects and actively contributing to the global data science community."
+    },
+    {
+      "claim_id": "c22",
+      "source_entry_ref": "work_5",
+      "claim_tier": "action_attributed",
+      "skills": [
+        {
+          "skill": "AI",
+          "syntactic_tier": "context_listed",
+          "canonical_skill": null
+        },
+        {
+          "skill": "ML techniques",
+          "syntactic_tier": "context_listed",
+          "canonical_skill": null
+        }
+      ],
+      "raw_nouns": [
+        "Anti-spoofing Face-App",
+        "digital identity security",
+        "identity fraud"
+      ],
+      "compact_action": "Developed anti-spoofing face application for identity security",
+      "outcome_attached": "reducing identity fraud by 70%",
+      "evidence_span": "Developed an Anti-spoofing Face-App, enhancing digital identity security and reducing identity fraud by 70%."
+    },
+    {
+      "claim_id": "c23",
+      "source_entry_ref": "work_5",
+      "claim_tier": "action_attributed",
+      "skills": [
+        {
+          "skill": "AI and ML techniques",
+          "syntactic_tier": "context_listed",
+          "canonical_skill": null
+        }
+      ],
+      "raw_nouns": [
+        "industry-critical issues",
+        "operational costs"
+      ],
+      "compact_action": "Applied AI and ML techniques to industry problems",
+      "outcome_attached": "25% efficiency improvement; 15% operational cost reduction",
+      "evidence_span": "Applied AI and ML techniques to solve industry-critical issues, improving efficiency by 25% and reducing operational costs by 15%."
+    },
+    {
+      "claim_id": "c24",
+      "source_entry_ref": "work_5",
+      "claim_tier": "action_attributed",
+      "skills": [
+        {
+          "skill": "predictive models",
+          "syntactic_tier": "action_attributed",
+          "canonical_skill": null
+        }
+      ],
+      "raw_nouns": [
+        "predictive models",
+        "actionable insights",
+        "data-driven decision-making"
+      ],
+      "compact_action": "Engineered predictive models generating actionable business insights",
+      "outcome_attached": "20% revenue increase",
+      "evidence_span": "Engineered predictive models and provided actionable insights, leading to a 20% revenue increase through data-driven decision-making."
+    },
+    {
+      "claim_id": "c25",
+      "source_entry_ref": "work_5",
+      "claim_tier": "peripheral_action",
+      "skills": [
+        {
+          "skill": "EDA",
+          "syntactic_tier": "peripheral_action",
+          "canonical_skill": null
+        },
+        {
+          "skill": "Machine Learning",
+          "syntactic_tier": "peripheral_action",
+          "canonical_skill": "machine learning"
+        },
+        {
+          "skill": "Deep Learning",
+          "syntactic_tier": "peripheral_action",
+          "canonical_skill": "deep learning"
+        }
+      ],
+      "raw_nouns": [
+        "EDA",
+        "Machine Learning",
+        "Deep Learning",
+        "manual analysis"
+      ],
+      "compact_action": "Applied EDA and learning methods to analysis",
+      "outcome_attached": "over 250+ hours saved annually",
+      "evidence_span": "Advanced expertise in EDA, Machine Learning, and Deep Learning, saving over 250+ hours of manual analysis annually."
+    },
+    {
+      "claim_id": "c26",
+      "source_entry_ref": "work_5",
+      "claim_tier": "action_attributed",
+      "skills": [
+        {
+          "skill": "AI/ML projects",
+          "syntactic_tier": "action_attributed",
+          "canonical_skill": null
+        }
+      ],
+      "raw_nouns": [
+        "AI/ML projects",
+        "remote deployment",
+        "dynamic conditions"
+      ],
+      "compact_action": "Deployed AI/ML projects remotely in dynamic conditions",
+      "outcome_attached": null,
+      "evidence_span": "Successfully deployed AI/ML projects remotely, adapting to dynamic conditions and gaining significant experience in the AI/ML field."
+    },
+    {
+      "claim_id": "c27",
+      "source_entry_ref": "work_6",
+      "claim_tier": "action_attributed",
+      "skills": [
+        {
+          "skill": "AI",
+          "syntactic_tier": "context_listed",
+          "canonical_skill": null
+        },
+        {
+          "skill": "Data Science",
+          "syntactic_tier": "context_listed",
+          "canonical_skill": null
+        }
+      ],
+      "raw_nouns": [
+        "AI training sessions",
+        "Data Science training sessions",
+        "students"
+      ],
+      "compact_action": "Led AI and data science training sessions",
+      "outcome_attached": null,
+      "evidence_span": "Led AI and Data Science training sessions, preparing students to tackle real-world challenges."
+    },
+    {
+      "claim_id": "c28",
+      "source_entry_ref": "work_6",
+      "claim_tier": "action_attributed",
+      "skills": [
+        {
+          "skill": "TensorFlow",
+          "syntactic_tier": "context_listed",
+          "canonical_skill": "tensorflow"
+        },
+        {
+          "skill": "Keras",
+          "syntactic_tier": "context_listed",
+          "canonical_skill": "keras"
+        }
+      ],
+      "raw_nouns": [
+        "models",
+        "TensorFlow",
+        "Keras"
+      ],
+      "compact_action": "Designed and deployed TensorFlow and Keras models",
+      "outcome_attached": null,
+      "evidence_span": "Designed and deployed models using TensorFlow and Keras, improving system efficiency and accuracy."
+    },
+    {
+      "claim_id": "c29",
+      "source_entry_ref": "work_6",
+      "claim_tier": "action_attributed",
+      "skills": [
+        {
+          "skill": "Python",
+          "syntactic_tier": "context_listed",
+          "canonical_skill": "python"
+        }
+      ],
+      "raw_nouns": [
+        "repetitive data tasks",
+        "Python",
+        "manual labor",
+        "error rates"
+      ],
+      "compact_action": "Automated repetitive data tasks using Python",
+      "outcome_attached": null,
+      "evidence_span": "Automated repetitive data tasks using Python, significantly reducing manual labor and error rates."
+    },
+    {
+      "claim_id": "c30",
+      "source_entry_ref": "work_6",
+      "claim_tier": "action_attributed",
+      "skills": [
+        {
+          "skill": "AI research",
+          "syntactic_tier": "context_listed",
+          "canonical_skill": null
+        }
+      ],
+      "raw_nouns": [
+        "AI research",
+        "cutting-edge methodologies",
+        "projects"
+      ],
+      "compact_action": "Conducted AI research applying advanced project methodologies",
+      "outcome_attached": null,
+      "evidence_span": "Engaged in ongoing AI research to apply cutting-edge methodologies to projects."
+    }
+  ],
+  "notable_signals": [
+    {
+      "signal_id": "s1",
+      "context_label": "Open-Source",
+      "syntactic_tier": "peripheral_action",
+      "raw_nouns": [
+        "open-source LLM projects",
+        "vLLMs",
+        "Generative AI"
+      ],
+      "compact_action": "Contributed to open-source LLM projects and deployments",
+      "outcome_attached": null,
+      "evidence_span": "Actively contributed to open-source LLM projects, driving innovation in Generative AI and large-scale deployments."
+    },
+    {
+      "signal_id": "s2",
+      "context_label": "Competition / Community",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "Kaggle",
+        "Top 100 Kaggle contributors",
+        "Kaggle-X BIPOC Mentorship Program"
+      ],
+      "compact_action": "Ranked among top global Kaggle contributors and mentored",
+      "outcome_attached": "Top 100 globally; first Pakistani mentor in the program",
+      "evidence_span": "Secured a position among the Top 100 Kaggle contributors globally, recognized as the first Pakistani mentor in the program."
+    },
+    {
+      "signal_id": "s3",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "Health Assistance Application",
+        "Gemini 1.5 Pro",
+        "RAG",
+        "LangChain",
+        "doctors",
+        "patients"
+      ],
+      "compact_action": "Architected LLM health assistance application for consultations",
+      "outcome_attached": null,
+      "evidence_span": "Architected a comprehensive Health Assistance Application leveraging the Gemini 1.5 Pro LLM model, RAG, and LangChain. This solution supports doctors and patients by providing detailed medical information, symptom diagnosis, treatment suggestions, and preventive healthcare advice."
+    },
+    {
+      "signal_id": "s4",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "AI-Powered Blog Generator",
+        "Llama 3.1 8B",
+        "AWS Bedrock",
+        "RAG",
+        "Streamlit"
+      ],
+      "compact_action": "Developed enterprise AI blog generation and publishing system",
+      "outcome_attached": null,
+      "evidence_span": "Developed an AI-powered content generator leveraging Llama 3.1 8B, AWS Bedrock, and RAG for real-time finetuning on dynamic datasets. Integrated with Streamlit for a seamless user interface, the system automated blog creation, editing, and publishing, increasing efficiency in content marketing and engagement for enterprises."
+    },
+    {
+      "signal_id": "s5",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "Conversational AI Chatbot for Customer Support",
+        "GPT-4o",
+        "LangChain",
+        "AWS Bedrock",
+        "intent recognition"
+      ],
+      "compact_action": "Designed enterprise chatbot with dynamic response generation",
+      "outcome_attached": "40% reduction in customer query resolution times",
+      "evidence_span": "Designed and deployed an enterprise-grade chatbot powered by GPT-4o, integrated with LangChain and AWS Bedrock. Implemented advanced NLP techniques such as intent recognition and dynamic response generation, reducing customer query resolution times by 40% and improving customer satisfaction."
+    },
+    {
+      "signal_id": "s6",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "AutoML-Studio",
+        "MLflow",
+        "XAI (SHAP)",
+        "data drift detection",
+        "FastAPI",
+        "Streamlit"
+      ],
+      "compact_action": "Built low-code platform for predictive model deployment",
+      "outcome_attached": null,
+      "evidence_span": "Built a low-code/no-code machine learning platform enabling rapid development and deployment of predictive models. Incorporated MLflow for tracking, XAI (SHAP) for explainability, and data drift detection to ensure model reliability. Deployed with FastAPI and Streamlit, the platform supports classification, regression, time-series forecasting and clustering, empowering non-technical users to build robust AI solutions."
+    },
+    {
+      "signal_id": "s7",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "DocuWiz AI",
+        "BART",
+        "DistilBERT",
+        "RAG",
+        "Streamlit",
+        "FastAPI",
+        "PDF",
+        "DOCX"
+      ],
+      "compact_action": "Engineered document intelligence and analysis tool",
+      "outcome_attached": "60% reduction in document processing time",
+      "evidence_span": "Engineered a document intelligence tool leveraging advanced NLP models like BART and DistilBERT for text extraction, summarization, and sentiment analysis. Integrated RAG and LLMs to enable detailed insights and visualizations for PDF and DOCX analysis. Deployed as an interactive Streamlit application and FastAPI, reducing document processing time by 60% and enhancing productivity in legal and academic domains."
+    },
+    {
+      "signal_id": "s8",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "Harvestify-AI-Powered-Plant-Health-Assistant",
+        "Azure AI Studio",
+        "Azure App Services",
+        "deep learning models",
+        "Microsoft Azure"
+      ],
+      "compact_action": "Built Azure plant disease diagnosis and recommendation system",
+      "outcome_attached": "70% faster disease detection; 30% improved crop yield predictions",
+      "evidence_span": "Designed and implemented an AI-driven application leveraging Azure AI Studio and Azure App Services to diagnose plant leaf diseases through real-time image analysis. The system integrates deep learning models to recommend crops and fertilizer solutions tailored to soil and weather conditions, enhancing agricultural decision-making. Deployed on Microsoft Azure, the solution reduced disease detection time by 70%, improved crop yield predictions by 30%, and empowered farmers with actionable insights to optimize productivity and sustainability."
+    },
+    {
+      "signal_id": "s9",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "Intelligent Document Summarization Tool",
+        "Pegasus",
+        "FastAPI",
+        "Streamlit",
+        "PDF",
+        "DOCX"
+      ],
+      "compact_action": "Developed transformer-based document summarization application",
+      "outcome_attached": "60% reduction in manual document review time",
+      "evidence_span": "Developed an Intelligent Document Summarization Tool using transformer-based LLM models like Pegasus to generate concise summaries from lengthy documents while preserving key information. Deployed with FastAPI and Streamlit APP for real-time interaction, supporting formats like PDF and DOCX, and leveraging semantic analysis for relevance extraction. Reduced manual document review time by 60%, boosting productivity in legal and academic workflows."
+    },
+    {
+      "signal_id": "s10",
+      "context_label": "Project",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "Customer Satisfaction Prediction System",
+        "ZenML",
+        "MLflow",
+        "MLOps",
+        "customer satisfaction"
+      ],
+      "compact_action": "Created MLOps system forecasting customer satisfaction",
+      "outcome_attached": "93% accuracy",
+      "evidence_span": "Created a predictive analytics system using ZenML and MLflow within an MLOps framework to achieve 93% accuracy in forecasting customer satisfaction."
+    },
+    {
+      "signal_id": "s11",
+      "context_label": "Certification",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "AWS Cloud Solutions Architect Professional Certificate",
+        "Amazon Web Services"
+      ],
+      "compact_action": "Earned AWS Cloud Solutions Architect certificate",
+      "outcome_attached": null,
+      "evidence_span": "• AWS Cloud Solutions Architect Professional Certificate, Amazon Web Services."
+    },
+    {
+      "signal_id": "s12",
+      "context_label": "Certification",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "Machine Learning Engineering for Production (MLOps)",
+        "DeepLearning.ai"
+      ],
+      "compact_action": "Completed machine learning production engineering certification",
+      "outcome_attached": null,
+      "evidence_span": "• Machine Learning Engineering for Production (MLOps), DeepLearning.ai."
+    },
+    {
+      "signal_id": "s13",
+      "context_label": "Certification",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "Large Language Model Operations (LLMOps)",
+        "Duke University"
+      ],
+      "compact_action": "Completed large language model operations certification",
+      "outcome_attached": null,
+      "evidence_span": "• Large Language Model Operations (LLMOps), Duke University."
+    },
+    {
+      "signal_id": "s14",
+      "context_label": "Education Depth",
+      "syntactic_tier": "action_attributed",
+      "raw_nouns": [
+        "Bachelor in Computer Science",
+        "Artificial Intelligence and Computer Science",
+        "Institute of Management Sciences"
+      ],
+      "compact_action": "Studied artificial intelligence and computer science",
+      "outcome_attached": null,
+      "evidence_span": "Bachelor in Computer Science (Major: Artificial Intelligence and Computer Science)"
+    }
+  ],
+  "warnings": [
+    "Signal 's3' evidence_span was not found verbatim in resume text"
+  ],
+  "usage": {
+    "promptTokens": 8507,
+    "completionTokens": 12561,
+    "inputTokens": 8507,
+    "outputTokens": 12561,
+    "totalTokens": 21068
+  },
+  "latency_ms": 87548,
+  "tokens_approx": {
+    "raw_text": 4061,
+    "evidence_spans": 1953,
+    "digest": 1939
+  }
+}

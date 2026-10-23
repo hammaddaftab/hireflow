@@ -132,6 +132,8 @@ export const candidate03Saad: ParsedCandidateProfile = {
     stated_availability: "available",
     languages: ["English", "Urdu"],
   },
+  role_claims: { claims: [] },
+  notable_signals: { signals: [] },
   extraction_metadata: {
     file_hash: "f7866290109c203d9342ef552187edceb8e76272af69c4a86eb98aad151828d1",
     aspect_versions: {

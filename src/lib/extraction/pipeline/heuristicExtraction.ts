@@ -625,6 +625,8 @@ export function extractCandidateFallback(
     skills_demonstrated: skillsDemonstrated,
     skills_declared: skillsDeclared,
     logistics,
+    role_claims: { claims: [] },
+    notable_signals: { signals: [] },
     extraction_metadata: {
       file_hash: fileHash,
       aspect_versions: getCurrentAspectVersions(),

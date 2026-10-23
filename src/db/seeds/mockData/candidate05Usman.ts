@@ -176,6 +176,8 @@ export const candidate05Usman: ParsedCandidateProfile = {
     stated_availability: "available",
     languages: ["English", "Urdu"],
   },
+  role_claims: { claims: [] },
+  notable_signals: { signals: [] },
   extraction_metadata: {
     file_hash: "b2c3d4e5f60718293a4b5c6d7e8f90123456789abcdef0123456789abcdef01",
     aspect_versions: {

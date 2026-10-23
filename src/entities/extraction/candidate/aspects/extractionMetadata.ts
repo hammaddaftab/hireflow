@@ -5,6 +5,8 @@ import { workHistoryAspect } from "./workHistory";
 import { skillsDemonstratedAspect } from "./skillsDemonstrated";
 import { skillsDeclaredAspect } from "./skillsDeclared";
 import { logisticsAspect } from "./logistics";
+import { roleClaimsAspect } from "./roleClaims";
+import { notableSignalsAspect } from "./notableSignals";
 
 export const AspectVersionsSchema = z.record(z.string(), z.string()).describe(
   "Snapshot of individual aspect versions active at extraction time"
@@ -51,6 +53,8 @@ export function getCurrentAspectVersions(): Record<string, string> {
     [skillsDemonstratedAspect.name]: skillsDemonstratedAspect.version,
     [skillsDeclaredAspect.name]: skillsDeclaredAspect.version,
     [logisticsAspect.name]: logisticsAspect.version,
+    [roleClaimsAspect.name]: roleClaimsAspect.version,
+    [notableSignalsAspect.name]: notableSignalsAspect.version,
   };
 }
 

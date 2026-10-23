@@ -168,6 +168,8 @@ export const candidate02Hamza: ParsedCandidateProfile = {
     stated_availability: "available",
     languages: ["English", "Urdu"],
   },
+  role_claims: { claims: [] },
+  notable_signals: { signals: [] },
   extraction_metadata: {
     file_hash: "42bf2b51b7baedecab75b74cd41b0586d944837b6c0cae4c3f829857f833e634",
     aspect_versions: {

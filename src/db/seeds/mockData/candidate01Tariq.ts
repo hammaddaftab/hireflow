@@ -187,6 +187,87 @@ export const candidate01Tariq: ParsedCandidateProfile = {
     stated_availability: "available",
     languages: ["English", "Urdu"],
   },
+  role_claims: {
+    claims: [
+      {
+        claim_id: "c1",
+        source_entry_ref: "work_1",
+        claim_tier: "action_attributed",
+        skills: [
+          { skill: "Go", syntactic_tier: "action_attributed", canonical_skill: "go" },
+          { skill: "gRPC", syntactic_tier: "action_attributed", canonical_skill: "grpc" },
+          { skill: "Kafka", syntactic_tier: "action_attributed", canonical_skill: "apache kafka" },
+        ],
+        raw_nouns: ["order-routing microservices"],
+        compact_action: "architected order-routing microservices",
+        outcome_attached: "18k rps, -44% p99",
+        evidence_span: "Architected order-routing microservices in Go handling over 18,000 requests/sec with 99.98% uptime, reducing p99 API latency by 44%.",
+      },
+      {
+        claim_id: "c2",
+        source_entry_ref: "work_1",
+        claim_tier: "action_attributed",
+        skills: [
+          { skill: "Postgres", syntactic_tier: "action_attributed", canonical_skill: "postgresql" },
+          { skill: "Redis", syntactic_tier: "action_attributed", canonical_skill: "redis" },
+        ],
+        raw_nouns: ["multi-tenant inventory ledger"],
+        compact_action: "built multi-tenant inventory ledger",
+        outcome_attached: "45M rows, -52% query time",
+        evidence_span: "Designed and optimized PostgreSQL schema partitions and relational indexing strategies across 45M transaction records, cutting query execution times by 52%.",
+      },
+      {
+        claim_id: "c3",
+        source_entry_ref: "work_1",
+        claim_tier: "action_attributed",
+        skills: [],
+        raw_nouns: ["Squad leadership"],
+        compact_action: "led 6 engineers and owned checkout SLA",
+        outcome_attached: "99.99% uptime",
+        evidence_span: "Operated container workloads on Linux virtual hosts with Redis caching layers, elevating cache hit ratio to 92% and mitigating database read contention.",
+      },
+      {
+        claim_id: "c4",
+        source_entry_ref: "work_2",
+        claim_tier: "action_attributed",
+        skills: [
+          { skill: "Python", syntactic_tier: "action_attributed", canonical_skill: "python" },
+          { skill: "Django", syntactic_tier: "action_attributed", canonical_skill: "django" },
+          { skill: "REST API", syntactic_tier: "action_attributed", canonical_skill: "rest api" },
+        ],
+        raw_nouns: ["B2B vendor settlement portal"],
+        compact_action: "developed B2B vendor settlement portal",
+        outcome_attached: "PKR 120M/mo",
+        evidence_span: "Developed mission-critical REST API endpoints incorporating idempotency keys and sliding-window rate limiting, processing PKR 120M in monthly settlement throughput.",
+      },
+      {
+        claim_id: "c5",
+        source_entry_ref: "work_2",
+        claim_tier: "peripheral_action",
+        skills: [
+          { skill: "Kubernetes", syntactic_tier: "peripheral_action", canonical_skill: "kubernetes" },
+          { skill: "Terraform", syntactic_tier: "peripheral_action", canonical_skill: "terraform" },
+        ],
+        raw_nouns: ["deployment pipeline maintenance"],
+        compact_action: "assisted platform squad with deployment pipeline maintenance",
+        outcome_attached: null,
+        evidence_span: "Containerized distributed microservices with Docker multi-stage builds and automated CI pipelines, slashing container deployment image footprint by 62%.",
+      },
+    ],
+  },
+  notable_signals: {
+    signals: [
+      {
+        signal_id: "s1",
+        context_label: "Open-Source",
+        syntactic_tier: "action_attributed",
+        raw_nouns: ["go-rate-limit"],
+        compact_action: "maintainer of distributed rate limiter",
+        outcome_attached: "1.4k GitHub stars",
+        evidence_span: "Created and maintain go-rate-limit open source library with 1.4k stars.",
+      },
+    ],
+  },
   extraction_metadata: {
     file_hash: "b629cda073f06daa040d6434088617e549a3906308d1b674038b9848798bb0b1",
     aspect_versions: {

@@ -1,0 +1,5 @@
+[mock_resume_b] diploma Mechanical @ CTTI (Result Awaited [Grade A expected]) | Rawalpindi
+spikes:
+  [s1:action] Project: Multifunction Electric Wheelchair, base frame, integrated mechanical systems, suspension, lifting mechanisms, reclining mechanisms -> Designed and fabricated wheelchair frame and mechanisms
+  [s2:action] Certification: Computerized Numerical Control, CNC Turning Machines, CTTI -> Completed CNC programming and turning machine operation course
+  [s3:action] Certification: Advanced IT Course, MS Office, MS Windows, Hardware Concepts, Institute of Skill Development -> Completed advanced information technology course with Grade A

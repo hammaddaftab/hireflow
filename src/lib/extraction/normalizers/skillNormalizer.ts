@@ -1,5 +1,6 @@
 import "server-only";
 import { tokenSortRatio, isLengthRatioSafe } from "@/lib/matching/stringSimilarity";
+import { CANONICAL_SKILLS } from "../catalogs/canonicalSkills";
 
 // Explicit collision blocklist to prevent false positive matches between distinct technologies
 export const COLLISION_PAIRS: [string, string][] = [
@@ -33,12 +34,15 @@ export const SKILL_SYNONYMS: Record<string, string> = {
   k8s: "kubernetes",
   kubernetes: "kubernetes",
   docker: "docker",
+  terraform: "terraform",
   ci: "continuous integration",
   cd: "continuous delivery",
   cicd: "ci cd",
   "ci cd": "ci cd",
 
   // Databases & Storage
+  kafka: "apache kafka",
+  "apache kafka": "apache kafka",
   postgres: "postgresql",
   postgresql: "postgresql",
   mongo: "mongodb",
@@ -132,4 +136,29 @@ export function matchSkill(skillA: string, skillB: string): boolean {
   }
 
   return tokenSortRatio(normA, normB) >= 0.85;
+}
+
+// Canonical lookup set populated once from CANONICAL_SKILLS catalog and synonyms
+const CANONICAL_CATALOG_SET = new Set<string>();
+
+for (const s of CANONICAL_SKILLS) {
+  const norm = normalizeSkill(s);
+  if (norm) CANONICAL_CATALOG_SET.add(norm);
+}
+for (const [k, v] of Object.entries(SKILL_SYNONYMS)) {
+  const normVal = normalizeSkill(v);
+  if (normVal) CANONICAL_CATALOG_SET.add(normVal);
+  const normKey = normalizeSkill(k);
+  if (normKey) CANONICAL_CATALOG_SET.add(normKey);
+}
+
+// Resolves a raw skill to a canonical normalized catalog entry, or null if uncataloged
+export function resolveCanonicalSkill(raw: string): string | null {
+  if (!raw || !raw.trim()) return null;
+  const norm = normalizeSkill(raw);
+  if (!norm) return null;
+  if (CANONICAL_CATALOG_SET.has(norm)) {
+    return SKILL_SYNONYMS[norm] || norm;
+  }
+  return null;
 }
