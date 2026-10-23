@@ -23,9 +23,9 @@ The bench turns that bet into measurements.
 | | Validity of $0 axis-toggle re-ranking over a fixed shortlist |
 
 ### 1.2 The Specific Contradictions This Bench Must Resolve
-- **Fact budget**: [04 Section 2.1](/docs/research/top-candidates/04-mechanism-e-pointer-aspect-spec.md) rejects D because a CV holds 400–700 tokens of substantive facts. [04 Section 3.2](/docs/research/top-candidates/04-mechanism-e-pointer-aspect-spec.md) defends E because a CV holds only ~150–200 tokens of unique facts. Both cannot be true.
-- **Attention**: C was rejected for positional bias at ~4.8k tokens and 80 items. E's Stage 1 places the same item count in ~8k–12k tokens ([04 Section 2.5](/docs/research/top-candidates/04-mechanism-e-pointer-aspect-spec.md)).
-- **Cost**: D was penalised for ~100 extra extraction output tokens. E likely adds +500 to +1,500 ([04 Section 2.6](/docs/research/top-candidates/04-mechanism-e-pointer-aspect-spec.md)).
+- **Fact budget**: [03 Section 4.1](/docs/research/top-candidates/03-mechanism-d-critique.md) rejects D because a CV holds 400–700 tokens of claim-bearing sentences. [04 Section 3.2](/docs/research/top-candidates/04-mechanism-e-pointer-aspect-spec.md) bets that stripping filler and grammar leaves ~150–200 tokens of unique propositions. Whether that compression holds without dropping claims is unmeasured.
+- **Attention**: C was rejected for positional bias at ~4.8k tokens and 80 items. E's Stage 1 places the same item count in ~8k–12k tokens ([04 Section 2.2](/docs/research/top-candidates/04-mechanism-e-pointer-aspect-spec.md)).
+- **Cost**: D was penalised for ~100 extra extraction output tokens. E likely adds +500 to +1,500 ([04 Section 2.3](/docs/research/top-candidates/04-mechanism-e-pointer-aspect-spec.md)).
 - **Benchmark circularity**: the pool proposed in [IDEA_AND_RESEARCH.md](/docs/IDEA_AND_RESEARCH.md) Section 5.3 is seeded with the same five signals (Section 5.1) that E's schema was designed to capture. A high score would only show that E catches what it was built to catch.
 
 ---
@@ -143,7 +143,7 @@ Each job is written so that a **different planted differentiator** should decide
 ### Experiment 4: Token Cost and Latency per Stream (Resolves Q4)
 **Goal**: Replace estimates with measured numbers, kept as two separate streams.
 
-**Procedure**: Run the current extraction and E's extraction on the same 20 CVs. Also run the `evidence_span`-as-offsets variant ([04 Section 2.6](/docs/research/top-candidates/04-mechanism-e-pointer-aspect-spec.md)).
+**Procedure**: Run the current extraction and E's extraction on the same 20 CVs. Also run the `evidence_span`-as-offsets variant ([04 Section 2.3](/docs/research/top-candidates/04-mechanism-e-pointer-aspect-spec.md)).
 
 **Metrics**:
 

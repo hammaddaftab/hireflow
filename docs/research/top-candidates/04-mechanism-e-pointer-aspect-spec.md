@@ -4,45 +4,31 @@
 
 Mechanism E is the architectural synthesis resulting from an adversarial review of **Mechanism D** (Open-World Evidence Capsules and Two-Stage Discovery).
 
-While Mechanism D correctly established a **two-stage query funnel** (Stage 1 discovery $\rightarrow$ Stage 2 tournament), its ingestion representation—free-text natural-language prose summaries—introduced severe failure modes: context-blind fact discarding, syntactic tier laundering, and low fact density per token in the query-time prompt.
+While [Mechanism D](/docs/research/top-candidates/03-mechanism-d-critique.md) introduced the **two-stage query funnel** (Stage 1 discovery $\rightarrow$ Stage 2 tournament), its free-text prose capsule and selective Stage 2 handoff failed on fact retention, syntactic tier integrity, query-time density, and Stage 2 coverage ([03-mechanism-d-critique.md](/docs/research/top-candidates/03-mechanism-d-critique.md), Section 4).
 
-Mechanism E addresses these failures while preserving the open-world discovery benefits:
+Mechanism E keeps D's two-stage funnel and replaces the ingestion representation and Stage 2 handoff:
 - It replaces free-text role summaries with **propositional extraction (de-noising)** into compact structured tuples (`{raw_nouns} -> {compact_action} | {outcome_attached}`) backed by verbatim resume sentences stored in PostgreSQL JSONB.
 - It attaches explicit `syntactic_tier` tags per claim and per skill, immunizing the screening engine against resume inflation.
-- Using an elastic token budget (~150–200 tokens on typical profiles, scaling with candidate density), extracted claims serialize deterministically into a structured digest in TypeScript with no LLM call at query time. The structured fields themselves are paid for as extra output tokens at extraction time (Section 2.6).
-- At query time, Stage 1 discovers pool-relative emergent axes, and Stage 2 outputs a **per-axis evaluation matrix** across all 20 finalists, powering interactive emergent-axis UI controls at $0 marginal cost with $O(1)$ hallucination-free quote hydration.
+- Using an elastic token budget (~150–200 tokens on typical profiles, scaling with candidate density), extracted claims serialize deterministically into a structured digest in TypeScript with no LLM call at query time. The structured fields themselves are paid for as extra output tokens at extraction time (Section 2.3).
+- At query time, Stage 1 discovers pool-relative emergent axes, and Stage 2 hydrates all claims across the 20 finalists to output a **per-axis evaluation matrix**, powering interactive emergent-axis UI controls at $0 marginal cost with $O(1)$ hallucination-free quote hydration.
 
-Three questions carried over from earlier mechanisms remain **open and unvalidated** in E: whether pool-blind de-noising actually avoids dropping pool-relevant facts (Section 2.1, Section 3.2), attention drop-off across 40–80 candidates in Stage 1 (Section 2.5), and token cost as a trade-off between extraction overhead and query-time savings (Section 2.6). The validation plan is in [05-test-bench.md](/docs/research/top-candidates/05-test-bench.md).
+Three questions carried over from earlier mechanisms remain **open and unvalidated** in E: whether pool-blind de-noising actually avoids dropping pool-relevant facts (Section 2.1, Section 3.2), attention drop-off across 40–80 candidates in Stage 1 (Section 2.2), and token cost as a trade-off between extraction overhead and query-time savings (Section 2.3). The validation plan is in [05-test-bench.md](/docs/research/top-candidates/05-test-bench.md).
 
 ---
 
 ## 2. Earlier Criticisms: The Journey from Mechanisms C and D to E
 
-Mechanism D attempted to solve pre-defined feature lock-in by generating an "Open-World Evidence Capsule" (~100 tokens of 1-line role distillations in natural language prose) at ingestion. Adversarial examination revealed four critical failure modes that necessitated Mechanism E (Sections 2.1–2.4). Two further criticisms, raised against Mechanisms C and D, carry over to E and are only partially addressed by it (Sections 2.5–2.6).
+### 2.1 Summary of Mechanism D Failures Addressed by E
+The detailed critique of Mechanism D lives in [03-mechanism-d-critique.md](/docs/research/top-candidates/03-mechanism-d-critique.md) (Section 4). In brief, E responds to D's four failure modes as follows:
 
-### 2.1 Failure Mode 1: Context-Blind Fact Discarding at Serial Ingestion
-- **The Token Reality**: A typical 2-page engineering resume contains **400 to 700 tokens of claim-bearing sentences** across 3–4 roles, 15–25 bullet points, and education/projects.
-- **The Loss**: Forcing the ingestion LLM to compress an entire candidate into a ~100-token natural-language summary requires discarding **70% to 80% of that content**.
-- **Context-Blind Prior**: Because ingestion occurs in a vacuum (blind to future job specs and peer applicant pools), the ingestion LLM must use a generic, ungrounded salience heuristic. It will keep generic headline metrics (*"improved performance by 25%"*) and discard niche domain or architectural mechanisms (*"implemented idempotent webhook retry queue for 1Link settlements"*). If a future job specifically seeks payment reconciliation depth, that decisive signal was permanently discarded at ingestion.
-- **How Far E Resolves This (Open)**: Mechanism E replaces 1-line role summarization with per-claim propositional de-noising (Section 3.2), betting that once grammatical scaffolding and generic duty filler are stripped from those 400–700 tokens, the remaining factual propositions fit in ~150–200 tokens without dropping substantive claims. Whether that budget holds and whether the extractor's "filler vs. claim" threshold still drops pool-relevant details in practice is unmeasured ([05-test-bench.md](/docs/research/top-candidates/05-test-bench.md), Experiments 1 and 5).
+| Mechanism D Failure Mode ([03 Section 4](/docs/research/top-candidates/03-mechanism-d-critique.md)) | Mechanism E Response | Status in E |
+|---|---|---|
+| **4.1 Context-blind fact dropping**: compressing 400–700 tokens of claim-bearing prose into a ~100-token role summary drops 70–80% of content blind to future jobs/pools | Replace 1-line role summarization with per-claim propositional de-noising (~150–200 tokens elastic), keeping every concrete claim tuple while stripping grammatical scaffolding and generic duty filler | **Open hypothesis** (Section 3.2; tested in [05-test-bench.md](/docs/research/top-candidates/05-test-bench.md), Experiments 1 & 5) |
+| **4.2 Laundering `syntactic_tier`**: free-text summarization rewrites passive exposure (`peripheral_action`) into active-sounding prose | Extract explicit `claim_tier` and per-skill `syntactic_tier` tags and render them directly in the digest (`[c1:action]` vs. `[c5:peripheral]`) | **Addressed in schema** (Section 4.1) |
+| **4.3 Low query-time fact density per token**: prose spends 30–40% of query tokens on grammatical glue | Serialize compact pointer tuples in TypeScript for the query prompt; extraction output token overhead is higher than D's (see Section 2.3) | **Query density addressed; extraction cost traded off** (Section 2.3) |
+| **4.4 Stage 2 citation tunnel vision & static axes**: hydrating only Stage 1 cited claims misses secondary-axis evidence; monolithic Top 10 prevents $0 UI axis toggling | Hydrate all verbatim `evidence_span`s for all 20 finalists in Stage 2 and emit a per-axis evaluation matrix across all 20 finalists | **Addressed for top 20; shortlist staleness under toggles tested in [05-test-bench.md](/docs/research/top-candidates/05-test-bench.md), Exp 7** |
 
-### 2.2 Failure Mode 2: Laundering `syntactic_tier` (Breaking Hireflow's Core Moat)
-Hireflow's primary competitive advantage is syntactically verifying claims:
-- `action_attributed`: Candidate was the active grammatical subject of an ownership verb (*"Architected the settlement microservice"*).
-- `peripheral_action`: Candidate had passive or team-level exposure (*"Assisted team with settlement microservice updates"*).
-- `context_listed`: Bare tool name listed in a role summary without proof.
-
-When an LLM summarizes a resume into telegraphic 1-line prose, it naturally paraphrases and compacts text. In doing so, LLMs routinely **rewrite passive involvement into active-sounding phrasing** (*"Assisted team with settlement microservice"* becomes *"Handled settlement microservices"*). Free-text prose capsules launder keyword-stuffer claims into top-tier summaries, directly undermining Hireflow's anti-inflation verification engine.
-
-### 2.3 Failure Mode 3: Prose Inefficiency and Ingestion Output-Token Overhead
-- **Prose Inefficiency**: Natural language prose requires grammatical scaffolding, pronouns, articles, and connective verbs, wasting 30% to 40% of its token budget on non-information tokens.
-- **Output Token Cost**: Generating a prose summary at ingestion adds LLM generation output tokens (the most expensive token category) to every single uploaded CV. This objection does not favour E over D: E's structured fields add more extraction output tokens than D's capsule (Section 2.6).
-
-### 2.4 Failure Mode 4: Citation Tunnel Vision and Static Axis Display Traps
-- **Citation Tunnel Vision**: If Stage 2 only hydrates verbatim evidence spans for the 1–2 `claim_id`s cited in Stage 1, it introduces severe confirmation bias. When comparing candidates across secondary emergent axes, uncited claims remain unhydrated or omitted, blinding the final tournament to valid candidate evidence.
-- **Static Axis Display Trap**: If Stage 2 only outputs a monolithic Top 10 list, the discovered emergent axes shown in the UI are merely decorative. A recruiter cannot toggle or re-weight an axis to explore different candidate rankings without triggering another expensive LLM call.
-
-### 2.5 Carried-Over Criticism 1: Attention Drop-Off Across 40–80 Candidates (Status: Open)
+### 2.2 Carried-Over Criticism 1: Attention Drop-Off Across 40–80 Candidates (Status: Open)
 - **Origin**: Mechanism C was rejected partly for "lost in the middle" ([02-mechanism-c-critique.md](/docs/research/top-candidates/02-mechanism-c-critique.md), Section 4). With ~80 digests x 60 tokens (~4.8k tokens) in one prompt, the model attends less to candidates in the middle third, so a strong candidate at position 42 gets overlooked.
 - **What E does**: Stage 1 places the same 40–80 candidates in one prompt. Each digest is now 150–200 tokens, so the prompt is ~8k–12k tokens.
 - **Why compression does not fix it**: Shrinking each candidate reduces total context compared to raw CVs (120k+ tokens), but positional bias depends on **where an item sits among many items**, not only on total token count. Stage 1 still reads all 40–80 candidates in a single pass.
@@ -51,7 +37,7 @@ When an LLM summarizes a resume into telegraphic 1-line prose, it naturally para
 - **How to settle it**: Run Stage 1 on several shuffled orderings of the same pool and measure shortlist overlap and position-dependent inclusion ([05-test-bench.md](/docs/research/top-candidates/05-test-bench.md), Experiment 3).
 - **Candidate mitigations (unvalidated)**: shuffled multi-run voting, chunked Stage 1 with merged axes, or splitting axis discovery (needs the pool) from per-candidate axis scoring (does not need the pool).
 
-### 2.6 Carried-Over Criticism 2: Token Cost at Extraction Time vs. Query Time (Status: Trade-Off, Unmeasured)
+### 2.3 Carried-Over Criticism 2: Token Cost at Extraction Time vs. Query Time (Status: Trade-Off, Unmeasured)
 Cost has to be split into two separate token streams:
 
 | | Query time (what the ranking LLM reads) | Extraction time (what the ingestion LLM writes) |
@@ -59,7 +45,7 @@ Cost has to be split into two separate token streams:
 | **Mechanism D** | ~100 tokens of prose capsule per candidate | ~100 extra output tokens per CV |
 | **Mechanism E** | ~150–200 token digest per candidate, serialized in code | Every claim written out as a structured JSON object |
 
-- **Query time (E benefits)**: The digest is assembled in TypeScript from stored JSONB, with no LLM call. It is denser than prose (`[c1:action] Go, gRPC -> architected order routing | 18k rps`), and 40–80 digests fit in ~8k–12k tokens instead of 120k+ tokens of raw CVs. The "prose wastes tokens on grammar" argument (Section 2.3) applies here, and here E wins.
+- **Query time (E benefits)**: The digest is assembled in TypeScript from stored JSONB, with no LLM call. It is denser than prose (`[c1:action] Go, gRPC -> architected order routing | 18k rps`), and 40–80 digests fit in ~8k–12k tokens instead of 120k+ tokens of raw CVs. The "prose wastes tokens on grammar" argument ([03 Section 4.3](/docs/research/top-candidates/03-mechanism-d-critique.md)) applies here, and here E wins.
 - **Extraction time (E adds overhead)**: The digest can only be built if the extraction LLM first **outputs** every field. A rough per-claim estimate:
 
   ```text
@@ -71,7 +57,7 @@ Cost has to be split into two separate token streams:
    "evidence_span":"Architected order-routing microservices in Go and gRPC ..."}          ~30
   ```
 
-  This is roughly 100 output tokens per claim, or ~1,500 for 15 claims. The current `skills_demonstrated` aspect already pays for part of this, so the realistic increase is roughly **+500 to +1,500 output tokens per CV**, compared with the ~100 used to reject D. JSON keys, quotes, and braces are their own scaffolding overhead, the same kind of waste held against prose in Section 2.3. Output tokens also dominate per-CV extraction latency.
+  This is roughly 100 output tokens per claim, or ~1,500 for 15 claims. The current `skills_demonstrated` aspect already pays for part of this, so the realistic increase is roughly **+500 to +1,500 output tokens per CV**, compared with the ~100 used to reject D. JSON keys, quotes, and braces are their own scaffolding overhead, the same kind of waste held against prose in [03 Section 4.3](/docs/research/top-candidates/03-mechanism-d-critique.md). Output tokens also dominate per-CV extraction latency.
 - **Is the overhead worth it**: Likely yes, but for structural reasons, not cost reasons. E's extra tokens buy reusable structure: an ownership tier per claim and per skill (also usable by the deterministic skill evaluator), claim IDs for quote lookup instead of regeneration, a verbatim quote behind every claim, and a compact query-time digest. D's extra ~100 tokens bought a lossy summary. At the cost figures in [IDEA_AND_RESEARCH.md](/docs/IDEA_AND_RESEARCH.md) (Section 4.1), a rough doubling of output tokens moves ingestion from ~$1–1.5 to an estimated ~$2–3 per 1,000 CVs, which is small against per-job batch pricing.
 - **Conclusion**: Cost is not a valid reason to prefer E over D. E's justification rests on structure, tier integrity, and query-time density. The actual extraction delta is unmeasured ([05-test-bench.md](/docs/research/top-candidates/05-test-bench.md), Experiment 4).
 - **Possible reduction (unvalidated)**: Store `evidence_span` as character offsets (`{start, end}`) into the stored raw text instead of a copied sentence. This removes the largest field from the output, and code can guarantee the quote is exact.
@@ -90,7 +76,7 @@ However, raw document drag-and-drop suffers from four structural limitations tha
 1. **Upload Limits and Context Size**:
    - 80 raw resume PDFs consume 120,000+ tokens. Over 70% of those tokens are boilerplate duty descriptions, layout headers, and formatting artifacts.
    - In massive context windows, attention degrades over candidates positioned in the middle.
-   - In Mechanism E, 80 candidates serialized into dense factual propositions require ~12,000 tokens. This removes the upload limit and reduces query-time tokens, but it does not remove positional bias across 40–80 candidates in one prompt (Section 2.5).
+   - In Mechanism E, 80 candidates serialized into dense factual propositions require ~12,000 tokens. This removes the upload limit and reduces query-time tokens, but it does not remove positional bias across 40–80 candidates in one prompt (Section 2.2).
 
 2. **Epistemic Immunization Against AI-Generated Resume Inflation**:
    - ChatGPT drag-and-drop is vulnerable to inflated prose. A candidate who writes *"Spearheaded cross-functional alignment across platform squads scaling Go microservices"* routinely outranks a candidate who plainly writes *"Built Go payment settlement microservices."*
@@ -116,7 +102,7 @@ Mechanism E's hypothesis is that this depends on distinguishing between two type
    - The hypothesis models a 1,500-token resume as roughly:
      - ~400 tokens of layout headers, contact blocks, generic career objectives, and repeated skill tags.
      - ~450 tokens of generic duty filler (*"Collaborated with Agile squads, attended standups, wrote clean maintainable code"*).
-     - ~450 tokens of grammatical scaffolding (*"Was responsible for leading the development of..."* = 8 tokens to express an active ownership predicate) wrapped around the 400–700 tokens of claim-bearing sentences noted in Section 2.1.
+     - ~450 tokens of grammatical scaffolding (*"Was responsible for leading the development of..."* = 8 tokens to express an active ownership predicate) wrapped around the 400–700 tokens of claim-bearing sentences noted in [03 Section 4.1](/docs/research/top-candidates/03-mechanism-d-critique.md).
      - **An estimated ~150–200 tokens of unique factual propositions** (proper nouns, systems, architectures, domain workflows, metrics, tools, and awards) once that scaffolding is stripped.
    - If the serial extraction prompt is instructed **not to judge which concrete fact is important**, and instead to **extract every specific claim, noun, and metric while stripping only generic duty clichés and grammatical filler**, it should preserve far more pool-relevant detail than summarization.
    - **Why this remains an open hypothesis rather than a guarantee**:
@@ -188,7 +174,7 @@ export interface ExtractedNotableSignal {
 
 ## 5. Deterministic Aspect Serialization in TypeScript
 
-At query time, TypeScript compiles the candidate profile into a compact, pointer-backed digest at **$0 marginal compute cost** (the extraction-time cost of producing these fields is covered in Section 2.6):
+At query time, TypeScript compiles the candidate profile into a compact, pointer-backed digest at **$0 marginal compute cost** (the extraction-time cost of producing these fields is covered in Section 2.3):
 
 ```text
 [cand_01] 4.6y FT (2 roles, avg 2.3y) | BSc CS @ NUST (3.65) | Islamabad, PKR 380k, 30d notice
@@ -211,52 +197,39 @@ spikes:
 
 ---
 
-## 6. The Two-Stage In-Context Discovery Pipeline
+## 6. How Mechanism E Modifies the Two-Stage Discovery Funnel
+
+Mechanism E keeps the Stage 0 $\rightarrow$ Stage 1 $\rightarrow$ Stage 2 funnel structure introduced in [03-mechanism-d-critique.md](/docs/research/top-candidates/03-mechanism-d-critique.md) (Sections 1–2) and modifies the inputs, outputs, and quote hydration across Stage 1 and Stage 2:
 
 ```text
-200 Resumes in Job Pool
+Stage 0 (unchanged): Deterministic Gatekeeper ($0, TypeScript) -> ~40-80 Viable Contenders
   │
-  ├─► Stage 0: Deterministic Gatekeeper ($0, TypeScript)
-  │     Filter out hard `contradicted` dealbreakers
-  │     (keep `confirmed`, `inferred`, `2nd Look`, and `not_stated` logistics)
-  │     ──> ~40–80 Viable Contenders
+  ├─► Stage 1: In-Context Discovery & Shortlist (~8k-12k tokens, 1 LLM call)
+  │     Input (changed):  Job Spec + 40-80 Pointer-Backed Aspect Digests (instead of prose capsules)
+  │     Output (changed): 3-5 Emergent Axes + Top 20 Shortlist citing claim IDs (e.g., [cand_01:c1, c3])
   │
-  ├─► Stage 1: In-Context Pool Discovery & Shortlist (~8k–12k tokens, 1 LLM call)
-  │     Input: Job Spec + All 40–80 Structured Aspect Digests
-  │     Output:
-  │       1. 3–5 Emergent Differentiating Axes discovered in THIS pool for THIS job
-  │       2. Top 20 Shortlist with citing claim IDs (e.g., [cand_01:c1, c3])
-  │
-  └─► Stage 2: Deep Comparative Tournament & Per-Axis Evaluation Matrix (~5k–7k tokens, 1 LLM call)
-        Input: Job Spec + Emergent Axes + All 20 Finalists (with ALL verbatim evidence spans hydrated)
-        Output:
-          1. Per-Axis Evaluation Matrix for all 20 finalists (scores + claim citations)
-          2. Ordered Top 10 Ranking with comparative pool-relative rationales
+  └─► Stage 2: Deep Comparative Tournament & Per-Axis Matrix (~5k-7k tokens, 1 LLM call)
+        Input (changed):  Job Spec + Emergent Axes + All 20 Finalists with ALL verbatim evidence_spans hydrated
+        Output (changed): 1. Per-Axis Evaluation Matrix across all 20 finalists (strong | moderate | none + claim_ids)
+                          2. Default Composite Top 10 with pool-relative rationales
 ```
 
-### 6.1 Stage 0: Deterministic Gatekeeper ($0, TypeScript)
-Using existing evaluators in `/src/features/review/core/evaluators/`, prune candidates who violate hard dealbreakers (`min_experience`, mandatory degree level, explicit salary above maximum). Candidates with `not_stated` logistics or minor soft gaps are retained, narrowing the pool to 40–80 viable contenders at zero cost.
+### 6.1 Stage 1 Changes: Pointer-Backed Digests & Claim Citations
+Instead of reading free-text prose capsules, Stage 1 reads the 40–80 structured aspect digests (Section 5) and tags each shortlisted candidate with the primary `claim_id`s that justified selection. Stage 1 recall under positional bias across 40–80 candidates remains unvalidated (Section 2.2).
 
-### 6.2 Stage 1: In-Context Pool Discovery & Shortlisting (~8k–12k Tokens)
-All 40–80 structured digests are placed into context alongside the job description. The LLM performs two tasks in a single prompt:
-1. **Identifies 3–5 Emergent Differentiating Axes**: Discovers what separates the upper echelon in this specific pool relative to the job's core challenges (e.g., high-throughput concurrency, ledger reconciliation depth, rapid internal promotion).
-2. **Selects Top 20 Shortlist**: Filters contenders down to 20 finalists, tagging primary claim citations for each selection. The shortlist is intended to be high-recall, but Stage 1 recall under positional bias is unvalidated (Section 2.5).
+### 6.2 Stage 2 Changes: Full-Finalist Hydration & Per-Axis Evaluation Matrix (~5k–7k Tokens)
+To eliminate the citation tunnel vision of Mechanism D ([03 Section 4.4](/docs/research/top-candidates/03-mechanism-d-critique.md)), TypeScript hydrates **all** verbatim `evidence_span` sentences from PostgreSQL JSONB for all 20 finalists (~250 tokens per candidate $\times 20 = 5,000$ tokens), not just the claims cited in Stage 1. Claims that were not cited during shortlisting remain visible when evaluating secondary emergent axes in Stage 2.
 
-### 6.3 Stage 2: Deep Comparative Tournament & Per-Axis Evaluation Matrix (~5k–7k Tokens)
-For the 20 finalists, TypeScript hydrates **all** verbatim `evidence_span` sentences from PostgreSQL JSONB (~250 tokens per candidate $\times 20 = 5,000$ tokens).
-
-Hydrating all claims across the 20 finalists prevents confirmation bias: claims that were not cited in Stage 1 remain fully visible when evaluating secondary emergent axes in Stage 2.
-
-The Stage 2 LLM evaluates the 20 finalists head-to-head across the discovered axes and outputs:
-1. **The Per-Axis Evaluation Matrix**: A structured scoring breakdown (`strong` | `moderate` | `none`) linking each candidate to specific `claim_id` pointers for each axis.
+The Stage 2 LLM evaluates the 20 finalists across the discovered axes and outputs:
+1. **The Per-Axis Evaluation Matrix**: A structured scoring breakdown (`strong` | `moderate` | `none`) linking each finalist to specific `claim_id` pointers for each axis.
 2. **Default Composite Top 10**: The initial ranked list with pool-relative comparative rationales.
 
-### 6.4 Why the Per-Axis Matrix Enables Truly Interactive Axis Badges at $0
+### 6.3 Why the Per-Axis Matrix Enables Interactive Axis Toggles at $0
 Because Stage 2 emits an evaluation matrix across all 20 finalists for each emergent axis, the UI can render the Emergent Differentiators as interactive pill toggles:
-- If a recruiter unchecks an axis (e.g., *"Open-Source Traction"* is deemed irrelevant for an internal enterprise backend role), TypeScript recalculates the composite ordering over the 20 finalists instantly in memory.
-- **Zero additional LLM calls or latency**: Recruiters can customize and explore the emergent criteria dynamically at $0 marginal compute cost.
+- If a recruiter unchecks an axis (e.g., *"Open-Source Traction"* is deemed irrelevant for an internal enterprise backend role), TypeScript recalculates the composite ordering over the 20 finalists in memory with no additional LLM call.
+- **Scope limitation**: Re-ranking operates over the 20 Stage 1 finalists; whether toggling an axis would have promoted candidates ranked 21–80 into the top 10 is tested in [05-test-bench.md](/docs/research/top-candidates/05-test-bench.md) (Experiment 7).
 
-### 6.5 $O(1)$ Hallucination-Free Verbatim Quote Hydration
+### 6.4 $O(1)$ Hallucination-Free Verbatim Quote Hydration
 When rendering candidate evidence cards in the UI:
 - The UI references the `claim_id` emitted by the LLM (e.g., `cand_01:c1`).
 - TypeScript resolves `c1` directly against the stored JSONB aspect profile to display the literal quote:
