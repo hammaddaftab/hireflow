@@ -177,7 +177,54 @@ export const candidate04Bilal: ParsedCandidateProfile = {
     stated_availability: "available",
     languages: ["English", "Urdu"],
   },
-  role_claims: { claims: [] },
+  role_claims: {
+    claims: [
+      {
+        claim_id: "c1",
+        source_entry_ref: "work_1",
+        claim_tier: "action_attributed",
+        skills: [
+          { skill: "Java 17", syntactic_tier: "action_attributed", canonical_skill: "java" },
+          { skill: "Spring Boot", syntactic_tier: "action_attributed", canonical_skill: "spring boot" },
+          { skill: "REST API", syntactic_tier: "action_attributed", canonical_skill: "rest api" },
+        ],
+        raw_nouns: [],
+        compact_action: "architected enterprise billing and settlement microservices",
+        outcome_attached: "PKR 95M/mo txns",
+        evidence_span:
+          "Architected enterprise billing and payment settlement microservices in Java 17 and Spring Boot, processing over PKR 95M in monthly transactions.",
+      },
+      {
+        claim_id: "c2",
+        source_entry_ref: "work_1",
+        claim_tier: "action_attributed",
+        skills: [
+          { skill: "PostgreSQL", syntactic_tier: "action_attributed", canonical_skill: "postgresql" },
+          { skill: "Docker", syntactic_tier: "action_attributed", canonical_skill: "docker" },
+        ],
+        raw_nouns: [],
+        compact_action: "optimized relational schemas and containerized CI/CD builds",
+        outcome_attached: "28M txn records",
+        evidence_span:
+          "Designed and optimized relational PostgreSQL schemas across 28M transactional records. Packaged applications into Docker containers and automated CI/CD builds for rapid testing cycles.",
+      },
+      {
+        claim_id: "c3",
+        source_entry_ref: "work_2",
+        claim_tier: "action_attributed",
+        skills: [
+          { skill: "Spring Cloud", syntactic_tier: "action_attributed", canonical_skill: "spring boot" },
+          { skill: "PostgreSQL", syntactic_tier: "action_attributed", canonical_skill: "postgresql" },
+          { skill: "Docker", syntactic_tier: "action_attributed", canonical_skill: "docker" },
+        ],
+        raw_nouns: [],
+        compact_action: "developed modular microservices and REST API gateways",
+        outcome_attached: "+28% query efficiency",
+        evidence_span:
+          "Developed modular Spring Cloud microservices integrated with PostgreSQL databases, boosting query efficiency by 28%. Containerized enterprise components using Docker and maintained customer-facing REST API gateways on Linux servers.",
+      },
+    ],
+  },
   notable_signals: { signals: [] },
   extraction_metadata: {
     file_hash: "a1b2c3d4e5f60718293a4b5c6d7e8f90123456789abcdef0123456789abcdef0",

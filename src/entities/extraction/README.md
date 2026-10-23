@@ -14,6 +14,8 @@ Aspect schemas in [`/src/entities/extraction/candidate/aspects/`](/src/entities/
 - `skills_declared.md` / `skillsDeclared.ts`
 - `education.md` / `education.ts`
 - `logistics.md` / `logistics.ts`
+- `role_claims.md` / `roleClaims.ts`
+- `notable_signals.md` / `notableSignals.ts`
 - `extraction_metadata.md` / `extractionMetadata.ts`
 
 ## Job-side
@@ -23,6 +25,7 @@ Prompt & Schema in [`/src/entities/extraction/job/`](/src/entities/extraction/jo
 ## Matching (Query time)
 Prompt & Schema in [`/src/entities/extraction/matching/`](/src/entities/extraction/matching/):
 - `query_evaluation.md` / `queryEvaluation.ts` - Batched per-candidate evaluation prompt and schema
+- `emergent_axes.md` / `emergentAxes.ts` - Pool-relative emergent axis discovery prompt and schema (Mechanism E)
 
 ## Status Legend
 - `Draft` - Decided in conversation, not yet implemented

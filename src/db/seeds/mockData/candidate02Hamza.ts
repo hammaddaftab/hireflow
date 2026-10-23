@@ -168,7 +168,66 @@ export const candidate02Hamza: ParsedCandidateProfile = {
     stated_availability: "available",
     languages: ["English", "Urdu"],
   },
-  role_claims: { claims: [] },
+  role_claims: {
+    claims: [
+      {
+        claim_id: "c1",
+        source_entry_ref: "work_1",
+        claim_tier: "action_attributed",
+        skills: [
+          { skill: "Golang", syntactic_tier: "action_attributed", canonical_skill: "go" },
+        ],
+        raw_nouns: [],
+        compact_action: "engineered asynchronous ledger dispatch engines",
+        outcome_attached: "35k events/min, <25ms overhead",
+        evidence_span:
+          "Engineered asynchronous ledger dispatch engines in Golang processing 35,000 transaction events per minute with sub-25ms response overhead.",
+      },
+      {
+        claim_id: "c2",
+        source_entry_ref: "work_1",
+        claim_tier: "action_attributed",
+        skills: [
+          { skill: "Postgres", syntactic_tier: "action_attributed", canonical_skill: "postgresql" },
+        ],
+        raw_nouns: ["connection pools", "vacuum policies"],
+        compact_action: "refactored high-concurrency storage clusters",
+        outcome_attached: "-40% CPU throttling",
+        evidence_span:
+          "Refactored high-concurrency Postgres storage clusters, tuning connection pools and vacuum policies to reduce CPU throttling by 40%.",
+      },
+      {
+        claim_id: "c3",
+        source_entry_ref: "work_1",
+        claim_tier: "action_attributed",
+        skills: [
+          { skill: "Docker", syntactic_tier: "action_attributed", canonical_skill: "docker" },
+          { skill: "RESTful APIs", syntactic_tier: "action_attributed", canonical_skill: "rest api" },
+          { skill: "AWS", syntactic_tier: "action_attributed", canonical_skill: "amazon web services" },
+        ],
+        raw_nouns: [],
+        compact_action: "containerized worker pods and built enterprise sync APIs",
+        outcome_attached: "-55% cold start, 3.5x sync throughput",
+        evidence_span:
+          "Containerized distributed worker processes using Docker, decreasing cold start spin-up times by 55% across production pods. Constructed secure RESTful APIs for enterprise integration, scaling partner data synchronization throughput by 3.5x.",
+      },
+      {
+        claim_id: "c4",
+        source_entry_ref: "work_2",
+        claim_tier: "action_attributed",
+        skills: [
+          { skill: "Golang", syntactic_tier: "action_attributed", canonical_skill: "go" },
+          { skill: "Postgres", syntactic_tier: "action_attributed", canonical_skill: "postgresql" },
+          { skill: "Docker", syntactic_tier: "action_attributed", canonical_skill: "docker" },
+        ],
+        raw_nouns: [],
+        compact_action: "implemented backend batch processing services",
+        outcome_attached: "-48% batch runtime, 99.95% uptime",
+        evidence_span:
+          "Implemented core backend data processing services using Golang and Postgres, reducing batch job runtimes by 48%. Built standardized RESTful APIs in Docker environments, maintaining 99.95% service uptime across client-facing endpoints.",
+      },
+    ],
+  },
   notable_signals: { signals: [] },
   extraction_metadata: {
     file_hash: "42bf2b51b7baedecab75b74cd41b0586d944837b6c0cae4c3f829857f833e634",

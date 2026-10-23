@@ -12,3 +12,5 @@ export * from "./normalizers/normalizeCandidateProfile";
 export * from "./pipeline/candidateExtractionService";
 export * from "./pipeline/heuristicExtraction";
 export * from "./pipeline/extractCandidateFromDocument";
+export * from "./digest/serializeCandidateDigest";
+export * from "./ranking/discoverEmergentAxes";

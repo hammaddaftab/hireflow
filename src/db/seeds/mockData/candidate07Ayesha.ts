@@ -162,7 +162,53 @@ export const candidate07Ayesha: ParsedCandidateProfile = {
     stated_availability: "not_stated",
     languages: ["English", "Urdu"],
   },
-  role_claims: { claims: [] },
+  role_claims: {
+    claims: [
+      {
+        claim_id: "c1",
+        source_entry_ref: "work_1",
+        claim_tier: "action_attributed",
+        skills: [
+          { skill: "Go", syntactic_tier: "action_attributed", canonical_skill: "go" },
+          { skill: "Docker", syntactic_tier: "action_attributed", canonical_skill: "docker" },
+          { skill: "REST API", syntactic_tier: "action_attributed", canonical_skill: "rest api" },
+        ],
+        raw_nouns: [],
+        compact_action: "built distributed search indexing microservices",
+        outcome_attached: "22k rps, <20ms p99",
+        evidence_span:
+          "Built distributed search indexing microservices in Go handling 22,000 requests/sec with sub-20ms p99 response times.",
+      },
+      {
+        claim_id: "c2",
+        source_entry_ref: "work_1",
+        claim_tier: "action_attributed",
+        skills: [
+          { skill: "PostgreSQL", syntactic_tier: "action_attributed", canonical_skill: "postgresql" },
+        ],
+        raw_nouns: ["connection pooling"],
+        compact_action: "designed automated query indexing schemas",
+        outcome_attached: "30M user records",
+        evidence_span:
+          "Designed complex PostgreSQL schemas with connection pooling and automated query indexing for 30M user records.",
+      },
+      {
+        claim_id: "c3",
+        source_entry_ref: "work_2",
+        claim_tier: "action_attributed",
+        skills: [
+          { skill: "Go", syntactic_tier: "action_attributed", canonical_skill: "go" },
+          { skill: "PostgreSQL", syntactic_tier: "action_attributed", canonical_skill: "postgresql" },
+          { skill: "Docker", syntactic_tier: "action_attributed", canonical_skill: "docker" },
+        ],
+        raw_nouns: [],
+        compact_action: "developed logistics and delivery workflow microservices",
+        outcome_attached: null,
+        evidence_span:
+          "Developed Go microservices and transactional database schemas in PostgreSQL for logistics and delivery workflows.",
+      },
+    ],
+  },
   notable_signals: { signals: [] },
   extraction_metadata: {
     file_hash: "c3d4e5f60718293a4b5c6d7e8f90123456789abcdef0123456789abcdef012",

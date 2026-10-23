@@ -176,7 +176,38 @@ export const candidate05Usman: ParsedCandidateProfile = {
     stated_availability: "available",
     languages: ["English", "Urdu"],
   },
-  role_claims: { claims: [] },
+  role_claims: {
+    claims: [
+      {
+        claim_id: "c1",
+        source_entry_ref: "work_1",
+        claim_tier: "action_attributed",
+        skills: [
+          { skill: "Go", syntactic_tier: "action_attributed", canonical_skill: "go" },
+          { skill: "REST API", syntactic_tier: "action_attributed", canonical_skill: "rest api" },
+          { skill: "Docker", syntactic_tier: "action_attributed", canonical_skill: "docker" },
+        ],
+        raw_nouns: ["JWT auth", "idempotency validation"],
+        compact_action: "engineered high-throughput order dispatch microservices",
+        outcome_attached: "12k req/min, 99.9% uptime",
+        evidence_span:
+          "Engineered high-throughput order dispatch microservices in Go, sustaining over 12,000 requests per minute with 99.9% uptime.",
+      },
+      {
+        claim_id: "c2",
+        source_entry_ref: "work_1",
+        claim_tier: "action_attributed",
+        skills: [
+          { skill: "PostgreSQL", syntactic_tier: "action_attributed", canonical_skill: "postgresql" },
+        ],
+        raw_nouns: [],
+        compact_action: "optimized relational audit log schemas",
+        outcome_attached: "18M records, +38% query speed",
+        evidence_span:
+          "Optimized PostgreSQL relational schemas across 18M audit log records, accelerating query completion by 38%.",
+      },
+    ],
+  },
   notable_signals: { signals: [] },
   extraction_metadata: {
     file_hash: "b2c3d4e5f60718293a4b5c6d7e8f90123456789abcdef0123456789abcdef01",

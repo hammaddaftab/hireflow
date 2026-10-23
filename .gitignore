@@ -3,6 +3,8 @@ node_modules
 coverage/
 scripts/*
 !scripts/extraction-recall-audit.ts
+!scripts/discover-emergent-axes.ts
+!scripts/extract-booklet-resumes.py
 *-local*
 *.tar
 tsconfig.tsbuildinfo

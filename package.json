@@ -21,6 +21,7 @@
     "demo:setup-resumes:decouple": "NODE_OPTIONS=--network-family-autoselection-attempt-timeout=5000 npx tsx --env-file=.env scripts/setup-demo-resumes.ts --decouple",
     "demo:setup-candidates": "NODE_OPTIONS=--network-family-autoselection-attempt-timeout=5000 npx tsx --env-file=.env scripts/setup-demo-candidates.ts",
     "research:exp1": "NODE_OPTIONS='--network-family-autoselection-attempt-timeout=5000 --conditions=react-server' npx tsx --env-file=.env scripts/extraction-recall-audit.ts",
+    "research:axes": "NODE_OPTIONS='--network-family-autoselection-attempt-timeout=5000 --conditions=react-server' npx tsx --env-file=.env scripts/discover-emergent-axes.ts",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",

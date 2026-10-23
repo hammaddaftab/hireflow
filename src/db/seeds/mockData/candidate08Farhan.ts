@@ -177,7 +177,38 @@ export const candidate08Farhan: ParsedCandidateProfile = {
     stated_availability: "available",
     languages: ["English", "Urdu"],
   },
-  role_claims: { claims: [] },
+  role_claims: {
+    claims: [
+      {
+        claim_id: "c1",
+        source_entry_ref: "work_1",
+        claim_tier: "action_attributed",
+        skills: [
+          { skill: "Go", syntactic_tier: "action_attributed", canonical_skill: "go" },
+          { skill: "Docker", syntactic_tier: "action_attributed", canonical_skill: "docker" },
+          { skill: "REST API", syntactic_tier: "action_attributed", canonical_skill: "rest api" },
+        ],
+        raw_nouns: [],
+        compact_action: "led architecture of real-time ride dispatch engines",
+        outcome_attached: "50k txns/min, <15ms p99",
+        evidence_span:
+          "Led architecture of real-time ride dispatch engines in Go processing 50,000 transactions/min with sub-15ms p99 latency.",
+      },
+      {
+        claim_id: "c2",
+        source_entry_ref: "work_1",
+        claim_tier: "action_attributed",
+        skills: [
+          { skill: "PostgreSQL", syntactic_tier: "action_attributed", canonical_skill: "postgresql" },
+        ],
+        raw_nouns: ["read-replicas"],
+        compact_action: "re-architected mission-critical databases",
+        outcome_attached: "80M trip records",
+        evidence_span:
+          "Re-architected mission-critical PostgreSQL databases with read-replicas across 80M trip records.",
+      },
+    ],
+  },
   notable_signals: { signals: [] },
   extraction_metadata: {
     file_hash: "d4e5f60718293a4b5c6d7e8f90123456789abcdef0123456789abcdef0123",

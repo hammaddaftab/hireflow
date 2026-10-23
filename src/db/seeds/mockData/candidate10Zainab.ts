@@ -188,7 +188,55 @@ export const candidate10Zainab: ParsedCandidateProfile = {
     stated_availability: "available",
     languages: ["English", "Urdu"],
   },
-  role_claims: { claims: [] },
+  role_claims: {
+    claims: [
+      {
+        claim_id: "c1",
+        source_entry_ref: "work_1",
+        claim_tier: "action_attributed",
+        skills: [
+          { skill: "Go", syntactic_tier: "action_attributed", canonical_skill: "go" },
+          { skill: "gRPC", syntactic_tier: "action_attributed", canonical_skill: "grpc" },
+          { skill: "REST API", syntactic_tier: "action_attributed", canonical_skill: "rest api" },
+        ],
+        raw_nouns: [],
+        compact_action: "architected vehicle telemetry dispatch services",
+        outcome_attached: "25k rps, 99.99% uptime, -45% latency",
+        evidence_span:
+          "Architected vehicle telemetry dispatch services in Go processing 25,000 requests/sec with 99.99% uptime, reducing end-to-end event latency by 45%.",
+      },
+      {
+        claim_id: "c2",
+        source_entry_ref: "work_1",
+        claim_tier: "action_attributed",
+        skills: [
+          { skill: "PostgreSQL", syntactic_tier: "action_attributed", canonical_skill: "postgresql" },
+          { skill: "Docker", syntactic_tier: "action_attributed", canonical_skill: "docker" },
+          { skill: "Kubernetes", syntactic_tier: "action_attributed", canonical_skill: "kubernetes" },
+        ],
+        raw_nouns: ["GPS telemetry partitions"],
+        compact_action: "designed partitioned telemetry tables on Kubernetes",
+        outcome_attached: "60M GPS events",
+        evidence_span:
+          "Designed and optimized partitioned PostgreSQL tables indexing 60M GPS telemetry events. Containerized microservice deployments with Docker on Kubernetes Linux nodes.",
+      },
+      {
+        claim_id: "c3",
+        source_entry_ref: "work_2",
+        claim_tier: "action_attributed",
+        skills: [
+          { skill: "Go", syntactic_tier: "action_attributed", canonical_skill: "go" },
+          { skill: "PostgreSQL", syntactic_tier: "action_attributed", canonical_skill: "postgresql" },
+          { skill: "Docker", syntactic_tier: "action_attributed", canonical_skill: "docker" },
+        ],
+        raw_nouns: [],
+        compact_action: "developed enterprise data ingestion microservices",
+        outcome_attached: null,
+        evidence_span:
+          "Developed enterprise data ingestion microservices in Go, maintaining robust transactional integrity across PostgreSQL databases.",
+      },
+    ],
+  },
   notable_signals: { signals: [] },
   extraction_metadata: {
     file_hash: "f60718293a4b5c6d7e8f90123456789abcdef0123456789abcdef012345",
