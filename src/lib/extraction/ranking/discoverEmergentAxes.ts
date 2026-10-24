@@ -76,6 +76,7 @@ export interface DiscoverEmergentAxesOptions {
   provider?: AiProvider;
   model?: string;
   timeoutMs?: number;
+  citationStyle?: "pointer" | "quote";
 }
 
 export interface EmergentAxesDiscoveryResult {
@@ -320,10 +321,34 @@ function normalizeCitationIds(
   return { candidateId, refId };
 }
 
+// Normalizes text for free-text quote verification against raw CV text
+function normalizeForQuoteMatch(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[\r\n\t]+/g, " ")
+    .replace(/[^a-z0-9\s.%+-]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+// Computes token overlap between a free-text citation and a raw CV excerpt
+function computeQuoteTokenOverlap(quote: string, target: string): number {
+  const tokensA = new Set(normalizeForQuoteMatch(quote).split(" ").filter((t) => t.length > 2));
+  const tokensB = new Set(normalizeForQuoteMatch(target).split(" ").filter((t) => t.length > 2));
+  if (tokensA.size === 0 || tokensB.size === 0) return 0;
+
+  let intersection = 0;
+  for (const t of tokensA) {
+    if (tokensB.has(t)) intersection++;
+  }
+  return intersection / Math.min(tokensA.size, tokensB.size);
+}
+
 // Resolves and validates LLM-emitted emergent axes against the indexed candidate digest pool
 export function resolveAndVerifyEmergentAxes(
   rawPromptOutput: EmergentAxesPrompt,
-  poolMap: Map<string, IndexedCandidateDigest>
+  poolMap: Map<string, IndexedCandidateDigest>,
+  citationStyle: "pointer" | "quote" = "pointer"
 ): { extraction: EmergentAxesExtraction; warnings: string[] } {
   const warnings: string[] = [];
   const resolvedAxes: EmergentAxis[] = [];
@@ -334,6 +359,59 @@ export function resolveAndVerifyEmergentAxes(
     const seenPairs = new Set<string>();
 
     for (const cite of rawAxis.supporting_claims || []) {
+      if (citationStyle === "quote") {
+        const candidateId = cite.candidate_id.trim().replace(/^\[|\]$/g, "");
+        const quoteText = cite.ref_id.trim();
+        const pairKey = `${candidateId}::${quoteText}`;
+        if (seenPairs.has(pairKey)) continue;
+
+        const candidateDigest = poolMap.get(candidateId);
+        if (!candidateDigest) {
+          warnings.push(
+            `Axis '${rawAxis.label}' cited unknown candidate_id '${cite.candidate_id}'`
+          );
+          continue;
+        }
+
+        const normQuote = normalizeForQuoteMatch(quoteText);
+        const normCv = normalizeForQuoteMatch(candidateDigest.digestText);
+        const isExactSubstring = normQuote.length > 0 && normCv.includes(normQuote);
+
+        // Find best matching line/paragraph in raw CV
+        const lines = candidateDigest.digestText
+          .split(/\r?\n/)
+          .map((l) => l.trim())
+          .filter((l) => l.length > 10);
+
+        let bestOverlap = isExactSubstring ? 1.0 : 0;
+        let bestLine: string | null = isExactSubstring ? quoteText : null;
+        if (!isExactSubstring) {
+          for (const line of lines) {
+            const ov = computeQuoteTokenOverlap(quoteText, line);
+            if (ov > bestOverlap) {
+              bestOverlap = ov;
+              bestLine = line;
+            }
+          }
+        }
+
+        if (!isExactSubstring && bestOverlap < 0.75) {
+          warnings.push(
+            `Axis '${rawAxis.label}' free-text citation on '${candidateId}' failed verbatim verification (overlap ${(bestOverlap * 100).toFixed(0)}%): "${quoteText.slice(0, 90)}..."`
+          );
+          continue;
+        }
+
+        seenPairs.add(pairKey);
+        resolvedClaims.push({
+          candidate_id: candidateId,
+          ref_id: isExactSubstring ? "direct_quote" : "paraphrase",
+          digest_line: bestLine,
+          evidence_span: quoteText,
+        });
+        continue;
+      }
+
       const { candidateId, refId } = normalizeCitationIds(cite.candidate_id, cite.ref_id);
       const pairKey = `${candidateId}::${refId}`;
       if (seenPairs.has(pairKey)) continue;
@@ -443,9 +521,15 @@ export async function discoverEmergentAxesWithUsage(
     poolMap.set(indexed.candidateId, indexed);
   }
 
+  const citationStyle = options.citationStyle ?? "pointer";
   const jobSpecText = formatJobSpecForDiscovery(options.job);
   const digestsBatchText = indexedPool.map((d) => d.digestText).join("\n\n");
-  const prompt = buildEmergentAxesPrompt(jobSpecText, digestsBatchText, indexedPool.length);
+  const prompt = buildEmergentAxesPrompt(
+    jobSpecText,
+    digestsBatchText,
+    indexedPool.length,
+    citationStyle
+  );
 
   const jobSpecTokensApprox = approxTokens(jobSpecText);
   const digestsTokensApprox = approxTokens(digestsBatchText);
@@ -531,7 +615,8 @@ export async function discoverEmergentAxesWithUsage(
     const latencyMs = Math.round(performance.now() - startTime);
     const { extraction, warnings: verifyWarnings } = resolveAndVerifyEmergentAxes(
       object,
-      poolMap
+      poolMap,
+      citationStyle
     );
     warnings.push(...verifyWarnings);
 

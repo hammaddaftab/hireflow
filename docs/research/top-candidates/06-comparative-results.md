@@ -4,7 +4,7 @@
 
 Recruiters screening 50–300 off-platform resumes face a broken trade-off:
 1. **Legacy ATS / Keyword Filters**: Fast and cheap, but collapse candidates into a black-box score and miss emergent excellence signals (research publications, system scale, selective lab pedigree, promotion velocity).
-2. **Raw CV Drag-and-Drop into LLMs (`raw` baseline)**: Captures open-world signals, but blows up context windows (~20,000 tokens for just 30 1-page graduate resumes, scaling to 120,000+ on senior CVs), suffers from **positional attention bias ("lost in the middle")**, gets fooled by **passive keyword-stuffing inflation**, and fails to resolve claim citations (**95.9% citation hydration failure rate**).
+2. **Raw CV Drag-and-Drop into LLMs (`raw` baseline)**: Captures open-world signals, but blows up context windows (~20,000 tokens for just 30 1-page graduate resumes, scaling to 120,000+ on senior CVs), suffers from **positional attention bias ("lost in the middle")**, gets fooled by **passive keyword-stuffing inflation**, and relies on **free-text quote citations** that suffer from cross-candidate contamination (**85.0% citation accuracy in canonical order vs. 100.0% deterministic pointer resolution in Mechanism E** — see [06.1-citation-hydration-audit.md](/docs/research/top-candidates/06.1-citation-hydration-audit.md)).
 
 **Our Approach — Mechanism E ([04-mechanism-e-pointer-aspect-spec.md](/docs/research/top-candidates/04-mechanism-e-pointer-aspect-spec.md))**:
 We parse each resume **once at ingestion** into de-noised propositional tuples (`[claim_id:syntactic_tier] raw_nouns -> compact_action | outcome`) linked to verbatim sentences in PostgreSQL JSONB. At query time, TypeScript serializes each candidate into a ~143-token pointer digest at **$0 compute cost** and discovers pool-relative emergent axes across the contender pool.
@@ -16,7 +16,7 @@ We parse each resume **once at ingestion** into de-noised propositional tuples (
    - When the outer 16 CVs (`cand_01..08` + `cand_23..30`) were moved into the middle and the middle 14 CVs (`cand_09..22`) were moved to the outer edges:
    - **Full Raw CVs suffered a 10.5 percentage-point positional citation swing**, **completely lost its `Quantified Model Performance` axis**, and **dropped 100% of citations for `cand_30`** when moved from position #30 to the middle.
    - **Mechanism E maintained a 2.7 percentage-point cohort variance** (`66.7%` vs `64.0%`), **preserved all core technical axes** (including `cand_30`'s multimodal citations in the middle), and achieved **100% (5/5) identical claim citations** on `Quantified Product Impact` across both permutations.
-4. **100% $O(1)$ Verbatim Quote Hydration (49/49) vs. 4.1% (2/49) on Raw CVs**: Mechanism E hydrated **49 of 49 citations** across the 30-CV runs with **0 warnings**, whereas Full Raw CVs produced **47 broken reference warnings** (`95.9%` failure rate).
+4. **100% Deterministic Pointer Hydration (49/49) vs. Free-Text Quote Citations on Raw CVs (85.0% Canonical / 93.2% Combined)**: Because Raw CVs do not have pre-extracted pointer IDs, `--source raw` cites via **free-text verbatim quotes and paraphrases**, whereas Mechanism E cites via **structured pointers (`[c1]`, `[s1]`)**. Mechanism E hydrated **49 of 49 citations (100.0%)** in $O(1)$ database lookup with **0 warnings**, while Raw Free-Text Quotes achieved **17/20 (85.0%)** in canonical order (suffering from a cross-candidate contamination where `cand_01`'s FIT 2024 conference paper was pasted onto `cand_20`) and **24/24 (100.0%)** in inside-out order (**41/44 or 93.2% combined**). Full citation audit in [06.1-citation-hydration-audit.md](/docs/research/top-candidates/06.1-citation-hydration-audit.md).
 5. **Anti-Inflation Smoking Gun**: Mechanism E caught and downgraded an assisted internship claim (`"potentially reducing processing time by 60%"` on `cand_08`) via `[c2:peripheral]`, which fooled the Raw CV baseline into setting `"60% processing-time reduction"` as a top-tier Strong benchmark.
 
 ---
@@ -34,8 +34,9 @@ Data sourced from:
 | **Stage 1 Total Provider Tokens** | 11,312 tokens | 5,155 tokens | 26,566 tokens | **9,641 tokens** | **2.76x cheaper (-63.7%)** |
 | **Claims Retained (@ 200t Cap)** | N/A | 32 / 32 (100%) | N/A | **113 / 116 (97.4%)** | **27/30 CVs had 0 drops** |
 | **Filler Claims Stripped at Ingestion** | 0 (kept in prompt) | 4 stripped | 0 (kept in prompt) | **18 stripped** | **Removes boilerplate noise** |
-| **$O(1)$ Hydrated Citations (Canonical)** | 3 / 3 (header-only) | 19 / 19 (100%) | 1 / 24 (4.2%) | **24 / 24 (100.0%)** | **0 hallucinated ref warnings** |
-| **$O(1)$ Hydrated Citations (Inside-Out)** | — | — | 1 / 25 (4.0%) | **25 / 25 (100.0%)** | **0 hallucinated ref warnings** |
+| **Citation Method** | Free-Text Quotes (no pointers) | Structured Pointers (`[c1]`, `[s1]`) | Free-Text Quotes (no pointers) | **Structured Pointers (`[c1]`, `[s1]`)** | **$O(1)$ ID lookup vs. text search** |
+| **Verified Citations (Canonical)** | — | 19 / 19 (100%) | 17 / 20 (85.0% free-text) | **24 / 24 (100.0% $O(1)$ pointer)** | **0 cross-candidate mix-ups** |
+| **Verified Citations (Inside-Out)** | — | — | 24 / 24 (100.0% free-text) | **25 / 25 (100.0% $O(1)$ pointer)** | **100% deterministic grounding** |
 
 ```mermaid
 xychart-beta
@@ -136,4 +137,4 @@ From [cand_08_muhammad_rouhan_faisal.claims.json](/docs/research/top-candidates/
 | **Fact & Claim Retention** | Fails (blind to uncataloged signals) | Drops non-skill scope & spikes | Drops 70% of facts in 1-line summary | **97.4% retention (113/116 kept @ 200t)** |
 | **Anti-Inflation (`syntactic_tier`)** | Canonical skills only | Canonical skills only | Destroyed by prose paraphrasing | **Preserved per claim (`[action]` vs `[peripheral]`)** |
 | **Positional Bias Drift (`inside-out`)** | N/A | High (single-pass ranker) | Moderate | **Minimal (2.7% cohort delta vs. 10.5% raw)** |
-| **$O(1)$ Quote Grounding ($N=30$)** | Skill-only spans | Truncated snippets | Paraphrased (hallucination risk) | **100% (49/49 hydrated vs. 4.1% on raw)** |
+| **$O(1)$ Quote Grounding ($N=30$)** | Skill-only spans | Truncated snippets | Paraphrased (hallucination risk) | **100% (49/49 pointer hydrated vs. 85.0%–93.2% raw free-text; see [06.1](/docs/research/top-candidates/06.1-citation-hydration-audit.md))** |

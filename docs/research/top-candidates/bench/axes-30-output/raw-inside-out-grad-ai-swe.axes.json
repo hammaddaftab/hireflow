@@ -2,6 +2,7 @@
   "job_id": "grad-ai-swe",
   "job_title": "AI / ML & Full-Stack Software Engineer (Graduate / Entry-Level)",
   "source_mode": "raw",
+  "citation_style": "free_text_quote",
   "order_mode": "inside-out",
   "candidate_order": [
     "cand_09_hafiz_ahmed_hassan_chohan",
@@ -170,98 +171,215 @@
       }
     ]
   },
-  "pool_summary": "The contender pool clusters around two standout profiles: research-oriented builders with publications, international lab exposure, or advanced AI systems, and product-oriented engineers with end-to-end web/mobile ownership and measurable user or usage outcomes. A smaller upper echelon combines both research rigor and deployable AI/full-stack integration, while leadership and selective-environment signals provide additional separation among otherwise qualified graduates.",
+  "pool_summary": "The pool divides into a small top tier with unusually strong research outputs, advanced AI system work, selective international or lab experience, and evidence of measurable impact. A larger middle tier demonstrates credible full-stack delivery or applied ML projects, while many applicants provide primarily skills lists, coursework, or limited project evidence.",
   "axes": [
     {
       "axis_id": "axis_1",
-      "label": "Publication-Grade ML Research",
-      "category": "spiky_excellence",
-      "rationale": "The role explicitly seeks research depth, and this pool contains a meaningful subset with conference or journal publications, externally funded work, and quantitative model evaluation. This separates candidates who merely completed ML projects from those who produced externally validated or rigorously benchmarked research artifacts.",
-      "strong_criteria": "Strong requires active ownership [action] of an ML/AI research contribution that produced a peer-reviewed publication, conference presentation, externally funded research deliverable, or comparable external artifact, plus explicit experimental metrics, dataset details, or methodological novelty. A project description must show what the candidate built or investigated rather than only naming a research topic.",
-      "moderate_criteria": "Moderate requires active research [action] in a university or industry lab with a defined ML model, dataset, experiment, or evaluation metric, but without verified publication, external presentation, or clearly novel contribution. A completed benchmarked FYP or supervised research project qualifies when the candidate's implementation ownership is explicit.",
-      "estimated_pool_prevalence": "8/30 candidates",
-      "supporting_claims": []
+      "label": "Published Research Depth",
+      "category": "domain_and_architecture",
+      "rationale": "For an applied AI/ML engineering role, demonstrated research execution is a stronger differentiator than generic ML coursework. Publication, funded research, or technically rigorous research programs indicate the ability to investigate ambiguous problems and communicate results.",
+      "strong_criteria": "Published or accepted peer-reviewed work, multiple substantive lab projects, or research involving novel methods and formal evaluation.",
+      "moderate_criteria": "A supervised research internship, literature-based project, or technically relevant research contribution without a publication or clearly documented novel result.",
+      "estimated_pool_prevalence": "6/30 candidates",
+      "supporting_claims": [
+        {
+          "candidate_id": "cand_01_muhammad_khizer_tariq",
+          "ref_id": "direct_quote",
+          "digest_line": "Projects: Presented a Conference Paper at FIT 2024",
+          "evidence_span": "Published a Conference paper related to my Final year project on \"Routing through Satellite Imagery\""
+        },
+        {
+          "candidate_id": "cand_25_muhammad_abdullah",
+          "ref_id": "direct_quote",
+          "digest_line": "Projects: FUSIONRAG: Enhancing Regulatory Document Analysis",
+          "evidence_span": "Published at COLING 2025."
+        },
+        {
+          "candidate_id": "cand_27_muhammad_taha_mukhtar",
+          "ref_id": "direct_quote",
+          "digest_line": "Projects: Slum-i, Research Project",
+          "evidence_span": "Worked on a €80,000 DAAD-funded project in collaboration with RPTU & DFKI, where I interned in Germany."
+        },
+        {
+          "candidate_id": "cand_20_ali_awais_safdar",
+          "ref_id": "direct_quote",
+          "digest_line": "Projects: Enhancing Vehicle Routing with Time Windows",
+          "evidence_span": "Authored a research paper focusing on integrating machine learning techniques with Ant Colony Optimization (ACO) to improve vehicle routing under time-window constraints."
+        }
+      ]
     },
     {
       "axis_id": "axis_2",
-      "label": "End-to-End AI Productization",
-      "category": "domain_and_architecture",
-      "rationale": "The job requires production AI systems rather than isolated model notebooks, and several candidates demonstrate the comparatively rare ability to connect models to retrieval, APIs, multimodal interfaces, or usable applications. This axis measures architectural integration and delivery ownership, independently of publication prestige or general web development.",
-      "strong_criteria": "Strong requires active ownership [action] of an end-to-end AI application combining a nontrivial model or retrieval pipeline with application/API integration, such as RAG using hybrid retrieval and ranking, multimodal VQA, LLM serving through FastAPI, or an AI feature embedded in a deployed web/mobile workflow. The evidence should identify the model or retrieval components and the serving or product integration performed.",
-      "moderate_criteria": "Moderate requires active ownership [action] of a working AI application or model-backed interface with one clear integration layer, such as a chatbot using an LLM API, a computer-vision system exposed through an application, or a predictive model connected to a basic UI. Coursework-only, tool listings, or peripheral participation in another person's AI system does not qualify as strong evidence.",
-      "estimated_pool_prevalence": "10/30 candidates",
-      "supporting_claims": []
+      "label": "Production System Complexity",
+      "category": "scale_and_impact",
+      "rationale": "The role combines AI with product engineering, so candidates must be able to connect models and APIs to usable, stateful products. Complex full-stack systems with authentication, realtime communication, multiple clients, or deployment are more predictive than isolated demos.",
+      "strong_criteria": "Built and integrated a complete product across frontend, backend, data, authentication, realtime or external APIs, with evidence of deployment, scalability, or multiple user surfaces.",
+      "moderate_criteria": "Delivered a functional web or mobile application with a conventional frontend/backend stack, but limited evidence of production concerns or system complexity.",
+      "estimated_pool_prevalence": "9/30 candidates",
+      "supporting_claims": [
+        {
+          "candidate_id": "cand_05_ali_murad",
+          "ref_id": "direct_quote",
+          "digest_line": "Projects: Generic Builder",
+          "evidence_span": "A React and React Flow-based workflow editor enabling users to create, edit, and visualize flows with customizable nodes, drag-and-drop editing, real-time updates, and state persistence."
+        },
+        {
+          "candidate_id": "cand_08_muhammad_rouhan_faisal",
+          "ref_id": "direct_quote",
+          "digest_line": "Projects: Chat Application",
+          "evidence_span": "Developed a real-time chat application using the MERN stack (MongoDB, Express, React, Node.js) to facilitate communication for up to 100 concurrent users."
+        },
+        {
+          "candidate_id": "cand_28_umama_zainab",
+          "ref_id": "direct_quote",
+          "digest_line": "Projects: Mobile App Using React Native - FindMyStay",
+          "evidence_span": "The app includes complete backend functionality using Node.js and MongoDB, along with a responsive UI built in React Native. It integrates features like user authentication, property listings, booking management, and real-time notifications."
+        },
+        {
+          "candidate_id": "cand_29_abdul_ahad_qureshi",
+          "ref_id": "direct_quote",
+          "digest_line": "Work: Wilspun Technical Services",
+          "evidence_span": "Developing a scalable management system targeted for 100+ daily users."
+        },
+        {
+          "candidate_id": "cand_13_muhammad_uzair_khan",
+          "ref_id": "direct_quote",
+          "digest_line": "Work: Shadiyana",
+          "evidence_span": "I contributed to enhancing the platform by adding new vendor categories to both the web-based user portal (built with Next.js) and the vendor app (React Native)."
+        }
+      ]
     },
     {
       "axis_id": "axis_3",
-      "label": "Quantified Product Impact",
-      "category": "scale_and_impact",
-      "rationale": "Most candidates list applications or internships, but only a smaller group quantifies user adoption, throughput, operational scale, or measurable product outcomes. For an applied AI and product-engineering role, demonstrated impact is a stronger differentiator than framework familiarity alone.",
-      "strong_criteria": "Strong requires active ownership [action] of a shipped or demonstrably usable product with a concrete outcome such as at least 40% improvement in engagement, retention, onboarding, satisfaction, support volume, or processing time; or an explicit operating scale of at least 100 concurrent users, 100 daily users, or 50 managed organizational users. The metric must be tied to the candidate's own build or feature contribution.",
-      "moderate_criteria": "Moderate requires active ownership [action] of a complete multi-user web/mobile product, real-time system, or operational application with a stated but smaller scale or qualitative outcome, such as a deployed platform, booking workflow, real-time communication feature, or system used by a defined organization. Unquantified prototypes and generic feature contributions remain moderate at most.",
-      "estimated_pool_prevalence": "7/30 candidates",
-      "supporting_claims": []
-    },
-    {
-      "axis_id": "axis_4",
-      "label": "Selective Global Research Exposure",
-      "category": "pedigree_and_environment",
-      "rationale": "The pool is unusually concentrated at one strong local university, so university attendance alone does not separate candidates. The meaningful comparative signal is verified participation in selective international universities, research centers, funded programs, or globally competitive engineering communities where the candidate actively contributed to advanced work.",
-      "strong_criteria": "Strong requires verified active contribution [action] in a selective external environment such as an international university research internship, DFKI/major research-center placement, Google Summer of Code, or comparable funded global program, with a concrete technical deliverable rather than attendance alone. The candidate must identify the host environment and the work performed.",
-      "moderate_criteria": "Moderate requires active research or engineering ownership [action] in a recognized university lab, exchange program, or reputable local research group with a defined technical deliverable, but without evidence of selective international or globally competitive placement. Passive exchange participation, generic employer names, or unbacked prestige claims do not qualify.",
+      "label": "Advanced AI Integration",
+      "category": "domain_and_architecture",
+      "rationale": "The target role explicitly mentions LLMs, RAG, computer vision, and predictive modeling. Candidates stand out when they combine modern model architectures with retrieval, multimodal fusion, serving, or quantitative evaluation rather than merely listing frameworks.",
+      "strong_criteria": "Implemented an advanced LLM/RAG, multimodal, or computer-vision pipeline and reported evaluation metrics, retrieval components, latency, or deployment-oriented constraints.",
+      "moderate_criteria": "Built a working ML or deep-learning application using established models, but with limited architectural detail or evaluation evidence.",
       "estimated_pool_prevalence": "8/30 candidates",
       "supporting_claims": [
         {
+          "candidate_id": "cand_14_jatindar_kumar_mamnani",
+          "ref_id": "direct_quote",
+          "digest_line": "Projects: VQA-Based-Medical-Advisor",
+          "evidence_span": "Developed a medical visual question-answering system using CNNs for image features and LSTMs/Transformers for text queries. Implemented multimodal fusion to combine image and text features."
+        },
+        {
+          "candidate_id": "cand_25_muhammad_abdullah",
+          "ref_id": "direct_quote",
+          "digest_line": "Projects: FUSIONRAG: Enhancing Regulatory Document Analysis",
+          "evidence_span": "Developed FUSIONRAG, combining OpenAI embeddings, BM25, FAISS, and Rank-Fusion for improved regulatory information retrieval and answer generation."
+        },
+        {
+          "candidate_id": "cand_30_wahaj_ahmad_butt",
+          "ref_id": "direct_quote",
+          "digest_line": "Projects: Fake Review Detector",
+          "evidence_span": "Developed a system to identify fake reviews using advanced natural language processing models (BERT, RoBERTa, XLNet, GPT-2). Fine-tuned each model on a labeled dataset of real and fake reviews for classification purposes."
+        },
+        {
           "candidate_id": "cand_16_mehar_ali_ahmed",
-          "ref_id": "header",
-          "digest_line": "[cand_16_mehar_ali_ahmed] Mehar Ali Ahmed",
-          "evidence_span": null
+          "ref_id": "direct_quote",
+          "digest_line": "Projects: Writing Style Analysis Task",
+          "evidence_span": "RoBERTa fine-tuned with Low Rank Adaptation to detect change in writing style at paragraph level achieved an F1 Score of 0.80."
+        },
+        {
+          "candidate_id": "cand_27_muhammad_taha_mukhtar",
+          "ref_id": "direct_quote",
+          "digest_line": "Work: Deutsches Forschungszentrum für Künstliche Intelligenz",
+          "evidence_span": "Engineered a semi-supervised model for detecting informal settlements using remote sensing. Applied techniques like FixMatch, domain adaptation between cities and pseudo-label refinement via SAM2."
+        }
+      ]
+    },
+    {
+      "axis_id": "axis_4",
+      "label": "Selective External Environments",
+      "category": "pedigree_and_environment",
+      "rationale": "Selective labs, international research placements, and collaborations with recognized universities expose entry-level engineers to stronger technical standards and diverse problem settings. This matters for a role seeking candidates who can operate beyond classroom assignments.",
+      "strong_criteria": "Substantive technical work with a recognized international university, research center, funded lab, or selective global program, rather than merely attending an exchange.",
+      "moderate_criteria": "A university lab internship, local research assistantship, exchange semester, or externally supervised project with some technical responsibility.",
+      "estimated_pool_prevalence": "7/30 candidates",
+      "supporting_claims": [
+        {
+          "candidate_id": "cand_24_abdullah_saim",
+          "ref_id": "direct_quote",
+          "digest_line": "Work: NUSTIAN USA International Summer Research Internship Program",
+          "evidence_span": "Collaborated with Prof. Zubair Shafique from UC Davis on the project “A Graph-based ML Approach to Detecting JavaScript-based Online Tracking.”"
+        },
+        {
+          "candidate_id": "cand_27_muhammad_taha_mukhtar",
+          "ref_id": "direct_quote",
+          "digest_line": "Work: Deutsches Forschungszentrum für Künstliche Intelligenz",
+          "evidence_span": "Leveraged Germany's largest deep learning infrastructure with H100/A100 GPUs for advanced AI research."
+        },
+        {
+          "candidate_id": "cand_20_ali_awais_safdar",
+          "ref_id": "paraphrase",
+          "digest_line": "Work & Internship Experience",
+          "evidence_span": "Held technical roles or internships with Nanyang Technological University in Singapore, the HPC Lab at SEECS, Radar Research Lab at SINES, and multiple remote organizations."
+        },
+        {
+          "candidate_id": "cand_06_hasib_aslam",
+          "ref_id": "direct_quote",
+          "digest_line": "Education",
+          "evidence_span": "Semester Exchange Program Linnaeus University, Passed With Distinction (2023)."
+        },
+        {
+          "candidate_id": "cand_22_mariam_babar_khan",
+          "ref_id": "direct_quote",
+          "digest_line": "Work & Internship Experience",
+          "evidence_span": "University of California, Davis — Machine Learning Intern"
         }
       ]
     },
     {
       "axis_id": "axis_5",
-      "label": "Early Ownership Trajectory",
-      "category": "career_trajectory_and_leadership",
-      "rationale": "At entry level, formal seniority is not expected, so the differentiator is whether candidates repeatedly moved beyond narrowly assigned tasks to own products, lead initiatives, or sustain responsibility across multiple roles. This captures initiative and scope growth without duplicating technical depth or measured product impact.",
-      "strong_criteria": "Strong requires verified trajectory evidence showing either a promotion or senior/lead designation, ownership of a project or workstream from requirements through delivery, or leadership of a team/community of at least 10 people, alongside multiple substantive responsibilities across internships, part-time work, or projects. The evidence must show active accountability [action], not merely participation.",
-      "moderate_criteria": "Moderate requires active ownership [action] of at least one complete project or workstream, such as independently building a client application, leading a capstone, managing stakeholder requirements, or coordinating a small team, but without promotion, repeated scope expansion, or substantial people leadership.",
-      "estimated_pool_prevalence": "9/30 candidates",
-      "supporting_claims": []
+      "label": "Quantified Real-World Impact",
+      "category": "scale_and_impact",
+      "rationale": "Because the position targets production AI and product engineering, measurable outcomes help separate candidates who merely built prototypes from those who improved a system, user behavior, model performance, or operational workflow.",
+      "strong_criteria": "Reports a credible metric tied to deployment, users, data volume, model evaluation, efficiency, adoption, or business outcome, ideally across a nontrivial project.",
+      "moderate_criteria": "Includes a basic model accuracy, usage target, or qualitative deployment statement, but lacks a clear baseline, context, or operational consequence.",
+      "estimated_pool_prevalence": "10/30 candidates",
+      "supporting_claims": [
+        {
+          "candidate_id": "cand_27_muhammad_taha_mukhtar",
+          "ref_id": "direct_quote",
+          "digest_line": "Projects: lang-source, Open Source Project",
+          "evidence_span": "Published as an npm package with 500+ downloads and has 5 Stars on GitHub."
+        },
+        {
+          "candidate_id": "cand_19_abdullah_khan",
+          "ref_id": "direct_quote",
+          "digest_line": "Work: Communication Systems and Network Lab",
+          "evidence_span": "Improving predictive accuracy by 23% as measured by a custom dataset from 29 flights."
+        },
+        {
+          "candidate_id": "cand_11_muhammad_ahad_sajjad",
+          "ref_id": "direct_quote",
+          "digest_line": "Work: Reviva",
+          "evidence_span": "Designed and developed an embedded kiosk and mobile app for wellness monitoring using neuro-symbolic AI, boosting user retention by 75%."
+        },
+        {
+          "candidate_id": "cand_30_wahaj_ahmad_butt",
+          "ref_id": "direct_quote",
+          "digest_line": "Projects: Emotion-Based Music Recognition System",
+          "evidence_span": "Utilized the FER2013Plus dataset for emotion recognition and ResNet50 as the base CNN model, achieving an 82.7% accuracy."
+        },
+        {
+          "candidate_id": "cand_14_jatindar_kumar_mamnani",
+          "ref_id": "direct_quote",
+          "digest_line": "Projects: A Video Based Multi-Task Learning Model for Autonomous Driving",
+          "evidence_span": "Achieved 82.4% mIoU on the VIL-100 validation set for lane segmentation."
+        }
+      ]
     }
   ],
-  "warnings": [
-    "Axis 'Publication-Grade ML Research' cited unknown ref_id 'work_1' on candidate 'cand_01_muhammad_khizer_tariq'",
-    "Axis 'Publication-Grade ML Research' cited unknown ref_id 'work_1' on candidate 'cand_25_muhammad_abdullah'",
-    "Axis 'Publication-Grade ML Research' cited unknown ref_id 'work_1' on candidate 'cand_27_muhammad_taha_mukhtar'",
-    "Axis 'Publication-Grade ML Research' cited unknown ref_id 'work_1' on candidate 'cand_20_ali_awais_safdar'",
-    "Axis 'Publication-Grade ML Research' cited unknown ref_id 'work_1' on candidate 'cand_14_jatindar_kumar_mamnani'",
-    "Axis 'End-to-End AI Productization' cited unknown ref_id 'work_1' on candidate 'cand_14_jatindar_kumar_mamnani'",
-    "Axis 'End-to-End AI Productization' cited unknown ref_id 'work_1' on candidate 'cand_08_muhammad_rouhan_faisal'",
-    "Axis 'End-to-End AI Productization' cited unknown ref_id 'work_1' on candidate 'cand_25_muhammad_abdullah'",
-    "Axis 'End-to-End AI Productization' cited unknown ref_id 'work_1' on candidate 'cand_20_ali_awais_safdar'",
-    "Axis 'End-to-End AI Productization' cited unknown ref_id 'work_1' on candidate 'cand_18_abdul_rehman'",
-    "Axis 'Quantified Product Impact' cited unknown ref_id 'work_1' on candidate 'cand_11_muhammad_ahad_sajjad'",
-    "Axis 'Quantified Product Impact' cited unknown ref_id 'work_1' on candidate 'cand_08_muhammad_rouhan_faisal'",
-    "Axis 'Quantified Product Impact' cited unknown ref_id 'work_1' on candidate 'cand_29_abdul_ahad_qureshi'",
-    "Axis 'Quantified Product Impact' cited unknown ref_id 'work_1' on candidate 'cand_03_abdullah_aleem'",
-    "Axis 'Quantified Product Impact' cited unknown ref_id 'work_1' on candidate 'cand_19_abdullah_khan'",
-    "Axis 'Selective Global Research Exposure' cited unknown ref_id 'work_1' on candidate 'cand_27_muhammad_taha_mukhtar'",
-    "Axis 'Selective Global Research Exposure' cited unknown ref_id 'work_1' on candidate 'cand_24_abdullah_saim'",
-    "Axis 'Selective Global Research Exposure' cited unknown ref_id 'work_1' on candidate 'cand_20_ali_awais_safdar'",
-    "Axis 'Selective Global Research Exposure' cited unknown ref_id 'work_1' on candidate 'cand_06_hasib_aslam'",
-    "Axis 'Early Ownership Trajectory' cited unknown ref_id 'work_1' on candidate 'cand_28_umama_zainab'",
-    "Axis 'Early Ownership Trajectory' cited unknown ref_id 'work_1' on candidate 'cand_17_ghulam_hussain_khan_sherwani'",
-    "Axis 'Early Ownership Trajectory' cited unknown ref_id 'work_1' on candidate 'cand_16_mehar_ali_ahmed'",
-    "Axis 'Early Ownership Trajectory' cited unknown ref_id 'work_1' on candidate 'cand_29_abdul_ahad_qureshi'",
-    "Axis 'Early Ownership Trajectory' cited unknown ref_id 'work_1' on candidate 'cand_03_abdullah_aleem'"
-  ],
+  "warnings": [],
   "usage": {
-    "promptTokens": 23930,
-    "completionTokens": 2821,
-    "inputTokens": 23930,
-    "outputTokens": 2821,
-    "totalTokens": 26751
+    "promptTokens": 17072,
+    "completionTokens": 4071,
+    "inputTokens": 17072,
+    "outputTokens": 4071,
+    "totalTokens": 21143
   },
-  "latency_ms": 33982
+  "latency_ms": 32860
 }

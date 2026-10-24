@@ -14,7 +14,7 @@ export const EmergentAxisCategorySchema = z
 
 export type EmergentAxisCategory = z.infer<typeof EmergentAxisCategorySchema>;
 
-// LLM Prompt Schema for a single supporting claim/digest pointer
+// LLM Prompt Schema for a single supporting claim/digest pointer or free-text quote (when source === 'raw')
 export const SupportingClaimRefPromptSchema = z.object({
   candidate_id: z
     .string()
@@ -24,7 +24,7 @@ export const SupportingClaimRefPromptSchema = z.object({
   ref_id: z
     .string()
     .describe(
-      "Exact pointer ID within that candidate's digest backing this axis: a claim ID ('c1', 'c2'), notable signal ID ('s1', 's2'), work entry ID ('work_1' for role/promotion/employer facts), or 'header' (for tenure/university/CGPA facts)"
+      "For structured digests: exact pointer ID ('c1', 'c2', 's1', 'work_1', or 'header'). For raw CVs without pointers: exact verbatim quote or close paraphrase from the candidate's resume."
     ),
 });
 
@@ -120,13 +120,21 @@ export type EmergentAxesExtraction = z.infer<typeof EmergentAxesExtractionSchema
 export function buildEmergentAxesPrompt(
   jobSpecText: string,
   candidateDigestsBatchText: string,
-  contenderCount?: number
+  contenderCount?: number,
+  citationStyle: "pointer" | "quote" = "pointer"
 ): string {
   const countLabel =
     typeof contenderCount === "number" ? `${contenderCount} viable contenders` : "the viable contenders";
 
+  const citationRule =
+    citationStyle === "quote"
+      ? `- Back every axis with 1 to 5 concrete supporting_claims citing the exact [candidate_id] and placing the exact verbatim quote (or close paraphrase) from their resume inside ref_id (since raw resumes do not use pointer IDs).`
+      : `- Back every axis with 1 to 5 concrete supporting_claims citing exact [candidate_id] and pointer IDs (e.g. claim IDs like 'c1', 'c2', signal IDs like 's1', role headers like 'work_1', or 'header').`;
+
   return `You are executing the Emergent Axis Discovery step (Mechanism E) for a candidate screening pipeline.
-Your ONLY task in this step is to analyze the Job Specification alongside the pointer-backed aspect digests of ${countLabel} in the applicant pool and discover 3 to 5 pool-relative Emergent Differentiating Axes.
+Your ONLY task in this step is to analyze the Job Specification alongside the ${
+    citationStyle === "quote" ? "raw candidate resumes" : "pointer-backed aspect digests"
+  } of ${countLabel} in the applicant pool and discover 3 to 5 pool-relative Emergent Differentiating Axes.
 
 CRITICAL SCOPE BOUNDARY — DO NOT RANK OR SHORTLIST CANDIDATES:
 - Do NOT generate a Top 20 shortlist or rank individual candidates.
@@ -148,7 +156,7 @@ RULES FOR EMERGENT AXIS DISCOVERY:
 2. STRICT EMPIRICAL GROUNDING IN THE PROVIDED POOL:
    - Every discovered axis MUST emerge from real patterns present in <candidate_digests>.
    - Never invent a theoretical wishlist criterion if zero candidates in the pool exhibit it, and avoid trivial criteria satisfied identically by every candidate.
-   - Back every axis with 1 to 5 concrete supporting_claims citing exact [candidate_id] and pointer IDs (e.g. claim IDs like 'c1', 'c2', signal IDs like 's1', role headers like 'work_1', or 'header').
+   ${citationRule}
 
 3. RESPECT SYNTACTIC OWNERSHIP TIERS ([action] vs [peripheral] vs [listed]):
    - Each digest claim carries a syntactic ownership tag:

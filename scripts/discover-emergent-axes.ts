@@ -256,7 +256,7 @@ function loadPreSerializedDigests(
   return loaded;
 }
 
-// Loads raw markdown resumes from bench/cvs for direct Raw-CV vs Digest axis discovery comparison
+// Loads raw markdown resumes from bench/cvs for direct Raw-CV (free-text quote) vs Digest (pointer) axis discovery comparison
 function loadRawMarkdownResumes(
   dirPath: string,
   limit?: number
@@ -275,28 +275,9 @@ function loadRawMarkdownResumes(
     const rawMd = readFileSync(join(dirPath, file), "utf-8").trim();
     if (!rawMd) continue;
 
-    const nonEmptyLines = rawMd
-      .split(/\r?\n/)
-      .map((l) => l.trim())
-      .filter((l) => l.length > 0 && l !== "---");
-
-    const numberedLines: string[] = [];
-    const evidenceSpanByRefId: Record<string, string> = {};
-
-    nonEmptyLines.forEach((line, idx) => {
-      if (idx === 0) {
-        numberedLines.push(`[${candidateId}] ${line.replace(/^#\s*/, "")}`);
-      } else {
-        const refId = `L${idx}`;
-        numberedLines.push(`  [${refId}] ${line}`);
-        evidenceSpanByRefId[refId] = line.replace(/^[•\-*#]+\s*/, "");
-      }
-    });
-
     loaded.push({
       candidateId,
-      digestText: numberedLines.join("\n"),
-      evidenceSpanByRefId,
+      digestText: `[${candidateId}]\n${rawMd}`,
     });
   }
 
@@ -385,6 +366,7 @@ async function main() {
     provider: options.provider,
     model: options.model,
     timeoutMs: options.timeoutMs ?? 0,
+    citationStyle: options.source === "raw" ? "quote" : "pointer",
   });
 
   const { result, stage0, poolStats, prompt, warnings, usage, latencyMs } = discoveryRes;
