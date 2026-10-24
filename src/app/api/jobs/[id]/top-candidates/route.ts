@@ -12,6 +12,7 @@ import { rankTopCandidatesWithUsage } from "@/lib/extraction/ranking/rankTopCand
 import type { TopCandidatesRankingResult } from "@/entities/extraction/matching/topCandidatesRanking";
 import type { ParsedCandidateProfile } from "@/entities/candidate";
 
+export const dynamic = "force-dynamic";
 export const maxDuration = 120;
 
 const LIVE_CACHE_FILE = resolve(".uploads/top-candidates-live-cache.json");

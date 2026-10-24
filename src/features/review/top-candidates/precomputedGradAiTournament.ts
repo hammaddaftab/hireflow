@@ -5,8 +5,8 @@ import type { TopCandidatesRankingResult } from "@/entities/extraction/matching/
 
 export const PRECOMPUTED_GRAD_AI_TOURNAMENT: TopCandidatesRankingResult = {
   "top3_status": "contested",
-  "summary": "After reviewing all 30 Computer Science graduate resumes in small groups and comparing the top finalists head-to-head in both reading orders, two clear frontrunners emerged: Muhammad Abdullah (#1, combining a COLING 2025 RAG paper with full-stack Next.js/Node.js apps) and Jatindar Kumar Mamnani (#2, bringing an 82.4% mIoU autonomous driving vision model and FastAPI LLM tooling). The #3 spot is a close tie between Muhammad Taha Mukhtar (GSoC at CVAT.ai & EUR 80k DFKI Germany AI research) and Ali Awais Safdar (FIT 2024 AI routing publication & 6 internships)—both are presented below so you can pick the better match for your team.",
-  "emergent_pool_summary": "While nearly every applicant in this 30-graduate pool lists Python, coursework ML, and React, the strongest candidates separate themselves across 6 practical areas: end-to-end LLM/RAG systems, peer-reviewed research publications, shipped full-stack web products, measurable accuracy/scale benchmarks, selective international lab fellowships, and cloud/GPU deployment.",
+  "summary": "Out of 30 Computer Science graduate applicants, Muhammad Abdullah (#1) and Jatindar Kumar Mamnani (#2) emerged as unanimous frontrunners across every head-to-head comparison. The #3 spot is a close tie between Muhammad Taha Mukhtar and Ali Awais Safdar—both are shown below so you can choose the better fit for your team.",
+  "emergent_pool_summary": "While nearly every applicant lists Python, coursework ML, and React, the strongest candidates separate themselves across six practical areas: end-to-end LLM/RAG systems, peer-reviewed publications, shipped full-stack apps, measurable accuracy benchmarks, international research fellowships, and cloud/GPU deployment.",
   "top_candidates": [
     {
       "rank": 1,
@@ -16,7 +16,7 @@ export const PRECOMPUTED_GRAD_AI_TOURNAMENT: TopCandidatesRankingResult = {
       "pairwise_ties": 0,
       "pairwise_losses": 0,
       "latin_square_avg_rank": 1.5,
-      "headline_rationale": "Clear #1 overall pick — won all 4 head-to-head matchups against the other top finalists. He stands out by combining a peer-reviewed COLING 2025 research publication on hybrid RAG retrieval (FUSIONRAG using OpenAI embeddings, BM25, FAISS, and Rank-Fusion) with hands-on full-stack product delivery (the Scototo real-time Next.js/Socket.IO platform and the Kisan Node.js/React mobile web app) alongside a 3.75 CGPA.",
+      "headline_rationale": "Combines a peer-reviewed COLING 2025 research publication on hybrid RAG retrieval (FUSIONRAG using OpenAI embeddings, BM25, FAISS, and Rank-Fusion) with shipped full-stack web applications (Scototo real-time Next.js/Socket.IO platform and Kisan Node.js/React app) alongside a 3.75 CGPA.",
       "contested_with": null,
       "supporting_claims": [
         {
@@ -59,7 +59,7 @@ export const PRECOMPUTED_GRAD_AI_TOURNAMENT: TopCandidatesRankingResult = {
       "pairwise_ties": 0,
       "pairwise_losses": 1,
       "latin_square_avg_rank": 2.5,
-      "headline_rationale": "Clear #2 pick — won 3 of 4 head-to-head matchups (trailing only Muhammad Abdullah). He brings the strongest end-to-end applied AI breadth in the pool, having built a real-time autonomous-driving multitask vision model achieving 82.4% mIoU on the VIL-100 benchmark, a multimodal medical visual question-answering system (CNNs + Transformers), a text-to-SQL tabular QA engine, and a production FastAPI LLM assistant.",
+      "headline_rationale": "Brings the deepest applied AI project portfolio in the pool, led by a real-time autonomous-driving multitask vision model achieving 82.4% mIoU on the VIL-100 benchmark, a multimodal medical visual question-answering system (CNNs + Transformers), and a production FastAPI LLM assistant.",
       "contested_with": null,
       "supporting_claims": [
         {
@@ -114,8 +114,8 @@ export const PRECOMPUTED_GRAD_AI_TOURNAMENT: TopCandidatesRankingResult = {
       "pairwise_ties": 1,
       "pairwise_losses": 2,
       "latin_square_avg_rank": 2,
-      "headline_rationale": "Tied for #3 with Ali Awais Safdar. He brings standout international research and open-source engineering credentials: Google Summer of Code contributor at CVAT.ai (100% Cypress test coverage) and creator of a Gemini localization CLI with 500+ npm downloads, alongside semi-supervised satellite segmentation (FixMatch & SAM2 on H100/A100 GPUs) on an EUR 80,000 funded DFKI/RPTU project in Germany, plus KAUST and NTU Singapore research experience.",
-      "contested_with": "Choose Muhammad Taha Mukhtar if your team values open-source shipping velocity (GSoC at CVAT.ai, 500+ npm package downloads), large-scale GPU training (H100/A100 clusters at DFKI Germany), and international research lab pedigree (DFKI, KAUST, NTU).",
+      "headline_rationale": "Standout open-source and international research track record: Google Summer of Code contributor at CVAT.ai (100% Cypress coverage), creator of a Gemini localization CLI with 500+ npm downloads, and AI researcher on an EUR 80,000 DFKI Germany satellite segmentation project (H100/A100 GPUs).",
+      "contested_with": "Choose Taha if your team values open-source shipping velocity (GSoC at CVAT.ai, 500+ npm downloads) and large-scale GPU model training (DFKI Germany, KAUST, NTU).",
       "supporting_claims": [
         {
           "candidate_id": "cand_27_muhammad_taha_mukhtar",
@@ -157,8 +157,8 @@ export const PRECOMPUTED_GRAD_AI_TOURNAMENT: TopCandidatesRankingResult = {
       "pairwise_ties": 2,
       "pairwise_losses": 2,
       "latin_square_avg_rank": 4.5,
-      "headline_rationale": "Tied for #3 with Muhammad Taha Mukhtar. He combines an authored and conference-presented AI optimization paper (ML-driven Ant Colony Optimization for vehicle routing at FIT 2024) with a medical Visual Question Answering architecture (VGG-19 + BERT attention), a cryptographic SHA-256/RSA ledger, and 6 distinct research and software internships including NTU Singapore and NUST's HPC Lab.",
-      "contested_with": "Choose Ali Awais Safdar if your team prioritizes completed first-author conference publication delivery (FIT 2024 AI routing paper), multimodal vision-language modeling (VGG-19 + BERT attention), and broad internship experience across 6 organizations.",
+      "headline_rationale": "Combines a first-author conference paper on ML-driven Ant Colony route optimization (presented at FIT 2024) with a medical Visual Question Answering architecture (VGG-19 + BERT attention) and 6 research and software engineering internships including NTU Singapore.",
+      "contested_with": "Choose Ali if your team prioritizes completed first-author publication delivery (FIT 2024), multimodal vision-language modeling, and broad multi-team internship experience.",
       "supporting_claims": [
         {
           "candidate_id": "cand_20_ali_awais_safdar",

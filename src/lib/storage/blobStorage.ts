@@ -63,16 +63,13 @@ export async function uploadResumeToBlob(
   };
 }
 
-// Retrieves resume file buffer: fetches from Vercel Blob if configured, otherwise reads from local storage
+// Retrieves resume file buffer: fetches from Vercel Blob if an HTTP(S) blob URL is present, otherwise reads from local storage
 export async function getResumeFileBuffer(record: {
   blobUrl: string | null;
   pathname?: string | null;
   filename: string;
 }): Promise<Buffer> {
-  if (isBlobStorageConfigured()) {
-    if (!record.blobUrl || !record.blobUrl.startsWith("http")) {
-      throw new Error(`Blob URL not found for '${record.filename}'`);
-    }
+  if (isBlobStorageConfigured() && record.blobUrl && record.blobUrl.startsWith("http")) {
     const response = await fetch(record.blobUrl);
     if (!response.ok) {
       throw new Error(`Failed to fetch blob document for '${record.filename}' (status ${response.status})`);
@@ -81,7 +78,20 @@ export async function getResumeFileBuffer(record: {
     return Buffer.from(arrayBuffer);
   }
 
-  // Explicit local mode: read directly from .uploads/resumes
-  const localPath = getLocalResumePath(record.pathname || record.filename);
-  return await fs.readFile(localPath);
+  // Local mode or local-seeded storage:// URI: check .uploads/resumes first, then bench/cvs fallback
+  const targetName = record.pathname || record.filename;
+  const candidatePaths = [
+    getLocalResumePath(targetName),
+    path.join(process.cwd(), "docs", "research", "top-candidates", "bench", "cvs", path.basename(targetName)),
+  ];
+
+  for (const filePath of candidatePaths) {
+    try {
+      return await fs.readFile(filePath);
+    } catch {
+      // Continue to fallback path
+    }
+  }
+
+  throw new Error(`Local resume file not found for '${record.filename}'`);
 }
