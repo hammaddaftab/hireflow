@@ -1,0 +1,243 @@
+{
+  "duration_ms": 33112,
+  "usage": {
+    "inputTokens": 17072,
+    "inputTokenDetails": {
+      "noCacheTokens": 3,
+      "cacheReadTokens": 0,
+      "cacheWriteTokens": 17069
+    },
+    "outputTokens": 3570,
+    "outputTokenDetails": {
+      "textTokens": 2937,
+      "reasoningTokens": 633
+    },
+    "totalTokens": 20642,
+    "raw": {
+      "input_tokens": 17072,
+      "input_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 17069
+      },
+      "output_tokens": 3570,
+      "output_tokens_details": {
+        "reasoning_tokens": 633
+      }
+    }
+  },
+  "result": {
+    "pool_summary": "The pool separates into a broad baseline of web-development and coursework profiles, a stronger group with substantial full-stack builds, and a small top tier combining research depth, measurable outcomes, and selective external exposure. The most differentiated candidates demonstrate both technically sophisticated AI systems and the ability to integrate them into usable, scalable products.",
+    "axes": [
+      {
+        "label": "Published Research Depth",
+        "category": "domain_and_architecture",
+        "rationale": "This role explicitly prioritizes research depth across LLMs, RAG, computer vision, and predictive modeling. Candidates who have published, contributed to funded research, or used rigorous evaluation methods stand apart from applicants listing only coursework or generic AI projects.",
+        "strong_criteria": "Published or publication-bound research, or a substantial lab project, involving a novel method, advanced model/system design, and explicit evaluation or benchmark results.",
+        "moderate_criteria": "Meaningful research-intern or lab experience, literature-informed implementation, or an advanced AI project without publication or detailed evaluation evidence.",
+        "estimated_pool_prevalence": "8/30 candidates",
+        "supporting_claims": [
+          {
+            "candidate_id": "cand_25_muhammad_abdullah",
+            "candidate_name": "Muhammad Abdullah",
+            "citation_mode": "direct_quote",
+            "citation_text": "Published at COLING 2025. Developed FUSIONRAG, combining OpenAI embeddings, BM25, FAISS, and Rank-Fusion for improved regulatory information retrieval and answer generation.",
+            "section_or_context": "Projects: FUSIONRAG: Enhancing Regulatory Document Analysis",
+            "reason_for_citation": "Shows peer-reviewed publication plus a technically substantive hybrid retrieval architecture directly aligned with the role's RAG focus."
+          },
+          {
+            "candidate_id": "cand_27_muhammad_taha_mukhtar",
+            "candidate_name": "Muhammad Taha Mukhtar",
+            "citation_mode": "direct_quote",
+            "citation_text": "Engineered a semi-supervised model for detecting informal settlements using remote sensing. Applied techniques like FixMatch, domain adaptation between cities and pseudo-label refinement via SAM2.",
+            "section_or_context": "Work: Deutsches Forschungszentrum für Künstliche Intelligenz",
+            "reason_for_citation": "Demonstrates advanced research methodology, domain adaptation, and semi-supervised learning in a serious external research environment."
+          },
+          {
+            "candidate_id": "cand_14_jatindar_kumar_mamnani",
+            "candidate_name": "Jatindar Kumar Mamnani",
+            "citation_mode": "direct_quote",
+            "citation_text": "Achieved 82.4% mIoU on the VIL-100 validation set for lane segmentation.",
+            "section_or_context": "Projects: A Video Based Multi-Task Learning Model for Autonomous Driving",
+            "reason_for_citation": "Provides a concrete benchmark for a technically complex multitask computer-vision system."
+          },
+          {
+            "candidate_id": "cand_20_ali_awais_safdar",
+            "candidate_name": "Ali Awais Safdar",
+            "citation_mode": "direct_quote",
+            "citation_text": "Authored a research paper focusing on integrating machine learning techniques with Ant Colony Optimization (ACO) to improve vehicle routing under time-window constraints. Presented the paper at the FIT 2024 Conference.",
+            "section_or_context": "Projects: Enhancing Vehicle Routing with Time Windows",
+            "reason_for_citation": "Shows research authorship, conference presentation, and an applied optimization problem relevant to predictive and intelligent systems."
+          }
+        ]
+      },
+      {
+        "label": "End-to-End System Complexity",
+        "category": "scale_and_impact",
+        "rationale": "The position requires engineers who can move beyond models and build production-oriented web or mobile systems. Complex applications with real-time communication, authentication, persistence, integrations, and scalability evidence are more predictive of entry-level product engineering readiness than isolated frontend projects.",
+        "strong_criteria": "Built or materially contributed to a complete multi-component system involving real-time features or external integrations, authentication, persistent data, and evidence of concurrency, deployment, or operational scale.",
+        "moderate_criteria": "Completed a functional full-stack application with frontend, backend, database, and standard authentication or CRUD workflows, but limited evidence of scale or operational complexity.",
+        "estimated_pool_prevalence": "10/30 candidates",
+        "supporting_claims": [
+          {
+            "candidate_id": "cand_08_muhammad_rouhan_faisal",
+            "candidate_name": "Muhammad Rouhan Faisal",
+            "citation_mode": "direct_quote",
+            "citation_text": "Developed a real-time chat application using the MERN stack (MongoDB, Express, React, Node.js) to facilitate communication for up to 100 concurrent users.",
+            "section_or_context": "Projects: Chat Application",
+            "reason_for_citation": "Explicitly addresses concurrency while combining a full stack with real-time messaging and group-chat functionality."
+          },
+          {
+            "candidate_id": "cand_05_ali_murad",
+            "candidate_name": "Ali Murad",
+            "citation_mode": "direct_quote",
+            "citation_text": "A React and React Flow-based workflow editor enabling users to create, edit, and visualize flows with customizable nodes, drag-and-drop editing, real-time updates, and state persistence.",
+            "section_or_context": "Projects: Generic Builder",
+            "reason_for_citation": "Demonstrates a nontrivial interactive product involving graph editing, state management, real-time updates, and persistence."
+          },
+          {
+            "candidate_id": "cand_29_abdul_ahad_qureshi",
+            "candidate_name": "Abdul Ahad Qureshi",
+            "citation_mode": "direct_quote",
+            "citation_text": "Developing a scalable management system targeted for 100+ daily users.",
+            "section_or_context": "Work: Wilspun Technical Services",
+            "reason_for_citation": "Provides direct evidence of designing toward a stated usage scale in an organizational software system."
+          },
+          {
+            "candidate_id": "cand_21_prithvi_raj",
+            "candidate_name": "Prithvi Raj",
+            "citation_mode": "direct_quote",
+            "citation_text": "Built a Notion-inspired platform using Next.js, enabling real-time collaborative document editing... Supports infinite child documents, real-time dynamic icons, collapsible and expandable sidebar navigation, and mobile responsiveness.",
+            "section_or_context": "Projects: Jotion - Notion Clone with Next.js",
+            "reason_for_citation": "Shows complex collaboration, hierarchical data, responsive UI, and real-time product behavior."
+          }
+        ]
+      },
+      {
+        "label": "Measured Applied Outcomes",
+        "category": "spiky_excellence",
+        "rationale": "The strongest applicants quantify model quality or user and operational impact rather than describing implementations only. Measured outcomes are especially valuable for this role because they indicate experimentation discipline and an ability to connect engineering work to product or system performance.",
+        "strong_criteria": "Reports a concrete, attributable outcome with a defined metric, dataset, baseline or usage context—for example model accuracy/F1/mIoU, measured efficiency improvement, or validated user impact.",
+        "moderate_criteria": "Includes at least one reported metric or performance claim, but with limited methodological context, unclear attribution, or primarily project-level validation.",
+        "estimated_pool_prevalence": "7/30 candidates",
+        "supporting_claims": [
+          {
+            "candidate_id": "cand_19_abdullah_khan",
+            "candidate_name": "Abdullah Khan",
+            "citation_mode": "direct_quote",
+            "citation_text": "Developed a machine learning model using Polynomial Regression to predict battery life cycles for UAVs in disaster management applications, improving predictive accuracy by 23% as measured by a custom dataset from 29 flights.",
+            "section_or_context": "Work: Communication Systems and Network Lab",
+            "reason_for_citation": "Combines a quantified improvement with a defined real-world dataset and application context."
+          },
+          {
+            "candidate_id": "cand_30_wahaj_ahmad_butt",
+            "candidate_name": "Wahaj Ahmad Butt",
+            "citation_mode": "direct_quote",
+            "citation_text": "Utilized the FER2013Plus dataset for emotion recognition and ResNet50 as the base CNN model, achieving an 82.7% accuracy.",
+            "section_or_context": "Projects: Emotion-Based Music Recognition System",
+            "reason_for_citation": "Provides a concrete computer-vision benchmark, named dataset, and model choice."
+          },
+          {
+            "candidate_id": "cand_11_muhammad_ahad_sajjad",
+            "candidate_name": "Muhammad Ahad Sajjad",
+            "citation_mode": "direct_quote",
+            "citation_text": "Designed and developed an embedded kiosk and mobile app for wellness monitoring using neuro-symbolic AI, boosting user retention by 75%. Conducted extensive user research, including surveys and interviews, leading to a 25% reduction in onboarding time.",
+            "section_or_context": "Work: Reviva",
+            "reason_for_citation": "Shows quantified product impact across retention and onboarding, paired with user research and an AI-enabled product."
+          },
+          {
+            "candidate_id": "cand_06_hasib_aslam",
+            "candidate_name": "Hasib Aslam",
+            "citation_mode": "direct_quote",
+            "citation_text": "Developed a Cat and Dog Classifier with 98% accuracy worked on Document AI.",
+            "section_or_context": "Work: TUKL",
+            "reason_for_citation": "Provides a clear model-performance metric from an applied ML internship, though with less detail than the strongest research examples."
+          }
+        ]
+      },
+      {
+        "label": "Selective External Exposure",
+        "category": "pedigree_and_environment",
+        "rationale": "The pool contains many university projects, but only a smaller subset has worked in selective international labs, major research programs, or globally visible open-source settings. Such environments provide stronger evidence of collaboration, engineering standards, and ability to contribute beyond a classroom context.",
+        "strong_criteria": "Substantive contribution in a selective international lab, funded research program, Google Summer of Code, major open-source project, or internationally supervised research setting, with a concrete technical deliverable.",
+        "moderate_criteria": "Short international exchange, overseas internship, or external lab affiliation with some technical participation but limited evidence of ownership or deliverables.",
+        "estimated_pool_prevalence": "5/30 candidates",
+        "supporting_claims": [
+          {
+            "candidate_id": "cand_27_muhammad_taha_mukhtar",
+            "candidate_name": "Muhammad Taha Mukhtar",
+            "citation_mode": "direct_quote",
+            "citation_text": "Improved the CVAT platform by adding a user-configurable shortcut system, enhancing annotation efficiency. Tested new shortcut features with Cypress, achieving 100% test coverage. Contributed to integrating Meta’s SAM into CVAT.ai’s codebase beyond the program’s scope.",
+            "section_or_context": "Work: Google Summer of Code -- CVAT.ai",
+            "reason_for_citation": "Shows globally visible open-source participation, concrete engineering ownership, testing discipline, and contribution beyond the assigned scope."
+          },
+          {
+            "candidate_id": "cand_24_abdullah_saim",
+            "candidate_name": "Abdullah Saim",
+            "citation_mode": "direct_quote",
+            "citation_text": "Collaborated with Prof. Zubair Shafique from UC Davis on the project “A Graph-based ML Approach to Detecting JavaScript-based Online Tracking.”",
+            "section_or_context": "Work: NUSTIAN USA International Summer Research Internship Program",
+            "reason_for_citation": "Demonstrates selective international research collaboration with a technically relevant ML and privacy project."
+          },
+          {
+            "candidate_id": "cand_20_ali_awais_safdar",
+            "candidate_name": "Ali Awais Safdar",
+            "citation_mode": "paraphrase",
+            "citation_text": "Held research or engineering experiences at Nanyang Technological University in Singapore, HPC Lab-SEECS, Radar Research Lab, Vision Architech, CarbonTeq, and a remote U.S. organization.",
+            "section_or_context": "Work & Internship Experience",
+            "reason_for_citation": "Indicates unusually broad exposure across international university, research-lab, and remote engineering environments."
+          },
+          {
+            "candidate_id": "cand_06_hasib_aslam",
+            "candidate_name": "Hasib Aslam",
+            "citation_mode": "direct_quote",
+            "citation_text": "Semester Exchange Program Linnaeus University, Passed With Distinction (2023).",
+            "section_or_context": "Education",
+            "reason_for_citation": "Provides evidence of selective international academic exposure, although the resume gives less detail about technical deliverables than the strongest candidates."
+          }
+        ]
+      },
+      {
+        "label": "AI-to-Product Bridge",
+        "category": "domain_and_architecture",
+        "rationale": "This role is unusually broad: the engineer must build AI/ML capabilities and deliver full-stack products around them. Candidates who connect retrieval, multimodal models, or predictive systems to APIs and usable applications are more differentiated than candidates who demonstrate only web development or only offline modeling.",
+        "strong_criteria": "Built an AI capability and exposed it through a usable application, API, or product workflow, with evidence of integration across model, backend, and frontend or user-facing behavior.",
+        "moderate_criteria": "Demonstrates either a substantive AI model/project or a full-stack application with limited evidence that the two were integrated end to end.",
+        "estimated_pool_prevalence": "8/30 candidates",
+        "supporting_claims": [
+          {
+            "candidate_id": "cand_08_muhammad_rouhan_faisal",
+            "candidate_name": "Muhammad Rouhan Faisal",
+            "citation_mode": "direct_quote",
+            "citation_text": "Contributed to the development of FusionRAG, a Retrieval-Augmented Generation (RAG) system designed to enhance regulatory document retrieval and question answering. Integrated OpenAI embeddings, BM25, FAISS, and a custom rank fusion strategy.",
+            "section_or_context": "Projects: Research on FusionRAG – NUST Alpha at RIRAG 2025",
+            "reason_for_citation": "Directly matches the role's RAG requirements and demonstrates integration of multiple retrieval components into an applied QA system."
+          },
+          {
+            "candidate_id": "cand_14_jatindar_kumar_mamnani",
+            "candidate_name": "Jatindar Kumar Mamnani",
+            "citation_mode": "direct_quote",
+            "citation_text": "Developed an AI-powered no-code chatbot assistant that extracts contextual insights from website URLs for automated responses. Engineered an LLM-driven chatbot system using FastAPI, enabling real-time, context-aware user interactions.",
+            "section_or_context": "Projects: Prompt-No-Code Website Assistant",
+            "reason_for_citation": "Connects an LLM workflow to a real-time FastAPI service and a concrete user-facing interaction model."
+          },
+          {
+            "candidate_id": "cand_20_ali_awais_safdar",
+            "candidate_name": "Ali Awais Safdar",
+            "citation_mode": "direct_quote",
+            "citation_text": "Developed a medical Visual Question Answering (VQA) system utilizing VGG-19 for image feature extraction and BERT for textual question processing. Created an interactive web interface.",
+            "section_or_context": "Projects: PATHVQA-VGG19-BERT-ATTENTION",
+            "reason_for_citation": "Demonstrates multimodal AI combined with an interactive application rather than an offline model alone."
+          },
+          {
+            "candidate_id": "cand_16_mehar_ali_ahmed",
+            "candidate_name": "Mehar Ali Ahmed",
+            "citation_mode": "direct_quote",
+            "citation_text": "A Gemini-powered chatbot that delivers personalized land-use recommendations using a Retrieval-Augmented Generation (RAG) approach.",
+            "section_or_context": "Projects: LandUseAI Advisor",
+            "reason_for_citation": "Shows a direct product use case for an LLM and RAG pipeline, aligned with applied AI delivery."
+          }
+        ]
+      }
+    ]
+  }
+}
