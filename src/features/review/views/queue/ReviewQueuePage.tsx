@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
-import { Briefcase, MapPin, CheckCircle2, AlertCircle, X, Network } from "lucide-react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
+import { Briefcase, MapPin, CheckCircle2, AlertCircle, X, Network, Trophy } from "lucide-react";
 import { Typography } from "@/components/ui/Typography";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
@@ -29,6 +29,7 @@ import {
 import { type PersistedGroupWithMembers, ActiveGroupCanvasModal } from "@/features/groups";
 import { FEATURES } from "@/config/features";
 import { ReviewFilterPane } from "../focus/components/ReviewFilterPane";
+import { TopCandidatesModal } from "../../top-candidates";
 
 const queueCardVariants = {
   initial: { opacity: 0, y: 10, scale: 0.99 },
@@ -90,6 +91,8 @@ export function ReviewQueuePage({
   const [isGroupModalOpen, setIsGroupModalOpen] = useState(false);
   const [isShortcutsOpen, setIsShortcutsOpen] = useState(false);
   const [isLayer2Expanded, setIsLayer2Expanded] = useState(false);
+  const [isTopCandidatesOpen, setIsTopCandidatesOpen] = useState(false);
+  const [shortlistFilter, setShortlistFilter] = useState<{ label: string; candidateIds: string[] } | null>(null);
 
   // Real-time feedback alert banner
   const [feedback, setFeedback] = useState<{ type: "success" | "error"; message: string } | null>(null);
@@ -141,8 +144,42 @@ export function ReviewQueuePage({
     initialGroupId,
     initialSort,
     targetDegreeLevel,
+    candidateIds: shortlistFilter?.candidateIds || null,
     onDecision: updateDecision,
   });
+
+  // Shortlist and candidate jump handlers
+  const handleJumpToCandidate = useCallback(
+    (candidateId: string) => {
+      if (shortlistFilter && !shortlistFilter.candidateIds.includes(candidateId)) {
+        setShortlistFilter(null);
+      }
+      const targetIndex = filteredQueue.findIndex(
+        (item) => item.candidate.id === candidateId
+      );
+      if (targetIndex !== -1) {
+        setActiveIndex(targetIndex);
+      } else {
+        resetFilters();
+        setActiveTab("all");
+        const globalIndex = queue.findIndex(
+          (item) => item.candidate.id === candidateId
+        );
+        if (globalIndex !== -1) {
+          setActiveIndex(globalIndex);
+        }
+      }
+    },
+    [filteredQueue, queue, shortlistFilter, resetFilters, setActiveTab, setActiveIndex]
+  );
+
+  const handleFilterCandidateIds = useCallback(
+    (candidateIds: string[], label: string) => {
+      setShortlistFilter({ label, candidateIds });
+      setActiveIndex(0);
+    },
+    [setActiveIndex]
+  );
 
   const activeChips = useActiveReviewChips({
     activeTab,
@@ -232,6 +269,12 @@ export function ReviewQueuePage({
         setIsLayer2Expanded((prev) => !prev);
         return;
       }
+
+      if (e.key.toLowerCase() === "t") {
+        e.preventDefault();
+        setIsTopCandidatesOpen((prev) => !prev);
+        return;
+      }
     };
 
     window.addEventListener("keydown", handleKeyDown);
@@ -240,13 +283,10 @@ export function ReviewQueuePage({
 
   return (
     <div className="w-full max-w-7xl mx-auto -mt-8 pb-16 relative">
-      {/* Visual Drag and Drop Overlay for Candidate Resumes */}
       <ResumeDropOverlay isVisible={isDraggingOver} />
 
-      {/* 1. Sticky Job and Progress Header directly below App Header */}
       <header className="sticky top-16 z-20 bg-surface/95 backdrop-blur-md border-b border-outline-variant/30 py-2.5 px-1 mb-2.5">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          {/* Left Side: Job Title & Metadata */}
           <div className="min-w-0 flex-1">
             <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
               <Typography variant="title-large" className="text-lg sm:text-xl font-bold tracking-tight text-on-surface">
@@ -280,7 +320,6 @@ export function ReviewQueuePage({
             </div>
           </div>
 
-          {/* Right Side: Candidate Position, Totals & Progress Indicator */}
           <div className="flex flex-col sm:items-end items-start gap-1 shrink-0">
             <div className="flex items-center gap-3">
               <div className="flex items-baseline gap-1.5">
@@ -330,7 +369,6 @@ export function ReviewQueuePage({
         </div>
       </header>
 
-      {/* 2. Candidate Tabs and Review Controls Toolbar */}
       <div className="mb-2">
         <ReviewDeckControls
           activeTab={activeTab}
@@ -347,6 +385,7 @@ export function ReviewQueuePage({
           onClearAllFilters={resetFilters}
           onToggleShortcuts={() => setIsShortcutsOpen((prev) => !prev)}
           isShortcutsOpen={isShortcutsOpen}
+          onToggleTopCandidates={() => setIsTopCandidatesOpen((prev) => !prev)}
           sortBy={sortBy}
           onSelectSort={setSortBy}
           rightSlot={
@@ -360,14 +399,34 @@ export function ReviewQueuePage({
         />
       </div>
 
-      {/* 3. Compact Evidence Key */}
+      {shortlistFilter && (
+        <div className="mb-2.5 px-1">
+          <div className="flex items-center justify-between p-3 rounded-2xl bg-primary/10 border border-primary/30 text-xs text-on-surface">
+            <div className="flex items-center gap-2">
+              <Trophy className="h-4 w-4 text-primary shrink-0" />
+              <span className="font-semibold text-primary">
+                Active Shortlist: {shortlistFilter.label}
+              </span>
+              <span className="text-on-surface-variant font-mono">
+                ({filteredQueue.length} of {queue.length} candidates)
+              </span>
+            </div>
+            <button
+              type="button"
+              onClick={() => setShortlistFilter(null)}
+              className="text-primary hover:underline font-bold cursor-pointer border-0 bg-transparent text-xs"
+            >
+              Clear shortlist filter
+            </button>
+          </div>
+        </div>
+      )}
+
       <div className="mb-2.5 px-1">
         <EvidentiaryLegend />
       </div>
 
-      {/* 4. Full-Width Candidate Card Area */}
       <main className="w-full space-y-3 pb-16">
-        {/* Real-time Ingestion Feedback Notification */}
         {feedback && (
           <div
             className={`flex items-center justify-between p-3.5 rounded-xl border text-xs animate-in fade-in duration-150 ${
@@ -396,7 +455,6 @@ export function ReviewQueuePage({
           </div>
         )}
 
-        {/* All Decided Completion Banner */}
         {filteredQueue.length > 0 && filteredQueue.every((item) => item.decision !== "pending") && (
           <div className="flex items-center justify-between p-3.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-xs text-on-surface">
             <div className="flex items-center gap-2">
@@ -420,7 +478,6 @@ export function ReviewQueuePage({
           </div>
         )}
 
-        {/* Active Candidate Focused Card with Directional Decision Exit Transitions */}
         <AnimatePresence mode="wait" custom={commitDecision}>
           {activeItem ? (
             <motion.div
@@ -467,13 +524,11 @@ export function ReviewQueuePage({
         </AnimatePresence>
       </main>
 
-      {/* 5. Shortcuts Modal (On-Demand Help Dialog) */}
       <KeyboardShortcutModal
         isOpen={isShortcutsOpen}
         onClose={() => setIsShortcutsOpen(false)}
       />
 
-      {/* Decision Feedback Toast Snackbar */}
       <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-30 pointer-events-none flex flex-col items-center">
         <DecisionSnackbar
           state={snackbarState}
@@ -483,7 +538,6 @@ export function ReviewQueuePage({
         />
       </div>
 
-      {/* Integrated Queue Filters HUD Drawer */}
       <ReviewFilterPane
         variant="overlay"
         isOpen={isFilterPaneOpen}
@@ -525,7 +579,6 @@ export function ReviewQueuePage({
         onToggleIncludeUnstatedSalary={toggleIncludeUnstatedSalary}
       />
 
-      {/* Active Group Canvas Topology Selection Modal */}
       {FEATURES.CANDIDATE_GROUPS && (
         <ActiveGroupCanvasModal
           isOpen={isGroupModalOpen}
@@ -540,6 +593,20 @@ export function ReviewQueuePage({
           activeJobId={initialJob.id}
         />
       )}
+
+      <TopCandidatesModal
+        isOpen={isTopCandidatesOpen}
+        onClose={() => setIsTopCandidatesOpen(false)}
+        job={initialJob}
+        queue={queue}
+        onJumpToCandidate={handleJumpToCandidate}
+        onFilterCandidateIds={handleFilterCandidateIds}
+        onDecision={(decision, candidateId) => {
+          if (candidateId) {
+            updateDecision(candidateId, decision);
+          }
+        }}
+      />
     </div>
   );
 }

@@ -30,6 +30,7 @@ export interface UseQueueViewProps {
   initialGroupId?: string | null;
   initialSort?: QueueSortOption;
   targetDegreeLevel?: string | null;
+  candidateIds?: string[] | null;
   onDecision: (candidateId: string, decision: ReviewDecision) => Promise<boolean>;
 }
 
@@ -88,6 +89,7 @@ export function useQueueView({
   initialGroupId = null,
   initialSort = "latest",
   targetDegreeLevel = null,
+  candidateIds = null,
   onDecision,
 }: UseQueueViewProps): UseQueueViewReturn {
   const router = useRouter();
@@ -153,6 +155,7 @@ export function useQueueView({
       targetCurrency: salaryBounds.currency,
       sortBy,
       targetDegreeLevel,
+      candidateIds,
     });
   }, [
     queue,
@@ -167,6 +170,7 @@ export function useQueueView({
     salaryBounds.currency,
     sortBy,
     targetDegreeLevel,
+    candidateIds,
   ]);
 
   const activeItem = filteredQueue[activeIndex] || filteredQueue[0] || null;

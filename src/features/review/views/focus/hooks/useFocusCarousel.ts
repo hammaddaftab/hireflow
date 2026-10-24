@@ -27,9 +27,11 @@ export interface UseFocusCarouselProps {
   initialGroupId?: string | null;
   initialSort?: QueueSortOption;
   targetDegreeLevel?: string | null;
+  candidateIds?: string[] | null;
   onDecision: (candidateId: string, decision: ReviewDecision) => Promise<boolean>;
   onExitFocus?: () => void;
   onToggleEvidence?: () => void;
+  onToggleTopCandidates?: () => void;
 }
 
 export interface UseFocusCarouselReturn {
@@ -100,9 +102,11 @@ export function useFocusCarousel({
   initialGroupId = null,
   initialSort = "latest",
   targetDegreeLevel = null,
+  candidateIds = null,
   onDecision,
   onExitFocus,
   onToggleEvidence,
+  onToggleTopCandidates,
 }: UseFocusCarouselProps): UseFocusCarouselReturn {
   const [activeIndex, setActiveIndex] = useState(initialIndex);
   const [activeTab, setActiveTab] = useState<QueueFilterTab>(initialTab);
@@ -174,6 +178,7 @@ export function useFocusCarousel({
       targetCurrency: salaryBounds.currency,
       sortBy,
       targetDegreeLevel,
+      candidateIds,
     });
   }, [
     queue,
@@ -188,6 +193,7 @@ export function useFocusCarousel({
     salaryBounds.currency,
     sortBy,
     targetDegreeLevel,
+    candidateIds,
   ]);
 
   const scopedActiveItem = filteredQueue[activeIndex] || filteredQueue[0] || null;
@@ -360,6 +366,10 @@ export function useFocusCarousel({
           e.preventDefault();
           onToggleEvidence?.();
           break;
+        case "t":
+          e.preventDefault();
+          onToggleTopCandidates?.();
+          break;
         case "q":
           e.preventDefault();
           setIsFilterPaneOpen((prev) => !prev);
@@ -393,6 +403,7 @@ export function useFocusCarousel({
     handleClearCurrent,
     handleNextUndecided,
     onToggleEvidence,
+    onToggleTopCandidates,
     onExitFocus,
     isFilterPaneOpen,
     isGroupModalOpen,

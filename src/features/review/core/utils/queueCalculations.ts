@@ -32,6 +32,7 @@ export interface QueueFilterOptions {
   targetCurrency?: string;
   sortBy?: QueueSortOption;
   targetDegreeLevel?: string | null;
+  candidateIds?: string[] | null;
 }
 
 // Formats compact monetary values (e.g. 50k, 500k, 1M)
@@ -301,11 +302,16 @@ export function filterReviewQueue(
     targetCurrency = "PKR",
     sortBy = "latest",
     targetDegreeLevel = null,
+    candidateIds = null,
   } = options;
 
   const effectiveDegreeLevel = targetDegreeLevel ?? queue[0]?.targetDegreeLevel ?? "bachelors";
 
   const filtered = queue.filter((item) => {
+    // 0. Explicit candidate IDs filter (e.g. Top Candidates shortlist)
+    if (candidateIds && candidateIds.length > 0 && !candidateIds.includes(item.candidate.id)) {
+      return false;
+    }
     // 1. Group filter (active group always enforced; default group encompasses all candidates)
     if (!isDefaultGroup(selectedGroupId)) {
       const group = queryGroups.find((g) => g.id === selectedGroupId);

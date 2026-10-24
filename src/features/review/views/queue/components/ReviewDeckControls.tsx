@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Maximize2, Filter, Keyboard, ArrowUpDown } from "lucide-react";
+import { Maximize2, Filter, Keyboard, ArrowUpDown, Trophy } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import type { QueueFilterTab } from "@/entities/review";
 import type { QueueSortOption } from "@/features/review/core/utils/queueCalculations";
@@ -25,6 +25,7 @@ export interface ReviewDeckControlsProps {
   onClearAllFilters?: () => void;
   onToggleShortcuts?: () => void;
   isShortcutsOpen?: boolean;
+  onToggleTopCandidates?: () => void;
   rightSlot?: React.ReactNode;
   sortBy?: QueueSortOption;
   onSelectSort?: (sort: QueueSortOption) => void;
@@ -42,13 +43,13 @@ export function ReviewDeckControls({
   onClearAllFilters,
   onToggleShortcuts,
   isShortcutsOpen = false,
+  onToggleTopCandidates,
   rightSlot,
   sortBy = "latest",
   onSelectSort,
 }: ReviewDeckControlsProps) {
   return (
     <div className="flex flex-wrap items-center justify-between gap-2.5 bg-surface-container-low p-2 rounded-2xl border-0 shadow-xs">
-      {/* Candidate Queue Tabs */}
       <div className="flex flex-wrap items-center gap-1 p-1 bg-surface-container rounded-xl border-0">
         <button
           type="button"
@@ -99,7 +100,6 @@ export function ReviewDeckControls({
         </button>
       </div>
 
-      {/* Right Action Controls: Drop Resumes, Sort, Filters, Shortcuts, Focus Mode */}
       <div className="flex flex-wrap items-center gap-2">
         {rightSlot}
         {onSelectSort && (
@@ -143,7 +143,6 @@ export function ReviewDeckControls({
               </span>
             </Button>
 
-            {/* Inline active chips right after the Filters button in Wide mode */}
             {activeChips && activeChips.length > 0 && onClearAllFilters && (
               <ActiveFilterChipBar
                 chips={activeChips}
@@ -166,6 +165,21 @@ export function ReviewDeckControls({
           >
             <Keyboard className="h-3.5 w-3.5 shrink-0" />
             <span>Shortcuts</span>
+          </Button>
+        )}
+        {onToggleTopCandidates && (
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={onToggleTopCandidates}
+            className="h-8 px-3.5 gap-1.5 text-xs font-bold rounded-xl bg-primary/10 hover:bg-primary/20 text-primary border border-primary/20 cursor-pointer transition-colors"
+            title="Open Mechanism E Top 3 Candidates Tournament (T)"
+          >
+            <Trophy className="h-3.5 w-3.5 shrink-0" />
+            <span>Top 3</span>
+            <kbd className="hidden md:inline-block px-1 py-0.2 rounded bg-surface/60 text-on-surface-variant font-mono text-[10px]">
+              T
+            </kbd>
           </Button>
         )}
         <Button

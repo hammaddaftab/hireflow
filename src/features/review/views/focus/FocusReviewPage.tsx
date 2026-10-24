@@ -2,7 +2,7 @@
 
 import React, { useState, useCallback, useMemo, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { Minimize2, Filter, Network } from "lucide-react";
+import { Minimize2, Filter, Network, Trophy, X } from "lucide-react";
 import { Typography } from "@/components/ui/Typography";
 import type { Job } from "@/entities/job";
 import type { QueueFilterTab } from "@/entities/review";
@@ -20,6 +20,7 @@ import { useActiveReviewChips } from "../../core/hooks/useActiveReviewChips";
 import { buildReviewQueryString } from "../../core/utils/reviewQueryParams";
 import { type PersistedGroupWithMembers, ActiveGroupCanvasModal } from "@/features/groups";
 import { FEATURES } from "@/config/features";
+import { TopCandidatesModal } from "../../top-candidates";
 
 export interface FocusReviewPageProps {
   initialJob: Job;
@@ -46,6 +47,8 @@ export function FocusReviewPage({
 }: FocusReviewPageProps) {
   const router = useRouter();
   const [isEvidenceOpen, setIsEvidenceOpen] = useState(false);
+  const [isTopCandidatesOpen, setIsTopCandidatesOpen] = useState(false);
+  const [shortlistFilter, setShortlistFilter] = useState<{ label: string; candidateIds: string[] } | null>(null);
   const targetDegreeLevel: string =
     (initialJob.education_min as { degree_level?: string | null })?.degree_level || "bachelors";
 
@@ -118,9 +121,11 @@ export function FocusReviewPage({
     initialGroupId,
     initialSort,
     targetDegreeLevel,
+    candidateIds: shortlistFilter?.candidateIds || null,
     onDecision: updateDecision,
     onExitFocus: () => exitFocusRef.current(),
     onToggleEvidence: () => setIsEvidenceOpen((prev) => !prev),
+    onToggleTopCandidates: () => setIsTopCandidatesOpen((prev) => !prev),
   });
 
   const handleExitFocus = useCallback(() => {
@@ -136,6 +141,38 @@ export function FocusReviewPage({
   }, [router, activeIndex, activeTab, selectedCity, selectedUniversity, selectedGroupId, sortBy]);
 
   exitFocusRef.current = handleExitFocus;
+
+  const handleJumpToCandidate = useCallback(
+    (candidateId: string) => {
+      if (shortlistFilter && !shortlistFilter.candidateIds.includes(candidateId)) {
+        setShortlistFilter(null);
+      }
+      const targetIndex = filteredQueue.findIndex(
+        (item) => item.candidate.id === candidateId
+      );
+      if (targetIndex !== -1) {
+        setActiveIndex(targetIndex);
+      } else {
+        resetFilters();
+        setActiveTab("all");
+        const globalIndex = queue.findIndex(
+          (item) => item.candidate.id === candidateId
+        );
+        if (globalIndex !== -1) {
+          setActiveIndex(globalIndex);
+        }
+      }
+    },
+    [filteredQueue, queue, shortlistFilter, resetFilters, setActiveTab, setActiveIndex]
+  );
+
+  const handleFilterCandidateIds = useCallback(
+    (candidateIds: string[], label: string) => {
+      setShortlistFilter({ label, candidateIds });
+      setActiveIndex(0);
+    },
+    [setActiveIndex]
+  );
 
   // Moves keyboard focus to the command bar action dock
   const handleFocusCommandBar = useCallback(() => {
@@ -176,9 +213,7 @@ export function FocusReviewPage({
 
   return (
     <div className="fixed inset-0 z-50 flex flex-col bg-surface overflow-hidden">
-      {/* Top Header HUD: Job Title, Filters, Active Group, Position Indicator, and Exit */}
       <header className="w-full shrink-0 h-14 sm:h-16 px-6 flex items-center justify-between border-b border-outline-variant/20 bg-surface z-40 select-none">
-        {/* Left Side: Job Title, Filters Trigger & Active Filter Chip Bar */}
         <div className="flex items-center gap-3 flex-1 min-w-0 mr-4">
           <div className="hidden sm:flex flex-col shrink-0">
             <span className="text-[10px] uppercase font-bold tracking-wider text-primary">
@@ -211,14 +246,41 @@ export function FocusReviewPage({
             </kbd>
           </button>
 
-          {/* Three-Tier Dynamic Overflow Filter Chip Bar */}
+          <button
+            type="button"
+            onClick={() => setIsTopCandidatesOpen(true)}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-primary/30 bg-primary/10 hover:bg-primary/20 text-primary transition-colors cursor-pointer text-xs font-bold shadow-2xs shrink-0"
+            title="Open Mechanism E Top 3 Candidates Tournament (T)"
+            aria-label="Open Top 3 Candidates Tournament"
+          >
+            <Trophy className="h-3.5 w-3.5 shrink-0" />
+            <span>Top 3</span>
+            <kbd className="hidden md:inline-block px-1 py-0.2 rounded bg-surface/40 font-mono text-[10px] opacity-75">
+              T
+            </kbd>
+          </button>
+
+          {shortlistFilter && (
+            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-primary/15 text-primary border border-primary/30 text-xs font-semibold shrink-0">
+              <Trophy className="h-3 w-3 shrink-0" />
+              <span>{shortlistFilter.label}</span>
+              <button
+                type="button"
+                onClick={() => setShortlistFilter(null)}
+                className="hover:text-on-surface cursor-pointer border-0 bg-transparent p-0 text-on-surface-variant"
+                title="Clear shortlist"
+              >
+                <X className="h-3 w-3 shrink-0" />
+              </button>
+            </div>
+          )}
+
           <ActiveFilterChipBar
             chips={activeChips}
             onClearAll={resetFilters}
           />
         </div>
 
-        {/* Right Side: Active Group Selector, Position Indicator (n/m), Decision Counts, and Exit */}
         <div className="flex items-center gap-3 shrink-0">
           {FEATURES.CANDIDATE_GROUPS && (
             <button
@@ -287,7 +349,6 @@ export function FocusReviewPage({
         </div>
       </header>
 
-      {/* Center Field: Spatial Card Deck within dedicated scroll stage */}
       <main className="relative flex-1 min-h-0 w-full flex items-center justify-center p-3 sm:p-4 overflow-hidden">
         <SpatialFocusDeck
           items={filteredQueue}
@@ -305,7 +366,6 @@ export function FocusReviewPage({
         />
       </main>
 
-      {/* Floating Decision Feedback Snackbar */}
       <div className="absolute bottom-16 left-0 right-0 z-40 pointer-events-none flex justify-center px-4">
         <DecisionSnackbar
           state={snackbarState}
@@ -315,7 +375,6 @@ export function FocusReviewPage({
         />
       </div>
 
-      {/* Fixed Bottom Action Dock */}
       <FocusCommandBar
         currentDecision={scopedActiveItem?.decision}
         decidedAt={scopedActiveItem?.decidedAt}
@@ -327,7 +386,6 @@ export function FocusReviewPage({
         onClear={handleClearCurrent}
       />
 
-      {/* Integrated Queue Filters HUD Drawer */}
       <ReviewFilterPane
         variant="overlay"
         isOpen={isFilterPaneOpen}
@@ -373,7 +431,6 @@ export function FocusReviewPage({
         onToggleIncludeUnstatedSalary={toggleIncludeUnstatedSalary}
       />
 
-      {/* Active Group Canvas Topology Selection Modal */}
       {FEATURES.CANDIDATE_GROUPS && (
         <ActiveGroupCanvasModal
           isOpen={isGroupModalOpen}
@@ -388,6 +445,20 @@ export function FocusReviewPage({
           activeJobId={initialJob.id}
         />
       )}
+
+      <TopCandidatesModal
+        isOpen={isTopCandidatesOpen}
+        onClose={() => setIsTopCandidatesOpen(false)}
+        job={initialJob}
+        queue={queue}
+        onJumpToCandidate={handleJumpToCandidate}
+        onFilterCandidateIds={handleFilterCandidateIds}
+        onDecision={(decision, candidateId) => {
+          if (candidateId) {
+            updateDecision(candidateId, decision);
+          }
+        }}
+      />
     </div>
   );
 }
