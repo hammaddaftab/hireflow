@@ -776,7 +776,21 @@ ${view?.fullCvText}`;
         resolvedOutcome = "tie";
       }
 
-      const combinedReasons = `${resAB.object.decisive_reasons} ${resBA.object.decisive_reasons}`.trim();
+      const nameA = viewA.candidateName || candA;
+      const nameB = viewB.candidateName || candB;
+
+      const replaceLabels = (text: string, firstLabel: string, secondLabel: string) =>
+        text
+          .replace(/\bCandidate A\b/gi, firstLabel)
+          .replace(/\bCandidate B\b/gi, secondLabel);
+
+      const forwardReasonNamed = replaceLabels(resAB.object.decisive_reasons || "", nameA, nameB);
+      const reverseReasonNamed = replaceLabels(resBA.object.decisive_reasons || "", nameB, nameA);
+
+      const combinedReasons =
+        resolvedOutcome === "tie"
+          ? `Forward pass (${nameA} first): ${forwardReasonNamed} Reverse pass (${nameB} first): ${reverseReasonNamed}`.trim()
+          : forwardReasonNamed || reverseReasonNamed;
       const combinedClaims = [
         ...(resAB.object.supporting_claims || []),
         ...(resBA.object.supporting_claims || []),
@@ -801,19 +815,22 @@ ${view?.fullCvText}`;
     const key = `${m.candidate_a}::${m.candidate_b}`;
     headToHeadMatrix.set(key, m.resolved_outcome);
 
+    const labelA = finalistViewMap.get(m.candidate_a)?.candidateName || m.candidate_a;
+    const labelB = finalistViewMap.get(m.candidate_b)?.candidateName || m.candidate_b;
+
     if (m.resolved_outcome === "a_wins") {
       pairwiseWinsMap.set(m.candidate_a, (pairwiseWinsMap.get(m.candidate_a) || 0) + 1);
       pairwiseLossesMap.set(m.candidate_b, (pairwiseLossesMap.get(m.candidate_b) || 0) + 1);
-      pairwiseNotesMap.get(m.candidate_a)?.push(`Decisively defeated ${m.candidate_b}: ${m.decisive_reasons}`);
+      pairwiseNotesMap.get(m.candidate_a)?.push(`Defeated ${labelB}: ${m.decisive_reasons}`);
     } else if (m.resolved_outcome === "b_wins") {
       pairwiseWinsMap.set(m.candidate_b, (pairwiseWinsMap.get(m.candidate_b) || 0) + 1);
       pairwiseLossesMap.set(m.candidate_a, (pairwiseLossesMap.get(m.candidate_a) || 0) + 1);
-      pairwiseNotesMap.get(m.candidate_b)?.push(`Decisively defeated ${m.candidate_a}: ${m.decisive_reasons}`);
+      pairwiseNotesMap.get(m.candidate_b)?.push(`Defeated ${labelA}: ${m.decisive_reasons}`);
     } else {
       pairwiseTiesMap.set(m.candidate_a, (pairwiseTiesMap.get(m.candidate_a) || 0) + 1);
       pairwiseTiesMap.set(m.candidate_b, (pairwiseTiesMap.get(m.candidate_b) || 0) + 1);
-      pairwiseNotesMap.get(m.candidate_a)?.push(`Positional tie with ${m.candidate_b}: ${m.decisive_reasons}`);
-      pairwiseNotesMap.get(m.candidate_b)?.push(`Positional tie with ${m.candidate_a}: ${m.decisive_reasons}`);
+      pairwiseNotesMap.get(m.candidate_a)?.push(`Tied head-to-head with ${labelB}: ${m.decisive_reasons}`);
+      pairwiseNotesMap.get(m.candidate_b)?.push(`Tied head-to-head with ${labelA}: ${m.decisive_reasons}`);
     }
 
     for (const c of m.supporting_claims) {

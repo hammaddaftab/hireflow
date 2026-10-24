@@ -10,6 +10,7 @@ export function isDefaultGroup(groupId: string | null | undefined): boolean {
 }
 
 export interface ReviewFilterQueryParams {
+  jobId?: string | null;
   candidateIndex?: number;
   tab?: QueueFilterTab;
   city?: string | null;
@@ -21,6 +22,10 @@ export interface ReviewFilterQueryParams {
 // Builds a query string for review navigation preserving active filter and candidate state
 export function buildReviewQueryString(params: ReviewFilterQueryParams): string {
   const searchParams = new URLSearchParams();
+
+  if (params.jobId) {
+    searchParams.set("jobId", params.jobId);
+  }
 
   if (params.candidateIndex !== undefined && params.candidateIndex > 0) {
     searchParams.set("candidateIndex", String(params.candidateIndex));

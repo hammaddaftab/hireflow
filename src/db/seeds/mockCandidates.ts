@@ -11,8 +11,12 @@ import { candidate07Ayesha } from "./mockData/candidate07Ayesha";
 import { candidate08Farhan } from "./mockData/candidate08Farhan";
 import { candidate09Omer } from "./mockData/candidate09Omer";
 import { candidate10Zainab } from "./mockData/candidate10Zainab";
+import { GRAD_AI_SWE_CANDIDATES } from "./mockData/gradAiSweCandidates";
+
+export { GRAD_AI_SWE_CANDIDATES };
 
 export const MOCK_CANDIDATES: ParsedCandidateProfile[] = [
+  ...GRAD_AI_SWE_CANDIDATES,
   candidate01Tariq,
   candidate02Hamza,
   candidate03Saad,

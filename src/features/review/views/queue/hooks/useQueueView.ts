@@ -250,6 +250,7 @@ export function useQueueView({
   const handleEnterFocusMode = useCallback(() => {
     flushCommitBeat();
     const q = buildReviewQueryString({
+      jobId: queue[0]?.jobId || null,
       candidateIndex: activeIndex,
       tab: activeTab,
       city: selectedCity,
@@ -258,7 +259,7 @@ export function useQueueView({
       sort: sortBy,
     });
     router.push(q ? `/review/focus?${q}` : "/review/focus");
-  }, [activeIndex, activeTab, selectedCity, selectedUniversity, selectedGroupId, sortBy, router, flushCommitBeat]);
+  }, [queue, activeIndex, activeTab, selectedCity, selectedUniversity, selectedGroupId, sortBy, router, flushCommitBeat]);
 
   const resetFilters = useCallback(() => {
     flushCommitBeat();

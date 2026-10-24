@@ -287,7 +287,7 @@ export function JobDashboardList({ initialJobs }: JobDashboardListProps) {
 
                 {/* Footer Actions */}
                 <div className="mt-5 pt-3 border-t border-outline-variant flex items-center justify-between gap-2">
-                  <Link href={ROUTES.REVIEW} className="flex-1">
+                  <Link href={`${ROUTES.REVIEW}?jobId=${encodeURIComponent(job.id)}`} className="flex-1">
                     <Button variant="primary" size="sm" className="w-full">
                       Open Review Queue
                     </Button>

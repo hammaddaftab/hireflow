@@ -130,6 +130,7 @@ export function FocusReviewPage({
 
   const handleExitFocus = useCallback(() => {
     const q = buildReviewQueryString({
+      jobId: initialJob.id,
       candidateIndex: activeIndex,
       tab: activeTab,
       city: selectedCity,
@@ -138,7 +139,7 @@ export function FocusReviewPage({
       sort: sortBy,
     });
     router.push(q ? `/review?${q}` : "/review");
-  }, [router, activeIndex, activeTab, selectedCity, selectedUniversity, selectedGroupId, sortBy]);
+  }, [router, initialJob.id, activeIndex, activeTab, selectedCity, selectedUniversity, selectedGroupId, sortBy]);
 
   exitFocusRef.current = handleExitFocus;
 

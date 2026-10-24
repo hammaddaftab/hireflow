@@ -2,8 +2,14 @@
 // Seeds baseline resume upload records into PostgreSQL via Drizzle ORM
 
 import { db, resumeUploads, conn } from "@/db";
+import { GRAD_AI_SWE_UPLOADS } from "./mockData/gradAiSweCandidates";
 
 export const INITIAL_RESUME_UPLOADS = [
+  ...GRAD_AI_SWE_UPLOADS.map((u) => ({
+    ...u,
+    createdAt: new Date(u.createdAt),
+    updatedAt: new Date(u.updatedAt),
+  })),
   {
     id: "upl_tariq_mehmood",
     filename: "tariq_mehmood_resume.pdf",

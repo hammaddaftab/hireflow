@@ -13,6 +13,7 @@ export default async function FocusRoutePage({
   searchParams,
 }: {
   searchParams: Promise<{
+    jobId?: string;
     candidateIndex?: string;
     tab?: string;
     city?: string;
@@ -23,7 +24,12 @@ export default async function FocusRoutePage({
 }) {
   const params = await searchParams;
   const jobs = await jobsService.getAllJobs();
-  const activeJob = jobs[0] || (await jobsService.getJobById("job-sample-1"));
+  const requestedJob = params.jobId ? await jobsService.getJobById(params.jobId) : null;
+  const activeJob =
+    requestedJob ||
+    jobs[0] ||
+    (await jobsService.getJobById("job-grad-ai-swe")) ||
+    (await jobsService.getJobById("job-sample-1"));
 
   if (!activeJob) {
     return (
@@ -34,11 +40,15 @@ export default async function FocusRoutePage({
   }
 
   // Parallelize independent database queries to eliminate waterfalls
-  const [allCandidates, priorDecisions, persistedGroups] = await Promise.all([
-    candidatesService.getAllCandidates(),
+  const [jobCandidates, priorDecisions, persistedGroups] = await Promise.all([
+    candidatesService.getAllCandidates({ jobId: activeJob.id }),
     reviewsService.getDecisionsForJob(activeJob.id),
     groupsService.getGroupsForJob(activeJob.id),
   ]);
+  const allCandidates =
+    jobCandidates.length > 0
+      ? jobCandidates
+      : await candidatesService.getAllCandidates();
   const queue = buildReviewQueue(allCandidates, activeJob, priorDecisions);
 
   const initialIndex = params.candidateIndex ? parseInt(params.candidateIndex, 10) : 0;

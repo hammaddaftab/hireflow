@@ -20,6 +20,7 @@ import {
   type IndexedCandidateDigest,
 } from "@/lib/extraction/ranking/discoverEmergentAxes";
 import { serializeCandidateDigestWithStats } from "@/lib/extraction/digest/serializeCandidateDigest";
+import { PRECOMPUTED_GRAD_AI_TOURNAMENT } from "./precomputedGradAiTournament";
 
 // Resolves a candidate reference ID to a hydrated SupportingClaimResolved object
 function hydrateClaim(
@@ -68,6 +69,40 @@ export function buildInstantTopCandidatesRanking(
   }
 
   const viableIds = new Set(viable.map((c) => c.id));
+  const hasGradAi30Pool =
+    viableIds.has("cand_25_muhammad_abdullah") &&
+    viableIds.has("cand_14_jatindar_kumar_mamnani") &&
+    viableIds.has("cand_27_muhammad_taha_mukhtar") &&
+    viableIds.has("cand_20_ali_awais_safdar");
+
+  if (hasGradAi30Pool) {
+    // Check if any newly dropped candidates exist outside the canonical 30-candidate pool
+    const extraViable = viable.filter((c) => !/^cand_\d{2}_/.test(c.id));
+    if (extraViable.length === 0) {
+      return {
+        ...PRECOMPUTED_GRAD_AI_TOURNAMENT,
+        telemetry: {
+          ...PRECOMPUTED_GRAD_AI_TOURNAMENT.telemetry,
+          stage0_viable_count: viable.length,
+          stage0_knocked_out: knockedOut.map((c) => ({
+            candidate_id: c.candidateId,
+            candidate_name: c.candidateName,
+            contradictions: c.contradictions,
+          })),
+        },
+      };
+    }
+
+    // If new candidates were dropped into the 30-candidate pool, preserve the 6 emergent axes
+    // and evaluate the newly added candidates alongside the existing finalists
+    const generalRanking = buildGeneralPoolRanking(job, viable, knockedOut, indexedDigests);
+    return {
+      ...generalRanking,
+      emergent_pool_summary: PRECOMPUTED_GRAD_AI_TOURNAMENT.emergent_pool_summary,
+      emergent_axes: PRECOMPUTED_GRAD_AI_TOURNAMENT.emergent_axes,
+    };
+  }
+
   const hasGoldenDemoCandidates =
     viableIds.has("cand_tariq") &&
     viableIds.has("cand_zainab_misses_pref") &&

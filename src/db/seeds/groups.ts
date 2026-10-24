@@ -59,6 +59,34 @@ export async function seedGroups() {
     groupUnderReview,
     subgroupLogistics,
     groupFullStack,
+    {
+      id: "grp_ai_finalists",
+      jobId: "job-grad-ai-swe",
+      parentId: null,
+      name: "Tournament Finalists (Top 8)",
+      description: "Finalists advancing through Stage 2 reshuffled halving rounds into full-CV Stage 3 evaluation.",
+    },
+    {
+      id: "grp_ai_top3_contenders",
+      jobId: "job-grad-ai-swe",
+      parentId: "grp_ai_finalists",
+      name: "Top 3 Resolution Contenders",
+      description: "Confident #1 and #2 leaders plus the contested #3 pairwise finalists.",
+    },
+    {
+      id: "grp_ai_research_labs",
+      jobId: "job-grad-ai-swe",
+      parentId: null,
+      name: "Published AI & Research Labs",
+      description: "Candidates with peer-reviewed publications (COLING, FIT) or selective international/national lab fellowships.",
+    },
+    {
+      id: "grp_ai_fullstack_impact",
+      jobId: "job-grad-ai-swe",
+      parentId: null,
+      name: "Full-Stack & Quantified Impact",
+      description: "Candidates demonstrating end-to-end web/mobile product ownership with quantified user or latency metrics.",
+    },
   ];
 
   for (const g of allGroups) {
@@ -103,6 +131,40 @@ export async function seedGroups() {
     { groupId: "grp_full_stack_core", candidateId: "cand_hamza_gem" },
     { groupId: "grp_full_stack_core", candidateId: "cand_farhan_out_of_band" },
     { groupId: "grp_full_stack_core", candidateId: "cand_zainab_misses_pref" },
+
+    // AI / ML Tournament Finalists (Top 8)
+    { groupId: "grp_ai_finalists", candidateId: "cand_25_muhammad_abdullah" },
+    { groupId: "grp_ai_finalists", candidateId: "cand_14_jatindar_kumar_mamnani" },
+    { groupId: "grp_ai_finalists", candidateId: "cand_27_muhammad_taha_mukhtar" },
+    { groupId: "grp_ai_finalists", candidateId: "cand_20_ali_awais_safdar" },
+    { groupId: "grp_ai_finalists", candidateId: "cand_30_wahaj_ahmad_butt" },
+    { groupId: "grp_ai_finalists", candidateId: "cand_08_muhammad_rouhan_faisal" },
+    { groupId: "grp_ai_finalists", candidateId: "cand_18_abdul_rehman" },
+    { groupId: "grp_ai_finalists", candidateId: "cand_11_muhammad_ahad_sajjad" },
+
+    // Top 3 Resolution Contenders (Subgroup of Finalists)
+    { groupId: "grp_ai_top3_contenders", candidateId: "cand_25_muhammad_abdullah" },
+    { groupId: "grp_ai_top3_contenders", candidateId: "cand_14_jatindar_kumar_mamnani" },
+    { groupId: "grp_ai_top3_contenders", candidateId: "cand_27_muhammad_taha_mukhtar" },
+    { groupId: "grp_ai_top3_contenders", candidateId: "cand_20_ali_awais_safdar" },
+
+    // Published AI & Research Labs
+    { groupId: "grp_ai_research_labs", candidateId: "cand_25_muhammad_abdullah" },
+    { groupId: "grp_ai_research_labs", candidateId: "cand_14_jatindar_kumar_mamnani" },
+    { groupId: "grp_ai_research_labs", candidateId: "cand_27_muhammad_taha_mukhtar" },
+    { groupId: "grp_ai_research_labs", candidateId: "cand_20_ali_awais_safdar" },
+    { groupId: "grp_ai_research_labs", candidateId: "cand_16_mehar_ali_ahmed" },
+    { groupId: "grp_ai_research_labs", candidateId: "cand_03_abdullah_aleem" },
+    { groupId: "grp_ai_research_labs", candidateId: "cand_08_muhammad_rouhan_faisal" },
+
+    // Full-Stack & Quantified Impact
+    { groupId: "grp_ai_fullstack_impact", candidateId: "cand_25_muhammad_abdullah" },
+    { groupId: "grp_ai_fullstack_impact", candidateId: "cand_30_wahaj_ahmad_butt" },
+    { groupId: "grp_ai_fullstack_impact", candidateId: "cand_11_muhammad_ahad_sajjad" },
+    { groupId: "grp_ai_fullstack_impact", candidateId: "cand_06_hasib_aslam" },
+    { groupId: "grp_ai_fullstack_impact", candidateId: "cand_12_iqra_rasool" },
+    { groupId: "grp_ai_fullstack_impact", candidateId: "cand_23_muhammad_zaeem_khalid" },
+    { groupId: "grp_ai_fullstack_impact", candidateId: "cand_24_abdullah_saim" },
   ];
 
   for (const m of memberships) {

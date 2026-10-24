@@ -37,6 +37,7 @@ export function TopCandidatesModal({
   const [isLoading, setIsLoading] = useState(false);
   const [isRunningLive, setIsRunningLive] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [unrankedNames, setUnrankedNames] = useState<string[]>([]);
 
   // Map candidate IDs to CandidateReviewItems for quick lookup
   const queueMap = useMemo(() => {
@@ -47,7 +48,7 @@ export function TopCandidatesModal({
     return map;
   }, [queue]);
 
-  // Load deterministic or cached ranking on open
+  // Load deterministic or cached ranking on open or when candidate pool size changes
   const fetchRanking = useCallback(async () => {
     setIsLoading(true);
     setErrorMessage(null);
@@ -60,6 +61,7 @@ export function TopCandidatesModal({
       setRanking(data.ranking);
       setMode(data.mode || "instant");
       setCanRunLive(Boolean(data.canRunLive));
+      setUnrankedNames(Array.isArray(data.unrankedCandidateNames) ? data.unrankedCandidateNames : []);
     } catch (err) {
       setErrorMessage(
         err instanceof Error ? err.message : "Failed to load tournament data"
@@ -70,10 +72,10 @@ export function TopCandidatesModal({
   }, [job.id]);
 
   useEffect(() => {
-    if (isOpen && !ranking) {
+    if (isOpen) {
       fetchRanking();
     }
-  }, [isOpen, ranking, fetchRanking]);
+  }, [isOpen, queue.length, fetchRanking]);
 
   // Run Live AI Tournament
   const handleRunLiveTournament = async () => {
@@ -91,6 +93,7 @@ export function TopCandidatesModal({
       }
       setRanking(data.ranking);
       setMode(data.mode || "live");
+      setUnrankedNames([]);
       if (data.warnings && data.warnings.length > 0) {
         // Display any informative warnings
         console.warn("Tournament warnings:", data.warnings);
@@ -279,6 +282,42 @@ export function TopCandidatesModal({
         </div>
 
         <div className="flex-1 overflow-y-auto p-6 space-y-6">
+          {unrankedNames.length > 0 && (
+            <div className="p-4 rounded-2xl bg-primary/10 border border-primary/30 flex flex-wrap items-center justify-between gap-3">
+              <div className="flex items-start gap-2.5">
+                <AlertCircle className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+                <div className="text-xs space-y-0.5">
+                  <p className="font-bold text-on-surface">
+                    {unrankedNames.length} New Candidate CV{unrankedNames.length > 1 ? "s" : ""} Added to Pool ({unrankedNames.join(", ")})
+                  </p>
+                  <p className="text-on-surface-variant">
+                    Their pointer-aspect digests are extracted and ready. Re-run the tournament to rank them against the existing {totalPool - unrankedNames.length} compressed candidates.
+                  </p>
+                </div>
+              </div>
+              {canRunLive && (
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  onClick={handleRunLiveTournament}
+                  disabled={isRunningLive}
+                  className="h-8 px-3.5 gap-1.5 text-xs font-bold rounded-xl bg-primary text-on-primary hover:bg-primary/90 border-0 cursor-pointer shadow-xs shrink-0 disabled:opacity-50"
+                >
+                  {isRunningLive ? (
+                    <RefreshCw className="h-3.5 w-3.5 shrink-0 animate-spin" />
+                  ) : (
+                    <Play className="h-3.5 w-3.5 shrink-0" />
+                  )}
+                  <span>
+                    {isRunningLive
+                      ? `Ranking ${totalPool} Candidates...`
+                      : `Rank All ${totalPool} Candidates Now`}
+                  </span>
+                </Button>
+              )}
+            </div>
+          )}
+
           {errorMessage && (
             <div className="p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/30 text-xs text-rose-950 dark:text-rose-200 flex items-start gap-2.5">
               <AlertCircle className="h-4 w-4 text-rose-600 dark:text-rose-400 shrink-0 mt-0.5" />
