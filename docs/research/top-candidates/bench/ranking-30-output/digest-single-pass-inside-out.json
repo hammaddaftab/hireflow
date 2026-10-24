@@ -1,0 +1,199 @@
+{
+  "run_id": "digest-single-pass-inside-out",
+  "method": "digest-single-pass",
+  "order_mode": "inside-out",
+  "candidate_count": 30,
+  "candidate_order": [
+    "cand_09_hafiz_ahmed_hassan_chohan",
+    "cand_10_muhammad_aleem_siddique_khan",
+    "cand_11_muhammad_ahad_sajjad",
+    "cand_12_iqra_rasool",
+    "cand_13_muhammad_uzair_khan",
+    "cand_14_jatindar_kumar_mamnani",
+    "cand_15_abdul_basit",
+    "cand_01_muhammad_khizer_tariq",
+    "cand_02_umer_tariq",
+    "cand_03_abdullah_aleem",
+    "cand_04_mujtaba_shafqat",
+    "cand_05_ali_murad",
+    "cand_06_hasib_aslam",
+    "cand_07_haram_nasir",
+    "cand_08_muhammad_rouhan_faisal",
+    "cand_23_muhammad_zaeem_khalid",
+    "cand_24_abdullah_saim",
+    "cand_25_muhammad_abdullah",
+    "cand_26_mohammad_irfan",
+    "cand_27_muhammad_taha_mukhtar",
+    "cand_28_umama_zainab",
+    "cand_29_abdul_ahad_qureshi",
+    "cand_30_wahaj_ahmad_butt",
+    "cand_16_mehar_ali_ahmed",
+    "cand_17_ghulam_hussain_khan_sherwani",
+    "cand_18_abdul_rehman",
+    "cand_19_abdullah_khan",
+    "cand_20_ali_awais_safdar",
+    "cand_21_prithvi_raj",
+    "cand_22_mariam_babar_khan"
+  ],
+  "pool_tokens_approx": 3989,
+  "prompt_tokens_approx": 5825,
+  "usage": {
+    "inputTokens": 6737,
+    "inputTokenDetails": {
+      "noCacheTokens": 3,
+      "cacheReadTokens": 0,
+      "cacheWriteTokens": 6734
+    },
+    "outputTokens": 2488,
+    "outputTokenDetails": {
+      "textTokens": 1244,
+      "reasoningTokens": 1244
+    },
+    "totalTokens": 9225,
+    "raw": {
+      "input_tokens": 6737,
+      "input_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 6734
+      },
+      "output_tokens": 2488,
+      "output_tokens_details": {
+        "reasoning_tokens": 1244
+      }
+    }
+  },
+  "latency_ms": 22687,
+  "pool_assessment": "The pool was differentiated primarily by direct ownership of evaluated multimodal systems, end-to-end RAG/search architectures, quantified product outcomes, selective research environments, and externally validated technical output. The finalists combine multiple axes rather than relying on framework lists or peripheral/team-level exposure; direct ownership was weighted materially more heavily than peripheral evidence.",
+  "top_3_candidate_ids": [
+    "cand_27_muhammad_taha_mukhtar",
+    "cand_25_muhammad_abdullah",
+    "cand_14_jatindar_kumar_mamnani"
+  ],
+  "top_5_candidate_ids": [
+    "cand_27_muhammad_taha_mukhtar",
+    "cand_25_muhammad_abdullah",
+    "cand_14_jatindar_kumar_mamnani",
+    "cand_30_wahaj_ahmad_butt",
+    "cand_18_abdul_rehman"
+  ],
+  "top_8_rankings": [
+    {
+      "rank": 1,
+      "candidate_id": "cand_27_muhammad_taha_mukhtar",
+      "prompt_position_1_to_30": 20,
+      "prompt_zone": "middle_buried (9..22)",
+      "cohort": "outer_16_cohort",
+      "confidence": "high",
+      "headline_rationale": "The strongest overall profile: combines advanced multimodal engineering on H100/A100 GPUs, selective DFKI and GSoC experience, funded research, open-source traction, and concrete engineering output.",
+      "supporting_evidence": [
+        "[c1:action] FixMatch, SAM2, H100 GPUs, A100 GPUs, remote sensing -> engineered settlement detection model",
+        "[s1:action] DAAD, RPTU, DFKI -> advanced Slum-i settlement segmentation | €80k DAAD funding",
+        "[c2:action] Cypress -> improved CVAT shortcut system | 100% test coverage",
+        "[s2:action] Gemini API -> created lang-source localization CLI | 500+ downloads"
+      ]
+    },
+    {
+      "rank": 2,
+      "candidate_id": "cand_25_muhammad_abdullah",
+      "prompt_position_1_to_30": 18,
+      "prompt_zone": "middle_buried (9..22)",
+      "cohort": "outer_16_cohort",
+      "confidence": "high",
+      "headline_rationale": "Exceptional direct fit for production AI systems through a publication-backed FusionRAG implementation with embeddings, BM25, and FAISS, supplemented by full-stack product builds.",
+      "supporting_evidence": [
+        "[s2:action] BM25, FAISS, OpenAI embeddings -> developed FUSIONRAG regulatory retrieval | COLING 2025",
+        "[s1:action] Next.js, Socket.IO -> built Scototo communication platform",
+        "[s3:action] Node.js, MongoDB -> built Kisan farmer support app"
+      ]
+    },
+    {
+      "rank": 3,
+      "candidate_id": "cand_14_jatindar_kumar_mamnani",
+      "prompt_position_1_to_30": 6,
+      "prompt_zone": "outer_edge (1..8 or 23..30)",
+      "cohort": "middle_14_cohort",
+      "confidence": "high",
+      "headline_rationale": "The deepest measured applied-ML project portfolio after the top two, including an 82.4% mIoU autonomous-driving model and multiple VQA, transformer, and chatbot systems.",
+      "supporting_evidence": [
+        "[s4:action] built autonomous-driving multitask model | 82.4% mIoU",
+        "[s3:action] CNNs, LSTMs, Transformers -> built VQA medical advisor system",
+        "[s2:action] Transformers -> built SemEval table-answering system",
+        "[s1:action] FastAPI -> built Prompt-No-Code Website Assistant chatbot"
+      ]
+    },
+    {
+      "rank": 4,
+      "candidate_id": "cand_30_wahaj_ahmad_butt",
+      "prompt_position_1_to_30": 23,
+      "prompt_zone": "outer_edge (1..8 or 23..30)",
+      "cohort": "outer_16_cohort",
+      "confidence": "high",
+      "headline_rationale": "Strong multimodal engineering breadth with a VQA model, transformer-based text classifier, and quantified emotion-recognition result, plus a substantial real-time product build.",
+      "supporting_evidence": [
+        "[s1:action] ResNet50, BERT -> designed VQA real-world image model",
+        "[s2:action] BERT, RoBERTa, XLNet -> built Fake Review Detector classifier",
+        "[s4:action] FER2013Plus, ResNet50 -> built Emotion-Based Music Recognition system | 82.7% accuracy",
+        "[s3:action] Laravel, WebRTC, MySQL -> built Palingenesis chat video application"
+      ]
+    },
+    {
+      "rank": 5,
+      "candidate_id": "cand_18_abdul_rehman",
+      "prompt_position_1_to_30": 26,
+      "prompt_zone": "outer_edge (1..8 or 23..30)",
+      "cohort": "middle_14_cohort",
+      "confidence": "high",
+      "headline_rationale": "Most directly aligned search-oriented candidate outside the top four, with active ownership of both semantic image search and a multi-component Google-like web search engine.",
+      "supporting_evidence": [
+        "[s1:action] Apache Solr, CLIP, Flickr30k -> built semantic image search engine",
+        "[s2:action] Bloom Filter, BERT, PageRank -> built Google-like web search engine",
+        "work_1: Intern @ High Performance Lab Seecs Nust"
+      ]
+    },
+    {
+      "rank": 6,
+      "candidate_id": "cand_06_hasib_aslam",
+      "prompt_position_1_to_30": 13,
+      "prompt_zone": "middle_buried (9..22)",
+      "cohort": "outer_16_cohort",
+      "confidence": "moderate",
+      "headline_rationale": "Combines a measured 98% classifier, selective Lakehead University research and distinction-backed international exchange experience, with several complete full-stack applications.",
+      "supporting_evidence": [
+        "[c1:action] developed Cat and Dog Classifier | 98% accuracy",
+        "[c2:action] EEG -> processed authentication datasets",
+        "Semester Exchange Program @ Linnaeus University (Passed With Distinction)",
+        "work_2: Research Intern @ Lakehead University, Canada"
+      ]
+    },
+    {
+      "rank": 7,
+      "candidate_id": "cand_01_muhammad_khizer_tariq",
+      "prompt_position_1_to_30": 8,
+      "prompt_zone": "outer_edge (1..8 or 23..30)",
+      "cohort": "outer_16_cohort",
+      "confidence": "moderate",
+      "headline_rationale": "Distinguished by two direct publication outputs and sustained research-lab experience, although the digest provides less detail on model implementation and quantified engineering performance than higher-ranked candidates.",
+      "supporting_evidence": [
+        "work_1: Researcher @ High Performance Computing Lab SEECS (2024-2024, 1y FT)",
+        "work_2: Researcher @ Machine Vision and Intelligent Systems Lab SEECS (2024-2025, 0.5y FT)",
+        "[s1:action] Publication: FIT 2024 -> published Routing through Satellite Imagery paper",
+        "[s2:action] Publication: IJCA -> published Grouped Matrix Clocks paper"
+      ]
+    },
+    {
+      "rank": 8,
+      "candidate_id": "cand_29_abdul_ahad_qureshi",
+      "prompt_position_1_to_30": 22,
+      "prompt_zone": "middle_buried (9..22)",
+      "cohort": "outer_16_cohort",
+      "confidence": "moderate",
+      "headline_rationale": "Best product-oriented finalist among the remaining candidates, with direct ownership of a system serving 100+ daily users and an LLM-integrated application, though less demonstrated ML depth than the candidates above.",
+      "supporting_evidence": [
+        "[c2:action] Figma -> developed scalable management system | 100+ daily users",
+        "[s3:action] Project: Next.js -> integrated ChatGPT API solution",
+        "[s2:action] Project: Socket.io, JSON Web Token (JWT) -> built Real-time Chat Application",
+        "[c1:action] Figma -> built employee management software | 50+ employees"
+      ]
+    }
+  ]
+}

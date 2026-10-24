@@ -1,0 +1,2229 @@
+{
+  "run_id": "mech-e-tournament-inside-out",
+  "method": "mech-e-tournament",
+  "order_mode": "inside-out",
+  "seed": 42,
+  "candidate_order": [
+    "cand_09_hafiz_ahmed_hassan_chohan",
+    "cand_10_muhammad_aleem_siddique_khan",
+    "cand_11_muhammad_ahad_sajjad",
+    "cand_12_iqra_rasool",
+    "cand_13_muhammad_uzair_khan",
+    "cand_14_jatindar_kumar_mamnani",
+    "cand_15_abdul_basit",
+    "cand_01_muhammad_khizer_tariq",
+    "cand_02_umer_tariq",
+    "cand_03_abdullah_aleem",
+    "cand_04_mujtaba_shafqat",
+    "cand_05_ali_murad",
+    "cand_06_hasib_aslam",
+    "cand_07_haram_nasir",
+    "cand_08_muhammad_rouhan_faisal",
+    "cand_23_muhammad_zaeem_khalid",
+    "cand_24_abdullah_saim",
+    "cand_25_muhammad_abdullah",
+    "cand_26_mohammad_irfan",
+    "cand_27_muhammad_taha_mukhtar",
+    "cand_28_umama_zainab",
+    "cand_29_abdul_ahad_qureshi",
+    "cand_30_wahaj_ahmad_butt",
+    "cand_16_mehar_ali_ahmed",
+    "cand_17_ghulam_hussain_khan_sherwani",
+    "cand_18_abdul_rehman",
+    "cand_19_abdullah_khan",
+    "cand_20_ali_awais_safdar",
+    "cand_21_prithvi_raj",
+    "cand_22_mariam_babar_khan"
+  ],
+  "usage": {
+    "promptTokens": 137810,
+    "completionTokens": 34688,
+    "totalTokens": 172498
+  },
+  "total_latency_ms": 63403,
+  "warnings": [],
+  "top3_status": "confident",
+  "summary": "Top 3 candidates resolved with high confidence across Latin-square permutations and bidirectional pairwise verification: cand_27_muhammad_taha_mukhtar, cand_25_muhammad_abdullah, cand_14_jatindar_kumar_mamnani.",
+  "top_candidates": [
+    {
+      "rank": 1,
+      "candidate_id": "cand_27_muhammad_taha_mukhtar",
+      "status": "confident",
+      "pairwise_wins": 3,
+      "pairwise_ties": 1,
+      "pairwise_losses": 0,
+      "latin_square_avg_rank": 1.3,
+      "headline_rationale": "Positional tie with cand_25_muhammad_abdullah: Candidate B has the stronger direct fit to the role’s combined AI-product focus: FUSIONRAG demonstrates an externally published, end-to-end retrieval architecture using OpenAI embeddings, BM25, FAISS, and rank fusion, while Scototo and the farmer-support app show full-stack product execution. Candidate A has superior selective research exposure and advanced computer-vision infrastructure, but lacks quantified model performance and demonstrated retrieval or product impact. Candidate B has broader and deeper evidence of advanced AI engineering: he engineered a semi-supervised remote-sensing model using FixMatch, SAM2, domain adaptation, and H100/A100 GPUs, while also contributing through DFKI and Google Summer of Code. His €80,000-funded research project and open-source CLI with 500+ downloads provide stronger selective-environment and externally validated impact than Candidate A’s excellent but more concentrated FUSIONRAG publication.",
+      "contested_with": null,
+      "supporting_claims": [
+        {
+          "candidate_id": "cand_27_muhammad_taha_mukhtar",
+          "ref_id": "c1",
+          "digest_line": "[c1:action] FixMatch, SAM2, H100 GPUs, A100 GPUs, remote sensing -> engineered settlement detection model",
+          "evidence_span": "Engineered a semi-supervised model for detecting informal settlements using remote sensing. Applied techniques like FixMatch, domain adaptation between cies and pseudo-label reﬁnement via SAM2. Leveraged Germany's largest deep learning infrastructure with H100/A100 GPUs for advanced AI research."
+        },
+        {
+          "candidate_id": "cand_27_muhammad_taha_mukhtar",
+          "ref_id": "s1",
+          "digest_line": "[s1:action] Project: DAAD, RPTU, DFKI -> advanced Slum-i settlement segmentation | €80k DAAD funding",
+          "evidence_span": "Slum-i, Research Project Worked on a €80,000 DAAD-funded project in collaboration with RPTU & DFKI, where I interned in Germany. Aligned with 3 UN SDGs, focusing on improving living conditions for slum dwellers in Pakistan. Upcoming publication in a top remote sensing journal, using SSL for segmenting informal settlements."
+        },
+        {
+          "candidate_id": "cand_27_muhammad_taha_mukhtar",
+          "ref_id": "s2",
+          "digest_line": "[s2:action] Open-Source: Gemini API -> created lang-source localization CLI | 500+ downloads, 5 stars",
+          "evidence_span": "lang-source, Open Source Project Created a CLI utility using the Gemini API to automate localisation workﬂows, supporting 12 languages and reducing manual eﬀort in creating JSON/YAML language files. Published as an npm package with 500+ downloads and has 5 Stars on GitHub."
+        },
+        {
+          "candidate_id": "cand_27_muhammad_taha_mukhtar",
+          "ref_id": "c2",
+          "digest_line": "[c2:action] Cypress -> improved CVAT shortcut system | 100% test coverage",
+          "evidence_span": "Improved the CVAT platform by adding a user-conﬁgurable shortcut system, enhancing annotation eﬃciency. Tested new shortcut features with Cypress, achieving 100% test coverage."
+        },
+        {
+          "candidate_id": "cand_27_muhammad_taha_mukhtar",
+          "ref_id": "work_1",
+          "digest_line": "work_1: Research Intern @ Deutsches Forschungszentrum für Künstliche Intelligenz (2024-2024, 0.3y internship)",
+          "evidence_span": null
+        },
+        {
+          "candidate_id": "cand_27_muhammad_taha_mukhtar",
+          "ref_id": "work_2",
+          "digest_line": "work_2: Google Summer of Code @ CVAT.ai (2024-2024, 0.3y internship)",
+          "evidence_span": null
+        },
+        {
+          "candidate_id": "cand_27_muhammad_taha_mukhtar",
+          "ref_id": "header",
+          "digest_line": "[cand_27_muhammad_taha_mukhtar] 0y FT (2 internships) | BSc CS @ NUST (2.99) | Gujranwala",
+          "evidence_span": null
+        }
+      ]
+    },
+    {
+      "rank": 2,
+      "candidate_id": "cand_25_muhammad_abdullah",
+      "status": "confident",
+      "pairwise_wins": 2,
+      "pairwise_ties": 2,
+      "pairwise_losses": 0,
+      "latin_square_avg_rank": 2,
+      "headline_rationale": "Positional tie with cand_27_muhammad_taha_mukhtar: Candidate B has the stronger direct fit to the role’s combined AI-product focus: FUSIONRAG demonstrates an externally published, end-to-end retrieval architecture using OpenAI embeddings, BM25, FAISS, and rank fusion, while Scototo and the farmer-support app show full-stack product execution. Candidate A has superior selective research exposure and advanced computer-vision infrastructure, but lacks quantified model performance and demonstrated retrieval or product impact. Candidate B has broader and deeper evidence of advanced AI engineering: he engineered a semi-supervised remote-sensing model using FixMatch, SAM2, domain adaptation, and H100/A100 GPUs, while also contributing through DFKI and Google Summer of Code. His €80,000-funded research project and open-source CLI with 500+ downloads provide stronger selective-environment and externally validated impact than Candidate A’s excellent but more concentrated FUSIONRAG publication.",
+      "contested_with": null,
+      "supporting_claims": [
+        {
+          "candidate_id": "cand_25_muhammad_abdullah",
+          "ref_id": "s2",
+          "digest_line": "[s2:action] Publication: BM25, FAISS, OpenAI embeddings -> developed FUSIONRAG regulatory retrieval | COLING 2025",
+          "evidence_span": "FUSIONRAG: Enhancing Regulatory Document Analysis Published at COLING 2025. Developed FUSIONRAG, combining OpenAI embeddings, BM25, FAISS, and Rank-Fusion for improved regulatory information retrieval and answer generation."
+        },
+        {
+          "candidate_id": "cand_25_muhammad_abdullah",
+          "ref_id": "s1",
+          "digest_line": "[s1:action] Project: Next.js, Socket.IO -> built Scototo communication platform",
+          "evidence_span": "Scototo Built a platform for seamless text, voice, and video communication for individuals and teams. Tools Used: Next.js, SQL, Socket.IO, Tailwind, Clerk."
+        },
+        {
+          "candidate_id": "cand_25_muhammad_abdullah",
+          "ref_id": "s3",
+          "digest_line": "[s3:action] Project: Node.js, MongoDB -> built Kisan farmer support app",
+          "evidence_span": "Kisan- Farmer Support App Developed an app connecting farmers with crop-speciﬁc data, disease detection, and recommendations to improve productivity. Tools Used: Node.js, React, MongoDB, Express."
+        },
+        {
+          "candidate_id": "cand_25_muhammad_abdullah",
+          "ref_id": "work_2",
+          "digest_line": "work_2: Intern @ Bytewise Limited (2024-2024, 0.3y internship)",
+          "evidence_span": null
+        },
+        {
+          "candidate_id": "cand_25_muhammad_abdullah",
+          "ref_id": "work_1",
+          "digest_line": "work_1: Intern @ CHKK (2024-2025, 0.4y internship)",
+          "evidence_span": null
+        },
+        {
+          "candidate_id": "cand_25_muhammad_abdullah",
+          "ref_id": "header",
+          "digest_line": "[cand_25_muhammad_abdullah] 0y FT (2 internships) | BSc CS @ NUST (3.75) | Sargodha",
+          "evidence_span": null
+        }
+      ]
+    },
+    {
+      "rank": 3,
+      "candidate_id": "cand_14_jatindar_kumar_mamnani",
+      "status": "confident",
+      "pairwise_wins": 2,
+      "pairwise_ties": 1,
+      "pairwise_losses": 1,
+      "latin_square_avg_rank": 2.8,
+      "headline_rationale": "Positional tie with cand_25_muhammad_abdullah: Candidate B demonstrates substantially deeper active AI/ML engineering: multiple multimodal and computer-vision systems, including a multitask autonomous-driving model achieving 82.4% mIoU, plus VQA and transformer-based table answering. Candidate A has the stronger RAG/publication spike, but B’s breadth, measured model performance, and direct computer-vision research experience better match the role’s standout AI systems requirement. Candidate B has the stronger overall fit through externally validated, architecture-rich RAG research—OpenAI embeddings, BM25, FAISS, and rank fusion published at COLING 2025—while also demonstrating full-stack product construction. Candidate A shows stronger quantified computer-vision depth, including 82.4% mIoU, but lacks B’s publication validation and direct end-to-end retrieval specialization.",
+      "contested_with": null,
+      "supporting_claims": [
+        {
+          "candidate_id": "cand_14_jatindar_kumar_mamnani",
+          "ref_id": "s4",
+          "digest_line": "[s4:action] Project: built autonomous-driving multitask model | 82.4% mIoU",
+          "evidence_span": "A Video Based Multi-Task Learning Model for Autonomous Driving Developed a cutting-edge multitask learning model for real-time autonomous driving. Engineered to perform semantic segmentation, lane detection, and object detection on edge devices with high Achieved 82.4% mIoU on the VIL-100 validation set for lane segmentation."
+        },
+        {
+          "candidate_id": "cand_14_jatindar_kumar_mamnani",
+          "ref_id": "s3",
+          "digest_line": "[s3:action] Project: CNNs, LSTMs, Transformers -> built VQA medical advisor system",
+          "evidence_span": "VQA-Based-Medical-Advisor Developed a medical visual question-answering system using CNNs for image features and LSTMs/ Transformers for text queries. Implemented multimodal fusion to combine image and text features."
+        },
+        {
+          "candidate_id": "cand_14_jatindar_kumar_mamnani",
+          "ref_id": "s1",
+          "digest_line": "[s1:action] Project: FastAPI -> built Prompt-No-Code Website Assistant chatbot",
+          "evidence_span": "Prompt-No-Code Website Assistant Developed an AI-powered no-code chatbot assistant that extracts contextual insights from website URLs for Engineered an LLM-driven chatbot system using FastAPI, enabling real-time, context-aware user interactions."
+        },
+        {
+          "candidate_id": "cand_14_jatindar_kumar_mamnani",
+          "ref_id": "s2",
+          "digest_line": "[s2:action] Project: Transformers -> built SemEval table-answering system",
+          "evidence_span": "SemEval-Task-8-Table Answering Built a tabular QA system using transformer-based NLP for structured data retrieval. Implemented text-to-SQL conversion using pre-trained language models to generate structured queries."
+        },
+        {
+          "candidate_id": "cand_14_jatindar_kumar_mamnani",
+          "ref_id": "work_1",
+          "digest_line": "work_1: Computer Vision Researcher @ Vision Research and development company (2024-2024, 0.3y internship)",
+          "evidence_span": null
+        },
+        {
+          "candidate_id": "cand_14_jatindar_kumar_mamnani",
+          "ref_id": "header",
+          "digest_line": "[cand_14_jatindar_kumar_mamnani] 0y FT (2 internships) | BSc CS @ NUST (2.93) | Mirpurkhas",
+          "evidence_span": null
+        }
+      ]
+    }
+  ],
+  "top_3_candidate_ids": [
+    "cand_27_muhammad_taha_mukhtar",
+    "cand_25_muhammad_abdullah",
+    "cand_14_jatindar_kumar_mamnani"
+  ],
+  "resolved_top_candidate_ids": [
+    "cand_27_muhammad_taha_mukhtar",
+    "cand_25_muhammad_abdullah",
+    "cand_14_jatindar_kumar_mamnani"
+  ],
+  "stage3_top5_candidate_ids": [
+    "cand_27_muhammad_taha_mukhtar",
+    "cand_25_muhammad_abdullah",
+    "cand_14_jatindar_kumar_mamnani",
+    "cand_18_abdul_rehman",
+    "cand_30_wahaj_ahmad_butt"
+  ],
+  "stage3_finalist_ids": [
+    "cand_27_muhammad_taha_mukhtar",
+    "cand_18_abdul_rehman",
+    "cand_16_mehar_ali_ahmed",
+    "cand_06_hasib_aslam",
+    "cand_14_jatindar_kumar_mamnani",
+    "cand_25_muhammad_abdullah",
+    "cand_30_wahaj_ahmad_butt",
+    "cand_11_muhammad_ahad_sajjad"
+  ],
+  "bias_and_attention_metrics": {
+    "stage2_total_evaluations": 46,
+    "stage2_non_zero_order_deltas": 21,
+    "stage2_mean_abs_rank_delta": 0.52,
+    "stage2_max_rank_delta": 2,
+    "stage2_boundary_disagreements_caught": 4,
+    "stage3a_latin_square_stats": [
+      {
+        "candidate_id": "cand_27_muhammad_taha_mukhtar",
+        "ranks_across_4_permutations": [
+          2,
+          1,
+          1,
+          1
+        ],
+        "min_rank": 1,
+        "max_rank": 2,
+        "rank_spread": 1,
+        "avg_rank": 1.25
+      },
+      {
+        "candidate_id": "cand_18_abdul_rehman",
+        "ranks_across_4_permutations": [
+          4,
+          4,
+          5,
+          5
+        ],
+        "min_rank": 4,
+        "max_rank": 5,
+        "rank_spread": 1,
+        "avg_rank": 4.5
+      },
+      {
+        "candidate_id": "cand_16_mehar_ali_ahmed",
+        "ranks_across_4_permutations": [
+          7,
+          7,
+          6,
+          7
+        ],
+        "min_rank": 6,
+        "max_rank": 7,
+        "rank_spread": 1,
+        "avg_rank": 6.75
+      },
+      {
+        "candidate_id": "cand_06_hasib_aslam",
+        "ranks_across_4_permutations": [
+          6,
+          6,
+          7,
+          6
+        ],
+        "min_rank": 6,
+        "max_rank": 7,
+        "rank_spread": 1,
+        "avg_rank": 6.25
+      },
+      {
+        "candidate_id": "cand_14_jatindar_kumar_mamnani",
+        "ranks_across_4_permutations": [
+          3,
+          3,
+          3,
+          2
+        ],
+        "min_rank": 2,
+        "max_rank": 3,
+        "rank_spread": 1,
+        "avg_rank": 2.75
+      },
+      {
+        "candidate_id": "cand_25_muhammad_abdullah",
+        "ranks_across_4_permutations": [
+          1,
+          2,
+          2,
+          3
+        ],
+        "min_rank": 1,
+        "max_rank": 3,
+        "rank_spread": 2,
+        "avg_rank": 2
+      },
+      {
+        "candidate_id": "cand_30_wahaj_ahmad_butt",
+        "ranks_across_4_permutations": [
+          5,
+          5,
+          4,
+          4
+        ],
+        "min_rank": 4,
+        "max_rank": 5,
+        "rank_spread": 1,
+        "avg_rank": 4.5
+      },
+      {
+        "candidate_id": "cand_11_muhammad_ahad_sajjad",
+        "ranks_across_4_permutations": [
+          8,
+          8,
+          8,
+          8
+        ],
+        "min_rank": 8,
+        "max_rank": 8,
+        "rank_spread": 0,
+        "avg_rank": 8
+      }
+    ],
+    "stage3b_total_pairs": 10,
+    "stage3b_order_consistent_wins": 7,
+    "stage3b_positional_flip_ties": 3,
+    "stage3c_total_citations": 19,
+    "stage3c_hydrated_citations": 19
+  },
+  "telemetry": {
+    "stage0_viable_count": 30,
+    "stage0_knocked_out": [],
+    "stage2_rounds": [
+      {
+        "round_number": 1,
+        "input_candidate_count": 30,
+        "survivor_count": 16,
+        "groups": [
+          {
+            "group_index": 0,
+            "candidates": [
+              "cand_23_muhammad_zaeem_khalid",
+              "cand_04_mujtaba_shafqat",
+              "cand_11_muhammad_ahad_sajjad",
+              "cand_06_hasib_aslam",
+              "cand_20_ali_awais_safdar",
+              "cand_10_muhammad_aleem_siddique_khan",
+              "cand_25_muhammad_abdullah",
+              "cand_29_abdul_ahad_qureshi"
+            ],
+            "evaluations": [
+              {
+                "candidate_id": "cand_25_muhammad_abdullah",
+                "forward_rank": 1,
+                "reverse_rank": 1,
+                "avg_rank": 1,
+                "survived": true,
+                "outside_axes_standout": false,
+                "supporting_refs": [
+                  "s2",
+                  "s1",
+                  "s3",
+                  "header"
+                ],
+                "rationale": "Strongest overall fit due to active ownership of FUSIONRAG using BM25, FAISS, and OpenAI embeddings, with a COLING 2025 publication providing external validation. He also built multiple user-facing applications, including a Socket.IO communication platform and a farmer-support app."
+              },
+              {
+                "candidate_id": "cand_06_hasib_aslam",
+                "forward_rank": 3,
+                "reverse_rank": 2,
+                "avg_rank": 2.5,
+                "survived": true,
+                "outside_axes_standout": false,
+                "supporting_refs": [
+                  "c1",
+                  "c2",
+                  "s1",
+                  "s3",
+                  "s4",
+                  "header"
+                ],
+                "rationale": "Shows strong entry-level breadth through a 98%-accuracy classifier, active EEG dataset processing at Lakehead University, a distinction-backed international exchange, and several full-stack projects. The AI evidence is narrower than the top two candidates, but the combination of quantified ML performance and selective research exposure is compelling."
+              },
+              {
+                "candidate_id": "cand_20_ali_awais_safdar",
+                "forward_rank": 2,
+                "reverse_rank": 3,
+                "avg_rank": 2.5,
+                "survived": true,
+                "outside_axes_standout": false,
+                "supporting_refs": [
+                  "s1",
+                  "s2",
+                  "s3",
+                  "s5",
+                  "s4"
+                ],
+                "rationale": "Combines a conference-presented vehicle-routing research paper with a technically substantial PATHVQA medical visual-question-answering system using VGG-19 and BERT. The additional blockchain ledger and DNS client work demonstrate unusually broad systems capability, although product impact and retrieval experience are not evidenced."
+              },
+              {
+                "candidate_id": "cand_11_muhammad_ahad_sajjad",
+                "forward_rank": 5,
+                "reverse_rank": 4,
+                "avg_rank": 4.5,
+                "survived": true,
+                "outside_axes_standout": false,
+                "supporting_refs": [
+                  "c1",
+                  "c2",
+                  "c3",
+                  "c4",
+                  "header"
+                ],
+                "rationale": "Demonstrates exceptional quantified product impact across several active builds, including +75% retention, -25% onboarding, +70% engagement, and -70% bounce. However, the digest provides no direct AI/ML, RAG, research, or selective-environment evidence, limiting fit for the applied AI emphasis."
+              },
+              {
+                "candidate_id": "cand_29_abdul_ahad_qureshi",
+                "forward_rank": 4,
+                "reverse_rank": 5,
+                "avg_rank": 4.5,
+                "survived": false,
+                "outside_axes_standout": false,
+                "supporting_refs": [
+                  "c1",
+                  "c2",
+                  "s1",
+                  "s2",
+                  "s3"
+                ],
+                "rationale": "Best product-engineering profile after the research-heavy leaders, with active ownership of a management system serving 100+ daily users and another system serving 50+ employees. Real-time chat and ChatGPT API integration add relevant application experience, though there is no evidence of advanced model engineering or external validation."
+              },
+              {
+                "candidate_id": "cand_23_muhammad_zaeem_khalid",
+                "forward_rank": 6,
+                "reverse_rank": 6,
+                "avg_rank": 6,
+                "survived": false,
+                "outside_axes_standout": false,
+                "supporting_refs": [
+                  "c1",
+                  "c3",
+                  "s1",
+                  "s2",
+                  "c4"
+                ],
+                "rationale": "Has active frontend and mobile engineering experience plus two relevant projects, including a flood-risk predictor and an interactive comment-visualization system. The digest does not provide model details, evaluation metrics, product adoption, or research validation, so the evidence remains below the stronger candidates."
+              },
+              {
+                "candidate_id": "cand_10_muhammad_aleem_siddique_khan",
+                "forward_rank": 7,
+                "reverse_rank": 7,
+                "avg_rank": 7,
+                "survived": false,
+                "outside_axes_standout": false,
+                "supporting_refs": [
+                  "c1",
+                  "header"
+                ],
+                "rationale": "The URL-classification internship is directionally relevant to ML, but it is explicitly tagged as peripheral and lacks model, dataset, evaluation, or deployment detail. No additional product, research, or externally validated output is evidenced."
+              },
+              {
+                "candidate_id": "cand_04_mujtaba_shafqat",
+                "forward_rank": 8,
+                "reverse_rank": 8,
+                "avg_rank": 8,
+                "survived": false,
+                "outside_axes_standout": false,
+                "supporting_refs": [
+                  "c1",
+                  "c2",
+                  "header"
+                ],
+                "rationale": "Shows sustained active client and brand-design work, but the digest contains no evidence of Python, ML, software engineering systems, AI projects, quantified product outcomes, or research exposure relevant to this role."
+              }
+            ],
+            "survivors": [
+              "cand_25_muhammad_abdullah",
+              "cand_06_hasib_aslam",
+              "cand_20_ali_awais_safdar",
+              "cand_11_muhammad_ahad_sajjad"
+            ]
+          },
+          {
+            "group_index": 1,
+            "candidates": [
+              "cand_05_ali_murad",
+              "cand_02_umer_tariq",
+              "cand_19_abdullah_khan",
+              "cand_09_hafiz_ahmed_hassan_chohan",
+              "cand_30_wahaj_ahmad_butt",
+              "cand_28_umama_zainab",
+              "cand_01_muhammad_khizer_tariq",
+              "cand_12_iqra_rasool"
+            ],
+            "evaluations": [
+              {
+                "candidate_id": "cand_30_wahaj_ahmad_butt",
+                "forward_rank": 1,
+                "reverse_rank": 1,
+                "avg_rank": 1,
+                "survived": true,
+                "outside_axes_standout": false,
+                "supporting_refs": [
+                  "s1",
+                  "s2",
+                  "s3",
+                  "s4",
+                  "work_1"
+                ],
+                "rationale": "Strongest overall applied-AI profile: actively designed a ResNet50/BERT VQA model, built multiple NLP/CV systems, and achieved 82.7% accuracy on the FER2013Plus emotion-recognition project [s1, s2, s4]. The Laravel/WebRTC chat-video application also provides meaningful full-stack evidence [s3]."
+              },
+              {
+                "candidate_id": "cand_01_muhammad_khizer_tariq",
+                "forward_rank": 3,
+                "reverse_rank": 2,
+                "avg_rank": 2.5,
+                "survived": true,
+                "outside_axes_standout": true,
+                "supporting_refs": [
+                  "s1",
+                  "s2",
+                  "work_1",
+                  "work_2",
+                  "c1"
+                ],
+                "rationale": "Ranks highly on externally validated technical output, with two active publications covering satellite-imagery routing and grouped matrix clocks [s1, s2]. His two research appointments are relevant, but the only detailed work claim is peripheral study of continual-learning robotics applications [work_1, work_2, c1], leaving less evidence of production system ownership than the candidates above."
+              },
+              {
+                "candidate_id": "cand_09_hafiz_ahmed_hassan_chohan",
+                "forward_rank": 2,
+                "reverse_rank": 4,
+                "avg_rank": 3,
+                "survived": true,
+                "outside_axes_standout": false,
+                "supporting_refs": [
+                  "s1",
+                  "s2",
+                  "s3",
+                  "work_2",
+                  "work_4"
+                ],
+                "rationale": "Demonstrates the broadest set of directly built vision and document-AI systems in the group, including OCR-to-eBook conversion and an OpenCV/easyOCR ANPR recognizer [s2, s3]. Research-assistant and machine-learning-lab experience further support applied-AI readiness, although the digest lacks quantified evaluation [work_2, work_4]."
+              },
+              {
+                "candidate_id": "cand_28_umama_zainab",
+                "forward_rank": 4,
+                "reverse_rank": 3,
+                "avg_rank": 3.5,
+                "survived": true,
+                "outside_axes_standout": false,
+                "supporting_refs": [
+                  "s1",
+                  "s2",
+                  "s3",
+                  "s4",
+                  "work_1",
+                  "work_2",
+                  "work_3",
+                  "work_4"
+                ],
+                "rationale": "A strong product-oriented candidate with active ownership of a hostel-booking mobile app, an AWS-backed travel website, and a portfolio site [s1, s2, s3]. The CNN/TensorFlow emotion model adds applied ML breadth [s4], though there are no metrics or technically detailed retrieval/model-engineering results."
+              },
+              {
+                "candidate_id": "cand_12_iqra_rasool",
+                "forward_rank": 6,
+                "reverse_rank": 5,
+                "avg_rank": 5.5,
+                "survived": false,
+                "outside_axes_standout": false,
+                "supporting_refs": [
+                  "s1",
+                  "s2",
+                  "s3",
+                  "c1",
+                  "c3"
+                ],
+                "rationale": "Provides useful breadth through an action-owned YOLOv8/Dlib drowsiness detector, a Node.js salary-management system, and a search-engine project [s1, s2, s3]. However, the digest gives no evaluation, retrieval architecture, adoption, or system-scale detail, and the freelance engineering evidence is relatively basic [c1, c3]."
+              },
+              {
+                "candidate_id": "cand_19_abdullah_khan",
+                "forward_rank": 5,
+                "reverse_rank": 6,
+                "avg_rank": 5.5,
+                "survived": false,
+                "outside_axes_standout": false,
+                "supporting_refs": [
+                  "c1",
+                  "work_1",
+                  "work_2",
+                  "s1"
+                ],
+                "rationale": "The UAV battery-life model is a concrete applied-ML contribution with a quantified 23% predictive-accuracy improvement across 29 flights [c1]. Lab exposure and workshop leadership are positives [work_2, s1], but the profile shows only one detailed AI system and limited product/full-stack evidence."
+              },
+              {
+                "candidate_id": "cand_05_ali_murad",
+                "forward_rank": 7,
+                "reverse_rank": 7,
+                "avg_rank": 7,
+                "survived": false,
+                "outside_axes_standout": false,
+                "supporting_refs": [
+                  "s1",
+                  "s2",
+                  "s3",
+                  "s4",
+                  "work_1",
+                  "work_2",
+                  "work_3"
+                ],
+                "rationale": "Shows credible hands-on full-stack breadth through a React workflow editor, MERN e-commerce platform, and consultant dashboard [s1, s2, s3], supported by multiple front-end/full-stack roles [work_1, work_2, work_3]. There is no demonstrated ML, RAG, quantified product impact, or external technical validation, which limits competitiveness for this AI-focused role."
+              },
+              {
+                "candidate_id": "cand_02_umer_tariq",
+                "forward_rank": 8,
+                "reverse_rank": 8,
+                "avg_rank": 8,
+                "survived": false,
+                "outside_axes_standout": false,
+                "supporting_refs": [
+                  "header"
+                ],
+                "rationale": "The digest provides only degree and location information, with no pointer-backed evidence of AI/ML systems, software products, research, or measurable outcomes. As a result, there is insufficient evidence to place this candidate above the demonstrated builders in the group."
+              }
+            ],
+            "survivors": [
+              "cand_30_wahaj_ahmad_butt",
+              "cand_01_muhammad_khizer_tariq",
+              "cand_09_hafiz_ahmed_hassan_chohan",
+              "cand_28_umama_zainab"
+            ]
+          },
+          {
+            "group_index": 2,
+            "candidates": [
+              "cand_14_jatindar_kumar_mamnani",
+              "cand_17_ghulam_hussain_khan_sherwani",
+              "cand_24_abdullah_saim",
+              "cand_18_abdul_rehman",
+              "cand_03_abdullah_aleem",
+              "cand_27_muhammad_taha_mukhtar",
+              "cand_08_muhammad_rouhan_faisal"
+            ],
+            "evaluations": [
+              {
+                "candidate_id": "cand_27_muhammad_taha_mukhtar",
+                "forward_rank": 1,
+                "reverse_rank": 1,
+                "avg_rank": 1,
+                "survived": true,
+                "outside_axes_standout": true,
+                "supporting_refs": [
+                  "header",
+                  "work_1",
+                  "c1",
+                  "c2",
+                  "s1",
+                  "s2"
+                ],
+                "rationale": "The strongest overall contender, with active DFKI research engineering using FixMatch, SAM2, remote-sensing data, and H100/A100 GPUs, plus a DAAD-funded €80k segmentation project. GSoC ownership with 100% test coverage and a Gemini localization CLI exceeding 500 downloads provide rare external validation beyond the core axes."
+              },
+              {
+                "candidate_id": "cand_14_jatindar_kumar_mamnani",
+                "forward_rank": 2,
+                "reverse_rank": 2,
+                "avg_rank": 2,
+                "survived": true,
+                "outside_axes_standout": false,
+                "supporting_refs": [
+                  "header",
+                  "s1",
+                  "s2",
+                  "s3",
+                  "s4"
+                ],
+                "rationale": "Demonstrates the deepest breadth of active applied AI construction in the group, including a medical VQA system, transformer table answering, a FastAPI chatbot, and an autonomous-driving multitask model reaching 82.4% mIoU. The quantified vision result and multiple named model families place this candidate just behind cand_27 despite limited external validation or selective-environment evidence."
+              },
+              {
+                "candidate_id": "cand_18_abdul_rehman",
+                "forward_rank": 3,
+                "reverse_rank": 3,
+                "avg_rank": 3,
+                "survived": true,
+                "outside_axes_standout": false,
+                "supporting_refs": [
+                  "header",
+                  "work_1",
+                  "s1",
+                  "s2",
+                  "s3"
+                ],
+                "rationale": "Shows unusually strong active ownership of search systems: a CLIP/Flickr30k semantic image search engine with Apache Solr and a BERT/PageRank/Bloom Filter web search engine. The High Performance Lab internship strengthens the environment signal, though the digest lacks quantified model or product outcomes and externally validated artifacts."
+              },
+              {
+                "candidate_id": "cand_08_muhammad_rouhan_faisal",
+                "forward_rank": 4,
+                "reverse_rank": 4,
+                "avg_rank": 4,
+                "survived": true,
+                "outside_axes_standout": false,
+                "supporting_refs": [
+                  "header",
+                  "s2",
+                  "s3",
+                  "s4",
+                  "c1",
+                  "c2"
+                ],
+                "rationale": "Has the clearest quantified product-engineering result after the top AI candidates, with active ownership of a real-time MongoDB/Express/Node messenger supporting 100 concurrent users and a Next.js commerce product. The RAG work and internship outcomes are explicitly peripheral, so they support context but do not equal direct architecture ownership."
+              },
+              {
+                "candidate_id": "cand_03_abdullah_aleem",
+                "forward_rank": 5,
+                "reverse_rank": 5,
+                "avg_rank": 5,
+                "survived": false,
+                "outside_axes_standout": false,
+                "supporting_refs": [
+                  "header",
+                  "work_1",
+                  "c1",
+                  "s1",
+                  "s2",
+                  "s3",
+                  "s4"
+                ],
+                "rationale": "Offers meaningful full-stack experience, including active Flutter/Firebase mobile development, a WebSockets real-time service platform, an Express/MongoDB booking site, and a collaborative-filtering recommendation engine. The breadth and 0.6 years of full-time engineering are solid, but there is no quantified product impact or advanced AI evaluation."
+              },
+              {
+                "candidate_id": "cand_17_ghulam_hussain_khan_sherwani",
+                "forward_rank": 6,
+                "reverse_rank": 6,
+                "avg_rank": 6,
+                "survived": false,
+                "outside_axes_standout": false,
+                "supporting_refs": [
+                  "header",
+                  "s1",
+                  "s2",
+                  "s3"
+                ],
+                "rationale": "Shows active ownership of a MERN e-commerce platform, a C++/Kaggle cricket application, and a U-Net document-binarization project that they led. This is a credible mixed software/ML profile, but the digest provides no performance metrics, research environment, or external validation."
+              },
+              {
+                "candidate_id": "cand_24_abdullah_saim",
+                "forward_rank": 7,
+                "reverse_rank": 7,
+                "avg_rank": 7,
+                "survived": false,
+                "outside_axes_standout": false,
+                "supporting_refs": [
+                  "header",
+                  "work_1",
+                  "c1",
+                  "s1",
+                  "s2",
+                  "s3",
+                  "s4",
+                  "c2"
+                ],
+                "rationale": "Has a strong academic record and several completed applications, including a React/Google Maps wildlife-mapping product, a Java desktop app, and a research-internship cookie-classification model. However, the QA role is only listed, and the active ML work lacks model details or evaluation while the projects show less technical depth than the other candidates."
+              }
+            ],
+            "survivors": [
+              "cand_27_muhammad_taha_mukhtar",
+              "cand_14_jatindar_kumar_mamnani",
+              "cand_18_abdul_rehman",
+              "cand_08_muhammad_rouhan_faisal"
+            ]
+          },
+          {
+            "group_index": 3,
+            "candidates": [
+              "cand_15_abdul_basit",
+              "cand_21_prithvi_raj",
+              "cand_13_muhammad_uzair_khan",
+              "cand_22_mariam_babar_khan",
+              "cand_16_mehar_ali_ahmed",
+              "cand_07_haram_nasir",
+              "cand_26_mohammad_irfan"
+            ],
+            "evaluations": [
+              {
+                "candidate_id": "cand_16_mehar_ali_ahmed",
+                "forward_rank": 1,
+                "reverse_rank": 1,
+                "avg_rank": 1,
+                "survived": true,
+                "outside_axes_standout": false,
+                "supporting_refs": [
+                  "s2",
+                  "c3",
+                  "s1",
+                  "c2",
+                  "header"
+                ],
+                "rationale": "Strongest overall fit: actively built a RoBERTa/LoRA writing-style detector achieving 0.80 F1, directly satisfying the measured model-engineering axis. He also demonstrated quantified product impact through campaigns producing +40% sign-ups and +20% visibility, plus secured a $400 education grant and led an international student group."
+              },
+              {
+                "candidate_id": "cand_15_abdul_basit",
+                "forward_rank": 3,
+                "reverse_rank": 2,
+                "avg_rank": 2.5,
+                "survived": true,
+                "outside_axes_standout": false,
+                "supporting_refs": [
+                  "s3",
+                  "s1",
+                  "s2",
+                  "work_1",
+                  "header"
+                ],
+                "rationale": "He has the broadest clearly active applied-building portfolio among the middle contenders, including a Faster R-CNN traffic-light detection system, an orphanage-management backend, and a job platform. The named vision architecture is meaningful, but the absence of evaluation metrics and deployment impact keeps him below Mehar and Mariam."
+              },
+              {
+                "candidate_id": "cand_22_mariam_babar_khan",
+                "forward_rank": 2,
+                "reverse_rank": 4,
+                "avg_rank": 3,
+                "survived": true,
+                "outside_axes_standout": false,
+                "supporting_refs": [
+                  "work_2",
+                  "s3",
+                  "header",
+                  "s1"
+                ],
+                "rationale": "Her UC Davis ML internship provides valuable selective international research-environment exposure, while the College Management System demonstrates active end-to-end software ownership. The search-engine project is explicitly peripheral, and the digest provides no quantified ML result or confirmed technical contribution from the UC Davis role, limiting her position above the strongest project builders."
+              },
+              {
+                "candidate_id": "cand_21_prithvi_raj",
+                "forward_rank": 4,
+                "reverse_rank": 3,
+                "avg_rank": 3.5,
+                "survived": true,
+                "outside_axes_standout": true,
+                "supporting_refs": [
+                  "c1",
+                  "s1",
+                  "s2",
+                  "s4",
+                  "s3",
+                  "work_1",
+                  "header"
+                ],
+                "rationale": "Shows substantial active software breadth through database tools and dashboards in employment, a Hyperledger accreditation system, a blockchain lottery platform, and a Next.js collaborative editor. However, the evidence is concentrated in general full-stack and blockchain construction without quantified product outcomes or substantial AI/ML depth."
+              },
+              {
+                "candidate_id": "cand_07_haram_nasir",
+                "forward_rank": 6,
+                "reverse_rank": 5,
+                "avg_rank": 5.5,
+                "survived": false,
+                "outside_axes_standout": false,
+                "supporting_refs": [
+                  "c1",
+                  "s1",
+                  "work_1",
+                  "header"
+                ],
+                "rationale": "Her internship shows active Python-based data acquisition using Scrapy and Playwright, and she built a science-bee website. These are useful foundations, but the digest does not establish substantial model engineering, retrieval/LLM work, quantified product impact, or selective research exposure."
+              },
+              {
+                "candidate_id": "cand_13_muhammad_uzair_khan",
+                "forward_rank": 5,
+                "reverse_rank": 6,
+                "avg_rank": 5.5,
+                "survived": false,
+                "outside_axes_standout": false,
+                "supporting_refs": [
+                  "c1",
+                  "work_1",
+                  "header"
+                ],
+                "rationale": "Demonstrates direct product engineering ownership by adding vendor categories across Shadiyana’s Express.js, Next.js, and React Native portals. The contribution is relevant but narrow, with no evidence of AI/ML systems, quantified impact, or independently validated technical output."
+              },
+              {
+                "candidate_id": "cand_26_mohammad_irfan",
+                "forward_rank": 7,
+                "reverse_rank": 7,
+                "avg_rank": 7,
+                "survived": false,
+                "outside_axes_standout": false,
+                "supporting_refs": [
+                  "s1",
+                  "header"
+                ],
+                "rationale": "The only documented activity is conducting AI-adoption research, with no stated implementation, system ownership, metrics, publication, or product artifact. This provides the least concrete evidence against the role’s engineering and applied-AI axes."
+              }
+            ],
+            "survivors": [
+              "cand_16_mehar_ali_ahmed",
+              "cand_15_abdul_basit",
+              "cand_22_mariam_babar_khan",
+              "cand_21_prithvi_raj"
+            ]
+          }
+        ]
+      },
+      {
+        "round_number": 2,
+        "input_candidate_count": 16,
+        "survivor_count": 8,
+        "groups": [
+          {
+            "group_index": 0,
+            "candidates": [
+              "cand_15_abdul_basit",
+              "cand_01_muhammad_khizer_tariq",
+              "cand_28_umama_zainab",
+              "cand_22_mariam_babar_khan",
+              "cand_06_hasib_aslam",
+              "cand_16_mehar_ali_ahmed",
+              "cand_18_abdul_rehman",
+              "cand_27_muhammad_taha_mukhtar"
+            ],
+            "evaluations": [
+              {
+                "candidate_id": "cand_27_muhammad_taha_mukhtar",
+                "forward_rank": 1,
+                "reverse_rank": 1,
+                "avg_rank": 1,
+                "survived": true,
+                "outside_axes_standout": false,
+                "supporting_refs": [
+                  "work_1",
+                  "c1",
+                  "c2",
+                  "s1",
+                  "s2",
+                  "header"
+                ],
+                "rationale": "The strongest overall candidate, with active engineering of a FixMatch/SAM2 remote-sensing model on H100/A100 GPUs, advanced DFKI/DAAD settlement segmentation funded at €80k, and GSoC work with 100% test coverage. The 500+ download localization CLI adds externally validated output, while the technical depth spans nearly every major axis."
+              },
+              {
+                "candidate_id": "cand_18_abdul_rehman",
+                "forward_rank": 2,
+                "reverse_rank": 2,
+                "avg_rank": 2,
+                "survived": true,
+                "outside_axes_standout": false,
+                "supporting_refs": [
+                  "s1",
+                  "s2",
+                  "s3",
+                  "work_1",
+                  "header"
+                ],
+                "rationale": "Has unusually strong direct ownership of search and retrieval systems: a CLIP/Apache Solr semantic image search engine and a BERT/PageRank/Bloom Filter web search engine. These are technically substantial and closely aligned with the role, though the digest lacks quantified evaluation, product adoption, or selective-environment contribution details."
+              },
+              {
+                "candidate_id": "cand_16_mehar_ali_ahmed",
+                "forward_rank": 3,
+                "reverse_rank": 3,
+                "avg_rank": 3,
+                "survived": true,
+                "outside_axes_standout": false,
+                "supporting_refs": [
+                  "s2",
+                  "s3",
+                  "s1",
+                  "c1",
+                  "c3",
+                  "header"
+                ],
+                "rationale": "Demonstrates a technically meaningful RoBERTa plus LoRA writing-style detector with 0.80 F1, alongside direct product/organizational impact of +40% sign-ups and +20% visibility. The $400 externally funded community project is an additional validation signal, although the AI and software evidence is narrower than the top two."
+              },
+              {
+                "candidate_id": "cand_06_hasib_aslam",
+                "forward_rank": 4,
+                "reverse_rank": 4,
+                "avg_rank": 4,
+                "survived": true,
+                "outside_axes_standout": false,
+                "supporting_refs": [
+                  "c1",
+                  "c2",
+                  "header",
+                  "s1",
+                  "s3",
+                  "s4",
+                  "s2"
+                ],
+                "rationale": "Offers a quantified 98%-accuracy classifier, active research-intern ownership involving EEG authentication data, and several complete web and application builds using React, Next.js, Express, MERN, and APIs. The distinction-backed Linnaeus exchange and Lakehead experience strengthen the profile, but the ML work is less advanced and less broadly validated than the candidates above."
+              },
+              {
+                "candidate_id": "cand_01_muhammad_khizer_tariq",
+                "forward_rank": 5,
+                "reverse_rank": 5,
+                "avg_rank": 5,
+                "survived": false,
+                "outside_axes_standout": false,
+                "supporting_refs": [
+                  "s1",
+                  "s2",
+                  "work_1",
+                  "work_2",
+                  "c1",
+                  "header"
+                ],
+                "rationale": "Two published papers provide the strongest external-validation signal among the middle-tier candidates, supported by research roles in two NUST labs. However, the only detailed technical work is peripheral study of continual-learning robotics applications, with no demonstrated product build, measured ML system, or direct full-stack ownership."
+              },
+              {
+                "candidate_id": "cand_28_umama_zainab",
+                "forward_rank": 7,
+                "reverse_rank": 6,
+                "avg_rank": 6.5,
+                "survived": false,
+                "outside_axes_standout": false,
+                "supporting_refs": [
+                  "s1",
+                  "s2",
+                  "s3",
+                  "s4",
+                  "work_1",
+                  "work_3",
+                  "work_2",
+                  "work_4"
+                ],
+                "rationale": "Shows broad hands-on full-stack exposure through a hostel booking app, travel website, portfolio site, and an explicitly implemented CNN/TensorFlow emotion detector. The breadth is relevant for an entry-level product engineer, but there are no evaluation metrics, adoption outcomes, advanced retrieval architecture, or selective research signals."
+              },
+              {
+                "candidate_id": "cand_22_mariam_babar_khan",
+                "forward_rank": 6,
+                "reverse_rank": 8,
+                "avg_rank": 7,
+                "survived": false,
+                "outside_axes_standout": false,
+                "supporting_refs": [
+                  "work_2",
+                  "work_1",
+                  "s1",
+                  "s3",
+                  "s4",
+                  "work_3",
+                  "header"
+                ],
+                "rationale": "The UC Davis ML internship is a valuable selective-environment signal, and the candidate has direct ownership of a College Management System. However, the search engine and visual IDE are explicitly peripheral, so they cannot be credited as active AI/search engineering; the digest provides limited evidence of quantified model or product impact."
+              },
+              {
+                "candidate_id": "cand_15_abdul_basit",
+                "forward_rank": 8,
+                "reverse_rank": 7,
+                "avg_rank": 7.5,
+                "survived": false,
+                "outside_axes_standout": false,
+                "supporting_refs": [
+                  "s1",
+                  "s2",
+                  "s3",
+                  "work_1",
+                  "work_2"
+                ],
+                "rationale": "Has direct ownership of two application backends/platforms and a Faster R-CNN traffic-light detection system, showing baseline alignment with software and computer vision. The digest supplies no model evaluation, architecture detail, user impact, research validation, or selective-environment evidence, making the demonstrated depth weakest in this group."
+              }
+            ],
+            "survivors": [
+              "cand_27_muhammad_taha_mukhtar",
+              "cand_18_abdul_rehman",
+              "cand_16_mehar_ali_ahmed",
+              "cand_06_hasib_aslam"
+            ]
+          },
+          {
+            "group_index": 1,
+            "candidates": [
+              "cand_21_prithvi_raj",
+              "cand_30_wahaj_ahmad_butt",
+              "cand_11_muhammad_ahad_sajjad",
+              "cand_14_jatindar_kumar_mamnani",
+              "cand_09_hafiz_ahmed_hassan_chohan",
+              "cand_08_muhammad_rouhan_faisal",
+              "cand_20_ali_awais_safdar",
+              "cand_25_muhammad_abdullah"
+            ],
+            "evaluations": [
+              {
+                "candidate_id": "cand_14_jatindar_kumar_mamnani",
+                "forward_rank": 2,
+                "reverse_rank": 1,
+                "avg_rank": 1.5,
+                "survived": true,
+                "outside_axes_standout": false,
+                "supporting_refs": [
+                  "s1",
+                  "s2",
+                  "s3",
+                  "s4",
+                  "work_1"
+                ],
+                "rationale": "Demonstrates unusually broad multimodal ownership across a chatbot, table answering, medical VQA, and autonomous-driving perception; the multitask model achieved 82.4% mIoU [s1][s2][s3][s4]. The combination of multiple named model families and a quantified vision result places him among the strongest AI-focused candidates."
+              },
+              {
+                "candidate_id": "cand_25_muhammad_abdullah",
+                "forward_rank": 1,
+                "reverse_rank": 2,
+                "avg_rank": 1.5,
+                "survived": true,
+                "outside_axes_standout": false,
+                "supporting_refs": [
+                  "s1",
+                  "s2",
+                  "s3",
+                  "work_1",
+                  "work_2"
+                ],
+                "rationale": "Strongest overall fit: actively developed the FUSIONRAG regulatory retrieval system using BM25, FAISS, and OpenAI embeddings, with the work externally validated at COLING 2025 [s2]. He also built a Next.js/Socket.IO communication platform and a farmer-support application, covering both AI systems and product engineering [s1][s3]."
+              },
+              {
+                "candidate_id": "cand_30_wahaj_ahmad_butt",
+                "forward_rank": 3,
+                "reverse_rank": 3,
+                "avg_rank": 3,
+                "survived": true,
+                "outside_axes_standout": false,
+                "supporting_refs": [
+                  "s1",
+                  "s2",
+                  "s3",
+                  "s4",
+                  "work_1"
+                ],
+                "rationale": "Built several active AI systems, including a ResNet50/BERT VQA model and transformer-based fake-review detector, plus a quantified emotion-recognition system reaching 82.7% accuracy [s1][s2][s4]. His Laravel/WebRTC chat-video application adds meaningful full-stack breadth [s3]."
+              },
+              {
+                "candidate_id": "cand_11_muhammad_ahad_sajjad",
+                "forward_rank": 5,
+                "reverse_rank": 4,
+                "avg_rank": 4.5,
+                "survived": true,
+                "outside_axes_standout": false,
+                "supporting_refs": [
+                  "c1",
+                  "c2",
+                  "c3",
+                  "c4",
+                  "work_1",
+                  "work_2",
+                  "work_3"
+                ],
+                "rationale": "The strongest product-impact candidate in the group, with active ownership producing improvements in retention, onboarding, engagement, satisfaction, and bounce rate across multiple products [c1][c2][c3][c4]. He ranks below the AI-heavy contenders because the digest provides no direct ML, RAG, or multimodal engineering evidence."
+              },
+              {
+                "candidate_id": "cand_20_ali_awais_safdar",
+                "forward_rank": 4,
+                "reverse_rank": 5,
+                "avg_rank": 4.5,
+                "survived": false,
+                "outside_axes_standout": false,
+                "supporting_refs": [
+                  "s1",
+                  "s2",
+                  "s3",
+                  "s4",
+                  "s5"
+                ],
+                "rationale": "Combines active construction of a medical VQA system with a vehicle-routing research paper that was presented at the FIT 2024 Conference [s1][s2][s3]. His blockchain ledger and DNS client work further indicate strong systems and security engineering breadth [s4][s5], though the digest lacks quantified model or product outcomes."
+              },
+              {
+                "candidate_id": "cand_08_muhammad_rouhan_faisal",
+                "forward_rank": 6,
+                "reverse_rank": 6,
+                "avg_rank": 6,
+                "survived": false,
+                "outside_axes_standout": false,
+                "supporting_refs": [
+                  "s2",
+                  "s3",
+                  "s4",
+                  "c1",
+                  "c2",
+                  "work_1",
+                  "work_2"
+                ],
+                "rationale": "Shows solid product and distributed-systems fundamentals through a real-time chat application supporting 100 concurrent users and a complete Next.js store [s2][s3]. However, the strongest RAG evidence is explicitly peripheral, and his internship impact and Kubernetes exposure are also peripheral rather than direct ownership [s4][c1][c2]."
+              },
+              {
+                "candidate_id": "cand_09_hafiz_ahmed_hassan_chohan",
+                "forward_rank": 7,
+                "reverse_rank": 7,
+                "avg_rank": 7,
+                "survived": false,
+                "outside_axes_standout": false,
+                "supporting_refs": [
+                  "s1",
+                  "s2",
+                  "s3",
+                  "work_2",
+                  "work_4",
+                  "work_1"
+                ],
+                "rationale": "Has relevant computer-vision and OCR projects, including gesture control, eBook conversion, and ANPR [s1][s2][s3], alongside research-assistant and machine-learning-lab affiliations [work_2][work_4]. The projects lack quantified evaluation or advanced architecture detail, and the work entries do not establish concrete technical ownership."
+              },
+              {
+                "candidate_id": "cand_21_prithvi_raj",
+                "forward_rank": 8,
+                "reverse_rank": 8,
+                "avg_rank": 8,
+                "survived": false,
+                "outside_axes_standout": true,
+                "supporting_refs": [
+                  "c1",
+                  "s1",
+                  "s2",
+                  "s3",
+                  "s4",
+                  "work_1"
+                ],
+                "rationale": "Ranks lowest for this AI/product role because the evidence centers on software, blockchain, and Web3 projects without demonstrated ML, RAG, multimodal, or quantified product outcomes [c1][s1][s2][s3][s4]. His active Hyperledger accreditation system and Ethereum lottery platform are distinctive niche blockchain work and warrant preservation as an outside-axis strength [s1][s2]."
+              }
+            ],
+            "survivors": [
+              "cand_14_jatindar_kumar_mamnani",
+              "cand_25_muhammad_abdullah",
+              "cand_30_wahaj_ahmad_butt",
+              "cand_11_muhammad_ahad_sajjad"
+            ]
+          }
+        ]
+      }
+    ],
+    "stage3_finalist_ids": [
+      "cand_27_muhammad_taha_mukhtar",
+      "cand_18_abdul_rehman",
+      "cand_16_mehar_ali_ahmed",
+      "cand_06_hasib_aslam",
+      "cand_14_jatindar_kumar_mamnani",
+      "cand_25_muhammad_abdullah",
+      "cand_30_wahaj_ahmad_butt",
+      "cand_11_muhammad_ahad_sajjad"
+    ],
+    "stage3_latin_square_orderings": [
+      {
+        "permutation_index": 0,
+        "candidate_order": [
+          "cand_27_muhammad_taha_mukhtar",
+          "cand_18_abdul_rehman",
+          "cand_16_mehar_ali_ahmed",
+          "cand_06_hasib_aslam",
+          "cand_14_jatindar_kumar_mamnani",
+          "cand_25_muhammad_abdullah",
+          "cand_30_wahaj_ahmad_butt",
+          "cand_11_muhammad_ahad_sajjad"
+        ],
+        "rankings": [
+          {
+            "candidate_id": "cand_27_muhammad_taha_mukhtar",
+            "rank": 2,
+            "comparative_notes": "Ranks above the remaining candidates through unusually selective research and open-source exposure: he engineered a FixMatch/SAM2 remote-sensing model on H100/A100 infrastructure at DFKI and contributed through GSoC to CVAT with 100% test coverage. The €80k-funded Slum-i work and 500+ download Gemini CLI provide stronger environment and external-output evidence than those ranked below, although the CV lacks a reported model metric and a full RAG pipeline.",
+            "supporting_refs": [
+              "c1",
+              "c2",
+              "s1",
+              "s2",
+              "work_1",
+              "work_2"
+            ]
+          },
+          {
+            "candidate_id": "cand_18_abdul_rehman",
+            "rank": 4,
+            "comparative_notes": "Ranks above the remaining project-oriented candidates for active ownership of two substantial retrieval/search systems: a CLIP/Flickr30k semantic image search engine and a crawler-based search engine combining Bloom filters, BERT, PageRank, TF-IDF, and Solr. The architecture is highly relevant to search and RAG foundations, but there is no quantified evaluation or external validation comparable to those ranked above.",
+            "supporting_refs": [
+              "s1",
+              "s2",
+              "s3",
+              "work_1"
+            ]
+          },
+          {
+            "candidate_id": "cand_16_mehar_ali_ahmed",
+            "rank": 7,
+            "comparative_notes": "Ranks above the final two candidates because the RoBERTa plus LoRA writing-style detector achieved a concrete 0.80 F1, while LandUseAI adds RAG-oriented chatbot experience and the Global UGRAD exchange provides selective international exposure. The evidence is narrower and less architecturally detailed than Hasib’s full-stack portfolio or the candidates above.",
+            "supporting_refs": [
+              "s1",
+              "s2",
+              "c1",
+              "c2",
+              "c3",
+              "header"
+            ]
+          },
+          {
+            "candidate_id": "cand_06_hasib_aslam",
+            "rank": 6,
+            "comparative_notes": "Ranks above Mehar and the remaining candidates for combining a quantified 98% classifier, Lakehead University research exposure, a distinction-backed international exchange, and several complete web applications using React/Next.js/MERN. Its AI work is less technically advanced and less deeply evaluated than the higher-ranked multimodal and retrieval candidates.",
+            "supporting_refs": [
+              "c1",
+              "c2",
+              "s1",
+              "s2",
+              "s3",
+              "s4",
+              "header"
+            ]
+          },
+          {
+            "candidate_id": "cand_14_jatindar_kumar_mamnani",
+            "rank": 3,
+            "comparative_notes": "Ranks above the other multimodal candidates because of breadth across VQA, table QA, conversational assistance, and autonomous-driving perception, capped by an explicitly measured 82.4% mIoU on VIL-100. This is stronger measured multimodal ownership than the candidates below, though it lacks Abdullah’s publication-grade retrieval validation and Taha’s selective research credentials.",
+            "supporting_refs": [
+              "s1",
+              "s2",
+              "s3",
+              "s4",
+              "work_1"
+            ]
+          },
+          {
+            "candidate_id": "cand_25_muhammad_abdullah",
+            "rank": 1,
+            "comparative_notes": "Ranks first for the strongest direct match to the role’s RAG/search and full-stack requirements: FUSIONRAG combines OpenAI embeddings, BM25, FAISS, and rank fusion and is externally validated at COLING 2025. Scototo and the farmer-support application add credible product engineering breadth, giving him a stronger end-to-end AI/product profile than the candidates below.",
+            "supporting_refs": [
+              "s2",
+              "s1",
+              "s3",
+              "work_1"
+            ]
+          },
+          {
+            "candidate_id": "cand_30_wahaj_ahmad_butt",
+            "rank": 5,
+            "comparative_notes": "Ranks above the lower group through multiple substantive AI systems, including ResNet50-BERT VQA and a BERT/RoBERTa/XLNet/GPT-2 fake-review detector, plus a complete WebRTC chat/video product. The 82.7% FER2013Plus emotion-recognition result supplies clear measured ML evidence, but the work has less retrieval depth, research pedigree, and external validation than those above.",
+            "supporting_refs": [
+              "s1",
+              "s2",
+              "s3",
+              "s4",
+              "work_1"
+            ]
+          },
+          {
+            "candidate_id": "cand_11_muhammad_ahad_sajjad",
+            "rank": 8,
+            "comparative_notes": "Ranks above Mamnani on quantified product outcomes, with active delivery of a wellness kiosk/app and several platforms showing improvements in retention, engagement, bounce rate, onboarding, and inquiries. However, the resume is primarily UX/product-oriented and provides limited verifiable ML, model, or systems-engineering depth for this AI/ML engineering role.",
+            "supporting_refs": [
+              "c1",
+              "c2",
+              "c3",
+              "c4",
+              "work_1",
+              "work_2",
+              "work_3"
+            ]
+          }
+        ]
+      },
+      {
+        "permutation_index": 1,
+        "candidate_order": [
+          "cand_16_mehar_ali_ahmed",
+          "cand_06_hasib_aslam",
+          "cand_14_jatindar_kumar_mamnani",
+          "cand_25_muhammad_abdullah",
+          "cand_30_wahaj_ahmad_butt",
+          "cand_11_muhammad_ahad_sajjad",
+          "cand_27_muhammad_taha_mukhtar",
+          "cand_18_abdul_rehman"
+        ],
+        "rankings": [
+          {
+            "candidate_id": "cand_16_mehar_ali_ahmed",
+            "rank": 7,
+            "comparative_notes": "Mehar’s RoBERTa plus low-rank adaptation writing-style detector achieves a credible 0.80 F1, and the LandUseAI project indicates exposure to RAG; he also shows quantified organizational/product outcomes and Global UGRAD experience. He ranks below Hasib because the RAG system lacks concrete pipeline details or evaluation, while the single measured ML project and limited engineering depth are narrower overall.",
+            "supporting_refs": [
+              "s2",
+              "s1",
+              "c3",
+              "c1"
+            ]
+          },
+          {
+            "candidate_id": "cand_06_hasib_aslam",
+            "rank": 6,
+            "comparative_notes": "Hasib combines a verified 98% cat-and-dog classifier, Lakehead University EEG research exposure, and several complete full-stack applications spanning React/Next.js, MERN, Graph API, and database-backed systems. He ranks below Wahaj because his ML evidence is concentrated in one standard classifier and the EEG work is described primarily as dataset processing rather than ownership of a validated model.",
+            "supporting_refs": [
+              "c1",
+              "c2",
+              "s1",
+              "s2",
+              "s3",
+              "s4"
+            ]
+          },
+          {
+            "candidate_id": "cand_14_jatindar_kumar_mamnani",
+            "rank": 3,
+            "comparative_notes": "Jatindar’s 82.4% mIoU autonomous-driving multitask model is one of the pool’s strongest measured AI achievements, and his VQA, table-answering, and FastAPI chatbot projects demonstrate multimodal and LLM breadth. He ranks below Abdullah because the work has no comparable publication or externally validated retrieval artifact, and the selective-environment evidence is weaker.",
+            "supporting_refs": [
+              "s4",
+              "s3",
+              "s2",
+              "s1"
+            ]
+          },
+          {
+            "candidate_id": "cand_25_muhammad_abdullah",
+            "rank": 2,
+            "comparative_notes": "Abdullah ranks above the remaining candidates because FUSIONRAG is a published COLING 2025 system combining OpenAI embeddings, BM25, FAISS, and rank fusion—directly matching the role’s retrieval and LLM-system needs. His additional Next.js/Socket.IO communication platform and farmer-support application show credible full-stack breadth, though his CV lacks Taha’s selective research environment and measured advanced model-training evidence.",
+            "supporting_refs": [
+              "s2",
+              "s1",
+              "s3",
+              "work_1"
+            ]
+          },
+          {
+            "candidate_id": "cand_30_wahaj_ahmad_butt",
+            "rank": 5,
+            "comparative_notes": "Wahaj has broad applied AI coverage, including ResNet50/BERT VQA, multiple transformer-based fake-review models, and an emotion-recognition system reaching 82.7% accuracy, alongside a working WebRTC application. He ranks below Abdul because the search/LLM architecture is less developed and the CV provides less evidence of research or external validation, with the strongest quantified result coming from a relatively standard classifier.",
+            "supporting_refs": [
+              "s1",
+              "s2",
+              "s3",
+              "s4"
+            ]
+          },
+          {
+            "candidate_id": "cand_11_muhammad_ahad_sajjad",
+            "rank": 8,
+            "comparative_notes": "Ahad has the strongest quantified product and UX outcome profile among the lower-ranked candidates, including retention, engagement, bounce-rate, onboarding, and inquiry improvements across multiple applications. However, he ranks last for this AI/ML engineering role because the CV provides little concrete evidence of model architecture, ML evaluation, software-stack ownership, or research depth beyond broad neuro-symbolic/AI descriptions.",
+            "supporting_refs": [
+              "c1",
+              "c2",
+              "c3",
+              "c4",
+              "s1",
+              "s2",
+              "s3",
+              "s4"
+            ]
+          },
+          {
+            "candidate_id": "cand_27_muhammad_taha_mukhtar",
+            "rank": 1,
+            "comparative_notes": "Taha has the strongest overall evidence: active DFKI research using FixMatch, SAM2, domain adaptation, and H100/A100 infrastructure, plus distinguished GSoC work with 100% test coverage. The €80,000 funded Slum-i project and an npm package with 500+ downloads provide substantially stronger research-environment and external-validation signals than any other finalist.",
+            "supporting_refs": [
+              "c1",
+              "c2",
+              "s1",
+              "s2"
+            ]
+          },
+          {
+            "candidate_id": "cand_18_abdul_rehman",
+            "rank": 4,
+            "comparative_notes": "Abdul demonstrates unusually strong search and retrieval engineering for an entry-level candidate: a CLIP/Flickr30k semantic image search engine and a web search engine combining crawling, Bloom filters, BERT, PageRank, TF-IDF, and Solr. He ranks below Jatindar because there is no quantified model result, publication, or similarly advanced multimodal training outcome, despite his High Performance Lab exposure.",
+            "supporting_refs": [
+              "s1",
+              "s2",
+              "work_1",
+              "s3"
+            ]
+          }
+        ]
+      },
+      {
+        "permutation_index": 2,
+        "candidate_order": [
+          "cand_14_jatindar_kumar_mamnani",
+          "cand_25_muhammad_abdullah",
+          "cand_30_wahaj_ahmad_butt",
+          "cand_11_muhammad_ahad_sajjad",
+          "cand_27_muhammad_taha_mukhtar",
+          "cand_18_abdul_rehman",
+          "cand_16_mehar_ali_ahmed",
+          "cand_06_hasib_aslam"
+        ],
+        "rankings": [
+          {
+            "candidate_id": "cand_14_jatindar_kumar_mamnani",
+            "rank": 3,
+            "comparative_notes": "Ranks above the lower group on measured multimodal engineering breadth: he actively built VQA, table-answering, chatbot, and autonomous-driving systems, with the latter achieving 82.4% mIoU on VIL-100. His combination of CNN/LSTM/Transformer multimodal work and FastAPI/LLM application development is stronger for the AI-engineering brief than the primarily single-domain evidence below, despite lacking comparable external publication or selective-program validation.",
+            "supporting_refs": [
+              "s1",
+              "s2",
+              "s3",
+              "s4"
+            ]
+          },
+          {
+            "candidate_id": "cand_25_muhammad_abdullah",
+            "rank": 2,
+            "comparative_notes": "Ranks above the remaining candidates through the clearest end-to-end RAG/search architecture and a peer-reviewed external artifact: FUSIONRAG combines OpenAI embeddings, BM25, FAISS, and rank fusion and was published at COLING 2025. His Next.js/Socket.IO communication platform and Node/React/MongoDB farmer-support application also provide stronger full-stack alignment than candidates below him, though he lacks Taha's selective research environment and advanced GPU/model-engineering evidence.",
+            "supporting_refs": [
+              "s1",
+              "s2",
+              "s3",
+              "work_1"
+            ]
+          },
+          {
+            "candidate_id": "cand_30_wahaj_ahmad_butt",
+            "rank": 4,
+            "comparative_notes": "Ranks above Abdul Rehman and the remaining candidates through two concrete multimodal/classification efforts, including ResNet50+BERT VQA and an FER2013Plus/ResNet50 emotion system with 82.7% accuracy, plus a complete WebRTC chat/video application. His evidence is technically broad and quantified, but lacks the advanced retrieval architecture, publication, or research pedigree of the top three.",
+            "supporting_refs": [
+              "s1",
+              "s2",
+              "s3",
+              "s4",
+              "work_1"
+            ]
+          },
+          {
+            "candidate_id": "cand_11_muhammad_ahad_sajjad",
+            "rank": 8,
+            "comparative_notes": "Ahad has the strongest quantified product and UX outcomes among the lower group, including +75% retention, -25% onboarding time, +70% engagement, and -70% bounce. He ranks last for this AI/ML engineering role because the verified work centers on UX, product design, and AI-labeled applications without concrete model architectures, evaluation metrics, retrieval systems, or research output.",
+            "supporting_refs": [
+              "c1",
+              "c2",
+              "c3",
+              "c4"
+            ]
+          },
+          {
+            "candidate_id": "cand_27_muhammad_taha_mukhtar",
+            "rank": 1,
+            "comparative_notes": "Strongest overall due to unusually selective technical environments and externally validated output: active DFKI research on FixMatch/SAM2 with H100/A100 infrastructure, a GSoC contribution to CVAT with 100% test coverage, and a €80k-funded settlement-segmentation project. The 500+ download Gemini CLI adds concrete open-source traction, giving him broader research pedigree and validation than the other finalists.",
+            "supporting_refs": [
+              "c1",
+              "c2",
+              "s1",
+              "s2"
+            ]
+          },
+          {
+            "candidate_id": "cand_18_abdul_rehman",
+            "rank": 5,
+            "comparative_notes": "Ranks above the final three because he actively built multiple information-retrieval systems, including CLIP/Flickr30k semantic image search with Solr and a crawler/Bloom Filter/BERT/PageRank search engine. This gives him particularly relevant search-system architecture, but the CV provides no quantified evaluation, external validation, or comparable production impact, limiting separation from the stronger multimodal candidates above.",
+            "supporting_refs": [
+              "s1",
+              "s2",
+              "s3",
+              "work_1"
+            ]
+          },
+          {
+            "candidate_id": "cand_16_mehar_ali_ahmed",
+            "rank": 6,
+            "comparative_notes": "Ranks above Hasib and Ahad on targeted research signals: a RoBERTa plus LoRA writing-style detector achieved 0.80 F1, and his Global UGRAD exchange and $400 awarded community grant provide selective international and externally funded experience. However, his RAG chatbot and other product claims are not tagged as active technical achievements, and his overall systems depth is narrower than the candidates above.",
+            "supporting_refs": [
+              "s1",
+              "s2",
+              "work_2",
+              "c1"
+            ]
+          },
+          {
+            "candidate_id": "cand_06_hasib_aslam",
+            "rank": 7,
+            "comparative_notes": "Hasib has credible breadth in full-stack implementation and selective exposure through Linnaeus exchange and Lakehead University research, plus a 98% cat/dog classifier. He ranks below Mehar because the ML evidence is a relatively standard classifier and the Lakehead work is primarily EEG dataset processing, while his applications show functionality but no quantified product impact or advanced AI architecture.",
+            "supporting_refs": [
+              "c1",
+              "c2",
+              "s1",
+              "s2",
+              "s3",
+              "s4"
+            ]
+          }
+        ]
+      },
+      {
+        "permutation_index": 3,
+        "candidate_order": [
+          "cand_30_wahaj_ahmad_butt",
+          "cand_11_muhammad_ahad_sajjad",
+          "cand_27_muhammad_taha_mukhtar",
+          "cand_18_abdul_rehman",
+          "cand_16_mehar_ali_ahmed",
+          "cand_06_hasib_aslam",
+          "cand_14_jatindar_kumar_mamnani",
+          "cand_25_muhammad_abdullah"
+        ],
+        "rankings": [
+          {
+            "candidate_id": "cand_30_wahaj_ahmad_butt",
+            "rank": 4,
+            "comparative_notes": "Ranks above Abdul and the remaining candidates on measured multimodal breadth: he actively built VQA, transformer-based fake-review detection, and emotion-recognition systems, with the latter reaching 82.7% accuracy, alongside a WebRTC application. His lack of selective research exposure, publication, or a concrete retrieval pipeline keeps him below the top three.",
+            "supporting_refs": [
+              "s1",
+              "s2",
+              "s3",
+              "s4",
+              "work_1"
+            ]
+          },
+          {
+            "candidate_id": "cand_11_muhammad_ahad_sajjad",
+            "rank": 8,
+            "comparative_notes": "Ahad shows the strongest quantified product and UX outcomes among the lower tier, including retention, engagement, bounce-rate, onboarding, and inquiry improvements across several products. He ranks last for this AI/ML engineering role because the claims provide limited concrete model, software architecture, or implementation evidence, and the technical-skills section is primarily design-oriented.",
+            "supporting_refs": [
+              "c1",
+              "c2",
+              "c3",
+              "c4"
+            ]
+          },
+          {
+            "candidate_id": "cand_27_muhammad_taha_mukhtar",
+            "rank": 1,
+            "comparative_notes": "Ranks first through the strongest combination of selective research exposure, advanced AI infrastructure, externally supported research, and open-source output. His DFKI work used FixMatch, SAM2, remote-sensing data, and H100/A100 GPUs; he also contributed through GSoC, a €80,000 funded project, and a CLI with 500+ downloads, separating him from finalists below who generally lack this combination of pedigree and external validation.",
+            "supporting_refs": [
+              "c1",
+              "c2",
+              "s1",
+              "s2"
+            ]
+          },
+          {
+            "candidate_id": "cand_18_abdul_rehman",
+            "rank": 5,
+            "comparative_notes": "His semantic image search engine using CLIP, Flickr30k, and Apache Solr, plus a crawler/Bloom Filter/BERT/PageRank search engine, gives him stronger search and retrieval alignment than the candidates below. However, the resume provides no quantified retrieval result or external validation, and his ML portfolio is less measured and less extensive than Wahaj's.",
+            "supporting_refs": [
+              "s1",
+              "s2",
+              "s3",
+              "work_1"
+            ]
+          },
+          {
+            "candidate_id": "cand_16_mehar_ali_ahmed",
+            "rank": 7,
+            "comparative_notes": "Mehar has a credible 0.80-F1 RoBERTa/LoRA writing-style detector, a RAG-based land-use chatbot, a distinction-backed Global UGRAD exchange, and a funded community project. He ranks above Ahad because his technical AI evidence is more explicit and evaluated, but his systems lack the depth, scale, and engineering detail demonstrated by the candidates above.",
+            "supporting_refs": [
+              "s1",
+              "s2",
+              "c1",
+              "c2",
+              "c3"
+            ]
+          },
+          {
+            "candidate_id": "cand_06_hasib_aslam",
+            "rank": 6,
+            "comparative_notes": "Hasib combines a quantified 98% classifier, four concrete full-stack or systems projects, and selective international exposure through Lakehead University and a distinction-backed exchange. He ranks below Abdul because his AI work is largely a standard classifier and EEG data-processing internship rather than advanced multimodal, retrieval, or LLM engineering.",
+            "supporting_refs": [
+              "c1",
+              "c2",
+              "s1",
+              "s2",
+              "s3",
+              "s4",
+              "header"
+            ]
+          },
+          {
+            "candidate_id": "cand_14_jatindar_kumar_mamnani",
+            "rank": 2,
+            "comparative_notes": "Ranks above Abdullah and the remaining finalists because he demonstrates unusually broad active ownership of technically advanced multimodal and language systems, including VQA, table answering, an LLM website assistant, and autonomous-driving multitask learning. The autonomous-driving model achieved 82.4% mIoU, providing stronger measured model evidence than most candidates below, though he lacks Taha's selective research and external-output profile.",
+            "supporting_refs": [
+              "s1",
+              "s2",
+              "s3",
+              "s4"
+            ]
+          },
+          {
+            "candidate_id": "cand_25_muhammad_abdullah",
+            "rank": 3,
+            "comparative_notes": "His COLING 2025 FUSIONRAG publication is the clearest externally validated RAG achievement in the pool, with a concrete architecture combining OpenAI embeddings, BM25, FAISS, and rank fusion. He also has active full-stack ownership through Scototo and the farmer-support app, placing him above candidates below who show either less complete retrieval architecture or weaker external validation.",
+            "supporting_refs": [
+              "s1",
+              "s2",
+              "s3"
+            ]
+          }
+        ]
+      }
+    ],
+    "stage3_top5_candidate_ids": [
+      "cand_27_muhammad_taha_mukhtar",
+      "cand_25_muhammad_abdullah",
+      "cand_14_jatindar_kumar_mamnani",
+      "cand_18_abdul_rehman",
+      "cand_30_wahaj_ahmad_butt"
+    ],
+    "stage3_pairwise_matchups": [
+      {
+        "candidate_a": "cand_27_muhammad_taha_mukhtar",
+        "candidate_b": "cand_25_muhammad_abdullah",
+        "forward_winner": "cand_25_muhammad_abdullah",
+        "forward_confidence": "narrow",
+        "reverse_winner": "cand_27_muhammad_taha_mukhtar",
+        "reverse_confidence": "clear",
+        "resolved_outcome": "tie",
+        "decisive_reasons": "Candidate B has the stronger direct fit to the role’s combined AI-product focus: FUSIONRAG demonstrates an externally published, end-to-end retrieval architecture using OpenAI embeddings, BM25, FAISS, and rank fusion, while Scototo and the farmer-support app show full-stack product execution. Candidate A has superior selective research exposure and advanced computer-vision infrastructure, but lacks quantified model performance and demonstrated retrieval or product impact. Candidate B has broader and deeper evidence of advanced AI engineering: he engineered a semi-supervised remote-sensing model using FixMatch, SAM2, domain adaptation, and H100/A100 GPUs, while also contributing through DFKI and Google Summer of Code. His €80,000-funded research project and open-source CLI with 500+ downloads provide stronger selective-environment and externally validated impact than Candidate A’s excellent but more concentrated FUSIONRAG publication.",
+        "supporting_claims": [
+          {
+            "candidate_id": "cand_25_muhammad_abdullah",
+            "ref_id": "s2"
+          },
+          {
+            "candidate_id": "cand_25_muhammad_abdullah",
+            "ref_id": "s1"
+          },
+          {
+            "candidate_id": "cand_25_muhammad_abdullah",
+            "ref_id": "s3"
+          },
+          {
+            "candidate_id": "cand_27_muhammad_taha_mukhtar",
+            "ref_id": "c1"
+          },
+          {
+            "candidate_id": "cand_27_muhammad_taha_mukhtar",
+            "ref_id": "s1"
+          },
+          {
+            "candidate_id": "cand_27_muhammad_taha_mukhtar",
+            "ref_id": "c1"
+          },
+          {
+            "candidate_id": "cand_27_muhammad_taha_mukhtar",
+            "ref_id": "s1"
+          },
+          {
+            "candidate_id": "cand_27_muhammad_taha_mukhtar",
+            "ref_id": "s2"
+          },
+          {
+            "candidate_id": "cand_27_muhammad_taha_mukhtar",
+            "ref_id": "c2"
+          },
+          {
+            "candidate_id": "cand_25_muhammad_abdullah",
+            "ref_id": "s2"
+          }
+        ]
+      },
+      {
+        "candidate_a": "cand_27_muhammad_taha_mukhtar",
+        "candidate_b": "cand_14_jatindar_kumar_mamnani",
+        "forward_winner": "cand_27_muhammad_taha_mukhtar",
+        "forward_confidence": "narrow",
+        "reverse_winner": "cand_27_muhammad_taha_mukhtar",
+        "reverse_confidence": "clear",
+        "resolved_outcome": "a_wins",
+        "decisive_reasons": "Candidate A has the stronger combination of selective research exposure and externally validated output: active DFKI work using FixMatch, SAM2, and H100/A100 infrastructure, plus a €80K-funded project and an open-source package with 500+ downloads. Candidate B shows broader applied-AI breadth and a strong 82.4% mIoU result, but lacks comparable selective-environment pedigree or independently validated technical traction. Candidate B combines technically advanced active research ownership using FixMatch, SAM2, domain adaptation, and H100/A100 infrastructure with unusually strong external validation through DFKI, a €80k funded project, GSoC, and an open-source package with 500+ downloads. Candidate A demonstrates broader project breadth and a strong 82.4% mIoU result, but B has the stronger research environment, validation, and trajectory for this role.",
+        "supporting_claims": [
+          {
+            "candidate_id": "cand_27_muhammad_taha_mukhtar",
+            "ref_id": "c1"
+          },
+          {
+            "candidate_id": "cand_27_muhammad_taha_mukhtar",
+            "ref_id": "s1"
+          },
+          {
+            "candidate_id": "cand_27_muhammad_taha_mukhtar",
+            "ref_id": "s2"
+          },
+          {
+            "candidate_id": "cand_27_muhammad_taha_mukhtar",
+            "ref_id": "c2"
+          },
+          {
+            "candidate_id": "cand_14_jatindar_kumar_mamnani",
+            "ref_id": "s4"
+          },
+          {
+            "candidate_id": "cand_14_jatindar_kumar_mamnani",
+            "ref_id": "s3"
+          },
+          {
+            "candidate_id": "cand_14_jatindar_kumar_mamnani",
+            "ref_id": "s1"
+          },
+          {
+            "candidate_id": "cand_27_muhammad_taha_mukhtar",
+            "ref_id": "work_1"
+          },
+          {
+            "candidate_id": "cand_27_muhammad_taha_mukhtar",
+            "ref_id": "c1"
+          },
+          {
+            "candidate_id": "cand_27_muhammad_taha_mukhtar",
+            "ref_id": "s1"
+          },
+          {
+            "candidate_id": "cand_27_muhammad_taha_mukhtar",
+            "ref_id": "s2"
+          },
+          {
+            "candidate_id": "cand_14_jatindar_kumar_mamnani",
+            "ref_id": "s4"
+          },
+          {
+            "candidate_id": "cand_14_jatindar_kumar_mamnani",
+            "ref_id": "s1"
+          }
+        ]
+      },
+      {
+        "candidate_a": "cand_27_muhammad_taha_mukhtar",
+        "candidate_b": "cand_18_abdul_rehman",
+        "forward_winner": "cand_27_muhammad_taha_mukhtar",
+        "forward_confidence": "clear",
+        "reverse_winner": "cand_27_muhammad_taha_mukhtar",
+        "reverse_confidence": "clear",
+        "resolved_outcome": "a_wins",
+        "decisive_reasons": "Candidate A shows the stronger overall trajectory through active ownership of advanced semi-supervised remote-sensing engineering using FixMatch, SAM2, and H100/A100 infrastructure, plus selective DFKI/DAAD research exposure and externally validated open-source traction. Candidate B has stronger explicit search/RAG-style architecture, but lacks comparable research pedigree, quantified outcomes, or external validation. Candidate B decisively leads through active ownership of an advanced remote-sensing model using FixMatch, SAM2, domain adaptation, and H100/A100 infrastructure, plus selective DFKI and GSoC experience. The €80k-funded research project and 500+ download open-source CLI provide substantially stronger external validation and trajectory than Candidate A’s unquantified search and prediction projects.",
+        "supporting_claims": [
+          {
+            "candidate_id": "cand_27_muhammad_taha_mukhtar",
+            "ref_id": "c1"
+          },
+          {
+            "candidate_id": "cand_27_muhammad_taha_mukhtar",
+            "ref_id": "s1"
+          },
+          {
+            "candidate_id": "cand_27_muhammad_taha_mukhtar",
+            "ref_id": "s2"
+          },
+          {
+            "candidate_id": "cand_27_muhammad_taha_mukhtar",
+            "ref_id": "c2"
+          },
+          {
+            "candidate_id": "cand_18_abdul_rehman",
+            "ref_id": "s1"
+          },
+          {
+            "candidate_id": "cand_18_abdul_rehman",
+            "ref_id": "s2"
+          },
+          {
+            "candidate_id": "cand_27_muhammad_taha_mukhtar",
+            "ref_id": "c1"
+          },
+          {
+            "candidate_id": "cand_27_muhammad_taha_mukhtar",
+            "ref_id": "s1"
+          },
+          {
+            "candidate_id": "cand_27_muhammad_taha_mukhtar",
+            "ref_id": "s2"
+          },
+          {
+            "candidate_id": "cand_27_muhammad_taha_mukhtar",
+            "ref_id": "work_1"
+          },
+          {
+            "candidate_id": "cand_18_abdul_rehman",
+            "ref_id": "s1"
+          },
+          {
+            "candidate_id": "cand_18_abdul_rehman",
+            "ref_id": "s2"
+          }
+        ]
+      },
+      {
+        "candidate_a": "cand_27_muhammad_taha_mukhtar",
+        "candidate_b": "cand_30_wahaj_ahmad_butt",
+        "forward_winner": "cand_27_muhammad_taha_mukhtar",
+        "forward_confidence": "clear",
+        "reverse_winner": "cand_27_muhammad_taha_mukhtar",
+        "reverse_confidence": "clear",
+        "resolved_outcome": "a_wins",
+        "decisive_reasons": "Candidate A demonstrates stronger research and engineering trajectory through active ownership of a technically advanced FixMatch/SAM2 remote-sensing system on H100/A100 infrastructure, plus DFKI and GSoC experience. The €80K-funded project and 500+ download open-source CLI provide external validation that outweighs Candidate B’s broader project portfolio and single quantified 82.7% classifier result. Candidate B demonstrates substantially stronger research and engineering depth through active ownership of a semi-supervised remote-sensing model using FixMatch, SAM2, domain adaptation, and H100/A100 GPUs, plus work at DFKI and a €80,000-funded project. B also adds externally validated output via GSoC/CVAT contributions with 100% test coverage and an open-source npm package exceeding 500 downloads, outweighing Candidate A’s strong but mostly project-level ML work and single quantified 82.7% result.",
+        "supporting_claims": [
+          {
+            "candidate_id": "cand_27_muhammad_taha_mukhtar",
+            "ref_id": "c1"
+          },
+          {
+            "candidate_id": "cand_27_muhammad_taha_mukhtar",
+            "ref_id": "s1"
+          },
+          {
+            "candidate_id": "cand_27_muhammad_taha_mukhtar",
+            "ref_id": "s2"
+          },
+          {
+            "candidate_id": "cand_27_muhammad_taha_mukhtar",
+            "ref_id": "c2"
+          },
+          {
+            "candidate_id": "cand_30_wahaj_ahmad_butt",
+            "ref_id": "s4"
+          },
+          {
+            "candidate_id": "cand_30_wahaj_ahmad_butt",
+            "ref_id": "s1"
+          },
+          {
+            "candidate_id": "cand_27_muhammad_taha_mukhtar",
+            "ref_id": "c1"
+          },
+          {
+            "candidate_id": "cand_27_muhammad_taha_mukhtar",
+            "ref_id": "s1"
+          },
+          {
+            "candidate_id": "cand_27_muhammad_taha_mukhtar",
+            "ref_id": "c2"
+          },
+          {
+            "candidate_id": "cand_27_muhammad_taha_mukhtar",
+            "ref_id": "s2"
+          },
+          {
+            "candidate_id": "cand_30_wahaj_ahmad_butt",
+            "ref_id": "s4"
+          }
+        ]
+      },
+      {
+        "candidate_a": "cand_25_muhammad_abdullah",
+        "candidate_b": "cand_14_jatindar_kumar_mamnani",
+        "forward_winner": "cand_14_jatindar_kumar_mamnani",
+        "forward_confidence": "clear",
+        "reverse_winner": "cand_25_muhammad_abdullah",
+        "reverse_confidence": "narrow",
+        "resolved_outcome": "tie",
+        "decisive_reasons": "Candidate B demonstrates substantially deeper active AI/ML engineering: multiple multimodal and computer-vision systems, including a multitask autonomous-driving model achieving 82.4% mIoU, plus VQA and transformer-based table answering. Candidate A has the stronger RAG/publication spike, but B’s breadth, measured model performance, and direct computer-vision research experience better match the role’s standout AI systems requirement. Candidate B has the stronger overall fit through externally validated, architecture-rich RAG research—OpenAI embeddings, BM25, FAISS, and rank fusion published at COLING 2025—while also demonstrating full-stack product construction. Candidate A shows stronger quantified computer-vision depth, including 82.4% mIoU, but lacks B’s publication validation and direct end-to-end retrieval specialization.",
+        "supporting_claims": [
+          {
+            "candidate_id": "cand_14_jatindar_kumar_mamnani",
+            "ref_id": "s4"
+          },
+          {
+            "candidate_id": "cand_14_jatindar_kumar_mamnani",
+            "ref_id": "s3"
+          },
+          {
+            "candidate_id": "cand_14_jatindar_kumar_mamnani",
+            "ref_id": "s2"
+          },
+          {
+            "candidate_id": "cand_14_jatindar_kumar_mamnani",
+            "ref_id": "work_1"
+          },
+          {
+            "candidate_id": "cand_25_muhammad_abdullah",
+            "ref_id": "s2"
+          },
+          {
+            "candidate_id": "cand_25_muhammad_abdullah",
+            "ref_id": "s2"
+          },
+          {
+            "candidate_id": "cand_25_muhammad_abdullah",
+            "ref_id": "s1"
+          },
+          {
+            "candidate_id": "cand_25_muhammad_abdullah",
+            "ref_id": "s3"
+          },
+          {
+            "candidate_id": "cand_14_jatindar_kumar_mamnani",
+            "ref_id": "s4"
+          },
+          {
+            "candidate_id": "cand_14_jatindar_kumar_mamnani",
+            "ref_id": "s3"
+          }
+        ]
+      },
+      {
+        "candidate_a": "cand_25_muhammad_abdullah",
+        "candidate_b": "cand_18_abdul_rehman",
+        "forward_winner": "cand_25_muhammad_abdullah",
+        "forward_confidence": "narrow",
+        "reverse_winner": "cand_25_muhammad_abdullah",
+        "reverse_confidence": "clear",
+        "resolved_outcome": "a_wins",
+        "decisive_reasons": "Candidate A has the stronger role-aligned spike through active ownership of FUSIONRAG, an end-to-end regulatory retrieval system combining OpenAI embeddings, BM25, FAISS, and rank fusion, with external validation at COLING 2025. Candidate B shows impressive search and multimodal projects plus selective lab exposure, but lacks comparable external validation or quantified evaluation. Candidate B demonstrates the strongest combination of production-oriented full-stack engineering and advanced, externally validated RAG work: FUSIONRAG combines OpenAI embeddings, BM25, FAISS, and rank fusion and was published at COLING 2025. Scototo and the Kisan support app further show active ownership of substantial user-facing applications, giving B a clear edge over A’s unquantified search and ML projects.",
+        "supporting_claims": [
+          {
+            "candidate_id": "cand_25_muhammad_abdullah",
+            "ref_id": "s2"
+          },
+          {
+            "candidate_id": "cand_25_muhammad_abdullah",
+            "ref_id": "work_2"
+          },
+          {
+            "candidate_id": "cand_18_abdul_rehman",
+            "ref_id": "s1"
+          },
+          {
+            "candidate_id": "cand_18_abdul_rehman",
+            "ref_id": "work_1"
+          },
+          {
+            "candidate_id": "cand_25_muhammad_abdullah",
+            "ref_id": "s2"
+          },
+          {
+            "candidate_id": "cand_25_muhammad_abdullah",
+            "ref_id": "s1"
+          },
+          {
+            "candidate_id": "cand_25_muhammad_abdullah",
+            "ref_id": "s3"
+          }
+        ]
+      },
+      {
+        "candidate_a": "cand_25_muhammad_abdullah",
+        "candidate_b": "cand_30_wahaj_ahmad_butt",
+        "forward_winner": "cand_25_muhammad_abdullah",
+        "forward_confidence": "narrow",
+        "reverse_winner": "cand_25_muhammad_abdullah",
+        "reverse_confidence": "clear",
+        "resolved_outcome": "a_wins",
+        "decisive_reasons": "Candidate A has the stronger role-aligned spike: an externally published COLING 2025 FUSIONRAG system combining OpenAI embeddings, BM25, FAISS, and rank fusion, demonstrating concrete end-to-end retrieval architecture. Candidate B shows deeper measured multimodal breadth, including an 82.7% ResNet50 result, but lacks comparable external validation and has incomplete VQA evaluation evidence. Candidate B has stronger externally validated research and direct production-relevant RAG expertise: he actively developed and published FUSIONRAG at COLING 2025 using embeddings, BM25, FAISS, and rank fusion. Candidate A demonstrates solid multimodal experimentation, including 82.7% emotion-recognition accuracy, but lacks comparable publication validation and complete retrieval-system architecture evidence.",
+        "supporting_claims": [
+          {
+            "candidate_id": "cand_25_muhammad_abdullah",
+            "ref_id": "s2"
+          },
+          {
+            "candidate_id": "cand_25_muhammad_abdullah",
+            "ref_id": "s1"
+          },
+          {
+            "candidate_id": "cand_25_muhammad_abdullah",
+            "ref_id": "s3"
+          },
+          {
+            "candidate_id": "cand_30_wahaj_ahmad_butt",
+            "ref_id": "s1"
+          },
+          {
+            "candidate_id": "cand_30_wahaj_ahmad_butt",
+            "ref_id": "s2"
+          },
+          {
+            "candidate_id": "cand_30_wahaj_ahmad_butt",
+            "ref_id": "s4"
+          },
+          {
+            "candidate_id": "cand_25_muhammad_abdullah",
+            "ref_id": "s2"
+          },
+          {
+            "candidate_id": "cand_25_muhammad_abdullah",
+            "ref_id": "s1"
+          },
+          {
+            "candidate_id": "cand_25_muhammad_abdullah",
+            "ref_id": "s3"
+          },
+          {
+            "candidate_id": "cand_30_wahaj_ahmad_butt",
+            "ref_id": "s1"
+          },
+          {
+            "candidate_id": "cand_30_wahaj_ahmad_butt",
+            "ref_id": "s4"
+          }
+        ]
+      },
+      {
+        "candidate_a": "cand_14_jatindar_kumar_mamnani",
+        "candidate_b": "cand_18_abdul_rehman",
+        "forward_winner": "cand_14_jatindar_kumar_mamnani",
+        "forward_confidence": "clear",
+        "reverse_winner": "cand_14_jatindar_kumar_mamnani",
+        "reverse_confidence": "clear",
+        "resolved_outcome": "a_wins",
+        "decisive_reasons": "Candidate A demonstrates stronger applied AI depth through multiple actively built multimodal/vision systems, including an autonomous-driving multitask model achieving 82.4% mIoU, plus VQA and transformer-based QA work. Candidate B has impressive search architecture projects, but lacks comparable quantified model performance or breadth of advanced model engineering. Candidate B demonstrates substantially deeper applied AI ownership, including a multimodal medical VQA system and an autonomous-driving multitask model achieving 82.4% mIoU, directly matching the role’s emphasis on measured computer-vision and multimodal engineering. B also adds active FastAPI/LLM and transformer-based table-answering systems, giving broader production-AI coverage than Candidate A’s unquantified search and LSTM projects.",
+        "supporting_claims": [
+          {
+            "candidate_id": "cand_14_jatindar_kumar_mamnani",
+            "ref_id": "s4"
+          },
+          {
+            "candidate_id": "cand_14_jatindar_kumar_mamnani",
+            "ref_id": "s3"
+          },
+          {
+            "candidate_id": "cand_14_jatindar_kumar_mamnani",
+            "ref_id": "s2"
+          },
+          {
+            "candidate_id": "cand_18_abdul_rehman",
+            "ref_id": "s1"
+          },
+          {
+            "candidate_id": "cand_18_abdul_rehman",
+            "ref_id": "s2"
+          },
+          {
+            "candidate_id": "cand_14_jatindar_kumar_mamnani",
+            "ref_id": "s4"
+          },
+          {
+            "candidate_id": "cand_14_jatindar_kumar_mamnani",
+            "ref_id": "s3"
+          },
+          {
+            "candidate_id": "cand_14_jatindar_kumar_mamnani",
+            "ref_id": "s1"
+          },
+          {
+            "candidate_id": "cand_14_jatindar_kumar_mamnani",
+            "ref_id": "work_1"
+          }
+        ]
+      },
+      {
+        "candidate_a": "cand_14_jatindar_kumar_mamnani",
+        "candidate_b": "cand_30_wahaj_ahmad_butt",
+        "forward_winner": "cand_14_jatindar_kumar_mamnani",
+        "forward_confidence": "clear",
+        "reverse_winner": "cand_14_jatindar_kumar_mamnani",
+        "reverse_confidence": "clear",
+        "resolved_outcome": "a_wins",
+        "decisive_reasons": "Candidate A demonstrates broader and deeper active AI ownership, including multimodal VQA, transformer table QA, FastAPI LLM application, and an autonomous-driving multitask model achieving 82.4% mIoU. Candidate B has a stronger explicit full-stack application project, but A’s advanced computer-vision scope, quantified segmentation result, and AI-focused research internship better match the role’s standout AI/ML criteria. Candidate B demonstrates stronger advanced ML ownership: a multitask autonomous-driving model achieving 82.4% mIoU, plus multiple multimodal, transformer-based, and LLM-oriented systems. B also adds direct computer-vision research internship experience and broader evidence of technically complex AI system construction, outweighing Candidate A’s comparable but narrower project portfolio.",
+        "supporting_claims": [
+          {
+            "candidate_id": "cand_14_jatindar_kumar_mamnani",
+            "ref_id": "s4"
+          },
+          {
+            "candidate_id": "cand_14_jatindar_kumar_mamnani",
+            "ref_id": "s3"
+          },
+          {
+            "candidate_id": "cand_14_jatindar_kumar_mamnani",
+            "ref_id": "s1"
+          },
+          {
+            "candidate_id": "cand_14_jatindar_kumar_mamnani",
+            "ref_id": "s2"
+          },
+          {
+            "candidate_id": "cand_14_jatindar_kumar_mamnani",
+            "ref_id": "work_1"
+          },
+          {
+            "candidate_id": "cand_30_wahaj_ahmad_butt",
+            "ref_id": "s3"
+          },
+          {
+            "candidate_id": "cand_14_jatindar_kumar_mamnani",
+            "ref_id": "s4"
+          },
+          {
+            "candidate_id": "cand_14_jatindar_kumar_mamnani",
+            "ref_id": "s3"
+          },
+          {
+            "candidate_id": "cand_14_jatindar_kumar_mamnani",
+            "ref_id": "s1"
+          },
+          {
+            "candidate_id": "cand_14_jatindar_kumar_mamnani",
+            "ref_id": "s2"
+          },
+          {
+            "candidate_id": "cand_14_jatindar_kumar_mamnani",
+            "ref_id": "work_1"
+          },
+          {
+            "candidate_id": "cand_30_wahaj_ahmad_butt",
+            "ref_id": "s4"
+          }
+        ]
+      },
+      {
+        "candidate_a": "cand_18_abdul_rehman",
+        "candidate_b": "cand_30_wahaj_ahmad_butt",
+        "forward_winner": "cand_30_wahaj_ahmad_butt",
+        "forward_confidence": "clear",
+        "reverse_winner": "cand_18_abdul_rehman",
+        "reverse_confidence": "narrow",
+        "resolved_outcome": "tie",
+        "decisive_reasons": "Candidate B demonstrates broader and more technically advanced multimodal ownership, including a ResNet50+BERT VQA system and an emotion-recognition product with a quantified 82.7% accuracy, alongside a complete WebRTC chat/video application. Candidate A shows strong search-oriented projects, but lacks comparable evaluation metrics and breadth of validated product engineering impact. Abdul Rehman has the stronger alignment with production AI system composition: he actively built both a CLIP/Flickr30k semantic image search engine with Solr and a crawler-based search engine combining Bloom filters, BERT, PageRank, TF-IDF, and Solr, plus LLM work in a High Performance Lab. Wahaj has stronger explicit model-performance evidence through the 82.7% emotion classifier and a technically advanced VQA project, but lacks comparable retrieval/search architecture depth and selective lab exposure.",
+        "supporting_claims": [
+          {
+            "candidate_id": "cand_30_wahaj_ahmad_butt",
+            "ref_id": "s1"
+          },
+          {
+            "candidate_id": "cand_30_wahaj_ahmad_butt",
+            "ref_id": "s4"
+          },
+          {
+            "candidate_id": "cand_30_wahaj_ahmad_butt",
+            "ref_id": "s3"
+          },
+          {
+            "candidate_id": "cand_18_abdul_rehman",
+            "ref_id": "s1"
+          },
+          {
+            "candidate_id": "cand_18_abdul_rehman",
+            "ref_id": "s2"
+          },
+          {
+            "candidate_id": "cand_18_abdul_rehman",
+            "ref_id": "work_1"
+          },
+          {
+            "candidate_id": "cand_30_wahaj_ahmad_butt",
+            "ref_id": "s4"
+          },
+          {
+            "candidate_id": "cand_30_wahaj_ahmad_butt",
+            "ref_id": "s1"
+          }
+        ]
+      }
+    ]
+  }
+}

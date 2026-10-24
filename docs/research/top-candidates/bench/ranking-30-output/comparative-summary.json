@@ -1,0 +1,216 @@
+{
+  "generated_at": "2026-10-24T03:29:22.306Z",
+  "comparisons": {
+    "raw_single_pass": {
+      "canonical_top3": [
+        "cand_27_muhammad_taha_mukhtar",
+        "cand_25_muhammad_abdullah",
+        "cand_14_jatindar_kumar_mamnani"
+      ],
+      "inside_out_top3": [
+        "cand_25_muhammad_abdullah",
+        "cand_27_muhammad_taha_mukhtar",
+        "cand_20_ali_awais_safdar"
+      ],
+      "top3_overlap": {
+        "intersection": [
+          "cand_27_muhammad_taha_mukhtar",
+          "cand_25_muhammad_abdullah"
+        ],
+        "intersectionCount": 2,
+        "exactCountRatio": "2/3",
+        "jaccard": 50
+      },
+      "canonical_top8": [
+        "cand_27_muhammad_taha_mukhtar",
+        "cand_25_muhammad_abdullah",
+        "cand_14_jatindar_kumar_mamnani",
+        "cand_20_ali_awais_safdar",
+        "cand_09_hafiz_ahmed_hassan_chohan",
+        "cand_24_abdullah_saim",
+        "cand_16_mehar_ali_ahmed",
+        "cand_30_wahaj_ahmad_butt"
+      ],
+      "inside_out_top8": [
+        "cand_25_muhammad_abdullah",
+        "cand_27_muhammad_taha_mukhtar",
+        "cand_20_ali_awais_safdar",
+        "cand_24_abdullah_saim",
+        "cand_01_muhammad_khizer_tariq",
+        "cand_14_jatindar_kumar_mamnani",
+        "cand_08_muhammad_rouhan_faisal",
+        "cand_30_wahaj_ahmad_butt"
+      ],
+      "top8_overlap": {
+        "intersection": [
+          "cand_27_muhammad_taha_mukhtar",
+          "cand_25_muhammad_abdullah",
+          "cand_14_jatindar_kumar_mamnani",
+          "cand_20_ali_awais_safdar",
+          "cand_24_abdullah_saim",
+          "cand_30_wahaj_ahmad_butt"
+        ],
+        "intersectionCount": 6,
+        "exactCountRatio": "6/8",
+        "jaccard": 60
+      }
+    },
+    "digest_single_pass": {
+      "canonical_top3": [
+        "cand_25_muhammad_abdullah",
+        "cand_27_muhammad_taha_mukhtar",
+        "cand_14_jatindar_kumar_mamnani"
+      ],
+      "inside_out_top3": [
+        "cand_27_muhammad_taha_mukhtar",
+        "cand_25_muhammad_abdullah",
+        "cand_14_jatindar_kumar_mamnani"
+      ],
+      "top3_overlap": {
+        "intersection": [
+          "cand_25_muhammad_abdullah",
+          "cand_27_muhammad_taha_mukhtar",
+          "cand_14_jatindar_kumar_mamnani"
+        ],
+        "intersectionCount": 3,
+        "exactCountRatio": "3/3",
+        "jaccard": 100
+      },
+      "canonical_top8": [
+        "cand_25_muhammad_abdullah",
+        "cand_27_muhammad_taha_mukhtar",
+        "cand_14_jatindar_kumar_mamnani",
+        "cand_30_wahaj_ahmad_butt",
+        "cand_20_ali_awais_safdar",
+        "cand_11_muhammad_ahad_sajjad",
+        "cand_18_abdul_rehman",
+        "cand_08_muhammad_rouhan_faisal"
+      ],
+      "inside_out_top8": [
+        "cand_27_muhammad_taha_mukhtar",
+        "cand_25_muhammad_abdullah",
+        "cand_14_jatindar_kumar_mamnani",
+        "cand_30_wahaj_ahmad_butt",
+        "cand_18_abdul_rehman",
+        "cand_06_hasib_aslam",
+        "cand_01_muhammad_khizer_tariq",
+        "cand_29_abdul_ahad_qureshi"
+      ],
+      "top8_overlap": {
+        "intersection": [
+          "cand_25_muhammad_abdullah",
+          "cand_27_muhammad_taha_mukhtar",
+          "cand_14_jatindar_kumar_mamnani",
+          "cand_30_wahaj_ahmad_butt",
+          "cand_18_abdul_rehman"
+        ],
+        "intersectionCount": 5,
+        "exactCountRatio": "5/8",
+        "jaccard": 45.5
+      }
+    },
+    "mech_e_tournament": {
+      "canonical_status": "contested",
+      "inside_out_status": "confident",
+      "canonical_top3": [
+        "cand_25_muhammad_abdullah",
+        "cand_14_jatindar_kumar_mamnani",
+        "cand_27_muhammad_taha_mukhtar"
+      ],
+      "inside_out_top3": [
+        "cand_27_muhammad_taha_mukhtar",
+        "cand_25_muhammad_abdullah",
+        "cand_14_jatindar_kumar_mamnani"
+      ],
+      "canonical_resolved_top": [
+        "cand_25_muhammad_abdullah",
+        "cand_14_jatindar_kumar_mamnani",
+        "cand_27_muhammad_taha_mukhtar",
+        "cand_20_ali_awais_safdar"
+      ],
+      "inside_out_resolved_top": [
+        "cand_27_muhammad_taha_mukhtar",
+        "cand_25_muhammad_abdullah",
+        "cand_14_jatindar_kumar_mamnani"
+      ],
+      "top3_overlap": {
+        "intersection": [
+          "cand_25_muhammad_abdullah",
+          "cand_14_jatindar_kumar_mamnani",
+          "cand_27_muhammad_taha_mukhtar"
+        ],
+        "intersectionCount": 3,
+        "exactCountRatio": "3/3",
+        "jaccard": 100
+      },
+      "resolved_top_overlap": {
+        "intersection": [
+          "cand_25_muhammad_abdullah",
+          "cand_14_jatindar_kumar_mamnani",
+          "cand_27_muhammad_taha_mukhtar"
+        ],
+        "intersectionCount": 3,
+        "exactCountRatio": "3/4",
+        "jaccard": 75
+      },
+      "canonical_top5": [
+        "cand_25_muhammad_abdullah",
+        "cand_27_muhammad_taha_mukhtar",
+        "cand_14_jatindar_kumar_mamnani",
+        "cand_20_ali_awais_safdar",
+        "cand_30_wahaj_ahmad_butt"
+      ],
+      "inside_out_top5": [
+        "cand_27_muhammad_taha_mukhtar",
+        "cand_25_muhammad_abdullah",
+        "cand_14_jatindar_kumar_mamnani",
+        "cand_18_abdul_rehman",
+        "cand_30_wahaj_ahmad_butt"
+      ],
+      "top5_overlap": {
+        "intersection": [
+          "cand_25_muhammad_abdullah",
+          "cand_27_muhammad_taha_mukhtar",
+          "cand_14_jatindar_kumar_mamnani",
+          "cand_30_wahaj_ahmad_butt"
+        ],
+        "intersectionCount": 4,
+        "exactCountRatio": "4/5",
+        "jaccard": 66.7
+      },
+      "canonical_finalists8": [
+        "cand_25_muhammad_abdullah",
+        "cand_14_jatindar_kumar_mamnani",
+        "cand_30_wahaj_ahmad_butt",
+        "cand_11_muhammad_ahad_sajjad",
+        "cand_27_muhammad_taha_mukhtar",
+        "cand_20_ali_awais_safdar",
+        "cand_08_muhammad_rouhan_faisal",
+        "cand_18_abdul_rehman"
+      ],
+      "inside_out_finalists8": [
+        "cand_27_muhammad_taha_mukhtar",
+        "cand_18_abdul_rehman",
+        "cand_16_mehar_ali_ahmed",
+        "cand_06_hasib_aslam",
+        "cand_14_jatindar_kumar_mamnani",
+        "cand_25_muhammad_abdullah",
+        "cand_30_wahaj_ahmad_butt",
+        "cand_11_muhammad_ahad_sajjad"
+      ],
+      "finalists8_overlap": {
+        "intersection": [
+          "cand_25_muhammad_abdullah",
+          "cand_14_jatindar_kumar_mamnani",
+          "cand_30_wahaj_ahmad_butt",
+          "cand_11_muhammad_ahad_sajjad",
+          "cand_27_muhammad_taha_mukhtar",
+          "cand_18_abdul_rehman"
+        ],
+        "intersectionCount": 6,
+        "exactCountRatio": "6/8",
+        "jaccard": 60
+      }
+    }
+  }
+}

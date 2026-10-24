@@ -1,0 +1,201 @@
+{
+  "run_id": "raw-single-pass-canonical",
+  "method": "raw-single-pass",
+  "order_mode": "canonical",
+  "candidate_count": 30,
+  "candidate_order": [
+    "cand_01_muhammad_khizer_tariq",
+    "cand_02_umer_tariq",
+    "cand_03_abdullah_aleem",
+    "cand_04_mujtaba_shafqat",
+    "cand_05_ali_murad",
+    "cand_06_hasib_aslam",
+    "cand_07_haram_nasir",
+    "cand_08_muhammad_rouhan_faisal",
+    "cand_09_hafiz_ahmed_hassan_chohan",
+    "cand_10_muhammad_aleem_siddique_khan",
+    "cand_11_muhammad_ahad_sajjad",
+    "cand_12_iqra_rasool",
+    "cand_13_muhammad_uzair_khan",
+    "cand_14_jatindar_kumar_mamnani",
+    "cand_15_abdul_basit",
+    "cand_16_mehar_ali_ahmed",
+    "cand_17_ghulam_hussain_khan_sherwani",
+    "cand_18_abdul_rehman",
+    "cand_19_abdullah_khan",
+    "cand_20_ali_awais_safdar",
+    "cand_21_prithvi_raj",
+    "cand_22_mariam_babar_khan",
+    "cand_23_muhammad_zaeem_khalid",
+    "cand_24_abdullah_saim",
+    "cand_25_muhammad_abdullah",
+    "cand_26_mohammad_irfan",
+    "cand_27_muhammad_taha_mukhtar",
+    "cand_28_umama_zainab",
+    "cand_29_abdul_ahad_qureshi",
+    "cand_30_wahaj_ahmad_butt"
+  ],
+  "pool_tokens_approx": 19957,
+  "prompt_tokens_approx": 18671,
+  "usage": {
+    "inputTokens": 16674,
+    "inputTokenDetails": {
+      "noCacheTokens": 3,
+      "cacheReadTokens": 0,
+      "cacheWriteTokens": 16671
+    },
+    "outputTokens": 1860,
+    "outputTokenDetails": {
+      "textTokens": 1344,
+      "reasoningTokens": 516
+    },
+    "totalTokens": 18534,
+    "raw": {
+      "input_tokens": 16674,
+      "input_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 16671
+      },
+      "output_tokens": 1860,
+      "output_tokens_details": {
+        "reasoning_tokens": 516
+      }
+    }
+  },
+  "latency_ms": 18810,
+  "pool_assessment": "The pool was differentiated primarily by depth of hands-on AI/ML ownership, strength of research evidence, selective lab or international experience, quantified model outcomes, and ability to ship full-stack systems. The finalists combine advanced work in RAG, computer vision, NLP, multimodal modeling, or applied ML with credible software engineering evidence; candidates with mainly generic web development, design, or lightly documented exposure ranked below them.",
+  "top_3_candidate_ids": [
+    "cand_27_muhammad_taha_mukhtar",
+    "cand_25_muhammad_abdullah",
+    "cand_14_jatindar_kumar_mamnani"
+  ],
+  "top_5_candidate_ids": [
+    "cand_27_muhammad_taha_mukhtar",
+    "cand_25_muhammad_abdullah",
+    "cand_14_jatindar_kumar_mamnani",
+    "cand_20_ali_awais_safdar",
+    "cand_09_hafiz_ahmed_hassan_chohan"
+  ],
+  "top_8_rankings": [
+    {
+      "rank": 1,
+      "candidate_id": "cand_27_muhammad_taha_mukhtar",
+      "prompt_position_1_to_30": 27,
+      "prompt_zone": "outer_edge (1..8 or 23..30)",
+      "cohort": "outer_16_cohort",
+      "confidence": "high",
+      "headline_rationale": "Strongest overall combination of selective international research, genuine deep-learning ownership, production open-source engineering, and measurable external impact. His DFKI work and GSoC contribution materially exceed typical entry-level project experience.",
+      "supporting_evidence": [
+        "\"Google Summer of Code -- CVAT.ai\"",
+        "Improved CVAT with a configurable shortcut system and achieved 100% test coverage",
+        "\"Deutsches Forschungszentrum für Künstliche Intelligenz\"",
+        "Engineered semi-supervised settlement detection using FixMatch, domain adaptation, pseudo-label refinement, and SAM2 on H100/A100 infrastructure; npm package had 500+ downloads"
+      ]
+    },
+    {
+      "rank": 2,
+      "candidate_id": "cand_25_muhammad_abdullah",
+      "prompt_position_1_to_30": 25,
+      "prompt_zone": "outer_edge (1..8 or 23..30)",
+      "cohort": "outer_16_cohort",
+      "confidence": "high",
+      "headline_rationale": "Best direct match to the target stack among the finalists: published RAG research, strong GPA, Python/React/Next.js/Kubernetes exposure, and multiple end-to-end product builds. The COLING publication is a major differentiator.",
+      "supporting_evidence": [
+        "GPA 3.75/4.00",
+        "\"FUSIONRAG: Enhancing Regulatory Document Analysis\" published at COLING 2025",
+        "Combined OpenAI embeddings, BM25, FAISS, and rank fusion for retrieval and answer generation",
+        "Built Scototo with Next.js, SQL, Socket.IO, Tailwind, and Clerk; developed Kisan farmer-support application"
+      ]
+    },
+    {
+      "rank": 3,
+      "candidate_id": "cand_14_jatindar_kumar_mamnani",
+      "prompt_position_1_to_30": 14,
+      "prompt_zone": "middle_buried (9..22)",
+      "cohort": "middle_14_cohort",
+      "confidence": "high",
+      "headline_rationale": "Most technically advanced computer-vision profile, with hands-on PyTorch/TensorFlow work spanning autonomous driving, VQA, table QA, and LLM-assisted applications. The 82.4% mIoU result provides unusually concrete evidence of model performance.",
+      "supporting_evidence": [
+        "\"A Video Based Multi-Task Learning Model for Autonomous Driving\"",
+        "Achieved 82.4% mIoU on VIL-100 lane segmentation",
+        "Built a multimodal medical VQA system using CNNs plus LSTMs/Transformers and evaluated with accuracy, BLEU, and METEOR",
+        "Developed an LLM-driven FastAPI website assistant and transformer-based table QA system"
+      ]
+    },
+    {
+      "rank": 4,
+      "candidate_id": "cand_20_ali_awais_safdar",
+      "prompt_position_1_to_30": 20,
+      "prompt_zone": "middle_buried (9..22)",
+      "cohort": "middle_14_cohort",
+      "confidence": "moderate",
+      "headline_rationale": "Strong research-oriented AI profile with selective international and lab experiences, a presented ML/ACO research paper, and substantial multimodal medical AI work. It ranks below the top three because implementation and outcome details are less complete and less directly product-oriented.",
+      "supporting_evidence": [
+        "Experience spanning Nanyang Technological University, HPC Lab-SEECS, Radar Research Lab, and remote engineering work",
+        "Authored and presented FIT 2024 research on ML-enhanced ant-colony optimization for vehicle routing",
+        "Developed medical VQA using VGG-19, BERT, and attention mechanisms",
+        "Built blockchain security and TypeScript DNS-client systems"
+      ]
+    },
+    {
+      "rank": 5,
+      "candidate_id": "cand_09_hafiz_ahmed_hassan_chohan",
+      "prompt_position_1_to_30": 9,
+      "prompt_zone": "middle_buried (9..22)",
+      "cohort": "middle_14_cohort",
+      "confidence": "moderate",
+      "headline_rationale": "Credible applied computer-vision specialist with several relevant lab/company engagements and end-to-end systems in ANPR, OCR, medical imaging, and autonomous-drone landmark detection. The resume shows strong practical breadth, though fewer quantified results or publication outcomes than higher-ranked candidates.",
+      "supporting_evidence": [
+        "\"Machine Learning Engineer\" focused on computer vision and deep learning",
+        "Research Assistant work at PakThai Lab on real-time traffic-violation detection",
+        "Built ANPR using OpenCV and deep learning with EasyOCR",
+        "Created an OCR/eBook pipeline with a trained segmentation network and developed fracture-detection and drone-landmark projects"
+      ]
+    },
+    {
+      "rank": 6,
+      "candidate_id": "cand_24_abdullah_saim",
+      "prompt_position_1_to_30": 24,
+      "prompt_zone": "outer_edge (1..8 or 23..30)",
+      "cohort": "outer_16_cohort",
+      "confidence": "moderate",
+      "headline_rationale": "High academic performance and selective UC Davis-linked research provide a strong foundation, complemented by Python/ML and MERN projects. He ranks below the more technically evidenced AI candidates because the resume provides limited model metrics and less detail on production ownership.",
+      "supporting_evidence": [
+        "GPA 3.83/4.00",
+        "NUSTIAN USA International Summer Research Internship with Prof. Zubair Shafique at UC Davis",
+        "Developed an ML model to categorize JavaScript cookies in online-tracking research",
+        "Built MERN/Google Maps wildlife application and multiple applied systems projects"
+      ]
+    },
+    {
+      "rank": 7,
+      "candidate_id": "cand_16_mehar_ali_ahmed",
+      "prompt_position_1_to_30": 16,
+      "prompt_zone": "middle_buried (9..22)",
+      "cohort": "middle_14_cohort",
+      "confidence": "moderate",
+      "headline_rationale": "Directly relevant modern NLP experience through LoRA fine-tuning and a RAG application, supported by strong academics and exchange experience. The smaller number of deeply described engineering projects keeps him below the broader research profiles above.",
+      "supporting_evidence": [
+        "GPA 3.62/4.00 and Global UGRAD exchange semester",
+        "Fine-tuned RoBERTa with LoRA for writing-style change detection, achieving F1 0.80",
+        "Built LandUseAI Advisor using Gemini and a retrieval-augmented generation approach",
+        "Conducted chatbot R&D and real-estate data analysis at Terra Nova Ventures"
+      ]
+    },
+    {
+      "rank": 8,
+      "candidate_id": "cand_30_wahaj_ahmad_butt",
+      "prompt_position_1_to_30": 30,
+      "prompt_zone": "outer_edge (1..8 or 23..30)",
+      "cohort": "outer_16_cohort",
+      "confidence": "moderate",
+      "headline_rationale": "Demonstrates meaningful hands-on ownership across multimodal VQA, transformer-based NLP classification, emotion recognition, and a real-time Laravel product. His 82.7% emotion-recognition result is strong, but the profile has less selective research or externally validated experience than the other finalists.",
+      "supporting_evidence": [
+        "Built VQA combining ResNet50 image features with BERT question encoding",
+        "Fine-tuned BERT, RoBERTa, XLNet, and GPT-2 for fake-review detection",
+        "Emotion-recognition system achieved 82.7% accuracy using FER2013Plus and ResNet50",
+        "Built chat/video calling application with WebRTC, JWT, MySQL, and documented ERDs"
+      ]
+    }
+  ]
+}

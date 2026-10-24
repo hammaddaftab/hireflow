@@ -1,0 +1,201 @@
+{
+  "run_id": "raw-single-pass-inside-out",
+  "method": "raw-single-pass",
+  "order_mode": "inside-out",
+  "candidate_count": 30,
+  "candidate_order": [
+    "cand_09_hafiz_ahmed_hassan_chohan",
+    "cand_10_muhammad_aleem_siddique_khan",
+    "cand_11_muhammad_ahad_sajjad",
+    "cand_12_iqra_rasool",
+    "cand_13_muhammad_uzair_khan",
+    "cand_14_jatindar_kumar_mamnani",
+    "cand_15_abdul_basit",
+    "cand_01_muhammad_khizer_tariq",
+    "cand_02_umer_tariq",
+    "cand_03_abdullah_aleem",
+    "cand_04_mujtaba_shafqat",
+    "cand_05_ali_murad",
+    "cand_06_hasib_aslam",
+    "cand_07_haram_nasir",
+    "cand_08_muhammad_rouhan_faisal",
+    "cand_23_muhammad_zaeem_khalid",
+    "cand_24_abdullah_saim",
+    "cand_25_muhammad_abdullah",
+    "cand_26_mohammad_irfan",
+    "cand_27_muhammad_taha_mukhtar",
+    "cand_28_umama_zainab",
+    "cand_29_abdul_ahad_qureshi",
+    "cand_30_wahaj_ahmad_butt",
+    "cand_16_mehar_ali_ahmed",
+    "cand_17_ghulam_hussain_khan_sherwani",
+    "cand_18_abdul_rehman",
+    "cand_19_abdullah_khan",
+    "cand_20_ali_awais_safdar",
+    "cand_21_prithvi_raj",
+    "cand_22_mariam_babar_khan"
+  ],
+  "pool_tokens_approx": 19957,
+  "prompt_tokens_approx": 18671,
+  "usage": {
+    "inputTokens": 16674,
+    "inputTokenDetails": {
+      "noCacheTokens": 3,
+      "cacheReadTokens": 0,
+      "cacheWriteTokens": 16671
+    },
+    "outputTokens": 1889,
+    "outputTokenDetails": {
+      "textTokens": 1183,
+      "reasoningTokens": 706
+    },
+    "totalTokens": 18563,
+    "raw": {
+      "input_tokens": 16674,
+      "input_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 16671
+      },
+      "output_tokens": 1889,
+      "output_tokens_details": {
+        "reasoning_tokens": 706
+      }
+    }
+  },
+  "latency_ms": 20631,
+  "pool_assessment": "The pool was differentiated primarily by demonstrated ownership of AI/ML systems, research selectivity and publication quality, quantified model or product outcomes, and ability to connect ML work with deployable full-stack engineering. The finalists combine standout research or open-source experience with concrete builds in RAG, computer vision, NLP, and web systems; candidates with mainly generic web/UI exposure or limited technical evidence ranked below them.",
+  "top_3_candidate_ids": [
+    "cand_25_muhammad_abdullah",
+    "cand_27_muhammad_taha_mukhtar",
+    "cand_20_ali_awais_safdar"
+  ],
+  "top_5_candidate_ids": [
+    "cand_25_muhammad_abdullah",
+    "cand_27_muhammad_taha_mukhtar",
+    "cand_20_ali_awais_safdar",
+    "cand_24_abdullah_saim",
+    "cand_01_muhammad_khizer_tariq"
+  ],
+  "top_8_rankings": [
+    {
+      "rank": 1,
+      "candidate_id": "cand_25_muhammad_abdullah",
+      "prompt_position_1_to_30": 18,
+      "prompt_zone": "middle_buried (9..22)",
+      "cohort": "outer_16_cohort",
+      "confidence": "high",
+      "headline_rationale": "Strongest overall combination of academic performance, published applied NLP research, direct RAG system ownership, and full-stack engineering capability.",
+      "supporting_evidence": [
+        "\"Published at COLING 2025.\"",
+        "\"Developed FUSIONRAG, combining OpenAI embeddings, BM25, FAISS, and Rank-Fusion\"",
+        "GPA 3.75",
+        "Built Scototo using Next.js, SQL, and Socket.IO; developed the Kisan farmer-support app."
+      ]
+    },
+    {
+      "rank": 2,
+      "candidate_id": "cand_27_muhammad_taha_mukhtar",
+      "prompt_position_1_to_30": 20,
+      "prompt_zone": "middle_buried (9..22)",
+      "cohort": "outer_16_cohort",
+      "confidence": "high",
+      "headline_rationale": "Exceptional selective engineering and research profile for an entry-level candidate, with Google Summer of Code ownership, international lab work, and hands-on deep learning at major GPU scale.",
+      "supporting_evidence": [
+        "Google Summer of Code contributor for CVAT.ai",
+        "\"achieving 100% test coverage\" for the configurable shortcut system",
+        "Engineered a semi-supervised remote-sensing model at DFKI using FixMatch, domain adaptation, SAM2, and H100/A100 infrastructure",
+        "Created and published the lang-source npm package with 500+ downloads."
+      ]
+    },
+    {
+      "rank": 3,
+      "candidate_id": "cand_20_ali_awais_safdar",
+      "prompt_position_1_to_30": 28,
+      "prompt_zone": "outer_edge (1..8 or 23..30)",
+      "cohort": "middle_14_cohort",
+      "confidence": "high",
+      "headline_rationale": "Research-heavy candidate with international and multi-lab experience, a peer-presented ML optimization paper, and substantial multimodal AI work relevant to computer vision and NLP.",
+      "supporting_evidence": [
+        "Research experience at Nanyang Technological University, HPC Lab-SEECS, Radar Research Lab, and a remote software company",
+        "\"Presented the paper at the FIT 2024 Conference\" on ML-driven ant colony optimization",
+        "Developed medical VQA using VGG-19, BERT, and attention mechanisms",
+        "Built a TypeScript DNS client with modular architecture and asynchronous processing."
+      ]
+    },
+    {
+      "rank": 4,
+      "candidate_id": "cand_24_abdullah_saim",
+      "prompt_position_1_to_30": 17,
+      "prompt_zone": "middle_buried (9..22)",
+      "cohort": "outer_16_cohort",
+      "confidence": "moderate",
+      "headline_rationale": "Excellent academic standing and selective international research experience, with practical exposure to ML, privacy, full-stack development, and distributed or systems-oriented projects.",
+      "supporting_evidence": [
+        "GPA 3.83",
+        "NUSTIAN USA International Summer Research Internship with Prof. Zubair Shafique from UC Davis",
+        "Developed a graph-based ML approach for detecting JavaScript-based online tracking",
+        "Built MERN-based JanWhere with Google Maps API and several software/system projects."
+      ]
+    },
+    {
+      "rank": 5,
+      "candidate_id": "cand_01_muhammad_khizer_tariq",
+      "prompt_position_1_to_30": 8,
+      "prompt_zone": "outer_edge (1..8 or 23..30)",
+      "cohort": "outer_16_cohort",
+      "confidence": "high",
+      "headline_rationale": "Most credible publication-oriented research profile outside the top four, with two publications and sustained lab involvement spanning LLMs, robotics, healthcare, and satellite imagery.",
+      "supporting_evidence": [
+        "\"Presented a Conference Paper at FIT 2024\" on routing through satellite imagery",
+        "\"Published a Journal in International Journal for Computing Applications\" on grouped matrix clocks",
+        "Worked on a funded LLM-for-education project at the High Performance Computing Lab",
+        "Conducted vision-based continual-learning research in robotics and healthcare."
+      ]
+    },
+    {
+      "rank": 6,
+      "candidate_id": "cand_14_jatindar_kumar_mamnani",
+      "prompt_position_1_to_30": 6,
+      "prompt_zone": "outer_edge (1..8 or 23..30)",
+      "cohort": "middle_14_cohort",
+      "confidence": "high",
+      "headline_rationale": "Very strong hands-on AI breadth across LLM applications, multimodal medical AI, and autonomous driving, including a concrete segmentation result; weaker academic record and less evidence of production deployment keep the candidate below the research leaders.",
+      "supporting_evidence": [
+        "\"Achieved 82.4% mIoU on the VIL-100 validation set for lane segmentation\"",
+        "Built a FastAPI LLM-driven website assistant",
+        "Developed VQA-based medical advisor using CNNs with LSTM/Transformer text processing",
+        "Worked on autonomous-driving computer vision research using Python, PyTorch, and TensorFlow."
+      ]
+    },
+    {
+      "rank": 7,
+      "candidate_id": "cand_08_muhammad_rouhan_faisal",
+      "prompt_position_1_to_30": 15,
+      "prompt_zone": "middle_buried (9..22)",
+      "cohort": "outer_16_cohort",
+      "confidence": "moderate",
+      "headline_rationale": "Balanced applied engineer with full-stack ownership, real-time systems experience, and direct RAG research using hybrid lexical-semantic retrieval; research ownership and quantified outcomes are less explicit than higher-ranked candidates.",
+      "supporting_evidence": [
+        "Contributed to FusionRAG using OpenAI embeddings, BM25, FAISS, and custom rank fusion",
+        "Built a MERN chat application supporting \"up to 100 concurrent users\"",
+        "Developed a full-stack Next.js case-customization application",
+        "GPA 3.53 and experience with React, Next.js, Flask, and cloud-oriented systems."
+      ]
+    },
+    {
+      "rank": 8,
+      "candidate_id": "cand_30_wahaj_ahmad_butt",
+      "prompt_position_1_to_30": 23,
+      "prompt_zone": "outer_edge (1..8 or 23..30)",
+      "cohort": "outer_16_cohort",
+      "confidence": "high",
+      "headline_rationale": "Strong applied deep-learning portfolio with multimodal VQA, transformer-based NLP, and a quantified emotion-recognition result, plus credible backend engineering; lacks the selective research or publication record of the candidates above.",
+      "supporting_evidence": [
+        "Designed VQA using ResNet50 image features and BERT question encoding",
+        "Fine-tuned BERT, RoBERTa, XLNet, and GPT-2 for fake-review detection",
+        "Emotion-based music system achieved \"82.7% accuracy\" on FER2013Plus",
+        "Built a Laravel WebRTC chat/video application with JWT and MySQL."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,200 @@
+{
+  "run_id": "digest-single-pass-canonical",
+  "method": "digest-single-pass",
+  "order_mode": "canonical",
+  "candidate_count": 30,
+  "candidate_order": [
+    "cand_01_muhammad_khizer_tariq",
+    "cand_02_umer_tariq",
+    "cand_03_abdullah_aleem",
+    "cand_04_mujtaba_shafqat",
+    "cand_05_ali_murad",
+    "cand_06_hasib_aslam",
+    "cand_07_haram_nasir",
+    "cand_08_muhammad_rouhan_faisal",
+    "cand_09_hafiz_ahmed_hassan_chohan",
+    "cand_10_muhammad_aleem_siddique_khan",
+    "cand_11_muhammad_ahad_sajjad",
+    "cand_12_iqra_rasool",
+    "cand_13_muhammad_uzair_khan",
+    "cand_14_jatindar_kumar_mamnani",
+    "cand_15_abdul_basit",
+    "cand_16_mehar_ali_ahmed",
+    "cand_17_ghulam_hussain_khan_sherwani",
+    "cand_18_abdul_rehman",
+    "cand_19_abdullah_khan",
+    "cand_20_ali_awais_safdar",
+    "cand_21_prithvi_raj",
+    "cand_22_mariam_babar_khan",
+    "cand_23_muhammad_zaeem_khalid",
+    "cand_24_abdullah_saim",
+    "cand_25_muhammad_abdullah",
+    "cand_26_mohammad_irfan",
+    "cand_27_muhammad_taha_mukhtar",
+    "cand_28_umama_zainab",
+    "cand_29_abdul_ahad_qureshi",
+    "cand_30_wahaj_ahmad_butt"
+  ],
+  "pool_tokens_approx": 3989,
+  "prompt_tokens_approx": 5791,
+  "usage": {
+    "inputTokens": 6749,
+    "inputTokenDetails": {
+      "noCacheTokens": 3,
+      "cacheReadTokens": 0,
+      "cacheWriteTokens": 6746
+    },
+    "outputTokens": 1890,
+    "outputTokenDetails": {
+      "textTokens": 1374,
+      "reasoningTokens": 516
+    },
+    "totalTokens": 8639,
+    "raw": {
+      "input_tokens": 6749,
+      "input_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 6746
+      },
+      "output_tokens": 1890,
+      "output_tokens_details": {
+        "reasoning_tokens": 516
+      }
+    }
+  },
+  "latency_ms": 16244,
+  "pool_assessment": "The pool was differentiated primarily by research-grade evidence, advanced multimodal model ownership, technically complete RAG pipelines, quantified product outcomes, and real-time full-stack architecture. Candidates with only generic web projects, peripheral research/RAG exposure, or unquantified coursework were ranked below those demonstrating publication/funding, measured model performance, deployed usage, or end-to-end ownership.",
+  "top_3_candidate_ids": [
+    "cand_25_muhammad_abdullah",
+    "cand_27_muhammad_taha_mukhtar",
+    "cand_14_jatindar_kumar_mamnani"
+  ],
+  "top_5_candidate_ids": [
+    "cand_25_muhammad_abdullah",
+    "cand_27_muhammad_taha_mukhtar",
+    "cand_14_jatindar_kumar_mamnani",
+    "cand_30_wahaj_ahmad_butt",
+    "cand_20_ali_awais_safdar"
+  ],
+  "top_8_rankings": [
+    {
+      "rank": 1,
+      "candidate_id": "cand_25_muhammad_abdullah",
+      "prompt_position_1_to_30": 25,
+      "prompt_zone": "outer_edge (1..8 or 23..30)",
+      "cohort": "outer_16_cohort",
+      "confidence": "high",
+      "headline_rationale": "Best overall match: combines externally published research-grade RAG ownership with meaningful full-stack and real-time application experience.",
+      "supporting_evidence": [
+        "s2:action — BM25, FAISS, OpenAI embeddings; developed FUSIONRAG regulatory retrieval; COLING 2025",
+        "s1:action — Next.js, Socket.IO; built Scototo communication platform",
+        "s3:action — Node.js, MongoDB; built Kisan farmer support app"
+      ]
+    },
+    {
+      "rank": 2,
+      "candidate_id": "cand_27_muhammad_taha_mukhtar",
+      "prompt_position_1_to_30": 27,
+      "prompt_zone": "outer_edge (1..8 or 23..30)",
+      "cohort": "outer_16_cohort",
+      "confidence": "high",
+      "headline_rationale": "Exceptional research and international lab profile, with active ownership of funded, advanced computer-vision work and credible open-source impact.",
+      "supporting_evidence": [
+        "c1:action — FixMatch, SAM2, H100/A100 GPUs, remote sensing; engineered settlement detection model",
+        "s1:action — advanced Slum-i settlement segmentation with €80k DAAD funding",
+        "c2:action — improved CVAT shortcut system with 100% test coverage",
+        "s2:action — Gemini API localization CLI with 500+ downloads"
+      ]
+    },
+    {
+      "rank": 3,
+      "candidate_id": "cand_14_jatindar_kumar_mamnani",
+      "prompt_position_1_to_30": 14,
+      "prompt_zone": "middle_buried (9..22)",
+      "cohort": "middle_14_cohort",
+      "confidence": "high",
+      "headline_rationale": "Strongest measured multimodal model-builder in the pool, spanning VQA, table reasoning, transformers, and autonomous-driving segmentation.",
+      "supporting_evidence": [
+        "s3:action — CNNs, LSTMs, Transformers; built VQA medical advisor system",
+        "s4:action — built autonomous-driving multitask model with 82.4% mIoU",
+        "s2:action — Transformers; built SemEval table-answering system",
+        "s1:action — FastAPI; built Prompt-No-Code Website Assistant chatbot"
+      ]
+    },
+    {
+      "rank": 4,
+      "candidate_id": "cand_30_wahaj_ahmad_butt",
+      "prompt_position_1_to_30": 30,
+      "prompt_zone": "outer_edge (1..8 or 23..30)",
+      "cohort": "outer_16_cohort",
+      "confidence": "high",
+      "headline_rationale": "Highly balanced AI and product-engineering profile: measured VQA and vision performance plus a real-time WebRTC application.",
+      "supporting_evidence": [
+        "s1:action — ResNet50, BERT; designed VQA real-world image model",
+        "s4:action — ResNet50 emotion recognition system with 82.7% accuracy",
+        "s3:action — Laravel, WebRTC, MySQL; built chat video application",
+        "s2:action — BERT, RoBERTa, XLNet; built fake review detector"
+      ]
+    },
+    {
+      "rank": 5,
+      "candidate_id": "cand_20_ali_awais_safdar",
+      "prompt_position_1_to_30": 20,
+      "prompt_zone": "middle_buried (9..22)",
+      "cohort": "middle_14_cohort",
+      "confidence": "moderate",
+      "headline_rationale": "Research-oriented candidate with publication evidence and a technically substantive VQA system, though with less quantified impact and weaker full-stack evidence than the top four.",
+      "supporting_evidence": [
+        "s1:action — authored vehicle-routing research paper using Ant Colony Optimization",
+        "s2:action — presented vehicle-routing paper at FIT 2024",
+        "s3:action — VGG-19, BERT; built PATHVQA medical VQA system",
+        "s5:action — engineered DNS client architecture"
+      ]
+    },
+    {
+      "rank": 6,
+      "candidate_id": "cand_11_muhammad_ahad_sajjad",
+      "prompt_position_1_to_30": 11,
+      "prompt_zone": "middle_buried (9..22)",
+      "cohort": "middle_14_cohort",
+      "confidence": "high",
+      "headline_rationale": "Clear standout on quantified product impact, with repeated improvements across shipped wellness, recruiting, housing, and ecommerce products; AI depth is limited.",
+      "supporting_evidence": [
+        "c1:action — wellness monitoring kiosk and app; +75% retention and -25% onboarding",
+        "c2:action — HeroCV resume builder; +70% engagement",
+        "c3:action — AptScout apartment platform; +40% engagement and -70% bounce",
+        "c4:action — ecommerce platform; +30% satisfaction and -40% inquiries"
+      ]
+    },
+    {
+      "rank": 7,
+      "candidate_id": "cand_18_abdul_rehman",
+      "prompt_position_1_to_30": 18,
+      "prompt_zone": "middle_buried (9..22)",
+      "cohort": "middle_14_cohort",
+      "confidence": "moderate",
+      "headline_rationale": "Strong technical breadth across semantic image retrieval, web search, and predictive modeling, with lab experience; lacks explicit product adoption or publication evidence.",
+      "supporting_evidence": [
+        "s1:action — Apache Solr, CLIP, Flickr30k; built semantic image search engine",
+        "s2:action — Bloom Filter, BERT, PageRank; built Google-like web search engine",
+        "s3:action — LSTM; built stock price predictor",
+        "work_1 — Intern at High Performance Lab SEECS NUST"
+      ]
+    },
+    {
+      "rank": 8,
+      "candidate_id": "cand_08_muhammad_rouhan_faisal",
+      "prompt_position_1_to_30": 8,
+      "prompt_zone": "outer_edge (1..8 or 23..30)",
+      "cohort": "outer_16_cohort",
+      "confidence": "moderate",
+      "headline_rationale": "Good applied product-engineering fit through a measured real-time application and exposure to a technically strong RAG pipeline, although the RAG contribution is explicitly peripheral.",
+      "supporting_evidence": [
+        "s3:action — MongoDB, Express, Node.js; built real-time chat application supporting 100 concurrent users",
+        "s4:peripheral — contributed to FusionRAG using OpenAI embeddings, BM25, and FAISS",
+        "s2:action — Next.js; built CaseCobra custom case store",
+        "c2:peripheral — supported tender procurement application with potentially -60% processing time"
+      ]
+    }
+  ]
+}

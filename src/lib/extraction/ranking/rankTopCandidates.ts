@@ -228,12 +228,24 @@ async function mapConcurrent<T, R>(
   return results;
 }
 
-// Normalizes LLM citation strings
-function cleanRefId(raw: string): string {
+// Normalizes raw LLM candidate ID strings (e.g. "[cand_01]" -> "cand_01")
+function cleanCandidateId(raw: string): string {
+  return raw.trim().replace(/^\[|\]$/g, "");
+}
+
+// Normalizes LLM citation strings (e.g. "[c1:action]" -> "c1", "cand_01:s2:action" -> "s2")
+function cleanRefId(raw: string, candidateId?: string): string {
   let ref = raw.trim().replace(/^\[|\]$/g, "");
+  if (candidateId && ref.startsWith(`${candidateId}:`)) {
+    ref = ref.slice(candidateId.length + 1).trim();
+  }
   if (ref.includes(":")) {
-    const parts = ref.split(":");
-    ref = parts[parts.length - 1].trim();
+    const parts = ref
+      .split(":")
+      .map((p) => p.trim())
+      .filter((p) => p && !/^(action|peripheral|action_attributed|peripheral_action|unanchored_claim)$/i.test(p));
+    const refMatch = parts.find((p) => /^(c\d+|s\d+|work_\d+|header|L\d+)$/i.test(p));
+    ref = refMatch || parts[parts.length - 1] || ref;
   }
   return ref;
 }
@@ -251,7 +263,7 @@ function hydrateSupportingClaims(
   const resolved: SupportingClaimResolved[] = [];
 
   for (const raw of rawRefIds) {
-    const ref = cleanRefId(raw);
+    const ref = cleanRefId(raw, candidateId);
     if (!ref || seenRefs.has(ref)) continue;
     seenRefs.add(ref);
 
@@ -501,7 +513,7 @@ export async function rankTopCandidatesWithUsage(
       // Map ranks from both runs
       const forwardRankMap = new Map<string, { rank: number; refs: string[]; outside: boolean; rationale: string }>();
       forwardCallRes.object.rankings.forEach((r, idx) => {
-        forwardRankMap.set(r.candidate_id, {
+        forwardRankMap.set(cleanCandidateId(r.candidate_id), {
           rank: r.rank || idx + 1,
           refs: r.supporting_refs || [],
           outside: Boolean(r.outside_axes_standout),
@@ -511,7 +523,7 @@ export async function rankTopCandidatesWithUsage(
 
       const reverseRankMap = new Map<string, { rank: number; refs: string[]; outside: boolean; rationale: string }>();
       reverseCallRes.object.rankings.forEach((r, idx) => {
-        reverseRankMap.set(r.candidate_id, {
+        reverseRankMap.set(cleanCandidateId(r.candidate_id), {
           rank: r.rank || idx + 1,
           refs: r.supporting_refs || [],
           outside: Boolean(r.outside_axes_standout),
@@ -654,7 +666,7 @@ ${view?.fullCvText}`;
 
   for (const pr of permutationResults) {
     const recordedRankings = pr.permOrder.map((cid, fallbackIdx) => {
-      const match = pr.rankings.find((r) => r.candidate_id === cid);
+      const match = pr.rankings.find((r) => cleanCandidateId(r.candidate_id) === cid);
       const assignedRank = match?.rank || fallbackIdx + 1;
       latinSquareRanksByCandidate.get(cid)?.push(assignedRank);
 
@@ -751,8 +763,8 @@ ${view?.fullCvText}`;
         totalOutputTokens += resBA.usage.outputTokens || 0;
       }
 
-      const winAB = resAB.object.winner_id.trim();
-      const winBA = resBA.object.winner_id.trim();
+      const winAB = cleanCandidateId(resAB.object.winner_id);
+      const winBA = cleanCandidateId(resBA.object.winner_id);
 
       let resolvedOutcome: "a_wins" | "b_wins" | "tie";
       if (winAB === candA && winBA === candA) {
@@ -806,7 +818,7 @@ ${view?.fullCvText}`;
 
     for (const c of m.supporting_claims) {
       if (c.candidate_id && c.ref_id) {
-        pairwiseCitationsMap.get(c.candidate_id)?.push(c.ref_id);
+        pairwiseCitationsMap.get(cleanCandidateId(c.candidate_id))?.push(c.ref_id);
       }
     }
   }
