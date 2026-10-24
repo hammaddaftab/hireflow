@@ -24,7 +24,7 @@ export const GRAD_AI_SWE_CANDIDATES: ParsedCandidateProfile[] = [
         "raw": "237, Near main office kahyaban e, naveed, Sargodha, Pakistan",
         "normalized": {
           "city": "Sargodha",
-          "province": "Islamabad Capital Territory"
+          "province": "Punjab"
         }
       },
       "links": []
@@ -174,22 +174,15 @@ export const GRAD_AI_SWE_CANDIDATES: ParsedCandidateProfile[] = [
     },
     "logistics": {
       "salary_expectation": {
-        "raw": "PKR 150,000 / month",
-        "normalized": {
-          "min": 150000,
-          "max": 150000,
-          "currency": "PKR"
-        }
+        "raw": null,
+        "normalized": null
       },
       "notice_period": {
-        "raw": "Immediate / 15 days",
-        "normalized": {
-          "value": 15,
-          "unit": "days"
-        }
+        "raw": null,
+        "normalized": null
       },
-      "stated_relocation_willingness": "willing",
-      "stated_availability": "Immediate",
+      "stated_relocation_willingness": "not_stated",
+      "stated_availability": "not_stated",
       "languages": [
         "English",
         "Urdu"
@@ -288,7 +281,7 @@ export const GRAD_AI_SWE_CANDIDATES: ParsedCandidateProfile[] = [
         "raw": "FLAT#37 ROSHAN, PLAZA MIRPURKHAS DISTRICT, SINDHMIRPURKHAS, Mirpurkhas, Pakistan",
         "normalized": {
           "city": "Mirpurkhas",
-          "province": "Islamabad Capital Territory"
+          "province": "Sindh"
         }
       },
       "links": []
@@ -414,22 +407,15 @@ export const GRAD_AI_SWE_CANDIDATES: ParsedCandidateProfile[] = [
     },
     "logistics": {
       "salary_expectation": {
-        "raw": "PKR 150,000 / month",
-        "normalized": {
-          "min": 150000,
-          "max": 150000,
-          "currency": "PKR"
-        }
+        "raw": null,
+        "normalized": null
       },
       "notice_period": {
-        "raw": "Immediate / 15 days",
-        "normalized": {
-          "value": 15,
-          "unit": "days"
-        }
+        "raw": null,
+        "normalized": null
       },
-      "stated_relocation_willingness": "willing",
-      "stated_availability": "Immediate",
+      "stated_relocation_willingness": "not_stated",
+      "stated_availability": "not_stated",
       "languages": [
         "English",
         "Urdu"
@@ -643,22 +629,15 @@ export const GRAD_AI_SWE_CANDIDATES: ParsedCandidateProfile[] = [
     },
     "logistics": {
       "salary_expectation": {
-        "raw": "PKR 150,000 / month",
-        "normalized": {
-          "min": 150000,
-          "max": 150000,
-          "currency": "PKR"
-        }
+        "raw": null,
+        "normalized": null
       },
       "notice_period": {
-        "raw": "Immediate / 15 days",
-        "normalized": {
-          "value": 15,
-          "unit": "days"
-        }
+        "raw": null,
+        "normalized": null
       },
-      "stated_relocation_willingness": "willing",
-      "stated_availability": "Immediate",
+      "stated_relocation_willingness": "not_stated",
+      "stated_availability": "not_stated",
       "languages": [
         "English",
         "Urdu"
@@ -935,22 +914,15 @@ export const GRAD_AI_SWE_CANDIDATES: ParsedCandidateProfile[] = [
     },
     "logistics": {
       "salary_expectation": {
-        "raw": "PKR 150,000 / month",
-        "normalized": {
-          "min": 150000,
-          "max": 150000,
-          "currency": "PKR"
-        }
+        "raw": null,
+        "normalized": null
       },
       "notice_period": {
-        "raw": "Immediate / 15 days",
-        "normalized": {
-          "value": 15,
-          "unit": "days"
-        }
+        "raw": null,
+        "normalized": null
       },
-      "stated_relocation_willingness": "willing",
-      "stated_availability": "Immediate",
+      "stated_relocation_willingness": "not_stated",
+      "stated_availability": "not_stated",
       "languages": [
         "English",
         "Urdu"
@@ -1169,22 +1141,15 @@ export const GRAD_AI_SWE_CANDIDATES: ParsedCandidateProfile[] = [
     },
     "logistics": {
       "salary_expectation": {
-        "raw": "PKR 150,000 / month",
-        "normalized": {
-          "min": 150000,
-          "max": 150000,
-          "currency": "PKR"
-        }
+        "raw": null,
+        "normalized": null
       },
       "notice_period": {
-        "raw": "Immediate / 15 days",
-        "normalized": {
-          "value": 15,
-          "unit": "days"
-        }
+        "raw": null,
+        "normalized": null
       },
-      "stated_relocation_willingness": "willing",
-      "stated_availability": "Immediate",
+      "stated_relocation_willingness": "not_stated",
+      "stated_availability": "not_stated",
       "languages": [
         "English",
         "Urdu"
@@ -1437,22 +1402,15 @@ export const GRAD_AI_SWE_CANDIDATES: ParsedCandidateProfile[] = [
     },
     "logistics": {
       "salary_expectation": {
-        "raw": "PKR 150,000 / month",
-        "normalized": {
-          "min": 150000,
-          "max": 150000,
-          "currency": "PKR"
-        }
+        "raw": null,
+        "normalized": null
       },
       "notice_period": {
-        "raw": "Immediate / 15 days",
-        "normalized": {
-          "value": 15,
-          "unit": "days"
-        }
+        "raw": null,
+        "normalized": null
       },
-      "stated_relocation_willingness": "willing",
-      "stated_availability": "Immediate",
+      "stated_relocation_willingness": "not_stated",
+      "stated_availability": "not_stated",
       "languages": [
         "English",
         "Urdu"
@@ -1674,22 +1632,15 @@ export const GRAD_AI_SWE_CANDIDATES: ParsedCandidateProfile[] = [
     },
     "logistics": {
       "salary_expectation": {
-        "raw": "PKR 150,000 / month",
-        "normalized": {
-          "min": 150000,
-          "max": 150000,
-          "currency": "PKR"
-        }
+        "raw": null,
+        "normalized": null
       },
       "notice_period": {
-        "raw": "Immediate / 15 days",
-        "normalized": {
-          "value": 15,
-          "unit": "days"
-        }
+        "raw": null,
+        "normalized": null
       },
-      "stated_relocation_willingness": "willing",
-      "stated_availability": "Immediate",
+      "stated_relocation_willingness": "not_stated",
+      "stated_availability": "not_stated",
       "languages": [
         "English",
         "Urdu"
@@ -1862,22 +1813,15 @@ export const GRAD_AI_SWE_CANDIDATES: ParsedCandidateProfile[] = [
     },
     "logistics": {
       "salary_expectation": {
-        "raw": "PKR 150,000 / month",
-        "normalized": {
-          "min": 150000,
-          "max": 150000,
-          "currency": "PKR"
-        }
+        "raw": null,
+        "normalized": null
       },
       "notice_period": {
-        "raw": "Immediate / 15 days",
-        "normalized": {
-          "value": 15,
-          "unit": "days"
-        }
+        "raw": null,
+        "normalized": null
       },
-      "stated_relocation_willingness": "willing",
-      "stated_availability": "Immediate",
+      "stated_relocation_willingness": "not_stated",
+      "stated_availability": "not_stated",
       "languages": [
         "English",
         "Urdu"
@@ -2086,22 +2030,15 @@ export const GRAD_AI_SWE_CANDIDATES: ParsedCandidateProfile[] = [
     },
     "logistics": {
       "salary_expectation": {
-        "raw": "PKR 150,000 / month",
-        "normalized": {
-          "min": 150000,
-          "max": 150000,
-          "currency": "PKR"
-        }
+        "raw": null,
+        "normalized": null
       },
       "notice_period": {
-        "raw": "Immediate / 15 days",
-        "normalized": {
-          "value": 15,
-          "unit": "days"
-        }
+        "raw": null,
+        "normalized": null
       },
-      "stated_relocation_willingness": "willing",
-      "stated_availability": "Immediate",
+      "stated_relocation_willingness": "not_stated",
+      "stated_availability": "not_stated",
       "languages": [
         "English",
         "Urdu"
@@ -2228,11 +2165,8 @@ export const GRAD_AI_SWE_CANDIDATES: ParsedCandidateProfile[] = [
       "phone": "+923316334020",
       "cnic": null,
       "location": {
-        "raw": "Pakistan",
-        "normalized": {
-          "city": "Pakistan",
-          "province": "Islamabad Capital Territory"
-        }
+        "raw": null,
+        "normalized": null
       },
       "links": []
     },
@@ -2356,22 +2290,15 @@ export const GRAD_AI_SWE_CANDIDATES: ParsedCandidateProfile[] = [
     },
     "logistics": {
       "salary_expectation": {
-        "raw": "PKR 150,000 / month",
-        "normalized": {
-          "min": 150000,
-          "max": 150000,
-          "currency": "PKR"
-        }
+        "raw": null,
+        "normalized": null
       },
       "notice_period": {
-        "raw": "Immediate / 15 days",
-        "normalized": {
-          "value": 15,
-          "unit": "days"
-        }
+        "raw": null,
+        "normalized": null
       },
-      "stated_relocation_willingness": "willing",
-      "stated_availability": "Immediate",
+      "stated_relocation_willingness": "not_stated",
+      "stated_availability": "not_stated",
       "languages": [
         "English",
         "Urdu"
@@ -2480,7 +2407,7 @@ export const GRAD_AI_SWE_CANDIDATES: ParsedCandidateProfile[] = [
         "raw": "Village Kheensar, Taluka dahli, Chachro, Pakistan",
         "normalized": {
           "city": "Chachro",
-          "province": "Islamabad Capital Territory"
+          "province": "Sindh"
         }
       },
       "links": []
@@ -2609,22 +2536,15 @@ export const GRAD_AI_SWE_CANDIDATES: ParsedCandidateProfile[] = [
     },
     "logistics": {
       "salary_expectation": {
-        "raw": "PKR 150,000 / month",
-        "normalized": {
-          "min": 150000,
-          "max": 150000,
-          "currency": "PKR"
-        }
+        "raw": null,
+        "normalized": null
       },
       "notice_period": {
-        "raw": "Immediate / 15 days",
-        "normalized": {
-          "value": 15,
-          "unit": "days"
-        }
+        "raw": null,
+        "normalized": null
       },
-      "stated_relocation_willingness": "willing",
-      "stated_availability": "Immediate",
+      "stated_relocation_willingness": "not_stated",
+      "stated_availability": "not_stated",
       "languages": [
         "English",
         "Urdu"
@@ -2867,22 +2787,15 @@ export const GRAD_AI_SWE_CANDIDATES: ParsedCandidateProfile[] = [
     },
     "logistics": {
       "salary_expectation": {
-        "raw": "PKR 150,000 / month",
-        "normalized": {
-          "min": 150000,
-          "max": 150000,
-          "currency": "PKR"
-        }
+        "raw": null,
+        "normalized": null
       },
       "notice_period": {
-        "raw": "Immediate / 15 days",
-        "normalized": {
-          "value": 15,
-          "unit": "days"
-        }
+        "raw": null,
+        "normalized": null
       },
-      "stated_relocation_willingness": "willing",
-      "stated_availability": "Immediate",
+      "stated_relocation_willingness": "not_stated",
+      "stated_availability": "not_stated",
       "languages": [
         "English",
         "Urdu"
@@ -3000,7 +2913,7 @@ export const GRAD_AI_SWE_CANDIDATES: ParsedCandidateProfile[] = [
         "raw": "20 East Scheme No.2, Farid town, Sahiwal, Pakistan",
         "normalized": {
           "city": "Sahiwal",
-          "province": "Islamabad Capital Territory"
+          "province": "Punjab"
         }
       },
       "links": []
@@ -3116,22 +3029,15 @@ export const GRAD_AI_SWE_CANDIDATES: ParsedCandidateProfile[] = [
     },
     "logistics": {
       "salary_expectation": {
-        "raw": "PKR 150,000 / month",
-        "normalized": {
-          "min": 150000,
-          "max": 150000,
-          "currency": "PKR"
-        }
+        "raw": null,
+        "normalized": null
       },
       "notice_period": {
-        "raw": "Immediate / 15 days",
-        "normalized": {
-          "value": 15,
-          "unit": "days"
-        }
+        "raw": null,
+        "normalized": null
       },
-      "stated_relocation_willingness": "willing",
-      "stated_availability": "Immediate",
+      "stated_relocation_willingness": "not_stated",
+      "stated_availability": "not_stated",
       "languages": [
         "English",
         "Urdu"
@@ -3280,7 +3186,7 @@ export const GRAD_AI_SWE_CANDIDATES: ParsedCandidateProfile[] = [
         "raw": "Muhalla Shewani, , Ward#02, Umerkot, Pakistan",
         "normalized": {
           "city": "Umerkot",
-          "province": "Islamabad Capital Territory"
+          "province": "Sindh"
         }
       },
       "links": []
@@ -3389,22 +3295,15 @@ export const GRAD_AI_SWE_CANDIDATES: ParsedCandidateProfile[] = [
     },
     "logistics": {
       "salary_expectation": {
-        "raw": "PKR 150,000 / month",
-        "normalized": {
-          "min": 150000,
-          "max": 150000,
-          "currency": "PKR"
-        }
+        "raw": null,
+        "normalized": null
       },
       "notice_period": {
-        "raw": "Immediate / 15 days",
-        "normalized": {
-          "value": 15,
-          "unit": "days"
-        }
+        "raw": null,
+        "normalized": null
       },
-      "stated_relocation_willingness": "willing",
-      "stated_availability": "Immediate",
+      "stated_relocation_willingness": "not_stated",
+      "stated_availability": "not_stated",
       "languages": [
         "English",
         "Urdu"
@@ -3624,22 +3523,15 @@ export const GRAD_AI_SWE_CANDIDATES: ParsedCandidateProfile[] = [
     },
     "logistics": {
       "salary_expectation": {
-        "raw": "PKR 150,000 / month",
-        "normalized": {
-          "min": 150000,
-          "max": 150000,
-          "currency": "PKR"
-        }
+        "raw": null,
+        "normalized": null
       },
       "notice_period": {
-        "raw": "Immediate / 15 days",
-        "normalized": {
-          "value": 15,
-          "unit": "days"
-        }
+        "raw": null,
+        "normalized": null
       },
-      "stated_relocation_willingness": "willing",
-      "stated_availability": "Immediate",
+      "stated_relocation_willingness": "not_stated",
+      "stated_availability": "not_stated",
       "languages": [
         "English",
         "Urdu"
@@ -3857,22 +3749,15 @@ export const GRAD_AI_SWE_CANDIDATES: ParsedCandidateProfile[] = [
     },
     "logistics": {
       "salary_expectation": {
-        "raw": "PKR 150,000 / month",
-        "normalized": {
-          "min": 150000,
-          "max": 150000,
-          "currency": "PKR"
-        }
+        "raw": null,
+        "normalized": null
       },
       "notice_period": {
-        "raw": "Immediate / 15 days",
-        "normalized": {
-          "value": 15,
-          "unit": "days"
-        }
+        "raw": null,
+        "normalized": null
       },
-      "stated_relocation_willingness": "willing",
-      "stated_availability": "Immediate",
+      "stated_relocation_willingness": "not_stated",
+      "stated_availability": "not_stated",
       "languages": [
         "English",
         "Urdu"
@@ -4110,22 +3995,15 @@ export const GRAD_AI_SWE_CANDIDATES: ParsedCandidateProfile[] = [
     },
     "logistics": {
       "salary_expectation": {
-        "raw": "PKR 150,000 / month",
-        "normalized": {
-          "min": 150000,
-          "max": 150000,
-          "currency": "PKR"
-        }
+        "raw": null,
+        "normalized": null
       },
       "notice_period": {
-        "raw": "Immediate / 15 days",
-        "normalized": {
-          "value": 15,
-          "unit": "days"
-        }
+        "raw": null,
+        "normalized": null
       },
-      "stated_relocation_willingness": "willing",
-      "stated_availability": "Immediate",
+      "stated_relocation_willingness": "not_stated",
+      "stated_availability": "not_stated",
       "languages": [
         "English",
         "Urdu"
@@ -4435,22 +4313,15 @@ export const GRAD_AI_SWE_CANDIDATES: ParsedCandidateProfile[] = [
     },
     "logistics": {
       "salary_expectation": {
-        "raw": "PKR 150,000 / month",
-        "normalized": {
-          "min": 150000,
-          "max": 150000,
-          "currency": "PKR"
-        }
+        "raw": null,
+        "normalized": null
       },
       "notice_period": {
-        "raw": "Immediate / 15 days",
-        "normalized": {
-          "value": 15,
-          "unit": "days"
-        }
+        "raw": null,
+        "normalized": null
       },
-      "stated_relocation_willingness": "willing",
-      "stated_availability": "Immediate",
+      "stated_relocation_willingness": "not_stated",
+      "stated_availability": "not_stated",
       "languages": [
         "English",
         "Urdu"
@@ -4676,22 +4547,15 @@ export const GRAD_AI_SWE_CANDIDATES: ParsedCandidateProfile[] = [
     },
     "logistics": {
       "salary_expectation": {
-        "raw": "PKR 150,000 / month",
-        "normalized": {
-          "min": 150000,
-          "max": 150000,
-          "currency": "PKR"
-        }
+        "raw": null,
+        "normalized": null
       },
       "notice_period": {
-        "raw": "Immediate / 15 days",
-        "normalized": {
-          "value": 15,
-          "unit": "days"
-        }
+        "raw": null,
+        "normalized": null
       },
-      "stated_relocation_willingness": "willing",
-      "stated_availability": "Immediate",
+      "stated_relocation_willingness": "not_stated",
+      "stated_availability": "not_stated",
       "languages": [
         "English",
         "Urdu"
@@ -4797,7 +4661,7 @@ export const GRAD_AI_SWE_CANDIDATES: ParsedCandidateProfile[] = [
         "raw": "Attock, Pakistan",
         "normalized": {
           "city": "Attock",
-          "province": "Islamabad Capital Territory"
+          "province": "Punjab"
         }
       },
       "links": []
@@ -4880,22 +4744,15 @@ export const GRAD_AI_SWE_CANDIDATES: ParsedCandidateProfile[] = [
     },
     "logistics": {
       "salary_expectation": {
-        "raw": "PKR 150,000 / month",
-        "normalized": {
-          "min": 150000,
-          "max": 150000,
-          "currency": "PKR"
-        }
+        "raw": null,
+        "normalized": null
       },
       "notice_period": {
-        "raw": "Immediate / 15 days",
-        "normalized": {
-          "value": 15,
-          "unit": "days"
-        }
+        "raw": null,
+        "normalized": null
       },
-      "stated_relocation_willingness": "willing",
-      "stated_availability": "Immediate",
+      "stated_relocation_willingness": "not_stated",
+      "stated_availability": "not_stated",
       "languages": [
         "English",
         "Urdu"
@@ -5042,22 +4899,15 @@ export const GRAD_AI_SWE_CANDIDATES: ParsedCandidateProfile[] = [
     },
     "logistics": {
       "salary_expectation": {
-        "raw": "PKR 150,000 / month",
-        "normalized": {
-          "min": 150000,
-          "max": 150000,
-          "currency": "PKR"
-        }
+        "raw": null,
+        "normalized": null
       },
       "notice_period": {
-        "raw": "Immediate / 15 days",
-        "normalized": {
-          "value": 15,
-          "unit": "days"
-        }
+        "raw": null,
+        "normalized": null
       },
-      "stated_relocation_willingness": "willing",
-      "stated_availability": "Immediate",
+      "stated_relocation_willingness": "not_stated",
+      "stated_availability": "not_stated",
       "languages": [
         "English",
         "Urdu"
@@ -5203,22 +5053,15 @@ export const GRAD_AI_SWE_CANDIDATES: ParsedCandidateProfile[] = [
     },
     "logistics": {
       "salary_expectation": {
-        "raw": "PKR 150,000 / month",
-        "normalized": {
-          "min": 150000,
-          "max": 150000,
-          "currency": "PKR"
-        }
+        "raw": null,
+        "normalized": null
       },
       "notice_period": {
-        "raw": "Immediate / 15 days",
-        "normalized": {
-          "value": 15,
-          "unit": "days"
-        }
+        "raw": null,
+        "normalized": null
       },
-      "stated_relocation_willingness": "willing",
-      "stated_availability": "Immediate",
+      "stated_relocation_willingness": "not_stated",
+      "stated_availability": "not_stated",
       "languages": [
         "English",
         "Urdu"
@@ -5287,7 +5130,7 @@ export const GRAD_AI_SWE_CANDIDATES: ParsedCandidateProfile[] = [
         "raw": "GHAZALI JUNIOR, CAMPUS PHALIA:MAIN GUJRAT, MANDIBAHAUDDIN ROAD., Phalia, Pakistan",
         "normalized": {
           "city": "Phalia",
-          "province": "Islamabad Capital Territory"
+          "province": "Punjab"
         }
       },
       "links": []
@@ -5420,22 +5263,15 @@ export const GRAD_AI_SWE_CANDIDATES: ParsedCandidateProfile[] = [
     },
     "logistics": {
       "salary_expectation": {
-        "raw": "PKR 150,000 / month",
-        "normalized": {
-          "min": 150000,
-          "max": 150000,
-          "currency": "PKR"
-        }
+        "raw": null,
+        "normalized": null
       },
       "notice_period": {
-        "raw": "Immediate / 15 days",
-        "normalized": {
-          "value": 15,
-          "unit": "days"
-        }
+        "raw": null,
+        "normalized": null
       },
-      "stated_relocation_willingness": "willing",
-      "stated_availability": "Immediate",
+      "stated_relocation_willingness": "not_stated",
+      "stated_availability": "not_stated",
       "languages": [
         "English",
         "Urdu"
@@ -5613,22 +5449,15 @@ export const GRAD_AI_SWE_CANDIDATES: ParsedCandidateProfile[] = [
     },
     "logistics": {
       "salary_expectation": {
-        "raw": "PKR 150,000 / month",
-        "normalized": {
-          "min": 150000,
-          "max": 150000,
-          "currency": "PKR"
-        }
+        "raw": null,
+        "normalized": null
       },
       "notice_period": {
-        "raw": "Immediate / 15 days",
-        "normalized": {
-          "value": 15,
-          "unit": "days"
-        }
+        "raw": null,
+        "normalized": null
       },
-      "stated_relocation_willingness": "willing",
-      "stated_availability": "Immediate",
+      "stated_relocation_willingness": "not_stated",
+      "stated_availability": "not_stated",
       "languages": [
         "English",
         "Urdu"
@@ -5689,7 +5518,7 @@ export const GRAD_AI_SWE_CANDIDATES: ParsedCandidateProfile[] = [
         "raw": "HOSUE # 88/89 A, Street # 2 bismillah park sillanwali, road, Sargodha, Pakistan",
         "normalized": {
           "city": "Sargodha",
-          "province": "Islamabad Capital Territory"
+          "province": "Punjab"
         }
       },
       "links": []
@@ -5795,22 +5624,15 @@ export const GRAD_AI_SWE_CANDIDATES: ParsedCandidateProfile[] = [
     },
     "logistics": {
       "salary_expectation": {
-        "raw": "PKR 150,000 / month",
-        "normalized": {
-          "min": 150000,
-          "max": 150000,
-          "currency": "PKR"
-        }
+        "raw": null,
+        "normalized": null
       },
       "notice_period": {
-        "raw": "Immediate / 15 days",
-        "normalized": {
-          "value": 15,
-          "unit": "days"
-        }
+        "raw": null,
+        "normalized": null
       },
-      "stated_relocation_willingness": "willing",
-      "stated_availability": "Immediate",
+      "stated_relocation_willingness": "not_stated",
+      "stated_availability": "not_stated",
       "languages": [
         "English",
         "Urdu"
@@ -5887,8 +5709,8 @@ export const GRAD_AI_SWE_CANDIDATES: ParsedCandidateProfile[] = [
       "location": {
         "raw": "AFGHAN HOUSE 92/A, BILAL COLONY, jhal road, Sahiwal, Pakistan",
         "normalized": {
-          "city": "Islamabad",
-          "province": "Islamabad Capital Territory"
+          "city": "Sahiwal",
+          "province": "Punjab"
         }
       },
       "links": []
@@ -5970,22 +5792,15 @@ export const GRAD_AI_SWE_CANDIDATES: ParsedCandidateProfile[] = [
     },
     "logistics": {
       "salary_expectation": {
-        "raw": "PKR 150,000 / month",
-        "normalized": {
-          "min": 150000,
-          "max": 150000,
-          "currency": "PKR"
-        }
+        "raw": null,
+        "normalized": null
       },
       "notice_period": {
-        "raw": "Immediate / 15 days",
-        "normalized": {
-          "value": 15,
-          "unit": "days"
-        }
+        "raw": null,
+        "normalized": null
       },
-      "stated_relocation_willingness": "willing",
-      "stated_availability": "Immediate",
+      "stated_relocation_willingness": "not_stated",
+      "stated_availability": "not_stated",
       "languages": [
         "English",
         "Urdu"
@@ -6068,7 +5883,7 @@ export const GRAD_AI_SWE_CANDIDATES: ParsedCandidateProfile[] = [
         "raw": "H # E-29, ST # 4, PHASE, # 4, OFFICERS COLONY, WAH, CANTT., Wah cantt, Pakistan",
         "normalized": {
           "city": "Wah Cantt",
-          "province": "Islamabad Capital Territory"
+          "province": "Punjab"
         }
       },
       "links": []
@@ -6156,22 +5971,15 @@ export const GRAD_AI_SWE_CANDIDATES: ParsedCandidateProfile[] = [
     },
     "logistics": {
       "salary_expectation": {
-        "raw": "PKR 150,000 / month",
-        "normalized": {
-          "min": 150000,
-          "max": 150000,
-          "currency": "PKR"
-        }
+        "raw": null,
+        "normalized": null
       },
       "notice_period": {
-        "raw": "Immediate / 15 days",
-        "normalized": {
-          "value": 15,
-          "unit": "days"
-        }
+        "raw": null,
+        "normalized": null
       },
-      "stated_relocation_willingness": "willing",
-      "stated_availability": "Immediate",
+      "stated_relocation_willingness": "not_stated",
+      "stated_availability": "not_stated",
       "languages": [
         "English",
         "Urdu"
@@ -6251,7 +6059,7 @@ export const GRAD_AI_SWE_CANDIDATES: ParsedCandidateProfile[] = [
         "raw": "MOHALLA PURANA, KHOO WALA, MUSA KHEL, , DISTRICT MIANWALI, Sargodha, Pakistan",
         "normalized": {
           "city": "Sargodha",
-          "province": "Islamabad Capital Territory"
+          "province": "Punjab"
         }
       },
       "links": []
@@ -6327,22 +6135,15 @@ export const GRAD_AI_SWE_CANDIDATES: ParsedCandidateProfile[] = [
     },
     "logistics": {
       "salary_expectation": {
-        "raw": "PKR 150,000 / month",
-        "normalized": {
-          "min": 150000,
-          "max": 150000,
-          "currency": "PKR"
-        }
+        "raw": null,
+        "normalized": null
       },
       "notice_period": {
-        "raw": "Immediate / 15 days",
-        "normalized": {
-          "value": 15,
-          "unit": "days"
-        }
+        "raw": null,
+        "normalized": null
       },
-      "stated_relocation_willingness": "willing",
-      "stated_availability": "Immediate",
+      "stated_relocation_willingness": "not_stated",
+      "stated_availability": "not_stated",
       "languages": [
         "English",
         "Urdu"
@@ -6402,8 +6203,8 @@ export const GRAD_AI_SWE_CANDIDATES: ParsedCandidateProfile[] = [
       "location": {
         "raw": "VILLAGE AND P/O BOX, CHUINJ, TEHSIL, MASTUJ, DISTRICT CHITRAL, Chitral, Pakistan",
         "normalized": {
-          "city": "Islamabad",
-          "province": "Islamabad Capital Territory"
+          "city": "Chitral",
+          "province": "Khyber Pakhtunkhwa"
         }
       },
       "links": []
@@ -6465,22 +6266,15 @@ export const GRAD_AI_SWE_CANDIDATES: ParsedCandidateProfile[] = [
     },
     "logistics": {
       "salary_expectation": {
-        "raw": "PKR 150,000 / month",
-        "normalized": {
-          "min": 150000,
-          "max": 150000,
-          "currency": "PKR"
-        }
+        "raw": null,
+        "normalized": null
       },
       "notice_period": {
-        "raw": "Immediate / 15 days",
-        "normalized": {
-          "value": 15,
-          "unit": "days"
-        }
+        "raw": null,
+        "normalized": null
       },
-      "stated_relocation_willingness": "willing",
-      "stated_availability": "Immediate",
+      "stated_relocation_willingness": "not_stated",
+      "stated_availability": "not_stated",
       "languages": [
         "English",
         "Urdu"
@@ -6588,22 +6382,15 @@ export const GRAD_AI_SWE_CANDIDATES: ParsedCandidateProfile[] = [
     },
     "logistics": {
       "salary_expectation": {
-        "raw": "PKR 150,000 / month",
-        "normalized": {
-          "min": 150000,
-          "max": 150000,
-          "currency": "PKR"
-        }
+        "raw": null,
+        "normalized": null
       },
       "notice_period": {
-        "raw": "Immediate / 15 days",
-        "normalized": {
-          "value": 15,
-          "unit": "days"
-        }
+        "raw": null,
+        "normalized": null
       },
-      "stated_relocation_willingness": "willing",
-      "stated_availability": "Immediate",
+      "stated_relocation_willingness": "not_stated",
+      "stated_availability": "not_stated",
       "languages": [
         "English",
         "Urdu"

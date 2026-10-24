@@ -68,7 +68,10 @@ export function evaluateLocation(
       : status === "contradicted"
       ? "contradicted"
       : "gap";
-  const pillText = normalized_location.raw || candCity || (targetLocation ? `Location: ${targetLocation}` : "Location");
+  const pillText =
+    candCity ||
+    normalized_location.raw ||
+    (targetLocation ? `Location: ${targetLocation}` : "Location");
   const badgeText =
     status === "confirmed"
       ? "Confirmed"

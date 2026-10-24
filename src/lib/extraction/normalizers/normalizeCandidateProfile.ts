@@ -1,14 +1,30 @@
 import "server-only";
 
-// Candidate profile normalization across education fields and demonstrated/declared skills
+// Candidate profile normalization across identity locations, education fields, and demonstrated/declared skills
 
 import type { ParsedCandidateProfile } from "@/entities/candidate";
 import { normalizeSkill, resolveCanonicalSkill } from "./skillNormalizer";
 import { normalizeFieldOfStudy } from "./fieldOfStudyNormalizer";
+import { normalizeLocation } from "./locationNormalizer";
 
 export function normalizeCandidateProfile(c: ParsedCandidateProfile): ParsedCandidateProfile {
+  const rawLocation = c.identity?.location?.raw ?? null;
+  const existingCity = c.identity?.location?.normalized?.city ?? null;
+  const resolvedLocation = normalizeLocation(rawLocation, existingCity);
+  const normalizedLocation =
+    resolvedLocation.city || resolvedLocation.province
+      ? resolvedLocation
+      : c.identity?.location?.normalized ?? null;
+
   return {
     ...c,
+    identity: {
+      ...c.identity,
+      location: {
+        raw: rawLocation,
+        normalized: normalizedLocation,
+      },
+    },
     education: {
       ...c.education,
       entries: (c.education?.entries || []).map((e) => ({

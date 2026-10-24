@@ -12,6 +12,48 @@ export const CITY_PROVINCE_MAP: Record<string, string> = {
   quetta: "Balochistan",
   sialkot: "Punjab",
   gujranwala: "Punjab",
+  sargodha: "Punjab",
+  sahiwal: "Punjab",
+  attock: "Punjab",
+  phalia: "Punjab",
+  "mandi bahauddin": "Punjab",
+  "wah cantt": "Punjab",
+  wah: "Punjab",
+  mianwali: "Punjab",
+  bahawalpur: "Punjab",
+  gujrat: "Punjab",
+  jhelum: "Punjab",
+  sheikhupura: "Punjab",
+  kasur: "Punjab",
+  okara: "Punjab",
+  chakwal: "Punjab",
+  khushab: "Punjab",
+  "rahim yar khan": "Punjab",
+  "dera ghazi khan": "Punjab",
+  mirpurkhas: "Sindh",
+  umerkot: "Sindh",
+  chachro: "Sindh",
+  tharparkar: "Sindh",
+  hyderabad: "Sindh",
+  sukkur: "Sindh",
+  larkana: "Sindh",
+  nawabshah: "Sindh",
+  chitral: "Khyber Pakhtunkhwa",
+  abbottabad: "Khyber Pakhtunkhwa",
+  mardan: "Khyber Pakhtunkhwa",
+  swat: "Khyber Pakhtunkhwa",
+  mingora: "Khyber Pakhtunkhwa",
+  kohat: "Khyber Pakhtunkhwa",
+  haripur: "Khyber Pakhtunkhwa",
+  nowshera: "Khyber Pakhtunkhwa",
+  "dera ismail khan": "Khyber Pakhtunkhwa",
+  mansehra: "Khyber Pakhtunkhwa",
+  topi: "Khyber Pakhtunkhwa",
+  swabi: "Khyber Pakhtunkhwa",
+  muzaffarabad: "Azad Jammu and Kashmir",
+  mirpur: "Azad Jammu and Kashmir",
+  gilgit: "Gilgit-Baltistan",
+  skardu: "Gilgit-Baltistan",
 };
 
 export interface NormalizedLocationResult {
@@ -19,11 +61,25 @@ export interface NormalizedLocationResult {
   province: string | null;
 }
 
+// Formats a matched city key or alias into canonical display casing
+function formatCanonicalCity(cityRaw: string): string {
+  const lower = cityRaw.trim().toLowerCase();
+  if (lower === "isb" || lower === "islamabad" || lower === "ict") return "Islamabad";
+  if (lower === "lhr" || lower === "lahore") return "Lahore";
+  if (lower === "khi" || lower === "karachi") return "Karachi";
+  if (lower === "pindi" || lower === "rawalpindi") return "Rawalpindi";
+  if (lower === "wah" || lower === "wah cantt") return "Wah Cantt";
+  return lower
+    .split(/\s+/)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
+
 // Maps a detected city name to its canonical province or federal territory
 export function getProvinceForCity(city: string | null | undefined): string | null {
   if (!city) return null;
-  const lower = city.trim().toLowerCase();
-  if (lower === "isb" || lower === "islamabad") return CITY_PROVINCE_MAP.islamabad;
+  const lower = city.trim().toLowerCase().replace(/\.$/, "");
+  if (lower === "isb" || lower === "islamabad" || lower === "ict") return CITY_PROVINCE_MAP.islamabad;
   if (lower === "lhr" || lower === "lahore") return CITY_PROVINCE_MAP.lahore;
   if (lower === "khi" || lower === "karachi") return CITY_PROVINCE_MAP.karachi;
   if (lower === "pindi" || lower === "rawalpindi") return CITY_PROVINCE_MAP.rawalpindi;
@@ -35,13 +91,18 @@ export function normalizeLocation(
   rawText: string | null | undefined,
   extractedCity?: string | null
 ): NormalizedLocationResult {
-  const cityInput = (extractedCity || "").trim();
+  const rawCityInput = (extractedCity || "").trim().replace(/\.$/, "");
+  const cityInput = /^(pakistan|remote|fully remote|anywhere in pakistan|open to travel|unspecified)$/i.test(
+    rawCityInput
+  )
+    ? ""
+    : rawCityInput;
   const rawInput = (rawText || "").trim();
 
   // Country-only or remote indicators without municipality are treated as unspecified
   const lowerRaw = rawInput.toLowerCase();
   if (
-    /^(pakistan|remote|fully remote|anywhere in pakistan|open to travel)$/i.test(lowerRaw) ||
+    (!cityInput && /^(pakistan|remote|fully remote|anywhere in pakistan|open to travel)$/i.test(lowerRaw)) ||
     (!cityInput && !rawInput)
   ) {
     return { city: null, province: null };
@@ -51,49 +112,50 @@ export function normalizeLocation(
   if (cityInput) {
     const prov = getProvinceForCity(cityInput);
     if (prov) {
-      const lowerCity = cityInput.toLowerCase();
-      const canonicalCity =
-        lowerCity === "isb"
-          ? "Islamabad"
-          : lowerCity === "lhr"
-          ? "Lahore"
-          : lowerCity === "khi"
-          ? "Karachi"
-          : lowerCity === "pindi"
-          ? "Rawalpindi"
-          : cityInput.charAt(0).toUpperCase() + cityInput.slice(1);
-      return { city: canonicalCity, province: prov };
+      return { city: formatCanonicalCity(cityInput), province: prov };
+    }
+  }
+
+  // 2. Check trailing municipality before ", Pakistan" in structured addresses
+  const trailingCityMatch = rawInput.match(/,\s*([^,]+?)\s*,\s*pakistan\s*$/i);
+  if (trailingCityMatch) {
+    const trailingToken = trailingCityMatch[1].trim().replace(/\.$/, "");
+    const trailingProv = getProvinceForCity(trailingToken);
+    if (trailingProv) {
+      return { city: formatCanonicalCity(trailingToken), province: trailingProv };
     }
   }
 
   const combined = `${cityInput} ${rawInput}`.toLowerCase();
 
-  // 2. Check for Islamabad variations, sectors (e.g. G-13, F-10), and abbreviations
-  if (/\b(islamabad|isb|ict)\b/i.test(combined) || /\b[efghi]-\d{1,2}\b/i.test(combined)) {
+  // 3. Check for major city names and aliases before sector regexes
+  if (/\b(islamabad|isb|ict)\b/i.test(combined)) {
     return { city: "Islamabad", province: CITY_PROVINCE_MAP.islamabad };
   }
 
-  // 3. Check for Lahore aliases
-  if (/\b(lahore|lhr|gulberg|model town)\b/i.test(combined)) {
+  if (/\b(lahore|lhr|gulberg|model town|harbanspura)\b/i.test(combined)) {
     return { city: "Lahore", province: CITY_PROVINCE_MAP.lahore };
   }
 
-  // 4. Check for Karachi aliases
   if (/\b(karachi|khi|clifton|korangi)\b/i.test(combined)) {
     return { city: "Karachi", province: CITY_PROVINCE_MAP.karachi };
   }
 
-  // 5. Check for Rawalpindi aliases
   if (/\b(rawalpindi|pindi)\b/i.test(combined)) {
     return { city: "Rawalpindi", province: CITY_PROVINCE_MAP.rawalpindi };
   }
 
-  // 6. Check generic dictionary keys
-  for (const [key, prov] of Object.entries(CITY_PROVINCE_MAP)) {
+  // 4. Check generic dictionary keys (longest keys first so multi-word cities match first)
+  const sortedKeys = Object.keys(CITY_PROVINCE_MAP).sort((a, b) => b.length - a.length);
+  for (const key of sortedKeys) {
     if (new RegExp(`\\b${key}\\b`, "i").test(combined)) {
-      const canonicalCity = key.charAt(0).toUpperCase() + key.slice(1);
-      return { city: canonicalCity, province: prov };
+      return { city: formatCanonicalCity(key), province: CITY_PROVINCE_MAP[key] };
     }
+  }
+
+  // 5. Fallback to Islamabad sector pattern (e.g. G-13, F-10, H-12) when no other city matched
+  if (/\b[efghi]-\d{1,2}\b/i.test(combined)) {
+    return { city: "Islamabad", province: CITY_PROVINCE_MAP.islamabad };
   }
 
   return { city: null, province: null };
