@@ -88,6 +88,25 @@ function loadRawCvs(dir: string, limit = 30): Array<{ candidateId: string; rawTe
   });
 }
 
+// Applies exact 8/7/7/8 inside-out candidate permutation from scripts/discover-emergent-axes.ts
+function permuteCandidateOrder<T>(items: T[], order: "canonical" | "inside-out"): T[] {
+  if (order === "canonical" || items.length < 4) {
+    return [...items];
+  }
+  const n = items.length;
+  const leftCount = n === 30 ? 8 : Math.round((n * 8) / 30);
+  const rightCount = n === 30 ? 8 : Math.round((n * 8) / 30);
+  const remaining = n - leftCount - rightCount;
+  const midLeftCount = Math.floor(remaining / 2);
+
+  const leftEdge = items.slice(0, leftCount);
+  const midLeft = items.slice(leftCount, leftCount + midLeftCount);
+  const midRight = items.slice(leftCount + midLeftCount, n - rightCount);
+  const rightEdge = items.slice(n - rightCount);
+
+  return [...midLeft, ...leftEdge, ...rightEdge, ...midRight];
+}
+
 // Builds the prompt for raw CVs allowing quotes or paraphrasing
 function buildPrompt(candidates: Array<{ candidateId: string; rawText: string }>): string {
   const candidateBlocks = candidates
@@ -299,18 +318,31 @@ async function main() {
     mkdirSync(outputDir, { recursive: true });
   }
 
-  console.log("Loading 30 raw candidate CVs...");
-  const candidates = loadRawCvs(cvsDir, 30);
-  console.log(`Loaded ${candidates.length} candidate CVs.`);
+  const isInsideOut = process.argv.includes("--inside-out") || process.argv.includes("inside-out");
+  const order: "canonical" | "inside-out" = isInsideOut ? "inside-out" : "canonical";
+  const prefix = order === "inside-out" ? "quote-citation-inside-out" : "quote-citation-test";
 
+  console.log(`=======================================================`);
+  console.log(`   QUOTE & PARAPHRASE CITATION TEST (${order.toUpperCase()})   `);
+  console.log(`=======================================================`);
+
+  console.log("Loading 30 raw candidate CVs...");
+  const rawCandidates = loadRawCvs(cvsDir, 30);
+  console.log(`Loaded ${rawCandidates.length} candidate CVs.`);
+
+  // Build full CV map for verification against original candidate documents
   const cvMap = new Map<string, string>();
-  for (const c of candidates) {
+  for (const c of rawCandidates) {
     cvMap.set(c.candidateId, c.rawText);
   }
 
+  // Apply permutation to candidate prompt ordering
+  const candidates = permuteCandidateOrder(rawCandidates, order);
+  console.log(`Candidate ordering mode: ${order} (${candidates.map((c) => c.candidateId).slice(0, 3).join(", ")}... to ...${candidates.map((c) => c.candidateId).slice(-3).join(", ")})`);
+
   console.log("Building prompt with quote/paraphrase citation instructions...");
   const prompt = buildPrompt(candidates);
-  writeFileSync(join(outputDir, "quote-citation-test.prompt.txt"), prompt, "utf-8");
+  writeFileSync(join(outputDir, `${prefix}.prompt.txt`), prompt, "utf-8");
 
   console.log("Calling language model for Emergent Axis Discovery with Quote/Paraphrase schema...");
   const model = getLanguageModel();
@@ -332,8 +364,8 @@ async function main() {
 
   // Save raw output
   writeFileSync(
-    join(outputDir, "quote-citation-test.raw.json"),
-    JSON.stringify({ duration_ms: durationMs, usage, result }, null, 2),
+    join(outputDir, `${prefix}.raw.json`),
+    JSON.stringify({ order, duration_ms: durationMs, usage, result }, null, 2),
     "utf-8"
   );
 
@@ -349,7 +381,7 @@ async function main() {
 
   // Save audit JSON
   writeFileSync(
-    join(outputDir, "quote-citation-test.audit.json"),
+    join(outputDir, `${prefix}.audit.json`),
     JSON.stringify(audits, null, 2),
     "utf-8"
   );
@@ -365,7 +397,7 @@ async function main() {
   const paraphraseCites = audits.filter((a) => a.citation_mode === "paraphrase");
 
   console.log("\n=======================================================");
-  console.log("                CITATION AUDIT RESULTS                 ");
+  console.log(`      CITATION AUDIT RESULTS (${order.toUpperCase()})      `);
   console.log("=======================================================");
   console.log(`Total Citations Generated      : ${total}`);
   console.log(`  - Direct Quotes Requested    : ${quoteCites.length}`);
@@ -379,15 +411,15 @@ async function main() {
   console.log("=======================================================\n");
 
   // Build markdown report
-  let md = `# Quote & Paraphrase Citation Accuracy Experiment (Isolated Test)
+  let md = `# Quote & Paraphrase Citation Accuracy Experiment (${order === "inside-out" ? "Inside-Out Permuted" : "Canonical"} Order)
 
 ## 1. Executive Summary
 
 This isolated benchmark tests whether the LLM in **Raw Mode** can reliably cite its evidence when given the freedom to use **direct verbatim quotes** or **natural paraphrasing**, instead of rigid pointer IDs (like \`work_1\` or \`c1\`).
 
-All 30 raw candidate CVs (~21,000 prompt tokens) were fed into the model with instructions to back each discovered axis with exact quotes or accurate paraphrases.
-
-### Overall Benchmark Accuracy ($N = ${total}$ Citations)
+- **Order Mode**: \`${order}\` (30 raw candidates, ~21,000 prompt tokens)
+${order === "inside-out" ? "- **Permutation Details**: Middle candidates 9-15 and 16-22 moved to outer edges; candidates 1-8 and 23-30 placed in the middle.\n" : ""}
+### Benchmark Accuracy ($N = ${total}$ Citations)
 
 | Citation Verification Category | Count | Percentage | Layman Interpretation |
 |---|:---:|:---:|---|
@@ -425,23 +457,14 @@ All 30 raw candidate CVs (~21,000 prompt tokens) were fed into the model with in
 
   md += `---
 
-## 3. Key Findings: What Happens When AI Uses Quotes/Paraphrasing on Raw CVs?
+## 3. Key Findings
 
-1. **Massive Improvement Over Pointer IDs**:
-   - In the prior raw test requiring ID tags, **95.9% of citations failed hydration** because the model hallucinated fake tags like \`work_1\`.
-   - When allowed to quote or paraphrase, **${(((exactQuotes + accurateParaphrases) / total) * 100).toFixed(1)}%** of the citations were factually verified against the candidate's actual document.
-
-2. **The Trade-Off: Verbatim Quotes vs. Paraphrase Laundering**:
-   - When the model attempts direct quotes, it frequently paraphrases slightly anyway (${minorDistortions} minor misquotes/distortions).
-   - In an automated software UI, searching for a paraphrased quote in a raw document requires fuzzy text search, which is slower and less reliable than Mechanism E's $O(1)$ database pointers.
-
-3. **Comparison Against Mechanism E**:
-   - **Raw Mode with Quotes/Paraphrase**: ~${(((exactQuotes + accurateParaphrases) / total) * 100).toFixed(1)}% accurate, requires ~22,000 prompt tokens per run, and requires complex fuzzy text search to find quotes.
-   - **Mechanism E**: **100% accurate verbatim quote hydration**, uses only ~3,900 tokens (5.00x smaller), and resolves quotes instantly via deterministic database IDs.
+1. **Factual Accuracy in ${order} order**: ${(((exactQuotes + accurateParaphrases) / total) * 100).toFixed(1)}% of citations verified cleanly against source resumes.
+2. **Hallucination & Contamination**: ${hallucinations} out of ${total} citations (${((hallucinations / total) * 100).toFixed(1)}%) suffered from factual fabrication or candidate cross-contamination.
 `;
 
-  writeFileSync(join(outputDir, "quote-citation-test.report.md"), md, "utf-8");
-  console.log(`Report written to: ${join(outputDir, "quote-citation-test.report.md")}`);
+  writeFileSync(join(outputDir, `${prefix}.report.md`), md, "utf-8");
+  console.log(`Report written to: ${join(outputDir, `${prefix}.report.md`)}`);
 }
 
 main().catch((err) => {
