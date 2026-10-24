@@ -209,7 +209,7 @@ function buildGoldenDemoRanking(
       pairwise_losses: 0,
       latin_square_avg_rank: 1.25,
       headline_rationale:
-        "Decisive #1 contender with 4-0 pairwise sweep and #1.25 Latin-Square average. Proven scale across Retailo 18k rps Go order-routing [c1], 45M-row Postgres ledger [c2], PKR 120M/mo settlement [c4], and 1.4k-star OSS go-rate-limit maintainership [s1].",
+        "Clear #1 overall pick — won all 4 head-to-head comparisons against the other finalists. He combines high-throughput Go order-routing at Retailo (18k requests/sec), a 45M-row partitioned PostgreSQL ledger handling PKR 120M/month in settlements, and maintainership of a 1,400-star open-source Go rate-limiting library.",
       contested_with: null,
       supporting_claims: [
         hydrateClaim("cand_tariq", "c1", indexedDigests),
@@ -227,7 +227,7 @@ function buildGoldenDemoRanking(
       pairwise_losses: 1,
       latin_square_avg_rank: 1.75,
       headline_rationale:
-        "Decisive #2 contender with 3 pairwise wins, falling only to Tariq. Exceptional engineering caliber across Motive 25k rps Go telemetry dispatch [c1], 60M-event partitioned Postgres [c2], and NUST 3.78 CGPA [header].",
+        "Clear #2 pick — won 3 of 4 head-to-head matchups (trailing only Tariq Mehmood). She brings exceptional scale from Motive across 25k requests/sec Go telemetry dispatch, a 60M-event partitioned PostgreSQL pipeline, and a 3.78 CGPA from NUST.",
       contested_with: null,
       supporting_claims: [
         hydrateClaim("cand_zainab_misses_pref", "c1", indexedDigests),
@@ -244,9 +244,9 @@ function buildGoldenDemoRanking(
       pairwise_losses: 2,
       latin_square_avg_rank: 3.25,
       headline_rationale:
-        "Tied for #3 slot with Ayesha Malik. Demonstrates high-volume financial transaction dispatch (35k events/min) and Postgres vacuum optimization, but head-to-head evaluation splits based on presentation order.",
+        "Tied for #3 with Ayesha Malik. He brings direct financial transaction experience at Systems Ltd (35k events/min in Go) and deep PostgreSQL vacuum tuning that cut database CPU throttling by 40%.",
       contested_with:
-        "Tied head-to-head with Ayesha Malik (verdict flipped when presentation order reversed). Hamza leads on direct financial ledger adjacency (35k events/min Golang dispatch at Systems Ltd [c1]) and Postgres vacuum tuning (-40% CPU throttling [c2]).",
+        "Choose Hamza Naveed if your team prioritizes direct financial ledger experience (35k events/min Go transaction dispatch at Systems Ltd) and hands-on PostgreSQL vacuum and indexing optimization (-40% CPU throttling).",
       supporting_claims: [
         hydrateClaim("cand_hamza_gem", "c1", indexedDigests),
         hydrateClaim("cand_hamza_gem", "c2", indexedDigests),
@@ -261,9 +261,9 @@ function buildGoldenDemoRanking(
       pairwise_losses: 2,
       latin_square_avg_rank: 3.25,
       headline_rationale:
-        "Tied for #3 slot with Hamza Naveed. Demonstrates peak raw throughput (22k rps Go indexing at Dubizzle Labs with sub-20ms p99), but head-to-head evaluation splits based on presentation order.",
+        "Tied for #3 with Hamza Naveed. She demonstrates higher raw request throughput (22k requests/sec Go search indexing at Dubizzle Labs with sub-20ms p99 latency), though her location and salary expectations were left unstated on her resume.",
       contested_with:
-        "Tied head-to-head with Hamza Naveed (verdict flipped when presentation order reversed). Ayesha leads on raw request throughput (22k rps Go search indexing with sub-20ms p99 at Dubizzle Labs [c1]), though location and salary expectations are unstated.",
+        "Choose Ayesha Malik if your team prioritizes raw low-latency request throughput (22k requests/sec Go search indexing with sub-20ms p99 latency at Dubizzle Labs), and you are comfortable confirming location and compensation during screening.",
       supporting_claims: [
         hydrateClaim("cand_ayesha_silent", "c1", indexedDigests),
         hydrateClaim("cand_ayesha_silent", "work_1", indexedDigests),
@@ -725,9 +725,9 @@ function buildGoldenDemoRanking(
   return {
     top3_status: "contested",
     summary:
-      "Mechanism E tournament resolved 6 viable contenders down to Tariq Mehmood (#1) and Zainab Bibi (#2) with clean pairwise sweeps. The #3 finalist slot is contested between Hamza Naveed and Ayesha Malik due to an order-flip pairwise tie across bidirectional evaluation.",
+      "After checking all 9 applicants against the mandatory role requirements and comparing the 6 qualified engineers head-to-head in both reading orders, Tariq Mehmood (#1) and Zainab Bibi (#2) stood out as unanimous winners. The #3 spot is a close call between Hamza Naveed (financial transaction pipelines & PostgreSQL tuning) and Ayesha Malik (22k requests/sec low-latency search indexing)—both are shown below so you can decide which strength matters more for your team.",
     emergent_pool_summary:
-      "Viable engineering pool separates along high-throughput concurrency (>15k rps), multi-million row partitioned relational databases, verifiable primary ownership, and open-source or academic distinction.",
+      "Among the engineers who met the baseline requirements, the strongest candidates separated themselves across 4 practical areas: high-throughput Go services (>15k requests/sec), large-scale partitioned PostgreSQL databases, verified hands-on ownership vs. keyword listing, and open-source or academic distinction.",
     top_candidates: topCandidates,
     emergent_axes: emergentAxes,
     telemetry: {
@@ -925,12 +925,14 @@ function buildGeneralPoolRanking(
     }
   }
 
-  const topNames = topCandidates.map((c) => c.candidate_id).join(", ");
+  const topNames = top3Candidates
+    .map((c) => c.candidate.identity.name || c.candidate.id)
+    .join(", ");
 
   return {
     top3_status: "confident",
-    summary: `Mechanism E tournament resolved ${viable.length} viable contenders down to Top 3 finalists: ${topNames}.`,
-    emergent_pool_summary: `Candidate pool evaluated across production systems scale, database integrity, verified ownership, and distinctive accomplishments.`,
+    summary: `After reviewing ${viable.length} qualified applicants and comparing the top finalists head-to-head across multiple reading orders, the top recommended candidates are ${topNames}.`,
+    emergent_pool_summary: `Across this applicant pool, the strongest candidates separated themselves through hands-on system ownership, database and architecture depth, career progression, and standout technical projects.`,
     top_candidates: topCandidates,
     emergent_axes: emergentAxes,
     telemetry: {

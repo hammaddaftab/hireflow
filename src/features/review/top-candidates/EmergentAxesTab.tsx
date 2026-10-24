@@ -1,4 +1,4 @@
-// Emergent Axes Tab displaying pool-relative differentiating criteria and anchoring citations
+// Emergent Axes Tab displaying natural pool-relative criteria and resume examples
 
 import React from "react";
 import { Compass, Filter, ExternalLink } from "lucide-react";
@@ -12,6 +12,16 @@ export interface EmergentAxesTabProps {
   queueMap: Map<string, CandidateReviewItem>;
   onJumpToCandidate: (candidateId: string) => void;
   onFilterCandidateIds?: (candidateIds: string[], label: string) => void;
+}
+
+// Strips internal bracket tags like ([action]), ([peripheral]), [c1], [s2] from axis text
+function cleanAxisProse(text: string): string {
+  return text
+    .replace(/\s*\(\[(?:action|peripheral|action_attributed|peripheral_action|listed|unanchored_claim)\]\)/gi, "")
+    .replace(/\s*\[(?:action|peripheral|action_attributed|peripheral_action|listed|unanchored_claim)\]/gi, "")
+    .replace(/\s*\[(?:[cs]\d+|work_\d+|header)(?:,\s*(?:[cs]\d+|work_\d+|header))*\]/gi, "")
+    .replace(/\s{2,}/g, " ")
+    .trim();
 }
 
 export function EmergentAxesTab({
@@ -29,17 +39,19 @@ export function EmergentAxesTab({
         </div>
         <div className="space-y-1">
           <h4 className="text-xs font-bold uppercase tracking-wider text-primary">
-            Emergent Pool Summary
+            How This Applicant Pool Separates
           </h4>
           <p className="text-sm text-on-surface leading-relaxed font-medium">
-            {poolSummary ||
-              "Discovered 4 orthogonal, pool-relative differentiating axes derived from verified claims to serve as a calibrated yardstick for candidate evaluation."}
+            {cleanAxisProse(
+              poolSummary ||
+                "Instead of using a rigid checklist, the AI read every qualified resume to see what truly sets the strongest applicants apart in this specific pool."
+            )}
           </p>
         </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {axes.map((axis) => {
+        {axes.map((axis, axisIdx) => {
           // Collect candidate IDs anchoring this axis
           const citedCandidateIds = Array.from(
             new Set(axis.supporting_claims.map((sc) => sc.candidate_id))
@@ -53,50 +65,50 @@ export function EmergentAxesTab({
               <div>
                 <div className="flex flex-wrap items-start justify-between gap-2 mb-2.5">
                   <div>
-                    <span className="font-mono text-[10px] font-bold px-2 py-0.5 rounded bg-primary/10 text-primary">
-                      {axis.axis_id.toUpperCase()}
+                    <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-primary/10 text-primary">
+                      Differentiator #{axisIdx + 1}
                     </span>
-                    <h3 className="text-sm font-bold text-on-surface mt-1 tracking-tight">
+                    <h3 className="text-sm font-bold text-on-surface mt-1.5 tracking-tight">
                       {axis.label}
                     </h3>
                   </div>
                   <div className="flex items-center gap-1.5">
-                    <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant border border-outline-variant/30">
+                    <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant border border-outline-variant/30 capitalize">
                       {axis.category.replace(/_/g, " ")}
                     </span>
-                    <span className="text-[11px] font-mono font-bold px-2 py-0.5 rounded-full bg-surface-container text-on-surface border border-outline-variant/30">
+                    <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-surface-container text-on-surface border border-outline-variant/30">
                       {axis.estimated_pool_prevalence}
                     </span>
                   </div>
                 </div>
 
                 <p className="text-xs text-on-surface-variant leading-relaxed mb-4">
-                  {axis.rationale}
+                  {cleanAxisProse(axis.rationale)}
                 </p>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mb-4 text-xs">
                   <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/25">
                     <p className="text-[10px] font-bold uppercase tracking-wider text-emerald-800 dark:text-emerald-300 mb-1">
-                      Strong Benchmark ([action] required)
+                      What Top Candidates Showed
                     </p>
                     <p className="text-[11px] text-emerald-950/90 dark:text-emerald-200/90 leading-relaxed">
-                      {axis.strong_criteria}
+                      {cleanAxisProse(axis.strong_criteria)}
                     </p>
                   </div>
 
                   <div className="p-3 rounded-xl bg-surface-container/80 border border-outline-variant/30">
                     <p className="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant mb-1">
-                      Moderate Benchmark
+                      Typical Applicant Baseline
                     </p>
                     <p className="text-[11px] text-on-surface-variant/90 leading-relaxed">
-                      {axis.moderate_criteria}
+                      {cleanAxisProse(axis.moderate_criteria)}
                     </p>
                   </div>
                 </div>
 
                 <div className="space-y-2 mb-3">
                   <p className="text-[10px] uppercase font-bold tracking-wider text-on-surface-variant">
-                    Anchoring Claims & Contenders
+                    Examples from Applicant Resumes
                   </p>
                   <div className="space-y-1.5 max-h-40 overflow-y-auto pr-1">
                     {axis.supporting_claims.map((claim, idx) => {
@@ -107,24 +119,21 @@ export function EmergentAxesTab({
                       return (
                         <div
                           key={`${claim.candidate_id}-${claim.ref_id}-${idx}`}
-                          className="flex items-center justify-between gap-2 p-2 rounded-xl bg-surface/70 border border-outline-variant/30 text-xs"
+                          className="flex items-center justify-between gap-2 p-2.5 rounded-xl bg-surface/70 border border-outline-variant/30 text-xs"
                         >
                           <div className="min-w-0 flex-1">
                             <div className="flex items-center gap-1.5">
                               <span className="font-semibold text-on-surface text-[11px] truncate">
                                 {candidateName}
                               </span>
-                              <span className="font-mono text-[10px] px-1.5 py-0.2 rounded bg-surface-container font-bold text-primary">
-                                [{claim.ref_id}]
-                              </span>
                             </div>
                             {claim.evidence_span ? (
-                              <p className="text-[10px] text-on-surface-variant italic truncate mt-0.5">
+                              <p className="text-[11px] text-on-surface-variant italic truncate mt-0.5">
                                 &quot;{claim.evidence_span}&quot;
                               </p>
                             ) : claim.digest_line ? (
-                              <p className="text-[10px] text-on-surface-variant truncate mt-0.5">
-                                {claim.digest_line}
+                              <p className="text-[11px] text-on-surface-variant truncate mt-0.5">
+                                {claim.digest_line.replace(/^\[[^\]]+\]\s*/, "")}
                               </p>
                             ) : null}
                           </div>
@@ -133,7 +142,7 @@ export function EmergentAxesTab({
                             type="button"
                             onClick={() => onJumpToCandidate(claim.candidate_id)}
                             className="p-1 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors cursor-pointer shrink-0"
-                            title={`Inspect ${candidateName}`}
+                            title={`View ${candidateName}`}
                           >
                             <ExternalLink className="h-3 w-3" />
                           </button>
@@ -156,10 +165,10 @@ export function EmergentAxesTab({
                       )
                     }
                     className="h-7 px-2.5 gap-1.5 text-xs font-semibold rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface border border-outline-variant/30 cursor-pointer"
-                    title={`Filter queue to candidates anchoring ${axis.label}`}
+                    title={`Filter queue to candidates demonstrating ${axis.label}`}
                   >
                     <Filter className="h-3 w-3 shrink-0" />
-                    <span>Filter Queue to Axis Contenders</span>
+                    <span>Show Matching Candidates ({citedCandidateIds.length})</span>
                   </Button>
                 </div>
               )}

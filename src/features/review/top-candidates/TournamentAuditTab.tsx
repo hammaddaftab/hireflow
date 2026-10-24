@@ -1,12 +1,9 @@
-// Tournament Audit Tab displaying bias cancellation across Stages 0, 2, and 3
+// Tournament Audit Tab displaying how AI compared candidates fairly across rounds
 
 import React, { useState } from "react";
 import { CheckCircle2, AlertTriangle, ShieldCheck, Scale, Split, XCircle } from "lucide-react";
 import type {
   TopCandidatesRankingResult,
-  PairwiseMatchupTelemetry,
-  LatinSquareOrderingTelemetry,
-  HalvingRoundTelemetry,
 } from "@/entities/extraction/matching/topCandidatesRanking";
 import type { CandidateReviewItem } from "../types";
 
@@ -14,6 +11,14 @@ export interface TournamentAuditTabProps {
   ranking: TopCandidatesRankingResult;
   queueMap: Map<string, CandidateReviewItem>;
   onJumpToCandidate: (candidateId: string) => void;
+}
+
+// Strips internal bracket citation codes like [c1], [s2], [header], [work_1] from prose
+function cleanAuditText(text: string): string {
+  return text
+    .replace(/\s*\[(?:[cs]\d+|work_\d+|header)(?:,\s*(?:[cs]\d+|work_\d+|header))*\]/gi, "")
+    .replace(/\s{2,}/g, " ")
+    .trim();
 }
 
 export function TournamentAuditTab({
@@ -46,7 +51,7 @@ export function TournamentAuditTab({
           }`}
         >
           <Scale className="h-3.5 w-3.5 shrink-0" />
-          <span>Stage 3B: Pairwise Matrix ({pairwiseMatchups.length})</span>
+          <span>Head-to-Head Matchups ({pairwiseMatchups.length})</span>
         </button>
 
         <button
@@ -59,7 +64,7 @@ export function TournamentAuditTab({
           }`}
         >
           <Split className="h-3.5 w-3.5 shrink-0" />
-          <span>Stage 3A: Latin-Square Permutations ({latinSquareOrderings.length})</span>
+          <span>Reading-Order Checks ({latinSquareOrderings.length})</span>
         </button>
 
         <button
@@ -72,7 +77,7 @@ export function TournamentAuditTab({
           }`}
         >
           <ShieldCheck className="h-3.5 w-3.5 shrink-0" />
-          <span>Stage 2: Halving Telemetry ({halvingRounds.length})</span>
+          <span>Qualifying Rounds ({halvingRounds.length})</span>
         </button>
 
         <button
@@ -85,7 +90,7 @@ export function TournamentAuditTab({
           }`}
         >
           <XCircle className="h-3.5 w-3.5 shrink-0" />
-          <span>Stage 0: Gatekeeper Knockouts ({knockedOut.length})</span>
+          <span>Requirement Knockouts ({knockedOut.length})</span>
         </button>
       </div>
 
@@ -95,12 +100,10 @@ export function TournamentAuditTab({
             <Scale className="h-4 w-4 text-primary shrink-0 mt-0.5" />
             <div>
               <p className="font-bold text-on-surface mb-0.5">
-                Bidirectional Pairwise Positional Bias Cancellation
+                Two-Way Head-to-Head Comparisons
               </p>
               <p className="leading-relaxed">
-                Each finalist matchup is evaluated in both presentation orders (A vs B, and B vs A).
-                A clean win requires winning both directions. If the verdict flips when presentation order reverses,
-                the matchup is marked as an order-flip tie, preventing presentation-order bias from inflating ratings.
+                To make sure the AI doesn&apos;t simply favor whichever resume it reads second, every pair of finalists is compared twice—once with Candidate A first, and once with Candidate B first. A candidate only earns a clean win if they win both ways; otherwise, it is marked as a close tie for you to decide.
               </p>
             </div>
           </div>
@@ -111,10 +114,10 @@ export function TournamentAuditTab({
                 <thead className="bg-surface-container border-b border-outline-variant/40 text-[11px] font-bold uppercase tracking-wider text-on-surface-variant">
                   <tr>
                     <th className="px-4 py-3">Matchup</th>
-                    <th className="px-4 py-3">Forward Order (A vs B)</th>
-                    <th className="px-4 py-3">Reverse Order (B vs A)</th>
-                    <th className="px-4 py-3">Resolved Outcome</th>
-                    <th className="px-4 py-3">Decisive Factors</th>
+                    <th className="px-4 py-3">Pass 1 (A then B)</th>
+                    <th className="px-4 py-3">Pass 2 (B then A)</th>
+                    <th className="px-4 py-3">Final Verdict</th>
+                    <th className="px-4 py-3">Why They Won / Tied</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-outline-variant/30 text-on-surface">
@@ -174,18 +177,18 @@ export function TournamentAuditTab({
                           {isTie ? (
                             <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-800 dark:text-amber-300 font-bold text-[11px] border border-amber-500/30">
                               <AlertTriangle className="h-3 w-3 shrink-0" />
-                              Order-Flip Tie
+                              Close Tie
                             </span>
                           ) : (
                             <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 font-bold text-[11px] border border-emerald-500/30">
                               <CheckCircle2 className="h-3 w-3 shrink-0" />
-                              Clean Win
+                              Unanimous Win
                             </span>
                           )}
                         </td>
 
                         <td className="px-4 py-3 text-xs leading-relaxed max-w-sm text-on-surface-variant font-medium">
-                          {matchup.decisive_reasons}
+                          {cleanAuditText(matchup.decisive_reasons)}
                         </td>
                       </tr>
                     );
@@ -203,11 +206,10 @@ export function TournamentAuditTab({
             <Split className="h-4 w-4 text-primary shrink-0 mt-0.5" />
             <div>
               <p className="font-bold text-on-surface mb-0.5">
-                Latin-Square Positional Rotation Table
+                Rotated Reading-Order Checks
               </p>
               <p className="leading-relaxed">
-                Finalists are rotated across 4 distinct Latin-Square ordering permutations so every candidate is evaluated
-                in multiple positions (early, middle, late). The final ranking reflects the balanced average position across all runs.
+                Finalists are full-read in 4 rotated reading orders so every candidate gets a fair turn being read first, in the middle, and last. Their average rank across all 4 passes determines the top contenders.
               </p>
             </div>
           </div>
@@ -220,11 +222,11 @@ export function TournamentAuditTab({
                     <th className="px-4 py-3">Finalist</th>
                     {latinSquareOrderings.map((run, i) => (
                       <th key={run.permutation_index} className="px-4 py-3">
-                        Run {i + 1} Rank
+                        Order {i + 1} Rank
                       </th>
                     ))}
-                    <th className="px-4 py-3">Averaged Rank</th>
-                    <th className="px-4 py-3">Primary Standing Notes</th>
+                    <th className="px-4 py-3">Average Rank</th>
+                    <th className="px-4 py-3">Key Notes</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-outline-variant/30 text-on-surface">
@@ -243,7 +245,7 @@ export function TournamentAuditTab({
 
                     const firstNote =
                       latinSquareOrderings[0]?.rankings.find((r) => r.candidate_id === candidateId)
-                        ?.comparative_notes || "Consistently ranked across permutations.";
+                        ?.comparative_notes || "Consistently ranked across reading orders.";
 
                     return (
                       <tr key={candidateId} className="hover:bg-surface-container/50 transition-colors">
@@ -268,7 +270,7 @@ export function TournamentAuditTab({
                         </td>
 
                         <td className="px-4 py-3 text-on-surface-variant text-xs leading-relaxed max-w-sm">
-                          {firstNote}
+                          {cleanAuditText(firstNote)}
                         </td>
                       </tr>
                     );
@@ -286,11 +288,10 @@ export function TournamentAuditTab({
             <ShieldCheck className="h-4 w-4 text-primary shrink-0 mt-0.5" />
             <div>
               <p className="font-bold text-on-surface mb-0.5">
-                Stage 2 Halving Forward/Reverse Group Evaluation
+                Small-Batch Qualifying Rounds
               </p>
               <p className="leading-relaxed">
-                Viable contenders are evaluated in forward and reverse orders to cancel first-seen vs last-seen bias.
-                Exceptional out-of-band spikes are preserved via the outside-axes standout override.
+                Instead of reading 30 resumes at once (where AI loses focus in the middle of a long list), candidates are reviewed in small groups of up to 8—read both top-to-bottom and bottom-to-top—so no strong candidate gets overlooked.
               </p>
             </div>
           </div>
@@ -298,7 +299,7 @@ export function TournamentAuditTab({
           {halvingRounds.map((round) => (
             <div key={round.round_number} className="space-y-3">
               <h4 className="text-xs font-bold uppercase tracking-wider text-on-surface-variant">
-                Halving Round {round.round_number} ({round.input_candidate_count} Contenders &rarr; {round.survivor_count} Survivors)
+                Qualifying Round {round.round_number} ({round.input_candidate_count} Applicants &rarr; {round.survivor_count} Advanced)
               </h4>
 
               {round.groups.map((group) => (
@@ -314,12 +315,12 @@ export function TournamentAuditTab({
                       <thead className="bg-surface-container/60 border-b border-outline-variant/30 text-[11px] font-bold uppercase tracking-wider text-on-surface-variant">
                         <tr>
                           <th className="px-4 py-2.5">Candidate</th>
-                          <th className="px-4 py-2.5">Forward Rank</th>
-                          <th className="px-4 py-2.5">Reverse Rank</th>
+                          <th className="px-4 py-2.5">Pass 1 Rank</th>
+                          <th className="px-4 py-2.5">Pass 2 Rank</th>
                           <th className="px-4 py-2.5">Average Rank</th>
-                          <th className="px-4 py-2.5">Standout Override</th>
-                          <th className="px-4 py-2.5">Status</th>
-                          <th className="px-4 py-2.5">Rationale</th>
+                          <th className="px-4 py-2.5">Unique Spike</th>
+                          <th className="px-4 py-2.5">Outcome</th>
+                          <th className="px-4 py-2.5">Why</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-outline-variant/30 text-on-surface">
@@ -345,7 +346,7 @@ export function TournamentAuditTab({
                               <td className="px-4 py-3 whitespace-nowrap">
                                 {item.outside_axes_standout ? (
                                   <span className="px-2 py-0.5 rounded-full bg-primary/15 text-primary font-bold text-[10px]">
-                                    Standout Preserved
+                                    Standout Achievement
                                   </span>
                                 ) : (
                                   <span className="text-on-surface-variant text-[11px]">-</span>
@@ -358,12 +359,12 @@ export function TournamentAuditTab({
                                   </span>
                                 ) : (
                                   <span className="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-bold text-[10px]">
-                                    Eliminated
+                                    Filtered Out
                                   </span>
                                 )}
                               </td>
                               <td className="px-4 py-3 text-xs leading-relaxed text-on-surface-variant max-w-sm">
-                                {item.rationale}
+                                {cleanAuditText(item.rationale)}
                               </td>
                             </tr>
                           );
@@ -384,18 +385,17 @@ export function TournamentAuditTab({
             <XCircle className="h-4 w-4 text-rose-600 dark:text-rose-400 shrink-0 mt-0.5" />
             <div>
               <p className="font-bold text-on-surface mb-0.5">
-                Deterministic Stage 0 Gatekeeper Contradiction Knockouts
+                Mandatory Job Requirement Checks
               </p>
               <p className="leading-relaxed">
-                Before AI emergent axes or tournaments run, candidates with hard contradicted blocking requirements
-                (such as missing mandatory skills or deficient years of full-time experience) are eliminated deterministically.
+                Before ranking candidates against each other, anyone whose resume explicitly contradicts a non-negotiable requirement (such as required years of experience or mandatory core skills) is filtered out upfront.
               </p>
             </div>
           </div>
 
           {knockedOut.length === 0 ? (
             <div className="p-8 text-center rounded-2xl bg-surface-container-low border border-dashed border-outline-variant text-on-surface-variant text-xs">
-              No candidates in this pool were knocked out by deterministic Stage 0 gates.
+              All candidates in this pool met the mandatory baseline requirements.
             </div>
           ) : (
             <div className="space-y-3">
@@ -409,18 +409,15 @@ export function TournamentAuditTab({
                       <h4 className="text-sm font-bold text-on-surface">
                         {cand.candidate_name}
                       </h4>
-                      <p className="text-[11px] font-mono text-on-surface-variant">
-                        ID: {cand.candidate_id}
-                      </p>
                     </div>
                     <span className="px-2 py-0.5 rounded-full bg-rose-500/15 text-rose-800 dark:text-rose-300 font-bold text-[10px] border border-rose-500/30">
-                      Knocked Out (Stage 0)
+                      Did Not Meet Baseline Requirements
                     </span>
                   </div>
 
                   <div className="space-y-1.5 pt-1">
                     <p className="text-[11px] uppercase font-bold tracking-wider text-rose-700 dark:text-rose-400">
-                      Blocking Contradictions:
+                      Missing Mandatory Criteria:
                     </p>
                     <div className="space-y-1.5">
                       {cand.contradictions.map((c, i) => (

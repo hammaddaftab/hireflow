@@ -1,4 +1,4 @@
-// Top Candidates Modal displaying Mechanism E Tournament Results, Emergent Axes, and Bias Audits
+// Top Candidates Modal presenting AI shortlist recommendations, differentiating criteria, and comparison proof
 
 import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { X, Play, Filter, Trophy, Compass, ShieldCheck, RefreshCw, AlertCircle } from "lucide-react";
@@ -48,7 +48,7 @@ export function TopCandidatesModal({
     return map;
   }, [queue]);
 
-  // Load deterministic or cached ranking on open or when candidate pool size changes
+  // Load ranking on open or when candidate pool size changes
   const fetchRanking = useCallback(async () => {
     setIsLoading(true);
     setErrorMessage(null);
@@ -56,7 +56,7 @@ export function TopCandidatesModal({
       const res = await fetch(`/api/jobs/${job.id}/top-candidates`);
       const data = await res.json();
       if (!res.ok || data.error) {
-        throw new Error(data.error || "Failed to load top candidates ranking");
+        throw new Error(data.error || "Failed to load top candidates shortlist");
       }
       setRanking(data.ranking);
       setMode(data.mode || "instant");
@@ -64,7 +64,7 @@ export function TopCandidatesModal({
       setUnrankedNames(Array.isArray(data.unrankedCandidateNames) ? data.unrankedCandidateNames : []);
     } catch (err) {
       setErrorMessage(
-        err instanceof Error ? err.message : "Failed to load tournament data"
+        err instanceof Error ? err.message : "Failed to load shortlist recommendations"
       );
     } finally {
       setIsLoading(false);
@@ -77,7 +77,7 @@ export function TopCandidatesModal({
     }
   }, [isOpen, queue.length, fetchRanking]);
 
-  // Run Live AI Tournament
+  // Run Live AI Re-Evaluation
   const handleRunLiveTournament = async () => {
     setIsRunningLive(true);
     setErrorMessage(null);
@@ -89,18 +89,17 @@ export function TopCandidatesModal({
       });
       const data = await res.json();
       if (!res.ok || data.error) {
-        throw new Error(data.error || "Failed to run live tournament");
+        throw new Error(data.error || "Failed to re-evaluate candidates");
       }
       setRanking(data.ranking);
       setMode(data.mode || "live");
       setUnrankedNames([]);
       if (data.warnings && data.warnings.length > 0) {
-        // Display any informative warnings
-        console.warn("Tournament warnings:", data.warnings);
+        console.warn("Evaluation warnings:", data.warnings);
       }
     } catch (err) {
       setErrorMessage(
-        err instanceof Error ? err.message : "Live tournament failed"
+        err instanceof Error ? err.message : "Live evaluation failed"
       );
     } finally {
       setIsRunningLive(false);
@@ -143,7 +142,7 @@ export function TopCandidatesModal({
               <div>
                 <div className="flex items-center gap-2">
                   <h2 className="text-base sm:text-lg font-bold text-on-surface tracking-tight">
-                    Mechanism E Top Candidates Tournament
+                    Top Candidates Recommendation
                   </h2>
                   {ranking && (
                     <span
@@ -154,13 +153,13 @@ export function TopCandidatesModal({
                       }`}
                     >
                       {ranking.top3_status === "contested"
-                        ? "Contested #3 Slot"
-                        : "Confident Top 3"}
+                        ? "Clear Top 2 + Tie for #3"
+                        : "Clear Top 3"}
                     </span>
                   )}
                 </div>
                 <p className="text-xs text-on-surface-variant font-medium mt-0.5">
-                  Positionally-balanced tournament ranking for {job.title}
+                  AI shortlist for {job.title} — backed by direct quotes from each applicant&apos;s resume
                 </p>
               </div>
             </div>
@@ -178,10 +177,10 @@ export function TopCandidatesModal({
                     onClose();
                   }}
                   className="h-8 px-3 gap-1.5 text-xs font-semibold rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface border border-outline-variant/40 cursor-pointer"
-                  title="Filter review queue to top candidates"
+                  title="Show only these top picks in the main review queue"
                 >
                   <Filter className="h-3.5 w-3.5 shrink-0" />
-                  <span>Filter Queue to Top Picks</span>
+                  <span>Show Only Top Picks in Queue</span>
                 </Button>
               )}
 
@@ -192,7 +191,7 @@ export function TopCandidatesModal({
                   onClick={handleRunLiveTournament}
                   disabled={isRunningLive}
                   className="h-8 px-3 gap-1.5 text-xs font-bold rounded-xl bg-primary text-on-primary hover:bg-primary/90 border-0 cursor-pointer shadow-xs disabled:opacity-50"
-                  title="Execute live multi-pass tournament via LLM"
+                  title="Re-run AI evaluation across all current applicants"
                 >
                   {isRunningLive ? (
                     <RefreshCw className="h-3.5 w-3.5 shrink-0 animate-spin" />
@@ -200,7 +199,7 @@ export function TopCandidatesModal({
                     <Play className="h-3.5 w-3.5 shrink-0" />
                   )}
                   <span>
-                    {isRunningLive ? "Running Tournament..." : "Run Live AI Tournament"}
+                    {isRunningLive ? "Evaluating Candidates..." : "Re-evaluate Pool with AI"}
                   </span>
                 </Button>
               )}
@@ -218,21 +217,21 @@ export function TopCandidatesModal({
           </div>
 
           <div className="flex flex-wrap items-center justify-between gap-2 text-xs pt-1 border-t border-outline-variant/20">
-            <div className="flex items-center gap-1.5 font-mono text-[11px] text-on-surface-variant">
-              <span className="font-semibold text-on-surface">{totalPool} Pool</span>
+            <div className="flex items-center gap-1.5 text-[11px] text-on-surface-variant">
+              <span className="font-semibold text-on-surface">{totalPool} Resumes Reviewed</span>
               <span>&rarr;</span>
-              <span className="font-semibold text-on-surface">{viableCount} Viable</span>
+              <span className="font-semibold text-on-surface">{viableCount} Qualified</span>
               <span>&rarr;</span>
-              <span className="font-semibold text-on-surface">{finalistsCount} Finalists</span>
+              <span className="font-semibold text-on-surface">{finalistsCount} Finalists Deep-Read</span>
               <span>&rarr;</span>
               <span className="font-bold text-primary">
-                {ranking?.top3_status === "contested" ? "Top 3 (4 Contenders)" : "Top 3"}
+                {ranking?.top3_status === "contested" ? "Top 4 Shortlisted (Tie at #3)" : "Top 3 Shortlisted"}
               </span>
             </div>
 
             <div className="flex items-center gap-2">
-              <span className="text-[11px] font-mono px-2 py-0.5 rounded-full bg-surface-container font-semibold text-on-surface-variant border border-outline-variant/30">
-                Mode: {mode === "live" ? "Live Multi-Pass Tournament" : "Instant Seeded Benchmark"}
+              <span className="text-[11px] px-2.5 py-0.5 rounded-full bg-surface-container font-medium text-on-surface-variant border border-outline-variant/30">
+                {mode === "live" ? "Updated Live" : "Bias-Checked AI Shortlist"}
               </span>
             </div>
           </div>
@@ -250,7 +249,7 @@ export function TopCandidatesModal({
               }`}
             >
               <Trophy className="h-3.5 w-3.5 shrink-0" />
-              <span>Top 3 Resolution</span>
+              <span>Recommended Top Picks</span>
             </button>
 
             <button
@@ -263,7 +262,7 @@ export function TopCandidatesModal({
               }`}
             >
               <Compass className="h-3.5 w-3.5 shrink-0" />
-              <span>Emergent Pool Axes (Stage 1)</span>
+              <span>What Set Them Apart</span>
             </button>
 
             <button
@@ -276,7 +275,7 @@ export function TopCandidatesModal({
               }`}
             >
               <ShieldCheck className="h-3.5 w-3.5 shrink-0" />
-              <span>Bias Cancellation & Audit (Stages 0, 2, 3)</span>
+              <span>How AI Compared Them</span>
             </button>
           </div>
         </div>
@@ -288,10 +287,10 @@ export function TopCandidatesModal({
                 <AlertCircle className="h-4 w-4 text-primary shrink-0 mt-0.5" />
                 <div className="text-xs space-y-0.5">
                   <p className="font-bold text-on-surface">
-                    {unrankedNames.length} New Candidate CV{unrankedNames.length > 1 ? "s" : ""} Added to Pool ({unrankedNames.join(", ")})
+                    {unrankedNames.length} New Resume{unrankedNames.length > 1 ? "s" : ""} Added ({unrankedNames.join(", ")})
                   </p>
                   <p className="text-on-surface-variant">
-                    Their pointer-aspect digests are extracted and ready. Re-run the tournament to rank them against the existing {totalPool - unrankedNames.length} compressed candidates.
+                    Their resumes have been parsed. Click to compare them against the existing {totalPool - unrankedNames.length} candidates and update the shortlist.
                   </p>
                 </div>
               </div>
@@ -310,8 +309,8 @@ export function TopCandidatesModal({
                   )}
                   <span>
                     {isRunningLive
-                      ? `Ranking ${totalPool} Candidates...`
-                      : `Rank All ${totalPool} Candidates Now`}
+                      ? `Comparing All ${totalPool} Candidates...`
+                      : `Include in Top Picks (${totalPool} Total)`}
                   </span>
                 </Button>
               )}
@@ -322,7 +321,7 @@ export function TopCandidatesModal({
             <div className="p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/30 text-xs text-rose-950 dark:text-rose-200 flex items-start gap-2.5">
               <AlertCircle className="h-4 w-4 text-rose-600 dark:text-rose-400 shrink-0 mt-0.5" />
               <div>
-                <p className="font-bold">Error</p>
+                <p className="font-bold">Could not load recommendations</p>
                 <p>{errorMessage}</p>
               </div>
             </div>
@@ -331,7 +330,7 @@ export function TopCandidatesModal({
           {isLoading && !ranking ? (
             <div className="py-20 flex flex-col items-center justify-center text-on-surface-variant space-y-3">
               <RefreshCw className="h-8 w-8 animate-spin text-primary" />
-              <p className="text-xs font-medium">Resolving candidate ranking tournament...</p>
+              <p className="text-xs font-medium">Comparing candidates and gathering resume proof...</p>
             </div>
           ) : ranking ? (
             <>
@@ -373,7 +372,7 @@ export function TopCandidatesModal({
             </>
           ) : (
             <div className="py-20 text-center text-xs text-on-surface-variant">
-              No tournament data available.
+              No shortlist data available.
             </div>
           )}
         </div>

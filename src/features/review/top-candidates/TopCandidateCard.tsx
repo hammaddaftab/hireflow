@@ -1,4 +1,4 @@
-// Top Candidate Card rendering rank, tournament telemetry, hydrated claims, and review actions
+// Top Candidate Card rendering natural rank recommendation, why they stand out, resume proof, and review actions
 
 import React from "react";
 import { Check, Flag, XCircle, ExternalLink, AlertTriangle } from "lucide-react";
@@ -14,6 +14,75 @@ export interface TopCandidateCardProps {
   onJumpToCandidate: (candidateId: string) => void;
   onDecision: (decision: ReviewDecision, candidateId?: string) => void;
   isContestedGroupMember?: boolean;
+}
+
+// Strips internal bracket citation codes like [c1], [s2], [header], [work_1] from prose
+function cleanProseText(text: string): string {
+  return text
+    .replace(/\s*\[(?:[cs]\d+|work_\d+|header)(?:,\s*(?:[cs]\d+|work_\d+|header))*\]/gi, "")
+    .replace(/\s{2,}/g, " ")
+    .trim();
+}
+
+// Converts a machine digest line into a natural, human-readable highlight title
+function formatClaimHeadline(digestLine: string | null | undefined): string | null {
+  if (!digestLine) return null;
+  let line = digestLine.trim();
+
+  // Handle header line
+  if (/^\[cand_[^\]]+\]/i.test(line)) {
+    return line.replace(/^\[cand_[^\]]+\]\s*/i, "").replace(/\|/g, "•").trim();
+  }
+
+  // Handle work_N line: "work_1: Role @ Employer (2024-2024, 0.3y internship)"
+  if (/^work_\d+:\s*/i.test(line)) {
+    return line
+      .replace(/^work_\d+:\s*/i, "")
+      .replace(/\s*@\s*/g, " at ")
+      .replace(/,\s*[\d.]+y\s+internship/gi, "")
+      .trim();
+  }
+
+  // Strip leading [c1:action] or [s2:peripheral] tag
+  line = line.replace(/^\[[^\]]+\]\s*/, "").trim();
+
+  // Check if line follows "Context: nouns -> action | outcome" or "nouns -> action | outcome"
+  if (line.includes("->")) {
+    const [leftRaw, rightRaw] = line.split("->").map((s) => s.trim());
+    let categoryPrefix = "";
+    let toolsList = leftRaw;
+
+    if (leftRaw.includes(":")) {
+      const colonIdx = leftRaw.indexOf(":");
+      categoryPrefix = leftRaw.slice(0, colonIdx).trim();
+      toolsList = leftRaw.slice(colonIdx + 1).trim();
+    }
+
+    const [actionPart, outcomePart] = (rightRaw || "").split("|").map((s) => s.trim());
+    const cleanAction = actionPart
+      ? actionPart.charAt(0).toUpperCase() + actionPart.slice(1)
+      : "";
+
+    const parts: string[] = [];
+    if (categoryPrefix) {
+      parts.push(`${categoryPrefix}: ${cleanAction}`);
+    } else if (cleanAction) {
+      parts.push(cleanAction);
+    }
+
+    if (outcomePart) {
+      parts.push(`— ${outcomePart}`);
+    } else if (toolsList) {
+      const shortTools = toolsList.split(",").slice(0, 3).map((t) => t.trim()).join(", ");
+      if (shortTools) {
+        parts.push(`(${shortTools})`);
+      }
+    }
+
+    return parts.join(" ").trim();
+  }
+
+  return line.replace(/\s*\|\s*/g, " — ").trim();
 }
 
 export function TopCandidateCard({
@@ -33,8 +102,14 @@ export function TopCandidateCard({
     workEntries[0];
   const roleTitle = currentWork ? `${currentWork.title} at ${currentWork.employer}` : "Software Engineer";
 
-  // Derive years of experience
+  // Derive years of experience or internship count
   const expYears = queueItem ? getCandidateExperienceYears(queueItem) : null;
+  const expLabel =
+    expYears !== null && expYears > 0
+      ? `${expYears} yrs FT`
+      : workEntries.length > 0
+      ? `${workEntries.length} ${workEntries.length === 1 ? "internship" : "internships"}`
+      : null;
 
   // Derive education
   const primaryEdu = candidate?.education?.entries?.[0];
@@ -54,11 +129,31 @@ export function TopCandidateCard({
   const salaryText =
     salaryReq && salaryReq.min
       ? `${salaryReq.currency || "PKR"} ${formatSalaryNumber(salaryReq.min)}${
-          salaryReq.max ? ` - ${formatSalaryNumber(salaryReq.max)}` : ""
+          salaryReq.max && salaryReq.max !== salaryReq.min
+            ? ` - ${formatSalaryNumber(salaryReq.max)}`
+            : ""
         }/mo`
       : "Salary unstated";
 
   const currentDecision = queueItem?.decision || "pending";
+  const totalMatchups =
+    entry.pairwise_wins + entry.pairwise_ties + entry.pairwise_losses;
+
+  const rankBadgeLabel =
+    entry.status === "contested"
+      ? `Tied for #${entry.rank}`
+      : entry.rank === 1
+      ? "#1 Top Pick"
+      : entry.rank === 2
+      ? "#2 Runner-Up"
+      : `#${entry.rank} Pick`;
+
+  // Filter out empty header claims when rich evidence claims exist
+  const rawClaims = entry.supporting_claims || [];
+  const nonHeaderClaims = rawClaims.filter(
+    (c) => c.ref_id !== "header" && Boolean(c.evidence_span || c.digest_line)
+  );
+  const displayClaims = nonHeaderClaims.length > 0 ? nonHeaderClaims : rawClaims;
 
   return (
     <div
@@ -74,7 +169,7 @@ export function TopCandidateCard({
         <div className="flex flex-wrap items-start justify-between gap-3 mb-3">
           <div className="flex items-center gap-2.5">
             <span
-              className={`font-mono text-xs font-bold px-2.5 py-1 rounded-lg border ${
+              className={`text-xs font-bold px-2.5 py-1 rounded-lg border ${
                 entry.status === "contested"
                   ? "bg-amber-500/15 text-amber-900 dark:text-amber-200 border-amber-500/30"
                   : entry.rank === 1
@@ -82,7 +177,7 @@ export function TopCandidateCard({
                   : "bg-surface-container-high text-on-surface border-outline-variant/40"
               }`}
             >
-              {entry.status === "contested" ? `#${entry.rank} Contested` : `#${entry.rank}`}
+              {rankBadgeLabel}
             </span>
             <div>
               <h3 className="text-base font-bold text-on-surface tracking-tight leading-tight">
@@ -96,117 +191,108 @@ export function TopCandidateCard({
 
           <div className="flex items-center gap-1.5">
             {entry.status === "confident" ? (
-              <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 border border-emerald-500/30">
-                Confident Match
+              <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 border border-emerald-500/30">
+                Clear Match
               </span>
             ) : (
-              <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-800 dark:text-amber-300 border border-amber-500/30">
-                Contested Slot
+              <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-amber-500/15 text-amber-800 dark:text-amber-300 border border-amber-500/30">
+                Close Call — Compare Below
               </span>
             )}
           </div>
         </div>
 
         <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-on-surface-variant font-medium mb-3.5 pb-3 border-b border-outline-variant/30">
-          {expYears !== null && (
-            <span className="font-semibold text-on-surface">
-              {expYears} yrs FT
-            </span>
+          {expLabel && (
+            <>
+              <span className="font-semibold text-on-surface">{expLabel}</span>
+              <span>•</span>
+            </>
           )}
-          <span>•</span>
-          <span className="truncate max-w-[200px]">{eduText}</span>
+          <span className="truncate max-w-[220px]">{eduText}</span>
           <span>•</span>
           <span>{city}</span>
           <span>•</span>
           <span className="font-mono text-[11px]">{salaryText}</span>
         </div>
 
-        <div className="flex flex-wrap items-center gap-3 p-2.5 rounded-xl bg-surface-container/70 border border-outline-variant/30 text-xs mb-3.5">
+        <div className="flex flex-wrap items-center justify-between gap-2 p-2.5 rounded-xl bg-surface-container/70 border border-outline-variant/30 text-xs mb-3.5">
           <div className="flex items-center gap-1.5">
             <span className="text-on-surface-variant font-medium text-[11px]">
-              Pairwise Record:
+              Head-to-Head vs. Finalists:
             </span>
-            <span className="font-mono font-bold text-on-surface">
-              {entry.pairwise_wins}W - {entry.pairwise_ties}T - {entry.pairwise_losses}L
-            </span>
-          </div>
-          <span className="text-outline-variant">•</span>
-          <div className="flex items-center gap-1.5">
-            <span className="text-on-surface-variant font-medium text-[11px]">
-              Latin-Sq Avg Rank:
-            </span>
-            <span className="font-mono font-bold text-on-surface">
-              #{entry.latin_square_avg_rank.toFixed(2)}
+            <span className="font-semibold text-on-surface">
+              {entry.status === "confident"
+                ? `Won ${entry.pairwise_wins} of ${totalMatchups} comparisons`
+                : `Evenly matched (${entry.pairwise_wins}W - ${entry.pairwise_ties}T - ${entry.pairwise_losses}L)`}
             </span>
           </div>
-          <span className="text-outline-variant">•</span>
-          <div className="flex items-center gap-1.5">
-            <span className="text-on-surface-variant font-medium text-[11px]">Status:</span>
-            <span
-              className={`font-semibold ${
-                entry.status === "confident"
-                  ? "text-emerald-700 dark:text-emerald-400"
-                  : "text-amber-700 dark:text-amber-400"
-              }`}
-            >
-              {entry.status === "confident" ? "Confident" : "Contested"}
-            </span>
-          </div>
+          <span
+            className={`text-[11px] font-semibold ${
+              entry.status === "confident"
+                ? "text-emerald-700 dark:text-emerald-400"
+                : "text-amber-700 dark:text-amber-400"
+            }`}
+          >
+            {entry.status === "confident"
+              ? `Consistent #${entry.rank} across reading orders`
+              : "Tied depending on reading order"}
+          </span>
         </div>
 
-        <div className="text-xs leading-relaxed text-on-surface mb-3.5 bg-surface/60 p-3 rounded-xl border border-outline-variant/30">
-          <p className="font-semibold text-on-surface mb-1 text-[11px] uppercase tracking-wider text-primary">
-            Tournament Rationale
+        <div className="text-xs leading-relaxed text-on-surface mb-3.5 bg-surface/60 p-3.5 rounded-xl border border-outline-variant/30">
+          <p className="font-bold mb-1 text-[11px] uppercase tracking-wider text-primary">
+            Why They Stand Out
           </p>
-          <p className="text-on-surface/90">{entry.headline_rationale}</p>
+          <p className="text-on-surface/90 leading-relaxed">
+            {cleanProseText(entry.headline_rationale)}
+          </p>
         </div>
 
         {entry.contested_with && (
-          <div className="mb-3.5 p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-xs text-amber-950 dark:text-amber-200">
+          <div className="mb-3.5 p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-xs text-amber-950 dark:text-amber-200">
             <div className="flex items-start gap-2">
               <AlertTriangle className="h-4 w-4 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
               <div>
-                <p className="font-bold mb-0.5">Order-Flip Split Verdict</p>
+                <p className="font-bold mb-0.5">How to Choose Between Them</p>
                 <p className="text-amber-900/90 dark:text-amber-200/90 leading-relaxed">
-                  {entry.contested_with}
+                  {cleanProseText(entry.contested_with)}
                 </p>
               </div>
             </div>
           </div>
         )}
 
-        {entry.supporting_claims && entry.supporting_claims.length > 0 && (
+        {displayClaims.length > 0 && (
           <div className="space-y-2 mb-4">
             <p className="text-[11px] uppercase font-bold tracking-wider text-on-surface-variant">
-              Cited Verbatim Claims ({entry.supporting_claims.length})
+              Key Proof from Their Resume ({displayClaims.length})
             </p>
             <div className="space-y-2 max-h-56 overflow-y-auto pr-1">
-              {entry.supporting_claims.map((claim, idx) => (
-                <div
-                  key={`${claim.candidate_id}-${claim.ref_id}-${idx}`}
-                  className="p-2.5 rounded-xl bg-surface/70 border border-outline-variant/30 text-xs space-y-1.5"
-                >
-                  <div className="flex items-center gap-1.5 font-mono text-[11px]">
-                    <span className="px-1.5 py-0.2 rounded bg-primary/10 text-primary font-bold">
-                      [{claim.ref_id}]
-                    </span>
-                    {claim.digest_line && (
-                      <span className="text-on-surface-variant truncate max-w-[320px]">
-                        {claim.digest_line}
-                      </span>
+              {displayClaims.map((claim, idx) => {
+                const formattedTitle = formatClaimHeadline(claim.digest_line);
+                return (
+                  <div
+                    key={`${claim.candidate_id}-${claim.ref_id}-${idx}`}
+                    className="p-2.5 rounded-xl bg-surface/70 border border-outline-variant/30 text-xs space-y-1.5"
+                  >
+                    {formattedTitle && (
+                      <div className="font-semibold text-on-surface text-[11px] leading-snug">
+                        {formattedTitle}
+                      </div>
+                    )}
+                    {claim.evidence_span ? (
+                      <blockquote className="border-l-2 border-primary/50 pl-2.5 text-[11px] italic text-on-surface-variant leading-relaxed bg-surface-container/30 py-1 rounded-r">
+                        &quot;{claim.evidence_span}&quot;
+                      </blockquote>
+                    ) : (
+                      <p className="text-[11px] text-on-surface-variant/80 italic pl-1">
+                        Verified from education and career history on resume.
+                      </p>
                     )}
                   </div>
-                  {claim.evidence_span ? (
-                    <blockquote className="border-l-2 border-primary/50 pl-2.5 text-[11px] italic text-on-surface/90 leading-relaxed bg-surface-container/30 py-1 rounded-r">
-                      &quot;{claim.evidence_span}&quot;
-                    </blockquote>
-                  ) : (
-                    <p className="text-[11px] text-on-surface-variant/80 italic pl-1">
-                      Verified from profile header and career progression history.
-                    </p>
-                  )}
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         )}
@@ -218,10 +304,10 @@ export function TopCandidateCard({
           size="sm"
           onClick={() => onJumpToCandidate(entry.candidate_id)}
           className="h-8 px-3 gap-1.5 text-xs font-semibold rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface border border-outline-variant/40 cursor-pointer"
-          title={`Inspect ${candidateName} in main queue`}
+          title={`View ${candidateName}'s full resume & profile`}
         >
           <ExternalLink className="h-3.5 w-3.5 shrink-0" />
-          <span>Inspect in Queue</span>
+          <span>View Full Resume</span>
         </Button>
 
         <div className="flex items-center gap-1.5">

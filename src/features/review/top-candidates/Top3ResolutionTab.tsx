@@ -1,4 +1,4 @@
-// Top 3 Resolution Tab rendering executive synthesis, confident candidates, and contested split comparisons
+// Top 3 Resolution Tab rendering conversational AI shortlist summary, clear frontrunners, and close-call ties
 
 import React from "react";
 import { AlertTriangle, Trophy } from "lucide-react";
@@ -12,6 +12,14 @@ export interface Top3ResolutionTabProps {
   queueMap: Map<string, CandidateReviewItem>;
   onJumpToCandidate: (candidateId: string) => void;
   onDecision: (decision: ReviewDecision, candidateId?: string) => void;
+}
+
+// Strips internal bracket citation codes like [c1], [s2], [header], [work_1] from prose
+function cleanProseText(text: string): string {
+  return text
+    .replace(/\s*\[(?:[cs]\d+|work_\d+|header)(?:,\s*(?:[cs]\d+|work_\d+|header))*\]/gi, "")
+    .replace(/\s{2,}/g, " ")
+    .trim();
 }
 
 export function Top3ResolutionTab({
@@ -38,22 +46,22 @@ export function Top3ResolutionTab({
         </div>
         <div className="space-y-1">
           <h4 className="text-xs font-bold uppercase tracking-wider text-primary">
-            Executive Synthesis
+            AI Shortlist Summary
           </h4>
           <p className="text-sm text-on-surface leading-relaxed font-medium">
-            {ranking.summary}
+            {cleanProseText(ranking.summary)}
           </p>
         </div>
       </div>
 
       {confidentCandidates.length > 0 && (
         <div className="space-y-3">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-wrap items-center justify-between gap-2">
             <h4 className="text-xs font-bold uppercase tracking-wider text-on-surface-variant">
-              Confident Finalists ({confidentCandidates.length})
+              Clear Frontrunners ({confidentCandidates.length})
             </h4>
             <span className="text-[11px] text-emerald-800 dark:text-emerald-300 font-medium">
-              Zero positional bias flips detected
+              Unanimous winners across every head-to-head comparison
             </span>
           </div>
 
@@ -77,12 +85,11 @@ export function Top3ResolutionTab({
             <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
             <div>
               <h4 className="text-sm font-bold text-amber-950 dark:text-amber-200">
-                Contested Slot: #3 Position Split
+                Close Call for #3 — Tied Finalists
               </h4>
               <p className="text-xs text-amber-900/90 dark:text-amber-200/90 leading-relaxed mt-1">
-                Forward versus reverse presentation order produced an order-flip tie in head-to-head pairwise verification.
-                Both contenders earned identical Latin-Square averages and hold equal claim to the #3 shortlist position.
-                Compare their domain strengths and system metrics side-by-side to make the decisive hiring call.
+                When the AI compared these two candidates head-to-head, they were so evenly matched that each won depending on who was read second.
+                Rather than guessing or hiding one of them, both are shown side-by-side below so you can choose the better fit for your team.
               </p>
             </div>
           </div>
