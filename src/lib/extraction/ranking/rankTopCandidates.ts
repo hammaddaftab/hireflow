@@ -959,6 +959,11 @@ ${view?.fullCvText}`;
     emergent_axes: emergentAxes,
     telemetry: {
       stage0_viable_count: stage0ViableCount,
+      stage0_knocked_out: knockedOutCandidates.map((c) => ({
+        candidate_id: c.candidateId,
+        candidate_name: c.candidateName,
+        contradictions: c.contradictions,
+      })),
       stage2_rounds: stage2RoundsTelemetry,
       stage3_finalist_ids: finalistIds,
       stage3_latin_square_orderings: latinSquareTelemetries,

@@ -325,7 +325,9 @@ async function main() {
   const durationMs = Date.now() - startTime;
   console.log(`LLM call finished in ${durationMs}ms.`);
   if (usage) {
-    console.log(`Tokens: ${usage.promptTokens} in / ${usage.completionTokens} out (${usage.totalTokens} total)`);
+    const inTokens = (usage as { promptTokens?: number; inputTokens?: number }).promptTokens ?? usage.inputTokens;
+    const outTokens = (usage as { completionTokens?: number; outputTokens?: number }).completionTokens ?? usage.outputTokens;
+    console.log(`Tokens: ${inTokens} in / ${outTokens} out (${usage.totalTokens} total)`);
   }
 
   // Save raw output

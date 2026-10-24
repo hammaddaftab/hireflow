@@ -198,6 +198,10 @@ export const TopCandidatesRankingResultSchema = z.object({
   summary: z
     .string()
     .describe("1 to 2 sentence executive synthesis of the Top 3 outcome"),
+  emergent_pool_summary: z
+    .string()
+    .optional()
+    .describe("Synthesis of talent distribution and standout clusters across viable pool"),
   top_candidates: z
     .array(TopCandidateEntrySchema)
     .describe("Top candidates (3 if confident, 4 if #3 contested)"),
@@ -206,6 +210,21 @@ export const TopCandidatesRankingResultSchema = z.object({
     .describe("Emergent axes used as shared yardstick"),
   telemetry: z.object({
     stage0_viable_count: z.number(),
+    stage0_knocked_out: z
+      .array(
+        z.object({
+          candidate_id: z.string(),
+          candidate_name: z.string(),
+          contradictions: z.array(
+            z.object({
+              id: z.string(),
+              label: z.string(),
+              reasoning: z.string(),
+            })
+          ),
+        })
+      )
+      .optional(),
     stage2_rounds: z.array(HalvingRoundTelemetrySchema),
     stage3_finalist_ids: z.array(z.string()),
     stage3_latin_square_orderings: z.array(LatinSquareOrderingTelemetrySchema),
